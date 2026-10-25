@@ -24,9 +24,9 @@ export function SpaceScene({ enabled }: { enabled: boolean }) {
     scene.add(group)
     group.rotation.set(0.8, 0.25, -0.35)
     const material = new THREE.LineBasicMaterial({
-      color: 0x8eb6a1,
+      color: 0x55dcff,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.55,
     })
     for (let i = 0; i < 4; i++) {
       const points = Array.from({ length: 181 }, (_, j) => {
@@ -48,10 +48,10 @@ export function SpaceScene({ enabled }: { enabled: boolean }) {
     const sphere = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.85, 2),
       new THREE.MeshBasicMaterial({
-        color: 0x86a996,
+        color: 0xb088ff,
         wireframe: true,
         transparent: true,
-        opacity: 0.08,
+        opacity: 0.2,
       }),
     )
     group.add(sphere)
@@ -64,8 +64,8 @@ export function SpaceScene({ enabled }: { enabled: boolean }) {
       new THREE.Points(
         geo,
         new THREE.PointsMaterial({
-          color: 0xb9cbbd,
-          size: 0.025,
+          color: 0xc0ddff,
+          size: 0.04,
           transparent: true,
           opacity: 0.5,
         }),

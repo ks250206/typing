@@ -32,6 +32,8 @@ import {
   subscribeHistory,
 } from './storage'
 import { ReadingGuide } from './ReadingGuide'
+import { SentenceView } from './SentenceView'
+import { sentencesByPassage } from './sentences'
 import type { RecordEntry } from './storage'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
@@ -60,13 +62,13 @@ export default function App() {
   const [settings, setSettings] = useState(readSettings),
     [records, setRecords] = useState(readHistory),
     [status, setStatus] = useState<Status>('ready'),
-    [paragraph, setParagraph] = useState(0),
+    [sentenceIndex, setSentenceIndex] = useState(0),
     [elapsed, setElapsed] = useState(0),
     [keys, setKeys] = useState(0),
     [misses, setMisses] = useState(0),
     [snapshot, setSnapshot] = useState(() => {
       const initial = makeEngine(
-        passages[0].paragraphs[0].reading,
+        sentencesByPassage[passages[0].id][0].reading,
         settings.layout,
       )
       return { position: 0, target: initial.target, hint: initial.hint }
@@ -76,7 +78,8 @@ export default function App() {
     [showSettings, setShowSettings] = useState(false),
     [confirmClear, setConfirmClear] = useState(false)
   const passage = passages.find((p) => p.id === selected)!,
-    engine = useRef(makeEngine(passage.paragraphs[0].reading, settings.layout)),
+    sentences = sentencesByPassage[selected],
+    engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
     area = useRef<HTMLDivElement>(null),
     unsavedRecords = useRef<RecordEntry[]>([]),
     started = useRef(0),
@@ -88,9 +91,9 @@ export default function App() {
   const focus = () => requestAnimationFrame(() => area.current?.focus())
   const reset = (id = selected, layout = settings.layout) => {
     const p = passages.find((p) => p.id === id)!
-    engine.current = makeEngine(p.paragraphs[0].reading, layout)
+    engine.current = makeEngine(sentencesByPassage[p.id][0].reading, layout)
     setSelected(id)
-    setParagraph(0)
+    setSentenceIndex(0)
     setStatus('ready')
     setElapsed(0)
     setKeys(0)
@@ -228,13 +231,10 @@ export default function App() {
       hint: engine.current.hint,
     })
     if (engine.current.done) {
-      if (paragraph < passage.paragraphs.length - 1) {
-        const n = paragraph + 1
-        setParagraph(n)
-        engine.current = makeEngine(
-          passage.paragraphs[n].reading,
-          settings.layout,
-        )
+      if (sentenceIndex < sentences.length - 1) {
+        const n = sentenceIndex + 1
+        setSentenceIndex(n)
+        engine.current = makeEngine(sentences[n].reading, settings.layout)
         setSnapshot({
           position: engine.current.position,
           target: engine.current.target,
@@ -283,8 +283,8 @@ export default function App() {
   const progress =
     status === 'done'
       ? 100
-      : ((paragraph + snapshot.position / snapshot.target.length) /
-          passage.paragraphs.length) *
+      : ((sentenceIndex + snapshot.position / snapshot.target.length) /
+          sentences.length) *
         100
   const kpm = elapsed > 0 ? Math.round(keys / (elapsed / 60000)) : 0,
     accuracy = keys + misses ? (keys / (keys + misses)) * 100 : 100
@@ -396,7 +396,7 @@ export default function App() {
             <div className="hero-content">
               <div className="eyebrow">
                 <span />
-                THE LONGFORM TYPING EXPERIENCE
+                DEEP SPACE · JAPANESE TYPING
               </div>
               <h1>
                 {tab === 'history' ? (
@@ -405,9 +405,9 @@ export default function App() {
                   '次に潜る、言葉の世界。'
                 ) : (
                   <>
-                    思考の速度で、
+                    指先から、
                     <br />
-                    言葉を紡ぐ。
+                    宇宙へ。
                   </>
                 )}
               </h1>
@@ -416,7 +416,7 @@ export default function App() {
                   ? '昨日の自分から、少しずつ。数字に、続けてきた時間が宿る。'
                   : tab === 'library'
                     ? '文学、科学、日常。気分に合う一篇を、今日の練習に。'
-                    : '急がなくていい。文章は、もうここにある。\n先を読み、リズムをつくる。上級者のための日本語タイピング。'}
+                    : '一打ごとに、言葉が光る。\n次の一文を先読みして、自分だけの軌道へ。'}
               </p>
               <div className="hero-tags">
                 <span>
@@ -506,31 +506,36 @@ export default function App() {
                           }[status]
                         }
                       </span>
-                      <span className="small muted">全文を先読みできます</span>
+                      <span className="small muted">
+                        {sentenceIndex + 1} / {sentences.length} 文
+                      </span>
                     </div>
-                    <div className="prose">
-                      {passage.paragraphs.map((p, i) => (
-                        <p
-                          key={i}
-                          className={
-                            status === 'done' || i < paragraph
-                              ? 'completed'
-                              : i === paragraph
-                                ? 'current-paragraph'
-                                : 'upcoming'
-                          }
-                        >
-                          <span className="paragraph-number">0{i + 1}</span>
-                          {p.text}
-                        </p>
-                      ))}
-                    </div>
+                    <SentenceView
+                      current={sentences[sentenceIndex]}
+                      next={sentences[sentenceIndex + 1]}
+                      position={snapshot.position}
+                      kana={settings.layout === 'kana'}
+                      done={status === 'done'}
+                    />
                     <div className={`input-dock ${mistake ? 'mistake' : ''}`}>
+                      {keys > 0 &&
+                        (status === 'running' || status === 'done') && (
+                          <span
+                            key={keys}
+                            className="keyburst"
+                            aria-hidden="true"
+                          >
+                            <span className="burst-ring" />
+                            {Array.from({ length: 6 }, (_, i) => (
+                              <i key={i} style={{ rotate: `${i * 60}deg` }} />
+                            ))}
+                          </span>
+                        )}
                       <div className="input-label">
                         <span>
                           {status === 'done'
                             ? 'おつかれさまでした'
-                            : `現在の読み · ${paragraph + 1} / ${passage.paragraphs.length}`}
+                            : `現在の読み · ${sentenceIndex + 1} / ${sentences.length}`}
                         </span>
                         <span>{layoutLabels[settings.layout]}</span>
                       </div>

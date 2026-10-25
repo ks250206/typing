@@ -4,11 +4,12 @@ export default defineConfig({
   fullyParallel: true,
   // Longform sessions send thousands of real key events on shared CI runners.
   timeout: 60_000,
-  use: { baseURL: 'http://127.0.0.1:5173', headless: true },
+  use: { baseURL: 'http://127.0.0.1:4173', headless: true },
   webServer: {
-    command: 'pnpm dev --host 127.0.0.1',
-    url: 'http://127.0.0.1:5173',
-    reuseExistingServer: !process.env.CI,
+    command:
+      'pnpm build && pnpm preview --host 127.0.0.1 --port 4173 --strictPort',
+    url: 'http://127.0.0.1:4173',
+    reuseExistingServer: false,
   },
   reporter: 'list',
 })
