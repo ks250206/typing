@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { locateSegments } from './sentences'
 import type { Sentence } from './sentences'
+import { ReadingGuide } from './ReadingGuide'
 
 export function SentenceView({
   current,
@@ -8,14 +9,22 @@ export function SentenceView({
   position,
   kana,
   done,
+  target,
+  typed,
+  hint,
+  guide,
 }: {
   current: Sentence
   next?: Sentence
   position: number
   kana: boolean
   done: boolean
+  target: string
+  typed: string
+  hint: string
+  guide: boolean
 }) {
-  const host = useRef<HTMLDivElement>(null)
+  const host = useRef<HTMLParagraphElement>(null)
   const segments = useMemo(() => locateSegments(current, kana), [current, kana])
   useLayoutEffect(() => {
     const el = host.current
@@ -37,11 +46,11 @@ export function SentenceView({
     return () => observer.disconnect()
   }, [current, position, kana])
   return (
-    <div className="prose" ref={host}>
+    <div className="prose">
       <div className="sentence-label">
         {done ? 'COMPLETE' : 'NOW / 現在の文章'}
       </div>
-      <p className="current-paragraph">
+      <p className="current-paragraph" ref={host}>
         {segments.map((segment, index) => {
           const active =
             !done && position >= segment.start && position < segment.end
@@ -62,6 +71,14 @@ export function SentenceView({
           )
         })}
       </p>
+      <ReadingGuide
+        target={target}
+        position={position}
+        typed={typed}
+        hint={hint}
+        showRoman={guide && !kana}
+        done={done}
+      />
       {!done && next && (
         <div className="next-sentence">
           <div className="sentence-label">UP NEXT / 次の文章</div>

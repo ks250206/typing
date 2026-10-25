@@ -215,16 +215,7 @@ h1 {
   align-items: center;
   gap: 7px;
 }
-.space-scene {
-  position: absolute;
-  right: -80px;
-  top: -34px;
-  width: 62%;
-  height: 380px;
-  opacity: 0.9;
-  mask-image: linear-gradient(to right, transparent, #000 25%);
-  pointer-events: none;
-}
+
 .orbit-label {
   position: absolute;
   bottom: 35px;
@@ -402,56 +393,7 @@ h1 {
   color: #457f8b;
   letter-spacing: 0;
 }
-.input-dock {
-  margin: 0 22px 21px;
-  padding: 16px 16px 14px;
-  border: 1px solid #93dcec19;
-  border-radius: 7px;
-  background: #0a0d1e;
-  transition:
-    background 0.12s,
-    border-color 0.12s;
-}
-.input-dock.mistake {
-  border-color: #c98472;
-  background: #301e1b;
-}
-.input-label {
-  display: flex;
-  justify-content: space-between;
-  color: #579dac;
-  font-size: 8px;
-  letter-spacing: 0.4px;
-  gap: 10px;
-}
-.kana-line {
-  font-size: 11px;
-  line-height: 1.9;
-  color: #77b0bc;
-  margin-top: 10px;
-  max-height: 43px;
-  overflow: auto;
-  overflow-wrap: anywhere;
-  scrollbar-width: thin;
-}
-.roman-line {
-  font-family: 'SFMono-Regular', Consolas, monospace;
-  font-size: 14px;
-  letter-spacing: 0.6px;
-  margin: 11px 0 6px;
-  color: #95dcec;
-  white-space: nowrap;
-  overflow: hidden;
-  line-height: 1.8;
-}
-.cursor {
-  height: 17px;
-  width: 2px;
-  background: #95dcec;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 3px;
-}
+
 .start-hint {
   border-top: 1px solid #ffffff08;
   margin-top: 13px;
@@ -1068,11 +1010,7 @@ td small {
   .hero h1 {
     font-size: 32px;
   }
-  .space-scene {
-    width: 75%;
-    right: -150px;
-    opacity: 0.5;
-  }
+
   .orbit-label {
     display: none;
   }
@@ -1160,10 +1098,7 @@ td small {
   .prose {
     padding: 18px 16px;
   }
-  .input-dock {
-    margin: 0 14px 15px;
-    padding: 13px;
-  }
+
   .reading-toolbar {
     padding: 17px 16px 0;
   }
@@ -1328,29 +1263,22 @@ td small {
   color: #7ceaff;
   text-shadow: 0 0 28px #2cdfff30;
 }
-.input-dock {
-  background: #080e22;
-  border-color: #67dfff35;
-  position: relative;
-}
+
 .typing-area:focus-visible {
   box-shadow: inset 0 0 0 2px #5cdfff60;
 }
-.input-dock.mistake {
-  border-color: #ff85a5;
-  background: #31172b;
-}
+
 .progress-track > span {
   background: linear-gradient(90deg, #59e6ff, #ac83ff);
   box-shadow: 0 0 10px #65dfff55;
 }
 .prose {
-  max-height: 360px;
+  max-height: none;
   scrollbar-color: #465a89 transparent;
   padding: 24px 27px;
 }
 .prose .current-paragraph {
-  font-size: clamp(20px, 1.7vw, 26px);
+  font-size: clamp(22px, 1.8vw, 28px);
   line-height: 2.15;
   letter-spacing: 0.06em;
   padding: 0;
@@ -1363,12 +1291,17 @@ td small {
   letter-spacing: 0.16em;
 }
 .current-token {
-  color: #071021;
-  background: #82efff;
-  border-radius: 4px;
+  color: #efffff;
+  background: #12658180;
+  border-radius: 5px;
+  text-shadow:
+    0 2px 0 #083340,
+    0 0 7px #36e4ff,
+    0 0 18px #40dfffaa;
   box-shadow:
-    0 2px 0 #c6a2ff,
-    0 0 18px #58dbff45;
+    0 3px 0 #ad87ff,
+    0 5px 12px #020616aa,
+    0 0 16px #5ce4ff40;
   padding-block: 3px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
@@ -1455,6 +1388,284 @@ td small {
 }
 @media (prefers-reduced-motion: reduce) {
   .keyburst {
+    display: none;
+  }
+}
+
+/* The star system fills the viewport; opaque reading surfaces keep text steady. */
+.app-shell {
+  isolation: isolate;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+.space-scene,
+.space-loading {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 77% 18%, #7444a525, transparent 48%);
+}
+.space-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.space-scene[data-rendering='fallback'] canvas {
+  visibility: hidden;
+}
+.space-fallback {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.space-scene[data-rendering='webgl'] .space-fallback {
+  display: none;
+}
+.space-fallback i {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow:
+    inset -25px -15px 35px #050518c9,
+    0 0 35px #c9a2ff1c;
+}
+.space-fallback i:nth-child(1) {
+  width: 170px;
+  height: 170px;
+  top: 14%;
+  right: 12%;
+  background: repeating-linear-gradient(
+    14deg,
+    #ad7e79,
+    #ddbd9c 12%,
+    #6e527e 19%
+  );
+}
+.space-fallback i:nth-child(1)::after {
+  content: '';
+  position: absolute;
+  inset: 28% -35%;
+  border: 12px solid #bc9bb668;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+}
+.space-fallback i:nth-child(2) {
+  width: 75px;
+  height: 75px;
+  top: 8%;
+  right: 40%;
+  background: radial-gradient(at 35% 28%, #91d3d2, #207896 45%, #092641);
+}
+.space-fallback i:nth-child(3) {
+  width: 52px;
+  height: 52px;
+  top: 39%;
+  right: 5%;
+  background: radial-gradient(at 30% 30%, #edb18c, #ae4d45, #341c30);
+}
+.hero {
+  background: linear-gradient(90deg, #090d1be8, #090d1b70 42%, transparent 75%);
+}
+.topbar {
+  background: #090d1b99;
+}
+.hero h1 {
+  text-shadow:
+    0 3px 0 #050919,
+    0 0 36px #639cff50;
+}
+.prose {
+  overflow: visible;
+  max-height: none;
+  padding-bottom: 12px;
+}
+.prose .current-paragraph {
+  font-weight: 600;
+  height: 3.9em;
+  box-sizing: content-box;
+  line-height: 1.9;
+  margin: 6px -8px 10px;
+  padding: 10px 8px 12px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.pending-token {
+  text-shadow: 0 2px 3px #02030be6;
+}
+.sentence-guides {
+  margin: 0 0 18px;
+}
+.guide-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.guide-row + .guide-row {
+  margin-top: 8px;
+}
+.guide-label {
+  font: 8px/24px monospace;
+  letter-spacing: 0.08em;
+  color: #798db0;
+}
+.guide-line {
+  height: 48px;
+  line-height: 24px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+  padding: 0 3px;
+}
+.kana-line {
+  font-size: 13px;
+  color: #b5cbe4;
+  letter-spacing: 0.04em;
+}
+.roman-line {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: #a9accf;
+}
+.typed-kana,
+.typed-roman {
+  color: #6f829e;
+}
+.remaining-kana {
+  color: #b5cbe4;
+}
+.guide-current {
+  color: #c4fcff;
+  border-bottom: 2px solid #64eaff;
+  background: #3ec8ff18;
+  text-shadow: 0 0 8px #5be8ff70;
+}
+.roman-current {
+  color: #e5d4ff;
+  border-color: #c09aff;
+  background: #b48aff22;
+}
+.session-controls {
+  position: relative;
+  margin: 0 27px;
+  min-height: 28px;
+}
+.session-controls .keyburst {
+  top: 5px;
+  right: 15px;
+}
+.session-controls .start-hint {
+  margin: 0;
+  padding: 12px 0 18px;
+  font-size: 10px;
+}
+.session-controls .resume-button {
+  margin: 0 0 16px;
+}
+.session-controls .finish-message {
+  margin: 0 0 18px;
+}
+.session-controls.mistake {
+  color: #ff9db8;
+}
+.damage-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    #e3286533 75%,
+    #ff275c80
+  );
+  box-shadow:
+    inset 0 0 55px #ff315bc0,
+    inset 0 0 140px #c91f5c65;
+  animation: damage-impact 520ms ease-out both;
+}
+.damage-reticle {
+  position: absolute;
+  inset: 12px;
+  border: 2px solid #ff6b8e70;
+  clip-path: polygon(
+    0 0,
+    12% 0,
+    12% 2%,
+    88% 2%,
+    88% 0,
+    100% 0,
+    100% 100%,
+    88% 100%,
+    88% 98%,
+    12% 98%,
+    12% 100%,
+    0 100%
+  );
+}
+.damage-label {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd3df;
+  font: 700 11px monospace;
+  letter-spacing: 0.35em;
+  text-shadow: 0 0 12px #ff265c;
+}
+@keyframes damage-impact {
+  0% {
+    opacity: 0.95;
+  }
+  35% {
+    opacity: 0.65;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (max-width: 800px) {
+  .hero {
+    background: linear-gradient(90deg, #090d1be8, #090d1b70 65%, transparent);
+  }
+}
+@media (max-width: 480px) {
+  .prose .current-paragraph {
+    font-size: 22px;
+    height: 5.8em;
+    line-height: 1.9;
+  }
+  .guide-row {
+    grid-template-columns: 23px minmax(0, 1fr);
+    gap: 7px;
+  }
+  .kana-line {
+    font-size: 12px;
+  }
+  .roman-line {
+    font-size: 12px;
+  }
+  .session-controls {
+    margin: 0 16px;
+  }
+  .reading-toolbar {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .damage-overlay {
+    background: none;
+    box-shadow: inset 0 0 0 3px #dd6884;
+    animation: none;
+  }
+  .damage-reticle,
+  .damage-label {
     display: none;
   }
 }

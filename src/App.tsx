@@ -31,7 +31,6 @@ import {
   saveSettings,
   subscribeHistory,
 } from './storage'
-import { ReadingGuide } from './ReadingGuide'
 import { SentenceView } from './SentenceView'
 import { sentencesByPassage } from './sentences'
 import type { RecordEntry } from './storage'
@@ -71,7 +70,12 @@ export default function App() {
         sentencesByPassage[passages[0].id][0].reading,
         settings.layout,
       )
-      return { position: 0, target: initial.target, hint: initial.hint }
+      return {
+        position: 0,
+        target: initial.target,
+        hint: initial.hint,
+        typed: '',
+      }
     }),
     [mistake, setMistake] = useState(false),
     [notice, setNotice] = useState(''),
@@ -102,13 +106,17 @@ export default function App() {
       position: engine.current.position,
       target: engine.current.target,
       hint: engine.current.hint,
+      typed: '',
     })
+    clearTimeout(missTimer.current)
     setMistake(false)
     started.current = 0
     accumulated.current = 0
   }
   const pause = () => {
     if (status === 'running') {
+      clearTimeout(missTimer.current)
+      setMistake(false)
       accumulated.current = elapsedNow()
       started.current = 0
       setElapsed(accumulated.current)
@@ -220,7 +228,7 @@ export default function App() {
       setMisses((v) => v + 1)
       setMistake(true)
       clearTimeout(missTimer.current)
-      missTimer.current = setTimeout(() => setMistake(false), 180)
+      missTimer.current = setTimeout(() => setMistake(false), 520)
       return
     }
     const nextKeys = keys + 1
@@ -229,6 +237,7 @@ export default function App() {
       position: engine.current.position,
       target: engine.current.target,
       hint: engine.current.hint,
+      typed: snapshot.typed + key,
     })
     if (engine.current.done) {
       if (sentenceIndex < sentences.length - 1) {
@@ -239,12 +248,15 @@ export default function App() {
           position: engine.current.position,
           target: engine.current.target,
           hint: engine.current.hint,
+          typed: '',
         })
       } else {
         const duration = elapsedNow()
         accumulated.current = duration
         started.current = 0
         setElapsed(duration)
+        clearTimeout(missTimer.current)
+        setMistake(false)
         setStatus('done')
         const result: RecordEntry = {
           id: crypto.randomUUID(),
@@ -305,6 +317,19 @@ export default function App() {
   }
   return (
     <div className="app-shell">
+      {settings.background && (
+        <Suspense
+          fallback={<div className="space-loading" aria-hidden="true" />}
+        >
+          <SpaceScene enabled />
+        </Suspense>
+      )}
+      {mistake && status === 'running' && tab === 'practice' && (
+        <div key={misses} className="damage-overlay" aria-hidden="true">
+          <div className="damage-reticle" />
+          <span className="damage-label">MISS</span>
+        </div>
+      )}
       <aside className="sidebar">
         <a
           className="brand"
@@ -388,11 +413,6 @@ export default function App() {
         </header>
         <div className="content">
           <section className="hero">
-            {settings.background && (
-              <Suspense fallback={null}>
-                <SpaceScene enabled />
-              </Suspense>
-            )}
             <div className="hero-content">
               <div className="eyebrow">
                 <span />
@@ -507,7 +527,8 @@ export default function App() {
                         }
                       </span>
                       <span className="small muted">
-                        {sentenceIndex + 1} / {sentences.length} 文
+                        {layoutLabels[settings.layout]} · {sentenceIndex + 1} /{' '}
+                        {sentences.length} 文
                       </span>
                     </div>
                     <SentenceView
@@ -516,8 +537,14 @@ export default function App() {
                       position={snapshot.position}
                       kana={settings.layout === 'kana'}
                       done={status === 'done'}
+                      target={snapshot.target}
+                      typed={snapshot.typed}
+                      hint={snapshot.hint}
+                      guide={settings.guide}
                     />
-                    <div className={`input-dock ${mistake ? 'mistake' : ''}`}>
+                    <div
+                      className={`session-controls ${mistake ? 'mistake' : ''}`}
+                    >
                       {keys > 0 &&
                         (status === 'running' || status === 'done') && (
                           <span
@@ -531,28 +558,6 @@ export default function App() {
                             ))}
                           </span>
                         )}
-                      <div className="input-label">
-                        <span>
-                          {status === 'done'
-                            ? 'おつかれさまでした'
-                            : `現在の読み · ${sentenceIndex + 1} / ${sentences.length}`}
-                        </span>
-                        <span>{layoutLabels[settings.layout]}</span>
-                      </div>
-                      {status !== 'done' && (
-                        <>
-                          <ReadingGuide
-                            target={snapshot.target}
-                            position={snapshot.position}
-                          />
-                          {settings.guide && (
-                            <div className="roman-line">
-                              <span className="cursor" />
-                              {snapshot.hint}
-                            </div>
-                          )}
-                        </>
-                      )}
                       {status === 'ready' && (
                         <div className="start-hint">
                           <Keyboard size={14} />

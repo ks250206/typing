@@ -55,6 +55,10 @@ test('library, settings persistence, screenshots and responsive layout', async (
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
+  await expect(page.locator('.space-scene')).toHaveAttribute(
+    'data-rendering',
+    'webgl',
+  )
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
   await page.getByRole('button', { name: '文章ライブラリ' }).click()
   await page.getByRole('button', { name: '科学', exact: true }).click()
