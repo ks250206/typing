@@ -6,6 +6,9 @@ test('complete longform, pause, persist, export and clear records', async ({
   page,
 }) => {
   await page.goto('/')
+  // Long input streams should not compete with CI software WebGL rendering.
+  // Background-on input is covered by the stellar scene test.
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region', { name: /タイピング入力/ })
   await expect(page.locator('.current-paragraph')).toHaveText(
     sentencesByPassage[passages[0].id][0].text,
@@ -55,6 +58,10 @@ test('library, settings persistence, screenshots and responsive layout', async (
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
+  await expect(page.locator('.space-scene')).toHaveAttribute(
+    'data-rendering',
+    'webgl',
+  )
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
   await page.getByRole('button', { name: '文章ライブラリ' }).click()
   await page.getByRole('button', { name: '科学', exact: true }).click()
@@ -180,6 +187,9 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   page,
 }) => {
   await page.goto('/')
+  // Long input streams should not compete with CI software WebGL rendering.
+  // Background-on input is covered by the stellar scene test.
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const sentences = sentencesByPassage[passages[0].id]
   const cursor = page.locator('[aria-current="location"]')
   await expect(cursor).toHaveText('閉館')
