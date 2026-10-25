@@ -22,7 +22,16 @@ import {
 import { KanaEngine, RomanEngine, mapKey } from './engine'
 import type { Layout } from './engine'
 import { passages } from './passages'
-import { readHistory, readSettings, saveHistory, saveSettings } from './storage'
+import {
+  appendHistory,
+  clearHistory,
+  mergeHistory,
+  readHistory,
+  readSettings,
+  saveSettings,
+  subscribeHistory,
+} from './storage'
+import { ReadingGuide } from './ReadingGuide'
 import type { RecordEntry } from './storage'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
@@ -69,6 +78,7 @@ export default function App() {
   const passage = passages.find((p) => p.id === selected)!,
     engine = useRef(makeEngine(passage.paragraphs[0].reading, settings.layout)),
     area = useRef<HTMLDivElement>(null),
+    unsavedRecords = useRef<RecordEntry[]>([]),
     started = useRef(0),
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -131,6 +141,13 @@ export default function App() {
     document.addEventListener('visibilitychange', hidden)
     return () => document.removeEventListener('visibilitychange', hidden)
   })
+  useEffect(
+    () =>
+      subscribeHistory((latest) =>
+        setRecords(mergeHistory(latest, unsavedRecords.current)),
+      ),
+    [],
+  )
   useEffect(() => () => clearTimeout(missTimer.current), [])
   useEffect(() => {
     if (!showSettings && !confirmClear) return
@@ -243,10 +260,23 @@ export default function App() {
           kpm: Math.round(nextKeys / (Math.max(duration, 1) / 60000)),
           accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
         }
-        const next = [result, ...records].slice(0, 200)
-        setRecords(next)
-        if (!saveHistory(next))
-          setNotice('記録を保存できません。JSON を書き出して保管してください。')
+        void appendHistory(result, unsavedRecords.current).then(
+          ({ records: latest, saved }) => {
+            if (saved)
+              unsavedRecords.current = unsavedRecords.current.filter(
+                (r) => !latest.some((item) => item.id === r.id),
+              )
+            else {
+              unsavedRecords.current = mergeHistory(unsavedRecords.current, [
+                result,
+              ])
+              setNotice(
+                '記録を保存できません。JSON を書き出して保管してください。',
+              )
+            }
+            setRecords(mergeHistory(latest, unsavedRecords.current))
+          },
+        )
       }
     }
   }
@@ -506,18 +536,10 @@ export default function App() {
                       </div>
                       {status !== 'done' && (
                         <>
-                          <div className="kana-line">
-                            <span className="typed-kana">
-                              {snapshot.target
-                                .slice(0, snapshot.position)
-                                .normalize('NFC')}
-                            </span>
-                            <span className="remaining-kana">
-                              {snapshot.target
-                                .slice(snapshot.position)
-                                .normalize('NFC')}
-                            </span>
-                          </div>
+                          <ReadingGuide
+                            target={snapshot.target}
+                            position={snapshot.position}
+                          />
                           {settings.guide && (
                             <div className="roman-line">
                               <span className="cursor" />
@@ -900,8 +922,9 @@ export default function App() {
               <button onClick={() => setConfirmClear(false)}>キャンセル</button>
               <button
                 className="primary-button"
-                onClick={() => {
-                  if (saveHistory([])) {
+                onClick={async () => {
+                  if (await clearHistory()) {
+                    unsavedRecords.current = []
                     setRecords([])
                     setConfirmClear(false)
                   } else

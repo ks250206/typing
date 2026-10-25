@@ -77,3 +77,40 @@ function save(key: string, data: unknown) {
     return false
   }
 }
+
+// Share one lock for appends and deletion so simultaneous tabs cannot overwrite
+// each other's read-modify-write operations. HTTPS/localhost provides Web Locks.
+function withHistoryLock<T>(operation: () => T): Promise<T> {
+  if (typeof navigator !== 'undefined' && navigator.locks) {
+    return navigator.locks.request(HISTORY, operation)
+  }
+  return Promise.resolve(operation())
+}
+export function mergeHistory(...groups: RecordEntry[][]): RecordEntry[] {
+  return [...new Map(groups.flat().map((entry) => [entry.id, entry])).values()]
+    .sort(
+      (a, b) =>
+        Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
+    )
+    .slice(0, 200)
+}
+export function appendHistory(entry: RecordEntry, unsaved: RecordEntry[] = []) {
+  return withHistoryLock(() => {
+    const records = mergeHistory(readHistory(), unsaved, [entry])
+    return { records, saved: saveHistory(records) }
+  })
+}
+export function clearHistory() {
+  return withHistoryLock(() => saveHistory([]))
+}
+export function subscribeHistory(listener: (records: RecordEntry[]) => void) {
+  const handle = (event: StorageEvent) => {
+    if (
+      event.storageArea === localStorage &&
+      (event.key === HISTORY || event.key === null)
+    )
+      listener(readHistory())
+  }
+  window.addEventListener('storage', handle)
+  return () => window.removeEventListener('storage', handle)
+}

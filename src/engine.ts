@@ -60,7 +60,6 @@ add('うぃ', 'wi', 'whi')
 add('うぇ', 'we', 'whe')
 add('うぉ', 'who')
 add('うぁ', 'wha')
-add('うぅ', 'whu')
 for (const [kana, bases] of Object.entries({
   き: ['ky'],
   ぎ: ['gy'],
@@ -80,10 +79,24 @@ for (const [kana, bases] of Object.entries({
     ゅ: 'u',
     ょ: 'o',
     ぇ: 'e',
-    ぃ: 'i',
   }))
     add(kana + small, ...bases.map((b) => b + v))
 }
+for (const [kana, forms] of Object.entries({
+  きぃ: ['kyi'],
+  ぎぃ: ['gyi'],
+  しぃ: ['syi'],
+  じぃ: ['jyi', 'zyi'],
+  ちぃ: ['tyi', 'cyi'],
+  ぢぃ: ['dyi'],
+  にぃ: ['nyi'],
+  ひぃ: ['hyi'],
+  びぃ: ['byi'],
+  ぴぃ: ['pyi'],
+  みぃ: ['myi'],
+  りぃ: ['ryi'],
+}))
+  add(kana, ...forms)
 for (const [kana, base] of Object.entries({ ふ: 'f', ゔ: 'v', つ: 'ts' }))
   for (const [k, v] of Object.entries({
     ぁ: 'a',
@@ -131,9 +144,11 @@ export class RomanEngine {
     const c = this.target[pos]
     if (!c) return []
     const edges: Edge[] = []
-    for (const size of [2, 1])
+    for (const size of [2, 1]) {
+      if (pos + size > this.target.length) continue
       for (const text of table[this.target.slice(pos, pos + size)] ?? [])
         edges.push({ end: pos + size, text })
+    }
     if (c === 'ん') {
       edges.push(
         { end: pos + 1, text: 'nn' },
@@ -336,8 +351,8 @@ const kanaShift: Record<string, string> = {
   Comma: '、',
   Period: '。',
   Slash: '・',
-  BracketLeft: '「',
-  BracketRight: '」',
+  BracketRight: '「',
+  Backslash: '」',
   IntlRo: 'ー',
 }
 export function mapKey(
@@ -351,6 +366,8 @@ export function mapKey(
       null
     )
   if (event.code === 'Space') return ' '
+  if (layout === 'jis')
+    return event.key.length === 1 ? event.key.toLowerCase() : null
   if (event.code === 'Backslash') return event.shiftKey ? '|' : '\\'
   const index = codes.indexOf(event.code)
   if (layout === 'dvorak')

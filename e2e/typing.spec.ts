@@ -85,3 +85,67 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   await page.getByRole('button', { name: '設定を閉じる' }).click()
   await expect(page.getByRole('button', { name: '再開する' })).toBeVisible()
 })
+
+test('next reading stays visible with guide off, after resize and restart', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
+  await page.getByLabel('入力ガイド', { exact: true }).uncheck()
+  await page.getByRole('region').focus()
+  await page.keyboard.type(
+    new RomanEngine(passages[0].paragraphs[0].reading).hint.slice(0, -20),
+  )
+  const visible = () =>
+    page.locator('.kana-line').evaluate((el) => {
+      const text = el.querySelector('.remaining-kana')!.firstChild!
+      const range = document.createRange()
+      range.setStart(text, 0)
+      range.setEnd(text, 1)
+      const next = range.getBoundingClientRect(),
+        viewport = el.getBoundingClientRect()
+      return {
+        visible:
+          next.top >= viewport.top - 1 && next.bottom <= viewport.bottom + 1,
+        scrollTop: el.scrollTop,
+      }
+    })
+  await expect.poll(async () => (await visible()).visible).toBe(true)
+  expect((await visible()).scrollTop).toBeGreaterThan(0)
+  await page.setViewportSize({ width: 1000, height: 900 })
+  await expect.poll(async () => (await visible()).visible).toBe(true)
+  await page.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await expect.poll(async () => (await visible()).scrollTop).toBe(0)
+})
+
+test('two tabs keep simultaneous completions, synchronize deletion, and do not restore deleted history', async ({
+  context,
+  page,
+}) => {
+  test.setTimeout(90000)
+  await page.goto('/')
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
+  const other = await context.newPage()
+  await other.goto('/')
+  const complete = async (tab: typeof page) => {
+    await tab.getByRole('region').focus()
+    for (const p of passages[0].paragraphs)
+      await tab.keyboard.type(new RomanEngine(p.reading).hint)
+    await expect(tab.getByText('SESSION COMPLETE')).toBeVisible()
+  }
+  await Promise.all([complete(page), complete(other)])
+  for (const tab of [page, other]) {
+    await tab.getByRole('button', { name: '練習の記録' }).click()
+    await expect(tab.locator('tbody tr')).toHaveCount(2)
+  }
+  await page.getByRole('button', { name: '全記録を削除' }).click()
+  await page.getByRole('button', { name: '削除する', exact: true }).click()
+  await expect(other.getByText('最初の一篇から、はじめよう。')).toBeVisible()
+  await other.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await other.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await complete(other)
+  await page.reload()
+  await page.getByRole('button', { name: '練習の記録' }).click()
+  await expect(page.locator('tbody tr')).toHaveCount(1)
+})

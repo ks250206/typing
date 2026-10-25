@@ -42,3 +42,89 @@ it('reports unavailable storage without crashing', () => {
   expect(readHistory()).toEqual([])
   expect(saveHistory([])).toBe(false)
 })
+
+import { appendHistory, clearHistory, subscribeHistory } from './storage'
+import type { RecordEntry } from './storage'
+const record = (id: string): RecordEntry => ({
+  id,
+  passageId: 'night-library',
+  title: '夜更けの図書室',
+  layout: 'jis',
+  date: '2026-10-25T00:00:00Z',
+  elapsed: 60000,
+  keys: 100,
+  misses: 0,
+  kpm: 100,
+  accuracy: 100,
+})
+it('appends against current storage instead of a stale tab snapshot', async () => {
+  await appendHistory(record('a'))
+  const result = await appendHistory(record('b'))
+  expect(result.saved).toBe(true)
+  expect(new Set(readHistory().map((r) => r.id))).toEqual(new Set(['a', 'b']))
+})
+it('serializes concurrent appends and deletion under the same lock', async () => {
+  let queue: Promise<unknown> = Promise.resolve()
+  const request = vi.fn((_name: string, operation: () => unknown) => {
+    const next = queue.then(operation)
+    queue = next
+    return next
+  })
+  vi.stubGlobal('navigator', { locks: { request } })
+  await Promise.all([appendHistory(record('a')), appendHistory(record('b'))])
+  expect(readHistory()).toHaveLength(2)
+  await Promise.all([clearHistory(), appendHistory(record('c'))])
+  expect(readHistory().map((r) => r.id)).toEqual(['c'])
+  expect(new Set(request.mock.calls.map(([name]) => name))).toEqual(
+    new Set(['yohaku.history.v1']),
+  )
+  vi.unstubAllGlobals()
+})
+it('retains unsaved records on the next append without resurrecting deleted records', async () => {
+  await appendHistory(record('old'))
+  await clearHistory()
+  await appendHistory(record('new'), [record('unsaved')])
+  expect(new Set(readHistory().map((r) => r.id))).toEqual(
+    new Set(['new', 'unsaved']),
+  )
+})
+it('subscribes to history changes and storage clears from other tabs', () => {
+  const target = new EventTarget()
+  vi.stubGlobal('window', target)
+  const listener = vi.fn(),
+    unsubscribe = subscribeHistory(listener)
+  const notify = (key: string | null) => {
+    const event = new Event('storage')
+    Object.assign(event, { key, storageArea: localStorage })
+    target.dispatchEvent(event)
+  }
+  saveHistory([record('a')])
+  notify('yohaku.history.v1')
+  expect(listener).toHaveBeenLastCalledWith([record('a')])
+  notify('yohaku.settings.v1')
+  expect(listener).toHaveBeenCalledTimes(1)
+  saveHistory([])
+  notify(null)
+  expect(listener).toHaveBeenLastCalledWith([])
+  unsubscribe()
+  notify('yohaku.history.v1')
+  expect(listener).toHaveBeenCalledTimes(2)
+  vi.unstubAllGlobals()
+})
+
+it('exposes failed appends for memory fallback and retries unsaved results', async () => {
+  const setItem = vi.fn(() => {
+    throw Error('quota')
+  })
+  vi.stubGlobal('localStorage', { getItem: () => null, setItem })
+  const failed = await appendHistory(record('a'))
+  expect(failed.saved).toBe(false)
+  expect(failed.records.map((r) => r.id)).toEqual(['a'])
+  vi.stubGlobal('localStorage', {
+    getItem: (k: string) => data.get(k) ?? null,
+    setItem: (k: string, v: string) => data.set(k, v),
+  })
+  const recovered = await appendHistory(record('b'), failed.records)
+  expect(recovered.saved).toBe(true)
+  expect(readHistory()).toHaveLength(2)
+})

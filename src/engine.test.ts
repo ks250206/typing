@@ -119,3 +119,61 @@ describe('physical layouts and kana', () => {
       }
   })
 })
+
+describe('review regressions', () => {
+  it('preserves JIS closing bracket instead of applying the US backslash override', () => {
+    const event = { code: 'Backslash', key: ']', shiftKey: false }
+    expect(mapKey(event, 'jis')).toBe(']')
+    const e = new RomanEngine('」')
+    expect(e.feed(mapKey(event, 'jis')!)).toBe(true)
+    expect(e.done).toBe(true)
+    expect(mapKey(event, 'us')).toBe('\\')
+    expect(mapKey(event, 'dvorak')).toBe('\\')
+  })
+  it('uses the JIS physical bracket keys for kana corner brackets', () => {
+    const e = new KanaEngine('「」')
+    for (const code of ['BracketRight', 'Backslash'])
+      expect(e.feed(mapKey({ code, key: '', shiftKey: true }, 'kana')!)).toBe(
+        true,
+      )
+    expect(e.done).toBe(true)
+    expect(
+      mapKey({ code: 'BracketLeft', key: '', shiftKey: false }, 'kana'),
+    ).toBe('\u3099')
+    expect(
+      mapKey({ code: 'BracketRight', key: '', shiftKey: false }, 'kana'),
+    ).toBe('\u309a')
+  })
+  it.each([
+    ['しぃ', 'shi'],
+    ['ちぃ', 'chi'],
+    ['じぃ', 'ji'],
+    ['うぅ', 'whu'],
+  ])('does not finish %s with %s', (reading, keys) => {
+    const e = new RomanEngine(reading)
+    for (const k of keys) expect(e.feed(k)).toBe(true)
+    expect(e.done).toBe(false)
+    expect(e.position).toBe(1)
+    for (const k of e.hint) expect(e.feed(k)).toBe(true)
+    expect(e.done).toBe(true)
+  })
+  it.each([
+    ['しぃ', 'syi'],
+    ['ちぃ', 'tyi'],
+    ['ちぃ', 'cyi'],
+    ['じぃ', 'jyi'],
+    ['じぃ', 'zyi'],
+    ['しぃ', 'shixi'],
+    ['ちぃ', 'chili'],
+    ['じぃ', 'jixi'],
+    ['うぅ', 'whuxu'],
+    ['ふぃ', 'fi'],
+    ['ゔぃ', 'vi'],
+    ['つぃ', 'tsi'],
+  ])('%s still accepts %s', accepts)
+  it('never advances past the end of the reading', () => {
+    const e = new RomanEngine('し')
+    for (const k of 'shi') e.feed(k)
+    expect(e.position).toBe(e.target.length)
+  })
+})
