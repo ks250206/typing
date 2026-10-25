@@ -6,6 +6,9 @@ test('complete longform, pause, persist, export and clear records', async ({
   page,
 }) => {
   await page.goto('/')
+  // Long input streams should not compete with CI software WebGL rendering.
+  // Background-on input is covered by the stellar scene test.
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region', { name: /タイピング入力/ })
   await expect(page.locator('.current-paragraph')).toHaveText(
     sentencesByPassage[passages[0].id][0].text,
@@ -184,6 +187,9 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   page,
 }) => {
   await page.goto('/')
+  // Long input streams should not compete with CI software WebGL rendering.
+  // Background-on input is covered by the stellar scene test.
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const sentences = sentencesByPassage[passages[0].id]
   const cursor = page.locator('[aria-current="location"]')
   await expect(cursor).toHaveText('閉館')

@@ -132,6 +132,11 @@ test('stellar scene animates, freezes on reduced motion, resizes and releases it
   const first = await scene.screenshot()
   await page.waitForTimeout(350) // Sample actual animation across two rendered frames.
   expect((await scene.screenshot()).equals(first)).toBe(false)
+  await page.getByRole('region').focus()
+  await page.keyboard.type('heikanno')
+  await expect(page.locator('.typed-roman')).toHaveText('heikanno')
+  await expect(page.locator('[aria-current="location"]')).toHaveText('放送')
+  await page.keyboard.press('Escape')
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const still = await scene.screenshot()
   await page.waitForTimeout(150)
