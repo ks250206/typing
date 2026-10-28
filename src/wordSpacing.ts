@@ -16,7 +16,11 @@ export function sentenceWordStarts(sentence: Sentence) {
   let readingOffset = 0
   sentence.segments.forEach((segment, index) => {
     // An internal boundary in a kanji group has no unambiguous reading offset.
-    if (text.has(textOffset)) {
+    // A contracted kana pair such as きゃ must stay in one typing group.
+    if (
+      text.has(textOffset) &&
+      !/^[ゃゅょぁぃぅぇぉゎ]/u.test(segment.reading)
+    ) {
       segments.add(index)
       reading.add(readingOffset)
     }

@@ -394,7 +394,17 @@ const kanaShift: Record<string, string> = {
 export function mapKey(
   event: Pick<KeyboardEvent, 'code' | 'key' | 'shiftKey'>,
   layout: Layout,
+  expected?: string,
 ): string | null {
+  // Numeric/symbol positions in supplied kana readings use their literal keys.
+  if (layout === 'kana' && expected && /^[0-9/]$/.test(expected)) {
+    if (
+      event.code === `Digit${expected}` ||
+      event.code === `Numpad${expected}` ||
+      (expected === '/' && ['Slash', 'NumpadDivide'].includes(event.code))
+    )
+      return expected
+  }
   if (layout === 'kana')
     return (
       (event.shiftKey ? kanaShift[event.code] : undefined) ??

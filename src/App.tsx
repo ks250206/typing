@@ -23,6 +23,7 @@ import { KanaEngine, RomanEngine, mapKey } from './engine'
 import type { Layout } from './engine'
 import { passages as essayPassages } from './passages'
 import { randomSentenceIndex } from './sakusaku'
+import { etypingDocument, isEtyping } from './etyping'
 import {
   freshSeed,
   isTypewell,
@@ -73,11 +74,13 @@ function practiceDocument(
 ) {
   return isTypewell(id)
     ? typewellDocument(id, seed, layout, version)
-    : {
-        passage: passages.find((p) => p.id === id)!,
-        sentences: sentencesByPassage[id],
-        plan: null,
-      }
+    : isEtyping(id)
+      ? etypingDocument(id, seed)
+      : {
+          passage: passages.find((p) => p.id === id)!,
+          sentences: sentencesByPassage[id],
+          plan: null,
+        }
 }
 type Status = 'ready' | 'running' | 'paused' | 'done'
 function makeEngine(reading: string, layout: Layout) {
@@ -147,6 +150,8 @@ export default function App() {
   )
   const { passage, sentences } = practice
   const typewell = isTypewell(selected)
+  const etyping = isEtyping(selected)
+  const seeded = typewell || etyping
   const limit = strokeLimit(settings.layout)
   const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -218,7 +223,7 @@ export default function App() {
     nextSeed = fixedSeed ? seed : freshSeed(),
     version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
-    if (isTypewell(id)) {
+    if (isTypewell(id) || isEtyping(id)) {
       setReplayVersion(version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
@@ -407,7 +412,11 @@ export default function App() {
       ),
       scoreVersion: 3,
       missPenalty: missEpisodes.current.penalty,
-      ...(typewell ? { seed, strokeLimit: limit, replayVersion } : {}),
+      ...(typewell
+        ? { seed, strokeLimit: limit, replayVersion }
+        : etyping
+          ? { seed, replayVersion: 1 as const }
+          : {}),
       mode: durationMs ? 'trainer' : 'practice',
       kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
       accuracy: Number(
@@ -446,7 +455,7 @@ export default function App() {
       return
     }
     if (status === 'paused' || status === 'done') return
-    const key = mapKey(e.nativeEvent, settings.layout)
+    const key = mapKey(e.nativeEvent, settings.layout, engine.current.hint[0])
     if (!key) return
     e.preventDefault()
     if (durationMs && status === 'running' && elapsedNow() >= durationMs) {
@@ -757,7 +766,7 @@ export default function App() {
                             </span>
                             <h2>{passage.title}</h2>
                             <p>{passage.subtitle}</p>
-                            {passage.source && (
+                            {passage.source?.url ? (
                               <a
                                 className="text-button"
                                 href={passage.source.url}
@@ -766,13 +775,17 @@ export default function App() {
                               >
                                 出典：{passage.source.label}
                               </a>
-                            )}
+                            ) : passage.source ? (
+                              <p className="small muted">
+                                出典：{passage.source.label}
+                              </p>
+                            ) : null}
                           </div>
                           <span className="passage-symbol">
                             {passage.accent}
                           </span>
                         </div>
-                        {typewell && (
+                        {seeded && (
                           <div className="seed-settings">
                             <label>
                               <input
@@ -814,14 +827,23 @@ export default function App() {
                                 reset(selected, settings.layout, 0, freshSeed())
                               }
                             >
-                              単語をシャッフル
+                              {etyping
+                                ? '問題をシャッフル'
+                                : '単語をシャッフル'}
                             </button>
                             <p>
-                              単語間のスペースも含め、自然な表記で{limit}
-                              打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
+                              {etyping ? (
+                                '同じシードで同じ15問・同じ順番を再現します。重複なしのランダム出題です。'
+                              ) : (
+                                <>
+                                  単語間のスペースも含め、自然な表記で{limit}
+                                  打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
+                                </>
+                              )}
                             </p>
                             <small>
-                              再現ID: {selected} / v{replayVersion} / {seed} ·{' '}
+                              再現ID: {selected} / v
+                              {etyping ? 1 : replayVersion} / {seed} ·{' '}
                               {settings.layout}
                             </small>
                           </div>
@@ -856,7 +878,9 @@ export default function App() {
                           <p>
                             {typewell
                               ? `${limit}打分の単語列 / シード ${seed}`
-                              : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
+                              : etyping
+                                ? `15問 / シード ${seed}`
+                                : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
                           </p>
                         </div>
                         <div id="passage-full-text">
@@ -1309,28 +1333,30 @@ export default function App() {
                         <tr key={r.id}>
                           <td>
                             {r.title}
-                            {r.seed && isTypewell(r.passageId) && (
-                              <button
-                                className="text-button"
-                                onClick={() => {
-                                  setFixedSeed(true)
-                                  reset(
-                                    r.passageId,
-                                    r.layout,
-                                    0,
-                                    r.seed!,
-                                    r.replayVersion ?? 1,
-                                  )
-                                  setSettings((value) => ({
-                                    ...value,
-                                    layout: r.layout,
-                                  }))
-                                  setTab('practice')
-                                }}
-                              >
-                                シード {r.seed} を再現
-                              </button>
-                            )}
+                            {r.seed &&
+                              (isTypewell(r.passageId) ||
+                                isEtyping(r.passageId)) && (
+                                <button
+                                  className="text-button"
+                                  onClick={() => {
+                                    setFixedSeed(true)
+                                    reset(
+                                      r.passageId,
+                                      r.layout,
+                                      0,
+                                      r.seed!,
+                                      r.replayVersion ?? 1,
+                                    )
+                                    setSettings((value) => ({
+                                      ...value,
+                                      layout: r.layout,
+                                    }))
+                                    setTab('practice')
+                                  }}
+                                >
+                                  シード {r.seed} を再現
+                                </button>
+                              )}
                             <small>
                               {new Date(r.date).toLocaleString('ja-JP')}
                             </small>
