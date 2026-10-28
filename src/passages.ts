@@ -1,10 +1,16 @@
+import { constitution } from './constitution'
 export interface Passage {
   id: string
   title: string
   subtitle: string
   genre: string
   accent: string
-  paragraphs: { text: string; reading: string }[]
+  source?: { label: string; url: string }
+  paragraphs: {
+    text: string
+    reading: string
+    segments?: { text: string; reading: string }[]
+  }[]
 }
 export const passages: Passage[] = [
   {
@@ -151,4 +157,5 @@ export const passages: Passage[] = [
       },
     ],
   },
+  constitution,
 ]

@@ -681,7 +681,9 @@ export default function App() {
                             <span className="muted small">
                               {typewell
                                 ? 'R 400打 / K 280打 · '
-                                : 'ORIGINAL ESSAY · '}
+                                : passage.source
+                                  ? 'PUBLIC TEXT · '
+                                  : 'ORIGINAL ESSAY · '}
                               {typewell
                                 ? 'ランダム出題'
                                 : passage.paragraphs.reduce(
@@ -692,6 +694,16 @@ export default function App() {
                             </span>
                             <h2>{passage.title}</h2>
                             <p>{passage.subtitle}</p>
+                            {passage.source && (
+                              <a
+                                className="text-button"
+                                href={passage.source.url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                出典：{passage.source.label}
+                              </a>
+                            )}
                           </div>
                           <span className="passage-symbol">
                             {passage.accent}
@@ -1127,7 +1139,10 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <h2>文章ライブラリ</h2>
-                  <span className="muted">6 STORIES + 5 WORD SETS</span>
+                  <span className="muted">
+                    {essayPassages.length} TEXTS + {typewellPassages.length}{' '}
+                    WORD SETS
+                  </span>
                 </div>
               </div>
               <div className="filters">
