@@ -6,14 +6,18 @@ test('complete longform, pause, persist, export and clear records', async ({
   page,
 }) => {
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Long input streams should not compete with CI software WebGL rendering.
   // Background-on input is covered by the stellar scene test.
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region', { name: /タイピング入力/ })
-  await expect(page.locator('.current-paragraph')).toHaveText(
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
     sentencesByPassage[passages[0].id][0].text,
   )
-  await expect(page.locator('.upcoming')).toHaveText(
+  await expect(page.locator('.upcoming')).toHaveAttribute(
+    'data-text',
     sentencesByPassage[passages[0].id][1].text,
   )
   await area.focus()
@@ -58,6 +62,8 @@ test('library, settings persistence, screenshots and responsive layout', async (
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.space-scene')).toHaveAttribute(
     'data-rendering',
     'webgl',
@@ -89,6 +95,8 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   page,
 }) => {
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
   await page.getByRole('region').focus()
   // へいかん: Equal, E, T, Y
@@ -114,10 +122,14 @@ test('next reading stays visible with guide off, after resize and restart', asyn
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('button', { name: '文章ライブラリ' }).click()
   await page.getByRole('button', { name: /星の光が届くまで/ }).click()
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page.getByLabel('入力ガイド', { exact: true }).uncheck()
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region').focus()
   const sentences = sentencesByPassage['starlight']
   const longest = sentences.reduce(
@@ -158,10 +170,14 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
 }) => {
   test.setTimeout(90000)
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const other = await context.newPage()
   await other.goto('/')
   const complete = async (tab: typeof page) => {
+    await tab.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await expect(tab.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
     await tab.getByRole('region').focus()
     for (const p of passages[0].paragraphs)
       await tab.keyboard.type(new RomanEngine(p.reading).hint)
@@ -187,6 +203,8 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   page,
 }) => {
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Long input streams should not compete with CI software WebGL rendering.
   // Background-on input is covered by the stellar scene test.
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
@@ -221,11 +239,15 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   await expect(cursor).toHaveText('閉館')
   await page.getByRole('region').focus()
   for (let i = 0; i < sentences.length; i++) {
-    await expect(page.locator('.current-paragraph')).toHaveText(
+    await expect(page.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
       sentences[i].text,
     )
     if (i + 1 < sentences.length)
-      await expect(page.locator('.upcoming')).toHaveText(sentences[i + 1].text)
+      await expect(page.locator('.upcoming')).toHaveAttribute(
+        'data-text',
+        sentences[i + 1].text,
+      )
     else await expect(page.locator('.upcoming')).toHaveCount(0)
     await page.keyboard.type(new RomanEngine(sentences[i].reading).hint)
   }

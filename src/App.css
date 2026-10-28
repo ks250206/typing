@@ -1549,7 +1549,7 @@ main {
 .session-controls {
   position: relative;
   margin: 0 27px;
-  min-height: 28px;
+  min-height: 60px;
 }
 .session-controls .keyburst {
   top: 5px;
@@ -1656,5 +1656,449 @@ main {
   .damage-reticle,
   .damage-label {
     display: none;
+  }
+}
+
+/* A quiet reading surface before entering the flow. */
+.passage-preview {
+  border-bottom: 1px solid #7897d526;
+  padding: 0 27px;
+}
+#passage-full-text {
+  padding-bottom: 20px;
+}
+#passage-full-text ol {
+  list-style: decimal;
+  padding-left: 25px;
+  margin: 8px 0 18px;
+  color: #7c9dc2;
+}
+#passage-full-text li {
+  padding-left: 8px;
+}
+#passage-full-text p {
+  color: #c2d3e7;
+  font-size: 15px;
+  line-height: 2.1;
+  letter-spacing: 0.04em;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
+/* Finger zones retain their color; the current word and key add separate glow levels. */
+.keyboard-guide {
+  margin: 8px 27px 20px;
+  padding: 15px 16px 12px;
+  border: 1px solid #6c94ce30;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #111c32c9, #111024d9);
+}
+.keyboard-guide figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  color: #7699bf;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  margin-bottom: 15px;
+}
+.next-key-label strong {
+  color: #b8f6ff;
+  font-size: 13px;
+  margin-left: 8px;
+}
+.keyboard-key {
+  --finger: #ac8ce2;
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 43px;
+  border: 1px solid color-mix(in srgb, var(--finger) 40%, #1a2340);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  color: color-mix(in srgb, var(--finger) 80%, white);
+  background: color-mix(in srgb, var(--finger) 12%, #11192c);
+  font:
+    13px/1.1 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+.keyboard-key[data-finger$='ring'] {
+  --finger: #819ce6;
+}
+.keyboard-key[data-finger$='middle'] {
+  --finger: #5bbccc;
+}
+.keyboard-key[data-finger$='index'] {
+  --finger: #69c3a8;
+}
+.keyboard-key[data-finger='thumb'] {
+  --finger: #91a3bc;
+  flex: 0 1 45%;
+  height: 30px;
+}
+.keyboard-key small {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 8px;
+  opacity: 0.65;
+}
+.keyboard-key.home-key {
+  border-bottom-color: var(--finger);
+}
+.home-ridge {
+  position: absolute;
+  bottom: 4px;
+  width: 10px;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.8;
+}
+.keyboard-key[data-state='next'] {
+  color: #edfeff;
+  background: #21677d;
+  border-color: #a1f7ff;
+  box-shadow:
+    0 0 15px #50dfff70,
+    inset 0 0 12px #8ff8ff40;
+  text-shadow: 0 0 7px #c4fcff;
+}
+.keyboard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 9px;
+  color: #91a3bc;
+}
+.keyboard-legend > span::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ac8ce2;
+  margin-right: 4px;
+}
+.keyboard-legend [data-tone='1']::before {
+  background: #819ce6;
+}
+.keyboard-legend [data-tone='2']::before {
+  background: #5bbccc;
+}
+.keyboard-legend [data-tone='3']::before {
+  background: #69c3a8;
+}
+.keyboard-legend [data-tone='4']::before {
+  background: #91a3bc;
+}
+.keyboard-legend .keyboard-state-legend::before {
+  display: none;
+}
+.keyboard-state-legend {
+  margin-left: auto;
+}
+@media (max-width: 480px) {
+  .passage-preview {
+    padding: 0 16px;
+  }
+  #passage-full-text p {
+    font-size: 14px;
+  }
+  .keyboard-guide {
+    margin: 8px 12px 18px;
+    padding: 12px 7px;
+  }
+  .keyboard-key {
+    height: 33px;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .keyboard-key small {
+    font-size: 6px;
+    top: 2px;
+    right: 2px;
+  }
+  .keyboard-key.wide-key {
+    font-size: 7px;
+  }
+  .keyboard-legend {
+    gap: 6px;
+  }
+  .keyboard-state-legend {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* Three separate faces, rotated around the same stage. */
+.mission-carousel {
+  perspective: 1400px;
+  overflow: clip;
+}
+.mission-steps {
+  display: flex;
+  padding: 14px;
+  gap: 8px;
+  border-bottom: 1px solid #8da8d426;
+  background: #0a142680;
+}
+.mission-steps button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #6b85b72a;
+  border-radius: 8px;
+  background: #10182c;
+  padding: 12px;
+  color: #839db9;
+  font-size: 12px;
+  cursor: pointer;
+}
+.mission-steps button small {
+  color: #586f92;
+  font: 10px monospace;
+}
+.mission-steps button span {
+  margin-left: auto;
+}
+.mission-steps [aria-current='step'] {
+  color: #c4f9ff;
+  border-color: #62d8f095;
+  background: linear-gradient(120deg, #174051, #24213e);
+  box-shadow:
+    inset 0 0 18px #50dfff12,
+    0 0 15px #50dfff12;
+}
+.mission-viewport {
+  position: relative;
+  transform-style: preserve-3d;
+}
+.mission-face {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(calc(var(--direction) * 22%))
+    rotateY(calc(var(--direction) * 38deg));
+  transform-origin: center;
+  transition:
+    transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.35s,
+    visibility 0.48s;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.mission-face.is-active {
+  position: relative;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.mission-select-actions {
+  padding: 22px 27px 30px;
+}
+.mission-select-actions p {
+  color: #87a5bf;
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+.mission-story-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.mission-story-choices button {
+  text-align: left;
+  padding: 18px 14px;
+  color: #9eb6d3;
+  border: 1px solid #7b91ca30;
+  border-radius: 10px;
+  background: #161e35;
+  cursor: pointer;
+  font-size: 13px;
+}
+.mission-story-choices [aria-pressed='true'] {
+  color: #d6fbff;
+  border-color: #6ae5e3a0;
+  background: linear-gradient(120deg, #17404d, #29203b);
+  box-shadow: 0 0 18px #59dfff15;
+}
+.mission-face-heading {
+  padding: 25px 0 8px;
+}
+.mission-face-heading h2 {
+  color: #c5eaf5;
+  margin: 14px 0 8px;
+}
+.mission-face-heading p {
+  color: #7f9ebb;
+  font-size: 12px;
+}
+.passage-preview {
+  border-bottom: 0;
+}
+#passage-full-text p {
+  line-height: 2.7;
+}
+/* Genuine ruby annotations use the reviewed kanji/reading pairs. */
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+rt {
+  font-size: max(9px, 0.42em);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #a8bfd6;
+  text-shadow: none;
+}
+.prose .current-paragraph {
+  line-height: 2.35;
+  height: 4.8em;
+  padding-top: 12px;
+}
+.prose .upcoming {
+  line-height: 2.4;
+}
+/* Every row shares the same pitch; dimensions are quarter-key units. */
+.physical-keyboard {
+  display: grid;
+  grid-template-columns: repeat(60, minmax(0, 1fr));
+  grid-template-rows: 27px repeat(5, 43px);
+  row-gap: 4px;
+}
+.physical-keyboard .keyboard-key {
+  margin: 0 2px;
+  height: auto;
+  flex: none;
+  border-radius: 5px;
+}
+.physical-keyboard .special-key {
+  font-size: 9px;
+}
+.physical-keyboard .keyboard-key[data-finger='thumb'] {
+  height: auto;
+}
+.physical-keyboard .enter-tall {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 16.667% 100%, 16.667% 51%, 0 51%);
+  justify-content: flex-start;
+  padding-top: 15px;
+}
+.keyboard-key[data-state='idle'] {
+  box-shadow: none;
+}
+/* One color per word across main text and both reading lines. */
+.word-colors [data-tone='0'] {
+  --word-ink: #99e4ec;
+}
+.word-colors [data-tone='1'] {
+  --word-ink: #c6b4fa;
+}
+.word-colors [data-tone='2'] {
+  --word-ink: #a6dec1;
+}
+.word-colors [data-tone='3'] {
+  --word-ink: #e5cf9e;
+}
+.word-colors [data-tone='4'] {
+  --word-ink: #a9c6ff;
+}
+.word-colors [data-tone='5'] {
+  --word-ink: #eab4ce;
+}
+.word-colors .pending-token,
+.word-colors .remaining-kana > [data-tone],
+.word-colors .remaining-roman > [data-tone] {
+  color: var(--word-ink);
+}
+[data-flow='consume'] .current-paragraph {
+  white-space: nowrap;
+  height: 2.7em;
+  overflow: hidden;
+}
+[data-flow='consume'] .sentence-stream {
+  display: inline-block;
+  animation: word-flow 0.18s ease-out;
+}
+[data-flow='consume'] .sentence-stream > span:first-child {
+  margin-inline-start: 0;
+}
+[data-flow='consume'] .guide-line {
+  white-space: nowrap;
+  height: 1.6em;
+  overflow: hidden;
+}
+[data-flow='consume'] .typed-kana > span:first-child,
+[data-flow='consume'] .typed-roman > span:first-child,
+[data-flow='consume'] [data-guide-cursor] .word-start {
+  margin-inline-start: 0;
+}
+@keyframes word-flow {
+  from {
+    transform: translateX(14px);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 480px) {
+  .mission-steps {
+    padding: 10px;
+    gap: 5px;
+  }
+  .mission-steps button {
+    padding: 10px 7px;
+    gap: 5px;
+    font-size: 11px;
+  }
+  .mission-steps button span {
+    display: none;
+  }
+  .mission-select-actions {
+    padding: 18px 16px 24px;
+  }
+  .mission-story-choices button {
+    padding: 14px 10px;
+    font-size: 12px;
+  }
+  .prose .current-paragraph {
+    height: 7.1em;
+  }
+  [data-flow='consume'] .current-paragraph {
+    height: 2.7em;
+  }
+  .physical-keyboard {
+    grid-template-rows: 20px repeat(5, 30px);
+    row-gap: 3px;
+  }
+  .physical-keyboard .keyboard-key {
+    margin: 0 1px;
+    border-radius: 3px;
+  }
+  .physical-keyboard .special-key {
+    font-size: 6px;
+  }
+  .physical-keyboard .enter-tall {
+    padding-top: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mission-face {
+    transition: none;
+    transform: none;
+  }
+  [data-flow='consume'] .sentence-stream {
+    animation: none;
   }
 }

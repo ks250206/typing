@@ -6,6 +6,8 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   page,
 }) => {
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region')
   await expect(page.locator('.input-dock')).toHaveCount(0)
@@ -26,7 +28,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   expect(ordering).toBe(true)
   const guideTop = await page
     .locator('.sentence-guides')
-    .evaluate((el) => el.getBoundingClientRect().top)
+    .evaluate((el) => el.getBoundingClientRect().top + scrollY)
   const current = page.locator('.kana-line .guide-current')
   await area.focus()
   const input = 'heikannohousougaowaruto,tosilyo'
@@ -37,7 +39,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   expect(
     await page
       .locator('.sentence-guides')
-      .evaluate((el) => el.getBoundingClientRect().top),
+      .evaluate((el) => el.getBoundingClientRect().top + scrollY),
   ).toBe(guideTop)
   const model = new RomanEngine(sentencesByPassage['night-library'][0].reading)
   for (const key of input) expect(model.feed(key)).toBe(true)
@@ -48,7 +50,8 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   await page.keyboard.type(model.hint)
   await expect(page.locator('.typed-roman')).toHaveText('')
   await expect(current).toHaveText('ま')
-  await expect(page.locator('.current-paragraph')).toHaveText(
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
     sentencesByPassage['night-library'][1].text,
   )
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
@@ -84,6 +87,8 @@ test('damage covers the viewport, never blocks typing, clears and respects reduc
   page,
 }) => {
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region')
   const damage = page.locator('.damage-overlay')
@@ -127,6 +132,8 @@ test('stellar scene animates, freezes on reduced motion, resizes and releases it
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   const scene = page.locator('.space-scene')
   await expect(scene).toHaveAttribute('data-rendering', 'webgl')
   const first = await scene.screenshot()
@@ -182,6 +189,8 @@ test('CSS planets remain visible when WebGL is unavailable', async ({
     } as typeof getContext
   })
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.space-fallback')).toBeVisible()
   await expect(page.locator('.space-scene canvas')).toHaveCount(0)
   await page.getByRole('region').focus()
@@ -197,6 +206,8 @@ test('word-spaced guides are large, label-free and close to the main text on des
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 })

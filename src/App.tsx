@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -31,6 +31,9 @@ import {
   saveSettings,
   subscribeHistory,
 } from './storage'
+import { KeyboardGuide } from './KeyboardGuide'
+import { MissionCarousel } from './MissionCarousel'
+import { RubyText } from './RubyText'
 import { SentenceView } from './SentenceView'
 import { sentencesByPassage } from './sentences'
 import type { RecordEntry } from './storage'
@@ -80,7 +83,8 @@ export default function App() {
     [mistake, setMistake] = useState(false),
     [notice, setNotice] = useState(''),
     [showSettings, setShowSettings] = useState(false),
-    [confirmClear, setConfirmClear] = useState(false)
+    [confirmClear, setConfirmClear] = useState(false),
+    [practiceStage, setPracticeStage] = useState(0)
   const passage = passages.find((p) => p.id === selected)!,
     sentences = sentencesByPassage[selected],
     engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -88,17 +92,68 @@ export default function App() {
     unsavedRecords = useRef<RecordEntry[]>([]),
     started = useRef(0),
     accumulated = useRef(0),
-    missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
+    focusRevision = useRef(0)
+  const paragraphSegments = useMemo(() => {
+    let cursor = 0
+    return passage.paragraphs.map((paragraph) => {
+      const segments = []
+      let length = 0
+      while (length < paragraph.text.length) {
+        const sentence = sentences[cursor++]
+        segments.push(...sentence.segments)
+        length += sentence.text.length
+      }
+      return segments
+    })
+  }, [passage, sentences])
+  const handleStageChange = (stage: number) => {
+    if (stage !== 2) pause()
+    setPracticeStage(stage)
+    if (stage === 2) focus()
+  }
   const elapsedNow = () =>
     accumulated.current +
+    // Sampled by pause/finish handlers, never during render.
+    // oxlint-disable-next-line react/purity
     (started.current ? performance.now() - started.current : 0)
-  const focus = () => requestAnimationFrame(() => area.current?.focus())
-  const reset = (id = selected, layout = settings.layout) => {
+  const focus = () => {
+    const revision = ++focusRevision.current
+    const previous = document.activeElement
+    requestAnimationFrame(() => {
+      const el = area.current
+      if (!el || el.closest('[inert]')) return
+      const animations = el.closest('.mission-face')?.getAnimations() ?? []
+      void Promise.allSettled(
+        animations.map((animation) => animation.finished),
+      ).then(() => {
+        if (
+          !el.isConnected ||
+          revision !== focusRevision.current ||
+          el.closest('[inert]')
+        )
+          return
+        if (
+          document.activeElement !== previous &&
+          document.activeElement !== document.body &&
+          document.activeElement !== el
+        )
+          return
+        el.focus()
+      })
+    })
+  }
+  const reset = (
+    id = selected,
+    layout = settings.layout,
+    stage = practiceStage,
+  ) => {
     const p = passages.find((p) => p.id === id)!
     engine.current = makeEngine(sentencesByPassage[p.id][0].reading, layout)
     setSelected(id)
     setSentenceIndex(0)
     setStatus('ready')
+    setPracticeStage(stage)
     setElapsed(0)
     setKeys(0)
     setMisses(0)
@@ -125,6 +180,7 @@ export default function App() {
   }
   const resume = () => {
     if (status === 'paused') {
+      // oxlint-disable-next-line react/purity
       started.current = performance.now()
       setStatus('running')
     }
@@ -487,141 +543,226 @@ export default function App() {
               </div>
               <div className="practice-grid">
                 <div className="practice-main">
-                  <div className="passage-header">
-                    <div>
-                      <span className="tag">{passage.genre}</span>
-                      <span className="muted small">
-                        ORIGINAL ESSAY ·{' '}
-                        {passage.paragraphs.reduce(
-                          (n, p) => n + p.text.length,
-                          0,
-                        )}{' '}
-                        文字
-                      </span>
-                      <h2>{passage.title}</h2>
-                      <p>{passage.subtitle}</p>
-                    </div>
-                    <span className="passage-symbol">{passage.accent}</span>
-                  </div>
-                  <div
-                    className="typing-area"
-                    ref={area}
-                    tabIndex={0}
-                    role="region"
-                    aria-label="タイピング入力領域。IME をオフにして入力"
-                    onKeyDown={accept}
-                    onBlur={pause}
+                  <MissionCarousel
+                    stage={practiceStage}
+                    onStage={handleStageChange}
                   >
-                    <div className="reading-toolbar">
-                      <span
-                        className={`live-label ${status === 'running' ? 'live' : ''}`}
-                      >
-                        <span />
-                        {
-                          {
-                            ready: 'READY WHEN YOU ARE',
-                            running: 'IN THE FLOW',
-                            paused: 'PAUSED',
-                            done: 'SESSION COMPLETE',
-                          }[status]
-                        }
-                      </span>
-                      <span className="small muted">
-                        {layoutLabels[settings.layout]} · {sentenceIndex + 1} /{' '}
-                        {sentences.length} 文
-                      </span>
-                    </div>
-                    <SentenceView
-                      current={sentences[sentenceIndex]}
-                      next={sentences[sentenceIndex + 1]}
-                      position={snapshot.position}
-                      kana={settings.layout === 'kana'}
-                      done={status === 'done'}
-                      target={snapshot.target}
-                      typed={snapshot.typed}
-                      hint={snapshot.hint}
-                      guide={settings.guide}
-                    />
-                    <div
-                      className={`session-controls ${mistake ? 'mistake' : ''}`}
-                    >
-                      {keys > 0 &&
-                        (status === 'running' || status === 'done') && (
-                          <span
-                            key={keys}
-                            className="keyburst"
-                            aria-hidden="true"
-                          >
-                            <span className="burst-ring" />
-                            {Array.from({ length: 6 }, (_, i) => (
-                              <i key={i} style={{ rotate: `${i * 60}deg` }} />
-                            ))}
+                    {[
+                      <div key="selected">
+                        <div className="passage-header">
+                          <div>
+                            <span className="tag">{passage.genre}</span>
+                            <span className="muted small">
+                              ORIGINAL ESSAY ·{' '}
+                              {passage.paragraphs.reduce(
+                                (n, p) => n + p.text.length,
+                                0,
+                              )}{' '}
+                              文字
+                            </span>
+                            <h2>{passage.title}</h2>
+                            <p>{passage.subtitle}</p>
+                          </div>
+                          <span className="passage-symbol">
+                            {passage.accent}
                           </span>
-                        )}
-                      {status === 'ready' && (
-                        <div className="start-hint">
-                          <Keyboard size={14} />
-                          ここをクリックして、最初の文字からスタート
-                          <span>IME OFF</span>
                         </div>
-                      )}
-                      {status === 'paused' && (
-                        <button className="resume-button" onClick={resume}>
-                          <Play size={14} />
-                          再開する
-                        </button>
-                      )}
-                      {status === 'done' && (
-                        <div className="finish-message">
-                          <Check size={20} />
-                          一篇を、最後まで。完走です。
+                        <div className="mission-select-actions">
+                          <p>言葉の軌道を選んで、読み、指先で旅をする。</p>
+                          <div className="mission-story-choices">
+                            {passages.map((item) => (
+                              <button
+                                key={item.id}
+                                aria-pressed={selected === item.id}
+                                onClick={() =>
+                                  reset(item.id, settings.layout, 0)
+                                }
+                              >
+                                {item.title}
+                              </button>
+                            ))}
+                          </div>
                           <button
-                            onClick={() => {
-                              reset()
-                              focus()
-                            }}
+                            className="primary-button"
+                            onClick={() => handleStageChange(1)}
                           >
-                            もう一度
-                            <RotateCcw size={14} />
+                            全文を読む <ArrowRight size={16} />
                           </button>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    className="practice-footer"
-                    onMouseDown={(e) => e.preventDefault()}
-                  >
-                    <div>
-                      <span className="progress-track">
-                        <span style={{ width: `${progress}%` }} />
-                      </span>
-                      <span>{Math.floor(progress)}%</span>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => {
-                          reset()
-                          focus()
-                        }}
-                      >
-                        <RotateCcw size={14} />
-                        やり直す
-                      </button>
-                      <button
-                        disabled={status === 'ready' || status === 'done'}
-                        onClick={status === 'paused' ? resume : pause}
-                      >
-                        {status === 'paused' ? (
-                          <Play size={14} />
-                        ) : (
-                          <Pause size={14} />
-                        )}
-                        <span>{status === 'paused' ? '再開' : '一時停止'}</span>
-                        <kbd>esc</kbd>
-                      </button>
-                    </div>
-                  </div>
+                      </div>,
+                      <section className="passage-preview" key="preview">
+                        <div className="mission-face-heading">
+                          <span className="eyebrow">MISSION BRIEFING</span>
+                          <h2>{passage.title}</h2>
+                          <p>
+                            {sentences.length} 文 / {passage.paragraphs.length}{' '}
+                            段落
+                          </p>
+                        </div>
+                        <div id="passage-full-text">
+                          <ol>
+                            {paragraphSegments.map((segments, index) => (
+                              <li key={index}>
+                                <p>
+                                  <RubyText segments={segments} />
+                                </p>
+                              </li>
+                            ))}
+                          </ol>
+                          <button
+                            className="primary-button"
+                            onClick={() => {
+                              setPracticeStage(2)
+                              if (status === 'paused') resume()
+                              else focus()
+                            }}
+                          >
+                            この文章でスタート <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </section>,
+                      <div key="input">
+                        <div
+                          className="typing-area"
+                          ref={area}
+                          tabIndex={0}
+                          role="region"
+                          aria-label="タイピング入力領域。IME をオフにして入力"
+                          onKeyDown={accept}
+                          onBlur={pause}
+                        >
+                          <div className="reading-toolbar">
+                            <span
+                              className={`live-label ${status === 'running' ? 'live' : ''}`}
+                            >
+                              <span />
+                              {
+                                {
+                                  ready: 'READY WHEN YOU ARE',
+                                  running: 'IN THE FLOW',
+                                  paused: 'PAUSED',
+                                  done: 'SESSION COMPLETE',
+                                }[status]
+                              }
+                            </span>
+                            <span className="small muted">
+                              {layoutLabels[settings.layout]} ·{' '}
+                              {sentenceIndex + 1} / {sentences.length} 文
+                            </span>
+                          </div>
+                          <SentenceView
+                            current={sentences[sentenceIndex]}
+                            next={sentences[sentenceIndex + 1]}
+                            position={snapshot.position}
+                            kana={settings.layout === 'kana'}
+                            done={status === 'done'}
+                            target={snapshot.target}
+                            typed={snapshot.typed}
+                            hint={snapshot.hint}
+                            guide={settings.guide}
+                            wordColors={settings.wordColors}
+                            consumeTyped={settings.consumeTyped}
+                          />
+                          <KeyboardGuide
+                            layout={settings.layout}
+                            nextCharacter={
+                              settings.layout === 'kana'
+                                ? (snapshot.target[snapshot.position] ?? '')
+                                : (snapshot.hint[0] ?? '')
+                            }
+                            enabled={status === 'ready' || status === 'running'}
+                          />
+                          <div
+                            className={`session-controls ${mistake ? 'mistake' : ''}`}
+                          >
+                            {keys > 0 &&
+                              (status === 'running' || status === 'done') && (
+                                <span
+                                  key={keys}
+                                  className="keyburst"
+                                  aria-hidden="true"
+                                >
+                                  <span className="burst-ring" />
+                                  {Array.from({ length: 6 }, (_, i) => (
+                                    <i
+                                      key={i}
+                                      style={{ rotate: `${i * 60}deg` }}
+                                    />
+                                  ))}
+                                </span>
+                              )}
+                            {status === 'ready' && (
+                              <div className="start-hint">
+                                <Keyboard size={14} />
+                                ここをクリックして、最初の文字からスタート
+                                <span>IME OFF</span>
+                              </div>
+                            )}
+                            {status === 'paused' && (
+                              <button
+                                className="resume-button"
+                                onClick={resume}
+                              >
+                                <Play size={14} />
+                                再開する
+                              </button>
+                            )}
+                            {status === 'done' && (
+                              <div className="finish-message">
+                                <Check size={20} />
+                                一篇を、最後まで。完走です。
+                                <button
+                                  onClick={() => {
+                                    reset()
+                                    focus()
+                                  }}
+                                >
+                                  もう一度
+                                  <RotateCcw size={14} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div
+                          className="practice-footer"
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          <div>
+                            <span className="progress-track">
+                              <span style={{ width: `${progress}%` }} />
+                            </span>
+                            <span>{Math.floor(progress)}%</span>
+                          </div>
+                          <div>
+                            <button
+                              onClick={() => {
+                                reset()
+                                focus()
+                              }}
+                            >
+                              <RotateCcw size={14} />
+                              やり直す
+                            </button>
+                            <button
+                              disabled={status === 'ready' || status === 'done'}
+                              onClick={status === 'paused' ? resume : pause}
+                            >
+                              {status === 'paused' ? (
+                                <Play size={14} />
+                              ) : (
+                                <Pause size={14} />
+                              )}
+                              <span>
+                                {status === 'paused' ? '再開' : '一時停止'}
+                              </span>
+                              <kbd>esc</kbd>
+                            </button>
+                          </div>
+                        </div>
+                      </div>,
+                    ]}
+                  </MissionCarousel>
                 </div>
                 <aside className="session-sidebar">
                   <div className="session-card">
@@ -710,6 +851,37 @@ export default function App() {
                         }
                       />
                     </label>
+                    <div
+                      className="display-options"
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      <label className="toggle-row">
+                        <span>単語の色分け</span>
+                        <input
+                          type="checkbox"
+                          checked={settings.wordColors}
+                          onChange={(e) =>
+                            setSettings((s) => ({
+                              ...s,
+                              wordColors: e.target.checked,
+                            }))
+                          }
+                        />
+                      </label>
+                      <label className="toggle-row">
+                        <span>入力済み単語を消す</span>
+                        <input
+                          type="checkbox"
+                          checked={settings.consumeTyped}
+                          onChange={(e) =>
+                            setSettings((s) => ({
+                              ...s,
+                              consumeTyped: e.target.checked,
+                            }))
+                          }
+                        />
+                      </label>
+                    </div>
                     <p className="config-help">
                       IME を OFF にして入力。
                       <br />
@@ -763,7 +935,7 @@ export default function App() {
                       className="story-card"
                       key={p.id}
                       onClick={() => {
-                        reset(p.id)
+                        reset(p.id, settings.layout, 0)
                         setTab('practice')
                       }}
                     >

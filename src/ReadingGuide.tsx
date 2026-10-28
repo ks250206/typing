@@ -5,6 +5,8 @@ import { romanWordStarts } from './wordSpacing'
 import { readingCursor } from './readingCursor'
 
 export function ReadingGuide({
+  consumed,
+  consumeTyped,
   wordStarts,
   target,
   position,
@@ -13,6 +15,8 @@ export function ReadingGuide({
   showRoman,
   done,
 }: {
+  consumed: { reading: number; roman: number }
+  consumeTyped: boolean
   wordStarts: Set<number>
   target: string
   position: number
@@ -41,6 +45,12 @@ export function ReadingGuide({
         if (!cursor) continue
         const rect = cursor.getBoundingClientRect()
         const viewport = line.getBoundingClientRect()
+        if (consumeTyped) {
+          line.scrollLeft = 0
+          if (rect.right > viewport.right)
+            line.scrollLeft += rect.right - viewport.right + 3
+          return
+        }
         if (rect.bottom > viewport.bottom)
           line.scrollTop += rect.bottom - viewport.bottom + 3
         else if (rect.top < viewport.top)
@@ -51,13 +61,17 @@ export function ReadingGuide({
     const observer = new ResizeObserver(reveal)
     observer.observe(el)
     return () => observer.disconnect()
-  }, [target, position, typed, showRoman])
+  }, [target, position, typed, showRoman, consumeTyped])
   return (
     <div className="sentence-guides" ref={host}>
       <div className="guide-row">
         <div className="guide-line kana-line" aria-label="ひらがなの読み">
           <span className="typed-kana">
-            <SpacedText text={reading.before} boundaries={wordStarts} />
+            <SpacedText
+              text={reading.before.slice(consumed.reading)}
+              start={consumed.reading}
+              boundaries={wordStarts}
+            />
           </span>
           <span className="remaining-kana">
             {!done && reading.current && (
@@ -84,7 +98,11 @@ export function ReadingGuide({
             aria-label="ローマ字入力ガイド"
           >
             <span className="typed-roman">
-              <SpacedText text={typed} boundaries={romanStarts} />
+              <SpacedText
+                text={typed.slice(consumed.roman)}
+                start={consumed.roman}
+                boundaries={romanStarts}
+              />
             </span>
             {!done && hint && (
               <>

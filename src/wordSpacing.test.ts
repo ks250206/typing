@@ -44,3 +44,34 @@ it('keeps full alternative spellings together at a word boundary', () => {
     ...romanWordStarts('しつもんです', 'situmonndesu', new Set([4])),
   ]).toEqual([8])
 })
+
+import { consumedOffsets } from './wordSpacing'
+it('consumes only complete words and maps alternative n spelling to the right prefix', () => {
+  const target = 'へいかんのほうそう。'
+  const starts = new Set([4, 5])
+  const model = new RomanEngine(target)
+  for (const key of 'heika') model.feed(key)
+  expect(
+    consumedOffsets(target, model.position, 'heika', model.hint, starts, false),
+  ).toEqual({ reading: 0, input: 0, roman: 0 })
+  for (const key of 'nn') model.feed(key)
+  expect(
+    consumedOffsets(
+      target,
+      model.position,
+      'heikann',
+      model.hint,
+      starts,
+      false,
+    ),
+  ).toEqual({ reading: 4, input: 4, roman: 7 })
+})
+it('never consumes the kana word until a separate dakuten is complete', () => {
+  const target = 'がの'.normalize('NFD')
+  expect(consumedOffsets(target, 1, '', '', new Set([1]), false).input).toBe(0)
+  expect(consumedOffsets(target, 2, '', '', new Set([1]), false)).toEqual({
+    reading: 1,
+    input: 2,
+    roman: 0,
+  })
+})
