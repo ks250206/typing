@@ -190,3 +190,62 @@ test('CSS planets remain visible when WebGL is unavailable', async ({
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await expect(page.locator('.space-fallback')).toHaveCount(0)
 })
+
+test('word-spaced guides are large, label-free and close to the main text on desktop and mobile', async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  await page.goto('/')
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await expect(page.locator('.guide-label')).toHaveCount(0)
+    for (const selector of [
+      '.current-paragraph',
+      '.kana-line',
+      '.roman-line',
+    ]) {
+      const gaps = page.locator(`${selector} .word-start`)
+      expect(await gaps.count()).toBeGreaterThan(5)
+      expect(
+        await gaps
+          .first()
+          .evaluate((el) => parseFloat(getComputedStyle(el).marginInlineStart)),
+      ).toBeGreaterThan(4)
+    }
+    const layout = await page.locator('.prose').evaluate((el) => {
+      const main = el
+        .querySelector('.current-paragraph')!
+        .getBoundingClientRect()
+      const kana = el.querySelector('.kana-line')!
+      const roman = el.querySelector('.roman-line')!
+      return {
+        gap: kana.getBoundingClientRect().top - main.bottom,
+        aligned:
+          Math.abs(kana.getBoundingClientRect().left - main.left - 8) < 1,
+        kanaSize: parseFloat(getComputedStyle(kana).fontSize),
+        romanSize: parseFloat(getComputedStyle(roman).fontSize),
+        overflow: document.documentElement.scrollWidth > innerWidth,
+      }
+    })
+    expect(layout.gap).toBeLessThanOrEqual(4)
+    expect(layout.aligned).toBe(true)
+    expect(layout.kanaSize).toBeGreaterThanOrEqual(18)
+    expect(layout.romanSize).toBeGreaterThanOrEqual(18)
+    expect(layout.overflow).toBe(false)
+    await page.screenshot({
+      path: `artifacts/word-guides-${width}.png`,
+      fullPage: true,
+    })
+  }
+  await page.getByRole('region').focus()
+  await page.keyboard.type('heikannnohousougaowaruto,tosilyo')
+  await expect(page.locator('.typed-roman')).toHaveText(
+    'heikannnohousougaowaruto,tosilyo',
+  )
+  await expect(page.locator('.kana-line .guide-current')).toHaveText('し')
+  await expect(page.locator('[aria-current="location"]')).toHaveText('図書室')
+  await expect(page.locator('.damage-overlay')).toHaveCount(0)
+  expect(errors).toEqual([])
+})

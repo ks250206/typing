@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { locateSegments } from './sentences'
 import type { Sentence } from './sentences'
 import { ReadingGuide } from './ReadingGuide'
+import { sentenceWordStarts } from './wordSpacing'
 
 export function SentenceView({
   current,
@@ -26,6 +27,7 @@ export function SentenceView({
 }) {
   const host = useRef<HTMLParagraphElement>(null)
   const segments = useMemo(() => locateSegments(current, kana), [current, kana])
+  const words = useMemo(() => sentenceWordStarts(current), [current])
   useLayoutEffect(() => {
     const el = host.current
     if (!el) return
@@ -57,13 +59,13 @@ export function SentenceView({
           return (
             <span
               key={index}
-              className={
+              className={`${words.segments.has(index) ? 'word-start ' : ''}${
                 active
                   ? 'current-token'
                   : done || position >= segment.end
                     ? 'typed-token'
                     : 'pending-token'
-              }
+              }`}
               aria-current={active ? 'location' : undefined}
             >
               {segment.text}
@@ -72,6 +74,7 @@ export function SentenceView({
         })}
       </p>
       <ReadingGuide
+        wordStarts={words.reading}
         target={target}
         position={position}
         typed={typed}

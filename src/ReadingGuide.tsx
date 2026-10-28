@@ -1,8 +1,11 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
 
+import { SpacedText } from './SpacedText'
+import { romanWordStarts } from './wordSpacing'
 import { readingCursor } from './readingCursor'
 
 export function ReadingGuide({
+  wordStarts,
   target,
   position,
   typed,
@@ -10,6 +13,7 @@ export function ReadingGuide({
   showRoman,
   done,
 }: {
+  wordStarts: Set<number>
   target: string
   position: number
   typed: string
@@ -19,6 +23,14 @@ export function ReadingGuide({
 }) {
   const host = useRef<HTMLDivElement>(null)
   const reading = readingCursor(target, position)
+  const romanStarts = useMemo(
+    () =>
+      showRoman
+        ? romanWordStarts(target, typed + hint, wordStarts)
+        : new Set<number>(),
+    [target, typed, hint, wordStarts, showRoman],
+  )
+  const kanaOffset = reading.before.length
   useLayoutEffect(() => {
     const el = host.current
     if (!el) return
@@ -43,37 +55,53 @@ export function ReadingGuide({
   return (
     <div className="sentence-guides" ref={host}>
       <div className="guide-row">
-        <span className="guide-label" aria-hidden="true">
-          かな
-        </span>
         <div className="guide-line kana-line" aria-label="ひらがなの読み">
-          <span className="typed-kana">{reading.before}</span>
+          <span className="typed-kana">
+            <SpacedText text={reading.before} boundaries={wordStarts} />
+          </span>
           <span className="remaining-kana">
             {!done && reading.current && (
               <span className="guide-current" data-guide-cursor>
-                {reading.current}
+                <SpacedText
+                  text={reading.current}
+                  start={kanaOffset}
+                  boundaries={wordStarts}
+                />
               </span>
             )}
-            {reading.after}
+            <SpacedText
+              text={reading.after}
+              start={kanaOffset + reading.current.length}
+              boundaries={wordStarts}
+            />
           </span>
         </div>
       </div>
       {showRoman && (
         <div className="guide-row">
-          <span className="guide-label" aria-hidden="true">
-            ABC
-          </span>
           <div
             className="guide-line roman-line"
             aria-label="ローマ字入力ガイド"
           >
-            <span className="typed-roman">{typed}</span>
+            <span className="typed-roman">
+              <SpacedText text={typed} boundaries={romanStarts} />
+            </span>
             {!done && hint && (
               <>
                 <span className="roman-current guide-current" data-guide-cursor>
-                  {hint[0]}
+                  <SpacedText
+                    text={hint[0]}
+                    start={typed.length}
+                    boundaries={romanStarts}
+                  />
                 </span>
-                <span className="remaining-roman">{hint.slice(1)}</span>
+                <span className="remaining-roman">
+                  <SpacedText
+                    text={hint.slice(1)}
+                    start={typed.length + 1}
+                    boundaries={romanStarts}
+                  />
+                </span>
               </>
             )}
           </div>
