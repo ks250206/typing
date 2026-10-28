@@ -137,8 +137,43 @@ type State = { pos: number; rest: string; end: number }
 export class RomanEngine {
   target: string
   states: State[] = [{ pos: 0, rest: '', end: 0 }]
-  constructor(reading: string) {
+  private shortest: string[] | undefined
+  readonly natural: boolean
+  constructor(reading: string, natural = false) {
+    this.natural = natural
     this.target = normalizeReading(reading)
+  }
+  private naturalSuffixes() {
+    if (!this.shortest) {
+      const suffixes = Array<string>(this.target.length + 1).fill('')
+      for (let pos = this.target.length - 1; pos >= 0; pos--) {
+        const choices = this.edges(pos).map(
+          (edge) => edge.text + suffixes[edge.end],
+        )
+        suffixes[pos] = choices.reduce((a, b) => (a.length <= b.length ? a : b))
+      }
+      this.shortest = suffixes
+    }
+    return this.shortest
+  }
+  get naturalRemaining() {
+    const suffixes = this.naturalSuffixes()
+    return Math.min(
+      ...this.states.map(
+        (state) =>
+          state.rest.length +
+          suffixes[state.rest ? state.end : state.pos].length,
+      ),
+    )
+  }
+  get naturalHint() {
+    const suffixes = this.naturalSuffixes()
+    return this.states
+      .map((state) => state.rest + suffixes[state.rest ? state.end : state.pos])
+      .reduce((a, b) => (a.length <= b.length ? a : b))
+  }
+  get naturalProgress() {
+    return this.naturalSuffixes()[0].length - this.naturalRemaining
   }
   edges(pos: number): Edge[] {
     const c = this.target[pos]
@@ -211,6 +246,7 @@ export class RomanEngine {
     return Math.max(...this.states.map((s) => s.pos))
   }
   get hint() {
+    if (this.natural) return this.naturalHint
     const s = this.states.reduce((a, b) => (a.pos > b.pos ? a : b))
     let out = s.rest,
       pos = s.rest ? s.end : s.pos

@@ -1,5 +1,11 @@
 import { expect, it } from 'vitest'
-import { cpuCharacters, cpuDuration, RtcMatch, roundWinner } from './cpuMatch'
+import {
+  cpuPresets,
+  cpuCharacters,
+  cpuDuration,
+  RtcMatch,
+  roundWinner,
+} from './cpuMatch'
 import { RomanEngine } from './engine'
 import { battlePrompts, shuffledPrompts } from './battlePrompts'
 const short = {
@@ -127,4 +133,13 @@ it('pause/resume never advances the clock or reveals a countdown prompt', () => 
   match.resume()
   match.feed('a', 3100)
   expect(match.roundPlayer).toBe(1)
+})
+
+it('offers ten speed profiles within a 40ms reaction band', () => {
+  expect(cpuPresets).toHaveLength(10)
+  expect(new Set(cpuPresets.map((p) => p.kpm)).size).toBe(10)
+  const reactions = cpuPresets.map((p) => p.reactionMs)
+  expect(Math.max(...reactions) - Math.min(...reactions)).toBeLessThanOrEqual(
+    40,
+  )
 })

@@ -75,3 +75,24 @@ it('never consumes the kana word until a separate dakuten is complete', () => {
     roman: 0,
   })
 })
+
+it('keeps word colors when a TypeWell roman line cuts off partway through a syllable', () => {
+  expect([
+    ...romanWordStarts('あ しんぶん', 'a si', new Set([2]), true),
+  ]).toEqual([2])
+  expect([
+    ...romanWordStarts('あ しんぶん', 'a s', new Set([2]), true),
+  ]).toEqual([2])
+  expect([
+    ...romanWordStarts('あ しんぶん', 'a sh', new Set([2]), true),
+  ]).toEqual([2])
+  expect([
+    ...romanWordStarts('あ しんぶん', 'a q', new Set([2]), true),
+  ]).toEqual([])
+})
+
+it('consumes the typed prefix when the final roman syllable is clipped by a stroke limit', () => {
+  expect(
+    consumedOffsets('あ しんぶん', 2, 'a ', 's', new Set([2]), false, true),
+  ).toEqual({ reading: 2, input: 2, roman: 2 })
+})

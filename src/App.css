@@ -2456,3 +2456,87 @@ rt {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+
+.seed-settings {
+  margin: 0 28px 18px;
+  padding: 18px;
+  border: 1px solid #6fded84d;
+  border-radius: 12px;
+  background: #0b192acc;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.seed-settings label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 13px;
+}
+.seed-settings input:not([type='checkbox']) {
+  width: 160px;
+  max-width: 100%;
+  padding: 8px;
+  background: #081323;
+  color: #bdfaf2;
+  border: 1px solid #68cdd855;
+  border-radius: 6px;
+  font-family: monospace;
+}
+.seed-settings p,
+.seed-settings small {
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.opponent-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  margin-top: -4px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border: 1px solid #ffa65e55;
+  border-radius: 8px;
+  background: #321e292e;
+}
+.opponent-label {
+  font: 10px monospace;
+  color: #ffac70;
+  letter-spacing: 0.12em;
+}
+.opponent-roman {
+  flex: 1;
+  min-width: 0;
+  color: #ffb579;
+  font-size: clamp(16px, 2vw, 24px);
+}
+.opponent-typed {
+  color: #916b55;
+  opacity: 0.65;
+}
+.opponent-current {
+  color: #ffe4bd;
+  text-shadow: 0 0 12px #ff8b4c;
+  border-bottom: 2px solid #ff9f68;
+}
+@media (max-width: 600px) {
+  .seed-settings {
+    margin-inline: 14px;
+    padding: 12px;
+  }
+}
+.opponent-input .guide-line {
+  height: 1.45em;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  overflow-wrap: normal;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  letter-spacing: 0.06em;
+}

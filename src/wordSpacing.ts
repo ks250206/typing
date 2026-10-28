@@ -31,15 +31,23 @@ export function romanWordStarts(
   target: string,
   roman: string,
   readingStarts: Set<number>,
+  partial = false,
 ) {
   const engine = new RomanEngine(target)
   const failed = new Set<string>()
   const find = (position: number, offset: number): number[] | undefined => {
     if (position === target.length)
       return offset === roman.length ? [] : undefined
+    if (partial && offset === roman.length) return []
     const key = `${position}/${offset}`
     if (failed.has(key)) return
     for (const edge of engine.edges(position)) {
+      if (
+        partial &&
+        edge.text.startsWith(roman.slice(offset)) &&
+        offset + edge.text.length > roman.length
+      )
+        return readingStarts.has(position) ? [offset] : []
       if (!roman.startsWith(edge.text, offset)) continue
       const rest = find(edge.end, offset + edge.text.length)
       if (rest) return readingStarts.has(position) ? [offset, ...rest] : rest
@@ -60,6 +68,7 @@ export function consumedOffsets(
   hint: string,
   boundaries: Set<number>,
   done: boolean,
+  partialRoman = false,
 ) {
   const composed = target.normalize('NFC')
   const decomposed = target !== composed
@@ -76,7 +85,9 @@ export function consumedOffsets(
   const input = composed
     .slice(0, reading)
     .normalize(decomposed ? 'NFD' : 'NFC').length
-  const romanStarts = [...romanWordStarts(composed, typed + hint, boundaries)]
+  const romanStarts = [
+    ...romanWordStarts(composed, typed + hint, boundaries, partialRoman),
+  ]
   const boundaryIndex = [...boundaries].indexOf(reading)
   const roman = done
     ? typed.length

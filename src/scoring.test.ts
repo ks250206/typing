@@ -19,3 +19,18 @@ it('collapses consecutive wrong keys until the next accepted key, but retains ra
   expect(counter.miss()).toBe(true)
   expect(counter.misses).toBe(2)
 })
+
+it('reduces the penalty of a miss streak while keeping a nonzero penalty from miss five onwards', () => {
+  const counter = new MissEpisodes()
+  const penalties = [1, 1.75, 2.25, 2.6, 2.85, 3.1, 3.35]
+  for (const penalty of penalties) {
+    counter.miss()
+    expect(counter.penalty).toBe(penalty)
+  }
+  expect(counter.misses).toBe(1)
+  expect(counter.raw).toBe(7)
+  counter.accept()
+  counter.miss()
+  expect(counter.penalty).toBe(4.35)
+  expect(scorePoint(300, 3.35, 60000)).toBeLessThan(scorePoint(300, 1, 60000))
+})
