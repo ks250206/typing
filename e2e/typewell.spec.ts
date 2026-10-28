@@ -40,15 +40,26 @@ test('word sets share the library and mission; seeded R run includes spaces, ext
   const guide = await input(page)
   expect(guide.length).toBe(400)
   expect(guide).toContain(' ')
-  await page.getByRole('button', { name: '400打の計測を開始' }).click()
-  await page.clock.runFor(3100)
-  await expect(page.getByText('IN THE FLOW', { exact: true })).toBeVisible()
+  await expect(
+    page.getByText('READY WHEN YOU ARE', { exact: true }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: /打の計測を開始/ }),
+  ).toHaveCount(0)
   const area = page.getByRole('region', { name: /タイピング入力/ })
   await area.focus()
   const first = guide[0]
   await page.keyboard.type(first === 'z' ? 'qqqqqq' : 'zzzzzz')
-  const alternate = guide.includes('si') ? guide.replace('si', 'shi') : guide
+  const alternate = guide.replace('si', 'shi')
+  expect(alternate.length).toBe(401)
+  const originalText = await page
+    .locator('.current-paragraph')
+    .getAttribute('data-text')
   await page.keyboard.type(alternate.slice(0, -1))
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
+    originalText!,
+  )
   await expect(page.getByText('SESSION COMPLETE')).toHaveCount(0)
   await expect(page.locator('.reading-toolbar')).toContainText('399 / 400')
   expect(
@@ -129,11 +140,9 @@ test('kana word set finishes at 280 including separate dakuten keys; mobile has 
   await choose(page)
   await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
   await enter(page)
-  const source = typewellDocument('typewell-basic', 'replay-test')
+  const source = typewellDocument('typewell-basic', 'replay-test', 'kana')
     .sentences[0].reading.normalize('NFD')
     .slice(0, 280)
-  await page.getByRole('button', { name: '280打の計測を開始' }).click()
-  await page.clock.runFor(3100)
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   const physical = new Map<string, { code: string; shiftKey: boolean }>()
   for (const code of [
@@ -248,15 +257,13 @@ test('GALACTYPE branding and cosmic word set work on desktop and mobile with a s
   await page
     .getByRole('button', { name: 'タイプウェル · 宇宙の名前', exact: true })
     .click()
-  await expect(page.locator('.passage-header')).toContainText('64の天体名')
+  await expect(page.locator('.passage-header')).toContainText('583の天体名')
   await page.getByLabel('シードを固定する').check()
   await page.getByLabel('出題シード').fill('galactype')
   await page.getByRole('button', { name: 'このシードを使う' }).click()
   await enter(page)
   const hint = await input(page)
   expect(hint).toHaveLength(400)
-  await page.getByRole('button', { name: '400打の計測を開始' }).click()
-  await page.clock.runFor(3100)
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   await page.keyboard.type(hint.slice(0, 40))
   await page.screenshot({

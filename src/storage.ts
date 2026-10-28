@@ -16,6 +16,7 @@ export interface RecordEntry {
   scoreVersion?: number
   missPenalty?: number
   seed?: string
+  replayVersion?: 1 | 2
   strokeLimit?: number
   actualKeys?: number
   mode?: 'practice' | 'cpu'
@@ -58,8 +59,14 @@ export function readHistory(): RecordEntry[] {
                   r[k] >= 0,
               ),
           )
-          .map((record) => ({
+          .map((record): RecordEntry => ({
             ...record,
+            replayVersion:
+              record.replayVersion === 2
+                ? 2
+                : record.replayVersion === 1
+                  ? 1
+                  : undefined,
             missPenalty:
               typeof record.missPenalty === 'number' &&
               Number.isFinite(record.missPenalty) &&

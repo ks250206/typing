@@ -1,5 +1,7 @@
+import catalogue from './data/spaceCatalogue.json' with { type: 'json' }
+
 /** Independent GALACTYPE corpus. Names checked against the references in README. */
-export const spaceWordGroups = {
+const originalGroups = {
   恒星: [
     ['アークトゥルス', 'あーくとぅるす'],
     ['アクルックス', 'あくるっくす'],
@@ -75,5 +77,12 @@ export const spaceWordGroups = {
     ['海王星', 'かいおうせい'],
   ],
 } satisfies Record<string, [string, string][]>
+export const legacySpaceWords: [string, string][] =
+  Object.values(originalGroups).flat()
+export const spaceWordGroups = {
+  ...originalGroups,
+  恒星: [...originalGroups.恒星, ...(catalogue.恒星 as [string, string][])],
+  星座: catalogue.星座 as [string, string][],
+}
 export const spaceWords: [string, string][] =
   Object.values(spaceWordGroups).flat()

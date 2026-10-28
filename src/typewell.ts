@@ -1,10 +1,9 @@
 import classicData from './data/typewell.json' with { type: 'json' }
-import { spaceWords } from './spaceWords'
+import { legacySpaceWords, spaceWords } from './spaceWords'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
 import type { Passage } from './passages'
 import type { Sentence } from './sentences'
-import { readingCursor } from './readingCursor'
 
 const data = { ...classicData, space: spaceWords }
 
@@ -54,78 +53,99 @@ export function seededRandom(seed: string) {
     return ((value ^ (value >>> 14)) >>> 0) / 4294967296
   }
 }
-export function typewellDocument(id: string, seed: string) {
+export interface TypewellPlan {
+  readonly sentence: Sentence
+  readonly reference: string
+  readonly limit: number
+  readonly layout: Layout
+  readonly trailing: number
+}
+
+/** Plan the fixed reference and endpoint before any input is accepted. */
+export function planTypewell(sentence: Sentence, layout: Layout): TypewellPlan {
+  const limit = strokeLimit(layout)
+  const reference =
+    layout === 'kana'
+      ? new KanaEngine(sentence.reading).target.slice(0, limit)
+      : new RomanEngine(sentence.reading, true).hint.slice(0, limit)
+  if (reference.length !== limit)
+    throw new Error('TypeWell source is too short')
+  return Object.freeze({
+    sentence,
+    reference,
+    limit,
+    layout,
+    trailing:
+      layout === 'kana'
+        ? 0
+        : new RomanEngine(sentence.reading, true).naturalRemaining - limit,
+  })
+}
+
+/** The fixed tail is not practice input; alternate spellings cannot move the endpoint. */
+export class PlannedRomanEngine extends RomanEngine {
+  readonly plan: TypewellPlan
+  constructor(plan: TypewellPlan) {
+    super(plan.sentence.reading, true)
+    this.plan = plan
+  }
+  override get done() {
+    return this.naturalRemaining <= this.plan.trailing
+  }
+  override get hint() {
+    return this.naturalHint.slice(
+      0,
+      Math.max(0, this.naturalRemaining - this.plan.trailing),
+    )
+  }
+  override feed(key: string) {
+    return !this.done && super.feed(key)
+  }
+}
+export function typewellEngine(plan: TypewellPlan) {
+  return plan.layout === 'kana'
+    ? new KanaEngine(plan.reference)
+    : new PlannedRomanEngine(plan)
+}
+export function typewellDocument(
+  id: string,
+  seed: string,
+  layout: Layout = 'jis',
+  version: 1 | 2 = 2,
+) {
   const set = typewellSets.find((set) => set.id === id)!
-  const pool = data[set.category]
-  const random = seededRandom(`${set.id}/v1/${seed}`)
+  const pool =
+    version === 1 && set.category === 'space'
+      ? legacySpaceWords
+      : data[set.category]
+  const random = seededRandom(`${set.id}/v${version}/${seed}`)
   const segments: Sentence['segments'] = []
-  // Reserve beyond the 400-key cutoff so shorter alternative spellings cannot exhaust it.
-  // Even a one-keystroke/two-kana contraction leaves at least 400 accepted keys.
-  let length = 0
-  while (length < 1000) {
+  let count = 0
+  // Include only the words covering the predetermined budget. The last word's
+  // unused tail preserves its spelling context (notably a terminal n + space).
+  while (count < strokeLimit(layout)) {
     const [text, reading] = pool[Math.floor(random() * pool.length)]
-    if (segments.length) {
-      segments.push({ text: ' ', reading: ' ' })
-      length++
-    }
-    segments.push({ text, reading })
-    length += reading.length
+    segments.push({ text, reading }, { text: ' ', reading: ' ' })
+    count +=
+      layout === 'kana'
+        ? new KanaEngine(reading + ' ').target.length
+        : new RomanEngine(reading + ' ', true).hint.length
   }
   const sentence: Sentence = {
     text: segments.map((s) => s.text).join(''),
     reading: segments.map((s) => s.reading).join(''),
     segments,
   }
+  const plan = planTypewell(sentence, layout)
   return {
     passage: {
       ...typewellPassages.find((p) => p.id === id)!,
+      ...(version === 1 && set.category === 'space'
+        ? { subtitle: '64語の旧v1辞書を再現中。R 400打 / K 280打。' }
+        : {}),
       paragraphs: [sentence],
     },
     sentences: [sentence],
-  }
-}
-
-/** Show only words intersecting the remaining key budget. A final word may be partial. */
-export function typewellView(
-  sentence: Sentence,
-  typed: string,
-  hint: string,
-  layout: Layout,
-  naturalKeys: number,
-) {
-  const remaining = Math.max(0, strokeLimit(layout) - naturalKeys)
-  const visibleHint =
-    layout === 'kana'
-      ? sentence.reading
-          .normalize('NFD')
-          .slice(typed.length, typed.length + remaining)
-      : hint.slice(0, remaining)
-  const engine =
-    layout === 'kana'
-      ? new KanaEngine(sentence.reading)
-      : new RomanEngine(sentence.reading, true)
-  for (const char of typed + visibleHint) engine.feed(char)
-  const end =
-    engine.position +
-    (engine.done
-      ? 0
-      : readingCursor(engine.target, engine.position).current.length)
-  let offset = 0
-  const segments = sentence.segments.filter((segment) => {
-    const start = offset
-    offset += segment.reading.normalize(
-      layout === 'kana' ? 'NFD' : 'NFC',
-    ).length
-    return start < end
-  })
-  const current = {
-    text: segments.map((s) => s.text).join(''),
-    reading: segments.map((s) => s.reading).join(''),
-    segments,
-  }
-  return {
-    current,
-    target: current.reading.normalize(layout === 'kana' ? 'NFD' : 'NFC'),
-    hint: visibleHint,
+    plan,
   }
 }

@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest'
 import {
+  migrateCpuPreset,
   cpuPresets,
   cpuCharacters,
   cpuDuration,
@@ -135,11 +136,28 @@ it('pause/resume never advances the clock or reveals a countdown prompt', () => 
   expect(match.roundPlayer).toBe(1)
 })
 
-it('offers ten speed profiles within a 40ms reaction band', () => {
+it('offers ten speed profiles from 250ms to 140ms', () => {
   expect(cpuPresets).toHaveLength(10)
   expect(new Set(cpuPresets.map((p) => p.kpm)).size).toBe(10)
   const reactions = cpuPresets.map((p) => p.reactionMs)
-  expect(Math.max(...reactions) - Math.min(...reactions)).toBeLessThanOrEqual(
-    40,
-  )
+  expect(reactions[0]).toBe(250)
+  expect(reactions.at(-1)).toBe(140)
+  expect(
+    reactions.every((r, index) => index === 0 || r < reactions[index - 1]),
+  ).toBe(true)
+})
+
+it('updates saved preset reaction times without changing custom settings', () => {
+  expect(
+    migrateCpuPreset({ kpm: 300, reactionMs: 280, curve: 'ease-in' })
+      .reactionMs,
+  ).toBe(210)
+  expect(
+    migrateCpuPreset({ kpm: 1200, reactionMs: 260, curve: 'constant' })
+      .reactionMs,
+  ).toBe(140)
+  expect(
+    migrateCpuPreset({ kpm: 300, reactionMs: 1000, curve: 'ease-in' })
+      .reactionMs,
+  ).toBe(1000)
 })

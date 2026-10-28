@@ -96,7 +96,7 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   )
   await expect(
     page.getByLabel('CPU反応時間 (ms)', { exact: true }),
-  ).toHaveValue('270')
+  ).toHaveValue('190')
   await expect(page.getByLabel('CPUの打ち方', { exact: true })).toHaveValue(
     'ease-in',
   )

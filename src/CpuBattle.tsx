@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { mapKey } from './engine'
 import type { Layout } from './engine'
-import { RtcMatch, cpuCharacters, cpuPresets } from './cpuMatch'
+import {
+  RtcMatch,
+  cpuCharacters,
+  cpuPresets,
+  migrateCpuPreset,
+} from './cpuMatch'
 import type { CpuConfig } from './cpuMatch'
 import { shuffledPrompts } from './battlePrompts'
 import { OpponentInput } from './OpponentInput'
@@ -23,7 +28,7 @@ function loadCpu(): CpuConfig {
       value.reactionMs <= 1500 &&
       ['constant', 'ease-in'].includes(value.curve)
     )
-      return value
+      return migrateCpuPreset(value)
   } catch {
     /* Defaults also work without storage. */
   }

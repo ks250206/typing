@@ -10,27 +10,48 @@ export interface CpuConfig {
   curve: Curve
 }
 export const cpuPresets = [
-  { name: 'カメ / はじめて', kpm: 90, reactionMs: 300, curve: 'ease-in' },
+  { name: 'カメ / はじめて', kpm: 90, reactionMs: 250, curve: 'ease-in' },
   {
     name: 'ハリネズミ / ゆっくり',
     kpm: 130,
-    reactionMs: 300,
+    reactionMs: 235,
     curve: 'ease-in',
   },
-  { name: 'リス / 入門', kpm: 180, reactionMs: 290, curve: 'ease-in' },
-  { name: 'ネコ / 標準', kpm: 300, reactionMs: 280, curve: 'ease-in' },
-  { name: 'キツネ / 中級', kpm: 400, reactionMs: 280, curve: 'ease-in' },
-  { name: 'ウサギ / 上級', kpm: 500, reactionMs: 270, curve: 'ease-in' },
-  { name: 'ダチョウ / 熟練', kpm: 650, reactionMs: 270, curve: 'ease-in' },
+  { name: 'リス / 入門', kpm: 180, reactionMs: 220, curve: 'ease-in' },
+  { name: 'ネコ / 標準', kpm: 300, reactionMs: 210, curve: 'ease-in' },
+  { name: 'キツネ / 中級', kpm: 400, reactionMs: 200, curve: 'ease-in' },
+  { name: 'ウサギ / 上級', kpm: 500, reactionMs: 190, curve: 'ease-in' },
+  { name: 'ダチョウ / 熟練', kpm: 650, reactionMs: 180, curve: 'ease-in' },
   {
     name: 'プロングホーン / 高速',
     kpm: 800,
-    reactionMs: 260,
+    reactionMs: 165,
     curve: 'constant',
   },
-  { name: 'チーター / 達人', kpm: 900, reactionMs: 260, curve: 'constant' },
-  { name: 'ハヤブサ / 超高速', kpm: 1200, reactionMs: 260, curve: 'constant' },
+  { name: 'チーター / 達人', kpm: 900, reactionMs: 150, curve: 'constant' },
+  { name: 'ハヤブサ / 超高速', kpm: 1200, reactionMs: 140, curve: 'constant' },
 ] satisfies (CpuConfig & { name: string })[]
+/** Upgrade only exact saved presets; preserve custom reaction settings. */
+export function migrateCpuPreset(config: CpuConfig): CpuConfig {
+  const oldReactions: Record<number, number[]> = {
+    90: [300],
+    130: [300],
+    180: [290, 500],
+    300: [280, 320],
+    400: [280],
+    500: [270, 240],
+    650: [270],
+    800: [260],
+    900: [260, 180],
+    1200: [260],
+  }
+  const preset = cpuPresets.find(
+    (p) => p.kpm === config.kpm && p.curve === config.curve,
+  )
+  return preset && oldReactions[config.kpm]?.includes(config.reactionMs)
+    ? { ...preset }
+    : config
+}
 export function cpuCharacters(elapsedMs: number, config: CpuConfig) {
   if (elapsedMs < config.reactionMs) return 0
   const t = elapsedMs - config.reactionMs

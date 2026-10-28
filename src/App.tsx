@@ -28,7 +28,7 @@ import {
   strokeLimit,
   typewellDocument,
   typewellPassages,
-  typewellView,
+  typewellEngine,
 } from './typewell'
 import {
   appendHistory,
@@ -64,19 +64,23 @@ const time = (ms: number) =>
     .toString()
     .padStart(2, '0')}`
 const passages = [...essayPassages, ...typewellPassages]
-function practiceDocument(id: string, seed: string) {
+function practiceDocument(
+  id: string,
+  seed: string,
+  layout: Layout,
+  version: 1 | 2,
+) {
   return isTypewell(id)
-    ? typewellDocument(id, seed)
+    ? typewellDocument(id, seed, layout, version)
     : {
         passage: passages.find((p) => p.id === id)!,
         sentences: sentencesByPassage[id],
+        plan: null,
       }
 }
 type Status = 'ready' | 'running' | 'paused' | 'done'
-function makeEngine(reading: string, layout: Layout, natural = false) {
-  return layout === 'kana'
-    ? new KanaEngine(reading)
-    : new RomanEngine(reading, natural)
+function makeEngine(reading: string, layout: Layout) {
+  return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
 }
 export default function App() {
   const [seedPreferences] = useState(() => {
@@ -90,17 +94,22 @@ export default function App() {
         saved.seed.length > 0 &&
         saved.seed.length <= 64
       )
-        return { seed: saved.seed, fixed: true }
+        return {
+          seed: saved.seed,
+          fixed: true,
+          version: saved.version === 2 ? (2 as const) : (1 as const),
+        }
     } catch {
       /* A fresh seed also works without storage. */
     }
-    return { seed: freshSeed(), fixed: false }
+    return { seed: freshSeed(), fixed: false, version: 2 as const }
   })
   const [seed, setSeed] = useState(seedPreferences.seed)
+  const [replayVersion, setReplayVersion] = useState<1 | 2>(
+    seedPreferences.version,
+  )
   const [seedDraft, setSeedDraft] = useState(seed)
   const [fixedSeed, setFixedSeed] = useState(seedPreferences.fixed)
-  const [countdown, setCountdown] = useState(0)
-  const [countdownUntil, setCountdownUntil] = useState(0)
   const [selected, setSelected] = useState(passages[0].id),
     [tab, setTab] = useState('practice'),
     [genre, setGenre] = useState('すべて')
@@ -132,8 +141,8 @@ export default function App() {
     [confirmClear, setConfirmClear] = useState(false),
     [practiceStage, setPracticeStage] = useState(0)
   const practice = useMemo(
-    () => practiceDocument(selected, seed),
-    [selected, seed],
+    () => practiceDocument(selected, seed, settings.layout, replayVersion),
+    [selected, seed, settings.layout, replayVersion],
   )
   const { passage, sentences } = practice
   const typewell = isTypewell(selected)
@@ -148,16 +157,7 @@ export default function App() {
     missEpisodes = useRef(new MissEpisodes())
   const paragraphSegments = useMemo(() => {
     let cursor = 0
-    const preview = typewell
-      ? typewellView(
-          sentences[0],
-          '',
-          makeEngine(sentences[0].reading, settings.layout, true).hint,
-          settings.layout,
-          0,
-        ).current
-      : null
-    if (preview) return [preview.segments]
+    if (typewell) return [sentences[0].segments]
     return passage.paragraphs.map((paragraph) => {
       const segments = []
       let length = 0
@@ -168,7 +168,7 @@ export default function App() {
       }
       return segments
     })
-  }, [passage, sentences, typewell, settings.layout])
+  }, [passage, sentences, typewell])
   const handleStageChange = (stage: number) => {
     if (stage !== 2) pause()
     setPracticeStage(stage)
@@ -210,22 +210,20 @@ export default function App() {
     layout = settings.layout,
     stage = practiceStage,
     nextSeed = fixedSeed ? seed : freshSeed(),
+    version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
     if (isTypewell(id)) {
+      setReplayVersion(version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
-    const doc = practiceDocument(id, nextSeed)
-    engine.current = makeEngine(
-      doc.sentences[0].reading,
-      layout,
-      isTypewell(id),
-    )
+    const doc = practiceDocument(id, nextSeed, layout, version)
+    engine.current = doc.plan
+      ? typewellEngine(doc.plan)
+      : makeEngine(doc.sentences[0].reading, layout)
     setSelected(id)
     setSentenceIndex(0)
     setStatus('ready')
-    setCountdown(0)
-    setCountdownUntil(0)
     setPracticeStage(stage)
     setElapsed(0)
     setKeys(0)
@@ -246,8 +244,6 @@ export default function App() {
     accumulated.current = 0
   }
   const pause = () => {
-    setCountdown(0)
-    setCountdownUntil(0)
     if (status === 'running') {
       clearTimeout(missTimer.current)
       setMistake(false)
@@ -269,28 +265,12 @@ export default function App() {
     try {
       localStorage.setItem(
         'yohaku.typewell.v1',
-        JSON.stringify({ seed, fixed: fixedSeed }),
+        JSON.stringify({ seed, fixed: fixedSeed, version: replayVersion }),
       )
     } catch {
       /* Keep playing without persistence. */
     }
-  }, [seed, fixedSeed])
-  useEffect(() => {
-    if (!countdownUntil) return
-    const timer = setInterval(() => {
-      const remaining = Math.max(
-        0,
-        Math.ceil((countdownUntil - performance.now()) / 1000),
-      )
-      setCountdown(remaining)
-      if (!remaining) {
-        started.current = countdownUntil
-        setStatus('running')
-        setCountdownUntil(0)
-      }
-    }, 50)
-    return () => clearInterval(timer)
-  }, [countdownUntil])
+  }, [seed, fixedSeed, replayVersion])
   useEffect(() => {
     if (status !== 'running') return
     const timer = setInterval(
@@ -393,10 +373,6 @@ export default function App() {
       )
       return
     }
-    if (typewell && status === 'ready') {
-      if (mapKey(e.nativeEvent, settings.layout)) e.preventDefault()
-      return
-    }
     if (status === 'paused' || status === 'done') return
     const key = mapKey(e.nativeEvent, settings.layout)
     if (!key) return
@@ -429,11 +405,7 @@ export default function App() {
           ? engine.current.position
           : (engine.current as RomanEngine).naturalProgress,
     })
-    const normalized =
-      settings.layout === 'kana'
-        ? engine.current.position
-        : (engine.current as RomanEngine).naturalProgress
-    if (engine.current.done || (typewell && normalized >= limit)) {
+    if (engine.current.done) {
       if (!typewell && sentenceIndex < sentences.length - 1) {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
@@ -473,7 +445,7 @@ export default function App() {
           ),
           scoreVersion: 3,
           missPenalty: missEpisodes.current.penalty,
-          ...(typewell ? { seed, strokeLimit: limit } : {}),
+          ...(typewell ? { seed, strokeLimit: limit, replayVersion } : {}),
           mode: 'practice',
           kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
           accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
@@ -483,19 +455,6 @@ export default function App() {
     }
   }
   const normalizedKeys = typewell ? snapshot.naturalKeys : keys
-  const view = useMemo(
-    () =>
-      typewell
-        ? typewellView(
-            sentences[0],
-            snapshot.typed,
-            snapshot.hint,
-            settings.layout,
-            normalizedKeys,
-          )
-        : null,
-    [typewell, sentences, snapshot, settings.layout, normalizedKeys],
-  )
   const progress =
     status === 'done'
       ? 100
@@ -787,7 +746,7 @@ export default function App() {
                               打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
                             </p>
                             <small>
-                              再現ID: {selected} / v1 / {seed} ·{' '}
+                              再現ID: {selected} / v{replayVersion} / {seed} ·{' '}
                               {settings.layout}
                             </small>
                           </div>
@@ -884,16 +843,16 @@ export default function App() {
                             </span>
                           </div>
                           <SentenceView
-                            current={view?.current ?? sentences[sentenceIndex]}
+                            current={sentences[sentenceIndex]}
                             next={sentences[sentenceIndex + 1]}
                             showNext={!typewell}
                             partialRoman={typewell}
                             position={snapshot.position}
                             kana={settings.layout === 'kana'}
                             done={status === 'done'}
-                            target={view?.target ?? snapshot.target}
+                            target={snapshot.target}
                             typed={snapshot.typed}
-                            hint={view?.hint ?? snapshot.hint}
+                            hint={snapshot.hint}
                             guide={settings.guide}
                             wordColors={settings.wordColors}
                             consumeTyped={settings.consumeTyped}
@@ -929,25 +888,7 @@ export default function App() {
                             {status === 'ready' && (
                               <div className="start-hint">
                                 <Keyboard size={14} />
-                                {typewell ? (
-                                  <button
-                                    className="text-button"
-                                    onClick={() => {
-                                      setCountdownUntil(
-                                        performance.now() + 3000,
-                                      )
-                                      setCountdown(3)
-                                      focus()
-                                    }}
-                                    disabled={countdown > 0}
-                                  >
-                                    {countdown
-                                      ? `${countdown} · READY`
-                                      : `${limit}打の計測を開始`}
-                                  </button>
-                                ) : (
-                                  'ここをクリックして、最初の文字からスタート'
-                                )}
+                                ここをクリックして、最初の文字からスタート
                                 <span>IME OFF</span>
                               </div>
                             )}
@@ -1280,7 +1221,13 @@ export default function App() {
                                 className="text-button"
                                 onClick={() => {
                                   setFixedSeed(true)
-                                  reset(r.passageId, r.layout, 0, r.seed!)
+                                  reset(
+                                    r.passageId,
+                                    r.layout,
+                                    0,
+                                    r.seed!,
+                                    r.replayVersion ?? 1,
+                                  )
                                   setSettings((value) => ({
                                     ...value,
                                     layout: r.layout,

@@ -160,6 +160,7 @@ it('round trips weighted penalties and replay identifiers, and discards malforme
     scoreVersion: 3,
     missPenalty: 2.85,
     seed: 'replay',
+    replayVersion: 2,
     strokeLimit: 400,
     actualKeys: 401,
   }
