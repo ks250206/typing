@@ -19,6 +19,7 @@ export const SentenceView = memo(function SentenceView({
   wordColors,
   consumeTyped,
   showNext = true,
+  partialRoman = false,
 }: {
   current: Sentence
   next?: Sentence
@@ -32,6 +33,7 @@ export const SentenceView = memo(function SentenceView({
   wordColors: boolean
   consumeTyped: boolean
   showNext?: boolean
+  partialRoman?: boolean
 }) {
   const host = useRef<HTMLParagraphElement>(null)
   const segments = useMemo(() => locateSegments(current, kana), [current, kana])
@@ -48,7 +50,15 @@ export const SentenceView = memo(function SentenceView({
     [words, current, kana],
   )
   const consumed = consumeTyped
-    ? consumedOffsets(target, position, typed, hint, words.reading, done)
+    ? consumedOffsets(
+        target,
+        position,
+        typed,
+        hint,
+        words.reading,
+        done,
+        partialRoman,
+      )
     : { reading: 0, input: 0, roman: 0 }
   useSingleLineFlow(
     host,
@@ -112,6 +122,7 @@ export const SentenceView = memo(function SentenceView({
         typed={typed}
         hint={hint}
         showRoman={guide && !kana}
+        partialRoman={partialRoman}
         done={done}
       />
       {showNext && !done && next && (

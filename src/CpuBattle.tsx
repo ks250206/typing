@@ -4,6 +4,7 @@ import type { Layout } from './engine'
 import { RtcMatch, cpuCharacters, cpuPresets } from './cpuMatch'
 import type { CpuConfig } from './cpuMatch'
 import { shuffledPrompts } from './battlePrompts'
+import { OpponentInput } from './OpponentInput'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
 import { animalRank, scorePoint } from './scoring'
@@ -26,7 +27,7 @@ function loadCpu(): CpuConfig {
   } catch {
     /* Defaults also work without storage. */
   }
-  return cpuPresets[1]
+  return cpuPresets.find((p) => p.name === 'ネコ / 標準')!
 }
 export function CpuBattle({
   settings,
@@ -63,7 +64,8 @@ export function CpuBattle({
     recorded.current = true
     const keys = value.totalKeys + value.keys,
       misses = value.totalMisses + value.misses.misses
-    const point = scorePoint(keys, misses, value.totalElapsed)
+    const penalty = value.totalPenalty + value.misses.penalty
+    const point = scorePoint(keys, penalty, value.totalElapsed)
     onRecord({
       id: crypto.randomUUID(),
       passageId: 'cpu-rtc',
@@ -78,7 +80,8 @@ export function CpuBattle({
       accuracy: Number((value.totalAccuracy * 100).toFixed(2)),
       point,
       rank: animalRank(point),
-      scoreVersion: 2,
+      scoreVersion: 3,
+      missPenalty: penalty,
       mode: 'cpu',
     })
   }
@@ -188,7 +191,7 @@ export function CpuBattle({
   const point = match
     ? scorePoint(
         match.totalKeys + match.keys,
-        match.totalMisses + match.misses.misses,
+        match.totalPenalty + match.misses.penalty,
         match.totalElapsed +
           (phase === 'playing'
             ? Math.max(0, clock.current.now - match.wordStart)
@@ -356,6 +359,11 @@ export function CpuBattle({
                   wordColors={settings.wordColors}
                   consumeTyped={settings.consumeTyped}
                   showNext={false}
+                />
+                <OpponentInput
+                  reading={match.sentence.reading}
+                  keys={cpuTyped}
+                  kana={match.layout === 'kana'}
                 />
                 <div className="cpu-progress">
                   <span>

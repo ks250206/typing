@@ -144,3 +144,43 @@ it('defaults word colors on for new or legacy settings, while preserving an expl
   data.set('yohaku.settings.v1', '{"wordColors":false}')
   expect(readSettings().wordColors).toBe(false)
 })
+
+it('round trips weighted penalties and replay identifiers, and discards malformed optional fields', () => {
+  const record = {
+    id: 'seeded',
+    passageId: 'typewell-basic',
+    title: '基本常用語',
+    layout: 'jis',
+    date: '2026-10-29T00:00:00Z',
+    elapsed: 60000,
+    keys: 400,
+    misses: 1,
+    kpm: 400,
+    accuracy: 99,
+    scoreVersion: 3,
+    missPenalty: 2.85,
+    seed: 'replay',
+    strokeLimit: 400,
+    actualKeys: 401,
+  }
+  data.set('yohaku.history.v1', JSON.stringify([record]))
+  expect(readHistory()[0]).toMatchObject(record)
+  data.set(
+    'yohaku.history.v1',
+    JSON.stringify([
+      {
+        ...record,
+        missPenalty: 'oops',
+        seed: 100,
+        strokeLimit: 999,
+        actualKeys: -1,
+      },
+    ]),
+  )
+  expect(readHistory()[0]).toMatchObject({
+    missPenalty: undefined,
+    seed: undefined,
+    strokeLimit: undefined,
+    actualKeys: undefined,
+  })
+})

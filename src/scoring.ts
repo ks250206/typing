@@ -1,4 +1,4 @@
-/** Correct KPM × accuracy² equals gross KPM × accuracy³. See README sources. */
+/** Correct KPM × adjusted accuracy². Misses may be fractional streak penalties. */
 export function scorePoint(keys: number, misses: number, elapsedMs: number) {
   if (keys <= 0 || elapsedMs <= 0 || !Number.isFinite(elapsedMs)) return 0
   const accuracy = keys / (keys + Math.max(0, misses))
@@ -20,13 +20,19 @@ export function animalRank(point: number) {
     animalRanks.findLast(([threshold]) => point >= threshold)?.[1] ?? 'カメ'
   )
 }
-/** All consecutive wrong keys at one unconfirmed position form one miss episode. */
+/** Keep episode/raw counts for accuracy; pt uses a diminishing, nonzero streak penalty. */
 export class MissEpisodes {
   misses = 0
   raw = 0
   private blocked = false
+  private streak = 0
+  private penaltyUnits = 0
+  get penalty() {
+    return this.penaltyUnits / 100
+  }
   miss() {
     this.raw++
+    this.penaltyUnits += [100, 75, 50, 35, 25][Math.min(this.streak++, 4)]
     if (this.blocked) return false
     this.blocked = true
     this.misses++
@@ -34,5 +40,6 @@ export class MissEpisodes {
   }
   accept() {
     this.blocked = false
+    this.streak = 0
   }
 }

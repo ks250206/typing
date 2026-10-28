@@ -21,7 +21,15 @@ import {
 } from 'lucide-react'
 import { KanaEngine, RomanEngine, mapKey } from './engine'
 import type { Layout } from './engine'
-import { passages } from './passages'
+import { passages as essayPassages } from './passages'
+import {
+  freshSeed,
+  isTypewell,
+  strokeLimit,
+  typewellDocument,
+  typewellPassages,
+  typewellView,
+} from './typewell'
 import {
   appendHistory,
   clearHistory,
@@ -55,11 +63,44 @@ const time = (ms: number) =>
     .padStart(2, '0')}:${Math.floor((ms / 1000) % 60)
     .toString()
     .padStart(2, '0')}`
+const passages = [...essayPassages, ...typewellPassages]
+function practiceDocument(id: string, seed: string) {
+  return isTypewell(id)
+    ? typewellDocument(id, seed)
+    : {
+        passage: passages.find((p) => p.id === id)!,
+        sentences: sentencesByPassage[id],
+      }
+}
 type Status = 'ready' | 'running' | 'paused' | 'done'
-function makeEngine(reading: string, layout: Layout) {
-  return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
+function makeEngine(reading: string, layout: Layout, natural = false) {
+  return layout === 'kana'
+    ? new KanaEngine(reading)
+    : new RomanEngine(reading, natural)
 }
 export default function App() {
+  const [seedPreferences] = useState(() => {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem('yohaku.typewell.v1') ?? 'null',
+      )
+      if (
+        saved?.fixed &&
+        typeof saved.seed === 'string' &&
+        saved.seed.length > 0 &&
+        saved.seed.length <= 64
+      )
+        return { seed: saved.seed, fixed: true }
+    } catch {
+      /* A fresh seed also works without storage. */
+    }
+    return { seed: freshSeed(), fixed: false }
+  })
+  const [seed, setSeed] = useState(seedPreferences.seed)
+  const [seedDraft, setSeedDraft] = useState(seed)
+  const [fixedSeed, setFixedSeed] = useState(seedPreferences.fixed)
+  const [countdown, setCountdown] = useState(0)
+  const [countdownUntil, setCountdownUntil] = useState(0)
   const [selected, setSelected] = useState(passages[0].id),
     [tab, setTab] = useState('practice'),
     [genre, setGenre] = useState('すべて')
@@ -71,6 +112,7 @@ export default function App() {
     [keys, setKeys] = useState(0),
     [misses, setMisses] = useState(0),
     [rawMisses, setRawMisses] = useState(0),
+    [missPenalty, setMissPenalty] = useState(0),
     [snapshot, setSnapshot] = useState(() => {
       const initial = makeEngine(
         sentencesByPassage[passages[0].id][0].reading,
@@ -81,6 +123,7 @@ export default function App() {
         target: initial.target,
         hint: initial.hint,
         typed: '',
+        naturalKeys: 0,
       }
     }),
     [mistake, setMistake] = useState(false),
@@ -88,9 +131,14 @@ export default function App() {
     [showSettings, setShowSettings] = useState(false),
     [confirmClear, setConfirmClear] = useState(false),
     [practiceStage, setPracticeStage] = useState(0)
-  const passage = passages.find((p) => p.id === selected)!,
-    sentences = sentencesByPassage[selected],
-    engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
+  const practice = useMemo(
+    () => practiceDocument(selected, seed),
+    [selected, seed],
+  )
+  const { passage, sentences } = practice
+  const typewell = isTypewell(selected)
+  const limit = strokeLimit(settings.layout)
+  const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
     area = useRef<HTMLDivElement>(null),
     unsavedRecords = useRef<RecordEntry[]>([]),
     started = useRef(0),
@@ -100,6 +148,16 @@ export default function App() {
     missEpisodes = useRef(new MissEpisodes())
   const paragraphSegments = useMemo(() => {
     let cursor = 0
+    const preview = typewell
+      ? typewellView(
+          sentences[0],
+          '',
+          makeEngine(sentences[0].reading, settings.layout, true).hint,
+          settings.layout,
+          0,
+        ).current
+      : null
+    if (preview) return [preview.segments]
     return passage.paragraphs.map((paragraph) => {
       const segments = []
       let length = 0
@@ -110,7 +168,7 @@ export default function App() {
       }
       return segments
     })
-  }, [passage, sentences])
+  }, [passage, sentences, typewell, settings.layout])
   const handleStageChange = (stage: number) => {
     if (stage !== 2) pause()
     setPracticeStage(stage)
@@ -151,23 +209,36 @@ export default function App() {
     id = selected,
     layout = settings.layout,
     stage = practiceStage,
+    nextSeed = fixedSeed ? seed : freshSeed(),
   ) => {
-    const p = passages.find((p) => p.id === id)!
-    engine.current = makeEngine(sentencesByPassage[p.id][0].reading, layout)
+    if (isTypewell(id)) {
+      setSeed(nextSeed)
+      setSeedDraft(nextSeed)
+    }
+    const doc = practiceDocument(id, nextSeed)
+    engine.current = makeEngine(
+      doc.sentences[0].reading,
+      layout,
+      isTypewell(id),
+    )
     setSelected(id)
     setSentenceIndex(0)
     setStatus('ready')
+    setCountdown(0)
+    setCountdownUntil(0)
     setPracticeStage(stage)
     setElapsed(0)
     setKeys(0)
     setMisses(0)
     setRawMisses(0)
+    setMissPenalty(0)
     missEpisodes.current = new MissEpisodes()
     setSnapshot({
       position: engine.current.position,
       target: engine.current.target,
       hint: engine.current.hint,
       typed: '',
+      naturalKeys: 0,
     })
     clearTimeout(missTimer.current)
     setMistake(false)
@@ -175,6 +246,8 @@ export default function App() {
     accumulated.current = 0
   }
   const pause = () => {
+    setCountdown(0)
+    setCountdownUntil(0)
     if (status === 'running') {
       clearTimeout(missTimer.current)
       setMistake(false)
@@ -192,6 +265,32 @@ export default function App() {
     }
     focus()
   }
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        'yohaku.typewell.v1',
+        JSON.stringify({ seed, fixed: fixedSeed }),
+      )
+    } catch {
+      /* Keep playing without persistence. */
+    }
+  }, [seed, fixedSeed])
+  useEffect(() => {
+    if (!countdownUntil) return
+    const timer = setInterval(() => {
+      const remaining = Math.max(
+        0,
+        Math.ceil((countdownUntil - performance.now()) / 1000),
+      )
+      setCountdown(remaining)
+      if (!remaining) {
+        started.current = countdownUntil
+        setStatus('running')
+        setCountdownUntil(0)
+      }
+    }, 50)
+    return () => clearInterval(timer)
+  }, [countdownUntil])
   useEffect(() => {
     if (status !== 'running') return
     const timer = setInterval(
@@ -277,6 +376,7 @@ export default function App() {
     )
   }
   const accept = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return
     if (e.key === 'Escape') {
       e.preventDefault()
       pause()
@@ -293,6 +393,10 @@ export default function App() {
       )
       return
     }
+    if (typewell && status === 'ready') {
+      if (mapKey(e.nativeEvent, settings.layout)) e.preventDefault()
+      return
+    }
     if (status === 'paused' || status === 'done') return
     const key = mapKey(e.nativeEvent, settings.layout)
     if (!key) return
@@ -306,6 +410,7 @@ export default function App() {
     if (!engine.current.feed(key)) {
       if (missEpisodes.current.miss()) setMisses(missEpisodes.current.misses)
       setRawMisses(missEpisodes.current.raw)
+      setMissPenalty(missEpisodes.current.penalty)
       setMistake(true)
       clearTimeout(missTimer.current)
       missTimer.current = setTimeout(() => setMistake(false), 520)
@@ -319,9 +424,17 @@ export default function App() {
       target: engine.current.target,
       hint: engine.current.hint,
       typed: snapshot.typed + key,
+      naturalKeys:
+        settings.layout === 'kana'
+          ? engine.current.position
+          : (engine.current as RomanEngine).naturalProgress,
     })
-    if (engine.current.done) {
-      if (sentenceIndex < sentences.length - 1) {
+    const normalized =
+      settings.layout === 'kana'
+        ? engine.current.position
+        : (engine.current as RomanEngine).naturalProgress
+    if (engine.current.done || (typewell && normalized >= limit)) {
+      if (!typewell && sentenceIndex < sentences.length - 1) {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
         engine.current = makeEngine(sentences[n].reading, settings.layout)
@@ -330,6 +443,7 @@ export default function App() {
           target: engine.current.target,
           hint: engine.current.hint,
           typed: '',
+          naturalKeys: 0,
         })
       } else {
         const duration = elapsedNow()
@@ -339,6 +453,7 @@ export default function App() {
         clearTimeout(missTimer.current)
         setMistake(false)
         setStatus('done')
+        const scoredKeys = typewell ? limit : nextKeys
         const result: RecordEntry = {
           id: crypto.randomUUID(),
           passageId: passage.id,
@@ -348,28 +463,58 @@ export default function App() {
           // oxlint-disable-next-line react/purity
           date: new Date().toISOString(),
           elapsed: duration,
-          keys: nextKeys,
+          keys: scoredKeys,
+          actualKeys: nextKeys,
           misses,
           rawMisses: missEpisodes.current.raw,
-          point: scorePoint(nextKeys, misses, duration),
-          rank: animalRank(scorePoint(nextKeys, misses, duration)),
-          scoreVersion: 2,
+          point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+          rank: animalRank(
+            scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+          ),
+          scoreVersion: 3,
+          missPenalty: missEpisodes.current.penalty,
+          ...(typewell ? { seed, strokeLimit: limit } : {}),
           mode: 'practice',
-          kpm: Math.round(nextKeys / (Math.max(duration, 1) / 60000)),
+          kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
           accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
         }
         persistResult(result)
       }
     }
   }
+  const normalizedKeys = typewell ? snapshot.naturalKeys : keys
+  const view = useMemo(
+    () =>
+      typewell
+        ? typewellView(
+            sentences[0],
+            snapshot.typed,
+            snapshot.hint,
+            settings.layout,
+            normalizedKeys,
+          )
+        : null,
+    [typewell, sentences, snapshot, settings.layout, normalizedKeys],
+  )
   const progress =
     status === 'done'
       ? 100
-      : ((sentenceIndex + snapshot.position / snapshot.target.length) /
-          sentences.length) *
-        100
-  const point = scorePoint(keys, misses, elapsed)
-  const kpm = elapsed > 0 ? Math.round(keys / (elapsed / 60000)) : 0,
+      : typewell
+        ? Math.max(0, (normalizedKeys / limit) * 100)
+        : ((sentenceIndex + snapshot.position / snapshot.target.length) /
+            sentences.length) *
+          100
+  const point = scorePoint(
+    typewell ? Math.max(0, normalizedKeys) : keys,
+    missPenalty,
+    elapsed,
+  )
+  const kpm =
+      elapsed > 0
+        ? Math.round(
+            (typewell ? Math.max(0, normalizedKeys) : keys) / (elapsed / 60000),
+          )
+        : 0,
     accuracy = keys + misses ? (keys / (keys + misses)) * 100 : 100
   const best = records
     .filter((r) => r.passageId === selected && r.layout === settings.layout)
@@ -382,7 +527,7 @@ export default function App() {
     )
     const a = document.createElement('a')
     a.href = url
-    a.download = 'yohaku-records.json'
+    a.download = 'galactype-records.json'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -411,9 +556,11 @@ export default function App() {
             setTab('practice')
           }}
         >
-          <span className="brand-icon">余</span>
+          <span className="brand-icon" aria-hidden="true">
+            G
+          </span>
           <span>
-            yohaku<span className="brand-caption">JAPANESE TYPING</span>
+            GALACTYPE<span className="brand-caption">COSMIC TYPING</span>
           </span>
         </a>
         <div className="nav-label">WORKSPACE</div>
@@ -573,12 +720,16 @@ export default function App() {
                           <div>
                             <span className="tag">{passage.genre}</span>
                             <span className="muted small">
-                              ORIGINAL ESSAY ·{' '}
-                              {passage.paragraphs.reduce(
-                                (n, p) => n + p.text.length,
-                                0,
-                              )}{' '}
-                              文字
+                              {typewell
+                                ? 'R 400打 / K 280打 · '
+                                : 'ORIGINAL ESSAY · '}
+                              {typewell
+                                ? 'ランダム出題'
+                                : passage.paragraphs.reduce(
+                                    (n, p) => n + p.text.length,
+                                    0,
+                                  )}{' '}
+                              {!typewell && '文字'}
                             </span>
                             <h2>{passage.title}</h2>
                             <p>{passage.subtitle}</p>
@@ -587,6 +738,60 @@ export default function App() {
                             {passage.accent}
                           </span>
                         </div>
+                        {typewell && (
+                          <div className="seed-settings">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={fixedSeed}
+                                onChange={(e) => setFixedSeed(e.target.checked)}
+                              />{' '}
+                              シードを固定する
+                            </label>
+                            <label>
+                              出題シード
+                              <input
+                                aria-label="出題シード"
+                                maxLength={64}
+                                value={seedDraft}
+                                onChange={(e) => setSeedDraft(e.target.value)}
+                              />
+                            </label>
+                            <button
+                              className="text-button"
+                              disabled={
+                                !seedDraft.trim() || status === 'running'
+                              }
+                              onClick={() =>
+                                reset(
+                                  selected,
+                                  settings.layout,
+                                  0,
+                                  seedDraft.trim(),
+                                )
+                              }
+                            >
+                              このシードを使う
+                            </button>
+                            <button
+                              className="text-button"
+                              disabled={fixedSeed}
+                              onClick={() =>
+                                reset(selected, settings.layout, 0, freshSeed())
+                              }
+                            >
+                              単語をシャッフル
+                            </button>
+                            <p>
+                              単語間のスペースも含め、自然な表記で{limit}
+                              打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
+                            </p>
+                            <small>
+                              再現ID: {selected} / v1 / {seed} ·{' '}
+                              {settings.layout}
+                            </small>
+                          </div>
+                        )}
                         <div className="mission-select-actions">
                           <p>言葉の軌道を選んで、読み、指先で旅をする。</p>
                           <div className="mission-story-choices">
@@ -615,8 +820,9 @@ export default function App() {
                           <span className="eyebrow">MISSION BRIEFING</span>
                           <h2>{passage.title}</h2>
                           <p>
-                            {sentences.length} 文 / {passage.paragraphs.length}{' '}
-                            段落
+                            {typewell
+                              ? `${limit}打分の単語列 / シード ${seed}`
+                              : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
                           </p>
                         </div>
                         <div id="passage-full-text">
@@ -649,7 +855,12 @@ export default function App() {
                           role="region"
                           aria-label="タイピング入力領域。IME をオフにして入力"
                           onKeyDown={accept}
-                          onBlur={pause}
+                          onBlur={(event) => {
+                            if (
+                              !event.currentTarget.contains(event.relatedTarget)
+                            )
+                              pause()
+                          }}
                         >
                           <div className="reading-toolbar">
                             <span
@@ -667,18 +878,22 @@ export default function App() {
                             </span>
                             <span className="small muted">
                               {layoutLabels[settings.layout]} ·{' '}
-                              {sentenceIndex + 1} / {sentences.length} 文
+                              {typewell
+                                ? `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
+                                : `${sentenceIndex + 1} / ${sentences.length} 文`}
                             </span>
                           </div>
                           <SentenceView
-                            current={sentences[sentenceIndex]}
+                            current={view?.current ?? sentences[sentenceIndex]}
                             next={sentences[sentenceIndex + 1]}
+                            showNext={!typewell}
+                            partialRoman={typewell}
                             position={snapshot.position}
                             kana={settings.layout === 'kana'}
                             done={status === 'done'}
-                            target={snapshot.target}
+                            target={view?.target ?? snapshot.target}
                             typed={snapshot.typed}
-                            hint={snapshot.hint}
+                            hint={view?.hint ?? snapshot.hint}
                             guide={settings.guide}
                             wordColors={settings.wordColors}
                             consumeTyped={settings.consumeTyped}
@@ -714,7 +929,25 @@ export default function App() {
                             {status === 'ready' && (
                               <div className="start-hint">
                                 <Keyboard size={14} />
-                                ここをクリックして、最初の文字からスタート
+                                {typewell ? (
+                                  <button
+                                    className="text-button"
+                                    onClick={() => {
+                                      setCountdownUntil(
+                                        performance.now() + 3000,
+                                      )
+                                      setCountdown(3)
+                                      focus()
+                                    }}
+                                    disabled={countdown > 0}
+                                  >
+                                    {countdown
+                                      ? `${countdown} · READY`
+                                      : `${limit}打の計測を開始`}
+                                  </button>
+                                ) : (
+                                  'ここをクリックして、最初の文字からスタート'
+                                )}
                                 <span>IME OFF</span>
                               </div>
                             )}
@@ -796,7 +1029,10 @@ export default function App() {
                         <small> pt</small>
                       </strong>
                       <span>{animalRank(point)}</span>
-                      <small>正打鍵KPM × 正確率²</small>
+                      <small>正打鍵KPM × 補正正確率²</small>
+                      <small>
+                        連続ミス減点 1 / .75 / .5 / .35 / .25（5回〜）
+                      </small>
                     </div>
                     <div className="primary-stat">
                       <span>{kpm}</span>
@@ -950,19 +1186,21 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <h2>文章ライブラリ</h2>
-                  <span className="muted">6 ORIGINAL STORIES</span>
+                  <span className="muted">6 STORIES + 5 WORD SETS</span>
                 </div>
               </div>
               <div className="filters">
-                {['すべて', ...passages.map((p) => p.genre)].map((g) => (
-                  <button
-                    className={genre === g ? 'selected' : ''}
-                    key={g}
-                    onClick={() => setGenre(g)}
-                  >
-                    {g}
-                  </button>
-                ))}
+                {['すべて', ...new Set(passages.map((p) => p.genre))].map(
+                  (g) => (
+                    <button
+                      className={genre === g ? 'selected' : ''}
+                      key={g}
+                      onClick={() => setGenre(g)}
+                    >
+                      {g}
+                    </button>
+                  ),
+                )}
               </div>
               <div className="library-grid">
                 {passages
@@ -985,8 +1223,9 @@ export default function App() {
                       <p>{p.subtitle}</p>
                       <div>
                         <span>
-                          {p.paragraphs.reduce((n, p) => n + p.text.length, 0)}{' '}
-                          文字 · 3 段落
+                          {isTypewell(p.id)
+                            ? 'R 400打 / K 280打 · シード再現対応'
+                            : `${p.paragraphs.reduce((n, p) => n + p.text.length, 0)} 文字 · ${p.paragraphs.length} 段落`}
                         </span>
                         <ArrowRight size={17} />
                       </div>
@@ -1036,18 +1275,43 @@ export default function App() {
                         <tr key={r.id}>
                           <td>
                             {r.title}
+                            {r.seed && isTypewell(r.passageId) && (
+                              <button
+                                className="text-button"
+                                onClick={() => {
+                                  setFixedSeed(true)
+                                  reset(r.passageId, r.layout, 0, r.seed!)
+                                  setSettings((value) => ({
+                                    ...value,
+                                    layout: r.layout,
+                                  }))
+                                  setTab('practice')
+                                }}
+                              >
+                                シード {r.seed} を再現
+                              </button>
+                            )}
                             <small>
                               {new Date(r.date).toLocaleString('ja-JP')}
                             </small>
                           </td>
                           <td>{layoutLabels[r.layout]}</td>
                           <td>
-                            {scorePoint(r.keys, r.misses, r.elapsed)} pt
+                            {scorePoint(
+                              r.keys,
+                              r.missPenalty ?? r.misses,
+                              r.elapsed,
+                            )}{' '}
+                            pt
                             <small>
                               {animalRank(
-                                scorePoint(r.keys, r.misses, r.elapsed),
+                                scorePoint(
+                                  r.keys,
+                                  r.missPenalty ?? r.misses,
+                                  r.elapsed,
+                                ),
                               )}
-                              {r.scoreVersion !== 2 ? ' · 旧ミス方式' : ''}
+                              {r.scoreVersion !== 3 ? ' · 旧ミス方式' : ''}
                             </small>
                           </td>
                           <td className="record-kpm">{r.kpm}</td>
@@ -1076,7 +1340,7 @@ export default function App() {
           )}
           <footer className="page-footer">
             <span>
-              yohaku <span>—</span> 言葉と、自分に向き合う時間。
+              GALACTYPE <span>—</span> 言葉と、自分に向き合う時間。
             </span>
             <span>NO RUSH. JUST FLOW.</span>
           </footer>

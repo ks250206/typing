@@ -14,6 +14,10 @@ export interface RecordEntry {
   rank?: string
   rawMisses?: number
   scoreVersion?: number
+  missPenalty?: number
+  seed?: string
+  strokeLimit?: number
+  actualKeys?: number
   mode?: 'practice' | 'cpu'
 }
 export interface Settings {
@@ -54,6 +58,31 @@ export function readHistory(): RecordEntry[] {
                   r[k] >= 0,
               ),
           )
+          .map((record) => ({
+            ...record,
+            missPenalty:
+              typeof record.missPenalty === 'number' &&
+              Number.isFinite(record.missPenalty) &&
+              record.missPenalty >= 0
+                ? record.missPenalty
+                : undefined,
+            seed:
+              typeof record.seed === 'string' &&
+              record.seed.length > 0 &&
+              record.seed.length <= 64
+                ? record.seed
+                : undefined,
+            strokeLimit:
+              record.strokeLimit === 400 || record.strokeLimit === 280
+                ? record.strokeLimit
+                : undefined,
+            actualKeys:
+              typeof record.actualKeys === 'number' &&
+              Number.isFinite(record.actualKeys) &&
+              record.actualKeys >= 0
+                ? record.actualKeys
+                : undefined,
+          }))
           .slice(0, 200)
       : []
   } catch {

@@ -14,6 +14,7 @@ export function ReadingGuide({
   typed,
   hint,
   showRoman,
+  partialRoman = false,
   done,
 }: {
   consumed: { reading: number; roman: number }
@@ -24,6 +25,7 @@ export function ReadingGuide({
   typed: string
   hint: string
   showRoman: boolean
+  partialRoman?: boolean
   done: boolean
 }) {
   const kanaHost = useRef<HTMLDivElement>(null)
@@ -32,9 +34,9 @@ export function ReadingGuide({
   const romanStarts = useMemo(
     () =>
       showRoman
-        ? romanWordStarts(target, typed + hint, wordStarts)
+        ? romanWordStarts(target, typed + hint, wordStarts, partialRoman)
         : new Set<number>(),
-    [target, typed, hint, wordStarts, showRoman],
+    [target, typed, hint, wordStarts, showRoman, partialRoman],
   )
   const kanaOffset = reading.before.length
   const revision = `${target}/${position}/${typed}/${showRoman}`

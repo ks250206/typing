@@ -10,10 +10,26 @@ export interface CpuConfig {
   curve: Curve
 }
 export const cpuPresets = [
-  { name: 'リス / 入門', kpm: 180, reactionMs: 500, curve: 'ease-in' },
-  { name: 'ネコ / 標準', kpm: 300, reactionMs: 320, curve: 'ease-in' },
-  { name: 'ウサギ / 上級', kpm: 500, reactionMs: 240, curve: 'ease-in' },
-  { name: 'チーター / 達人', kpm: 900, reactionMs: 180, curve: 'constant' },
+  { name: 'カメ / はじめて', kpm: 90, reactionMs: 300, curve: 'ease-in' },
+  {
+    name: 'ハリネズミ / ゆっくり',
+    kpm: 130,
+    reactionMs: 300,
+    curve: 'ease-in',
+  },
+  { name: 'リス / 入門', kpm: 180, reactionMs: 290, curve: 'ease-in' },
+  { name: 'ネコ / 標準', kpm: 300, reactionMs: 280, curve: 'ease-in' },
+  { name: 'キツネ / 中級', kpm: 400, reactionMs: 280, curve: 'ease-in' },
+  { name: 'ウサギ / 上級', kpm: 500, reactionMs: 270, curve: 'ease-in' },
+  { name: 'ダチョウ / 熟練', kpm: 650, reactionMs: 270, curve: 'ease-in' },
+  {
+    name: 'プロングホーン / 高速',
+    kpm: 800,
+    reactionMs: 260,
+    curve: 'constant',
+  },
+  { name: 'チーター / 達人', kpm: 900, reactionMs: 260, curve: 'constant' },
+  { name: 'ハヤブサ / 超高速', kpm: 1200, reactionMs: 260, curve: 'constant' },
 ] satisfies (CpuConfig & { name: string })[]
 export function cpuCharacters(elapsedMs: number, config: CpuConfig) {
   if (elapsedMs < config.reactionMs) return 0
@@ -69,6 +85,7 @@ export class RtcMatch {
   keys = 0
   totalKeys = 0
   totalMisses = 0
+  totalPenalty = 0
   totalRaw = 0
   totalElapsed = 0
   roundElapsed = 0
@@ -237,6 +254,7 @@ export class RtcMatch {
     if (this.phase !== 'round-result') return
     this.totalKeys += this.keys
     this.totalMisses += this.misses.misses
+    this.totalPenalty += this.misses.penalty
     this.totalRaw += this.misses.raw
     this.keys = 0
     this.misses = new MissEpisodes()
