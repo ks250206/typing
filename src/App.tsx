@@ -22,6 +22,7 @@ import {
 import { KanaEngine, RomanEngine, mapKey } from './engine'
 import type { Layout } from './engine'
 import { passages as essayPassages } from './passages'
+import { randomSentenceIndex } from './sakusaku'
 import {
   freshSeed,
   isTypewell,
@@ -147,6 +148,7 @@ export default function App() {
   const { passage, sentences } = practice
   const typewell = isTypewell(selected)
   const limit = strokeLimit(settings.layout)
+  const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
     area = useRef<HTMLDivElement>(null),
     unsavedRecords = useRef<RecordEntry[]>([]),
@@ -154,7 +156,11 @@ export default function App() {
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
     focusRevision = useRef(0),
-    missEpisodes = useRef(new MissEpisodes())
+    missEpisodes = useRef(new MissEpisodes()),
+    liveKeys = useRef(0),
+    recorded = useRef(false),
+    runRevision = useRef(0),
+    finishTimer = useRef<(duration: number) => void>(() => {})
   const paragraphSegments = useMemo(() => {
     let cursor = 0
     if (typewell) return [sentences[0].segments]
@@ -218,11 +224,17 @@ export default function App() {
       setSeedDraft(nextSeed)
     }
     const doc = practiceDocument(id, nextSeed, layout, version)
+    const initialIndex = doc.passage.durationMs
+      ? randomSentenceIndex(doc.sentences.length)
+      : 0
     engine.current = doc.plan
       ? typewellEngine(doc.plan)
-      : makeEngine(doc.sentences[0].reading, layout)
+      : makeEngine(doc.sentences[initialIndex].reading, layout)
     setSelected(id)
-    setSentenceIndex(0)
+    setSentenceIndex(initialIndex)
+    liveKeys.current = 0
+    recorded.current = false
+    runRevision.current++
     setStatus('ready')
     setPracticeStage(stage)
     setElapsed(0)
@@ -245,6 +257,10 @@ export default function App() {
   }
   const pause = () => {
     if (status === 'running') {
+      if (durationMs && elapsedNow() >= durationMs) {
+        finishTimer.current(durationMs)
+        return
+      }
       clearTimeout(missTimer.current)
       setMistake(false)
       accumulated.current = elapsedNow()
@@ -273,13 +289,15 @@ export default function App() {
   }, [seed, fixedSeed, replayVersion])
   useEffect(() => {
     if (status !== 'running') return
-    const timer = setInterval(
-      () =>
-        setElapsed(accumulated.current + performance.now() - started.current),
-      100,
-    )
+    const revision = runRevision.current
+    const timer = setInterval(() => {
+      if (runRevision.current !== revision) return
+      const current = accumulated.current + performance.now() - started.current
+      if (durationMs && current >= durationMs) finishTimer.current(durationMs)
+      else setElapsed(current)
+    }, 50)
     return () => clearInterval(timer)
-  }, [status])
+  }, [status, durationMs])
   useEffect(() => {
     // Report a failure from the external storage system, once per settings change.
     if (!saveSettings(settings))
@@ -355,6 +373,60 @@ export default function App() {
       },
     )
   }
+  const finishSession = (nextKeys: number, sampledDuration = elapsedNow()) => {
+    if (recorded.current) return
+    recorded.current = true
+    const duration = durationMs
+      ? Math.min(durationMs, sampledDuration)
+      : sampledDuration
+    accumulated.current = duration
+    started.current = 0
+    setElapsed(duration)
+    clearTimeout(missTimer.current)
+    setMistake(false)
+    setStatus('done')
+    const scoredKeys = typewell ? limit : nextKeys
+    const result: RecordEntry = {
+      id: crypto.randomUUID(),
+      passageId: passage.id,
+      title: passage.title,
+      layout: settings.layout,
+      // Completion can be triggered by the last key or the timed-session deadline.
+      // oxlint-disable-next-line react/purity
+      date: new Date().toISOString(),
+      elapsed: duration,
+      keys: scoredKeys,
+      actualKeys: nextKeys,
+      misses: durationMs
+        ? missEpisodes.current.raw
+        : missEpisodes.current.misses,
+      rawMisses: missEpisodes.current.raw,
+      point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+      rank: animalRank(
+        scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+      ),
+      scoreVersion: 3,
+      missPenalty: missEpisodes.current.penalty,
+      ...(typewell ? { seed, strokeLimit: limit, replayVersion } : {}),
+      mode: durationMs ? 'trainer' : 'practice',
+      kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
+      accuracy: Number(
+        (
+          (nextKeys /
+            (nextKeys +
+              (durationMs
+                ? missEpisodes.current.raw
+                : missEpisodes.current.misses))) *
+          100
+        ).toFixed(2),
+      ),
+    }
+    persistResult(result)
+  }
+  useEffect(() => {
+    finishTimer.current = (duration) =>
+      finishSession(liveKeys.current, duration)
+  })
   const accept = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return
     if (e.key === 'Escape') {
@@ -377,6 +449,10 @@ export default function App() {
     const key = mapKey(e.nativeEvent, settings.layout)
     if (!key) return
     e.preventDefault()
+    if (durationMs && status === 'running' && elapsedNow() >= durationMs) {
+      finishSession(liveKeys.current, durationMs)
+      return
+    }
     if (status === 'ready') {
       // This clock is sampled only by the keyboard event handler.
       // oxlint-disable-next-line react/purity
@@ -393,7 +469,8 @@ export default function App() {
       return
     }
     missEpisodes.current.accept()
-    const nextKeys = keys + 1
+    const nextKeys = liveKeys.current + 1
+    liveKeys.current = nextKeys
     setKeys(nextKeys)
     setSnapshot({
       position: engine.current.position,
@@ -406,7 +483,18 @@ export default function App() {
           : (engine.current as RomanEngine).naturalProgress,
     })
     if (engine.current.done) {
-      if (!typewell && sentenceIndex < sentences.length - 1) {
+      if (durationMs) {
+        const index = randomSentenceIndex(sentences.length, sentenceIndex)
+        setSentenceIndex(index)
+        engine.current = makeEngine(sentences[index].reading, settings.layout)
+        setSnapshot({
+          position: 0,
+          target: engine.current.target,
+          hint: engine.current.hint,
+          typed: '',
+          naturalKeys: 0,
+        })
+      } else if (!typewell && sentenceIndex < sentences.length - 1) {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
         engine.current = makeEngine(sentences[n].reading, settings.layout)
@@ -418,39 +506,7 @@ export default function App() {
           naturalKeys: 0,
         })
       } else {
-        const duration = elapsedNow()
-        accumulated.current = duration
-        started.current = 0
-        setElapsed(duration)
-        clearTimeout(missTimer.current)
-        setMistake(false)
-        setStatus('done')
-        const scoredKeys = typewell ? limit : nextKeys
-        const result: RecordEntry = {
-          id: crypto.randomUUID(),
-          passageId: passage.id,
-          title: passage.title,
-          layout: settings.layout,
-          // Completion timestamp is produced only by the keyboard event handler.
-          // oxlint-disable-next-line react/purity
-          date: new Date().toISOString(),
-          elapsed: duration,
-          keys: scoredKeys,
-          actualKeys: nextKeys,
-          misses,
-          rawMisses: missEpisodes.current.raw,
-          point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-          rank: animalRank(
-            scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-          ),
-          scoreVersion: 3,
-          missPenalty: missEpisodes.current.penalty,
-          ...(typewell ? { seed, strokeLimit: limit, replayVersion } : {}),
-          mode: 'practice',
-          kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
-          accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
-        }
-        persistResult(result)
+        finishSession(nextKeys)
       }
     }
   }
@@ -458,11 +514,13 @@ export default function App() {
   const progress =
     status === 'done'
       ? 100
-      : typewell
-        ? Math.max(0, (normalizedKeys / limit) * 100)
-        : ((sentenceIndex + snapshot.position / snapshot.target.length) /
-            sentences.length) *
-          100
+      : durationMs
+        ? Math.min(100, (elapsed / durationMs) * 100)
+        : typewell
+          ? Math.max(0, (normalizedKeys / limit) * 100)
+          : ((sentenceIndex + snapshot.position / snapshot.target.length) /
+              sentences.length) *
+            100
   const point = scorePoint(
     typewell ? Math.max(0, normalizedKeys) : keys,
     missPenalty,
@@ -474,7 +532,10 @@ export default function App() {
             (typewell ? Math.max(0, normalizedKeys) : keys) / (elapsed / 60000),
           )
         : 0,
-    accuracy = keys + misses ? (keys / (keys + misses)) * 100 : 100
+    accuracy =
+      keys + (durationMs ? rawMisses : misses)
+        ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
+        : 100
   const best = records
     .filter((r) => r.passageId === selected && r.layout === settings.layout)
     .reduce((n, r) => Math.max(n, r.kpm), 0)
@@ -682,7 +743,9 @@ export default function App() {
                               {typewell
                                 ? 'R 400打 / K 280打 · '
                                 : passage.source
-                                  ? 'PUBLIC TEXT · '
+                                  ? passage.source.kind === 'provided'
+                                    ? 'PROVIDED TEXT · '
+                                    : 'PUBLIC TEXT · '
                                   : 'ORIGINAL ESSAY · '}
                               {typewell
                                 ? 'ランダム出題'
@@ -843,25 +906,38 @@ export default function App() {
                                   ready: 'READY WHEN YOU ARE',
                                   running: 'IN THE FLOW',
                                   paused: 'PAUSED',
-                                  done: 'SESSION COMPLETE',
+                                  done: durationMs
+                                    ? 'TIME UP'
+                                    : 'SESSION COMPLETE',
                                 }[status]
                               }
                             </span>
                             <span className="small muted">
                               {layoutLabels[settings.layout]} ·{' '}
-                              {typewell
-                                ? `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
-                                : `${sentenceIndex + 1} / ${sentences.length} 文`}
+                              {durationMs ? (
+                                <span aria-label="残り時間">
+                                  残り{' '}
+                                  {Math.max(
+                                    0,
+                                    Math.ceil((durationMs - elapsed) / 1000),
+                                  )}{' '}
+                                  秒
+                                </span>
+                              ) : typewell ? (
+                                `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
+                              ) : (
+                                `${sentenceIndex + 1} / ${sentences.length} 文`
+                              )}
                             </span>
                           </div>
                           <SentenceView
                             current={sentences[sentenceIndex]}
                             next={sentences[sentenceIndex + 1]}
-                            showNext={!typewell}
+                            showNext={!typewell && !durationMs}
                             partialRoman={typewell}
                             position={snapshot.position}
                             kana={settings.layout === 'kana'}
-                            done={status === 'done'}
+                            done={status === 'done' && !durationMs}
                             target={snapshot.target}
                             typed={snapshot.typed}
                             hint={snapshot.hint}
@@ -916,7 +992,9 @@ export default function App() {
                             {status === 'done' && (
                               <div className="finish-message">
                                 <Check size={20} />
-                                一篇を、最後まで。完走です。
+                                {durationMs
+                                  ? '60秒の計測が終了しました。'
+                                  : '一篇を、最後まで。完走です。'}
                                 <button
                                   onClick={() => {
                                     reset()
@@ -1010,8 +1088,8 @@ export default function App() {
                     </div>
                     <div className="miss-stat">
                       <span>ミス</span>
-                      <strong>{misses}</strong>
-                      {rawMisses !== misses && (
+                      <strong>{durationMs ? rawMisses : misses}</strong>
+                      {!durationMs && rawMisses !== misses && (
                         <small>実ミス {rawMisses} 打鍵</small>
                       )}
                       <span>打鍵</span>

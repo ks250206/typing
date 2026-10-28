@@ -19,7 +19,7 @@ export interface RecordEntry {
   replayVersion?: 1 | 2
   strokeLimit?: number
   actualKeys?: number
-  mode?: 'practice' | 'cpu'
+  mode?: 'practice' | 'cpu' | 'trainer'
 }
 export interface Settings {
   layout: Layout
