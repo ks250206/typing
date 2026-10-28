@@ -1,7 +1,5 @@
 import { mapKey } from './engine'
 import type { Layout } from './engine'
-import type { Sentence } from './sentences'
-import { romanWordStarts, sentenceWordStarts } from './wordSpacing'
 
 const letters = (text: string) => [...text].map((c) => `Key${c}`)
 export const keyboardRows = [
@@ -68,7 +66,9 @@ export function physicalKey(character: string, layout: Layout) {
   }
 }
 export function fingerFor(code: string) {
-  if (code === 'Space') return 'thumb'
+  if (['Space', 'NonConvert', 'Convert', 'KanaMode'].includes(code))
+    return 'thumb'
+  if (['ControlLeft', 'MetaLeft', 'AltLeft'].includes(code)) return 'left-pinky'
   if (/^(Digit1|Key[QAZ]|ShiftLeft)$/.test(code)) return 'left-pinky'
   if (/^(Digit2|Key[WSX])$/.test(code)) return 'left-ring'
   if (/^(Digit3|Key[EDC])$/.test(code)) return 'left-middle'
@@ -82,25 +82,81 @@ export function shiftFor(code: string) {
   return fingerFor(code).startsWith('left') ? 'ShiftRight' : 'ShiftLeft'
 }
 
-/** Only the remainder of the current word; the next key follows the active spelling. */
-export function wordHint(
-  sentence: Sentence,
-  layout: Layout,
-  position: number,
-  typed: string,
-  hint: string,
-) {
-  const starts = sentenceWordStarts(sentence).reading
-  if (layout === 'kana') {
-    const end = [...starts]
-      .map(
-        (offset) => sentence.reading.slice(0, offset).normalize('NFD').length,
-      )
-      .find((offset) => offset > position)
-    return sentence.reading.normalize('NFD').slice(position, end)
+export interface KeySlot {
+  code: string
+  row: number
+  column: number
+  width: number
+  tall?: boolean
+}
+/** Quarter-key units keep the same pitch across rows (15 standard key units). */
+export function keyboardGeometry(layout: Layout): KeySlot[] {
+  const jis = layout === 'jis' || layout === 'kana'
+  const slots: KeySlot[] = [{ code: 'Escape', row: 1, column: 1, width: 4 }]
+  for (let index = 0; index < 12; index++)
+    slots.push({
+      code: `F${index + 1}`,
+      row: 1,
+      column: 9 + index * 4 + Math.floor(index / 4) * 2,
+      width: 4,
+    })
+  const add = (row: number, keys: [string, number][]) => {
+    let column = 1
+    for (const [code, width] of keys) {
+      slots.push({ code, row, column, width })
+      column += width
+    }
   }
-  const end = [...romanWordStarts(sentence.reading, typed + hint, starts)].find(
-    (offset) => offset > typed.length,
+  const regular = (keys: string[]): [string, number][] =>
+    keys.map((code) => [code, 4])
+  add(2, [
+    ['Backquote', 4],
+    ...regular(keyboardRows[0]),
+    ...(jis ? [['IntlYen', 4] as [string, number]] : []),
+    ['Backspace', jis ? 4 : 8],
+  ])
+  add(3, [
+    ['Tab', 6],
+    ...regular(keyboardRows[1]),
+    ...(jis ? [] : [['Backslash', 6] as [string, number]]),
+  ])
+  if (jis)
+    slots.push({ code: 'Enter', row: 3, column: 55, width: 6, tall: true })
+  add(4, [
+    ['CapsLock', 7],
+    ...regular([...letters('ASDFGHJKL'), 'Semicolon', 'Quote']),
+    [jis ? 'Backslash' : 'Enter', jis ? 4 : 9],
+  ])
+  add(5, [
+    ['ShiftLeft', 9],
+    ...regular([...letters('ZXCVBNM'), 'Comma', 'Period', 'Slash']),
+    ...(jis ? [['IntlRo', 4] as [string, number]] : []),
+    ['ShiftRight', jis ? 7 : 11],
+  ])
+  add(
+    6,
+    jis
+      ? [
+          ['ControlLeft', 5],
+          ['MetaLeft', 5],
+          ['AltLeft', 5],
+          ['NonConvert', 5],
+          ['Space', 14],
+          ['Convert', 5],
+          ['KanaMode', 6],
+          ['AltRight', 5],
+          ['Fn', 5],
+          ['ControlRight', 5],
+        ]
+      : [
+          ['ControlLeft', 5],
+          ['MetaLeft', 5],
+          ['AltLeft', 5],
+          ['Space', 30],
+          ['AltRight', 5],
+          ['MetaRight', 5],
+          ['ControlRight', 5],
+        ],
   )
-  return hint.slice(0, end === undefined ? undefined : end - typed.length)
+  return slots
 }

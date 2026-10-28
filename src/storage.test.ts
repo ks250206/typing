@@ -16,12 +16,20 @@ it('survives corrupt data and null settings', () => {
 })
 it('round trips settings and rejects unknown layouts', () => {
   expect(
-    saveSettings({ layout: 'dvorak', background: false, guide: true }),
+    saveSettings({
+      layout: 'dvorak',
+      background: false,
+      guide: true,
+      wordColors: true,
+      consumeTyped: true,
+    }),
   ).toBe(true)
   expect(readSettings()).toEqual({
     layout: 'dvorak',
     background: false,
     guide: true,
+    wordColors: true,
+    consumeTyped: true,
   })
   data.set('yohaku.settings.v1', '{"layout":"bad"}')
   expect(readSettings().layout).toBe('jis')

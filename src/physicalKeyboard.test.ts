@@ -7,7 +7,7 @@ import {
   keyOutput,
   physicalKey,
   shiftFor,
-  wordHint,
+  keyboardGeometry,
 } from './physicalKeyboard'
 
 it('finds physical keys for all canonical passage input in all four layouts', () => {
@@ -46,17 +46,24 @@ it('maps layout-specific punctuation, Dvorak and kana modifiers to physical keys
   expect(fingerFor('KeyF')).toBe('left-index')
   expect(fingerFor('KeyJ')).toBe('right-index')
 })
-it('keeps the word preview aligned across alternative spelling and half-entered dakuten', () => {
-  const sentence = sentencesByPassage['night-library'][0]
-  const engine = new RomanEngine(sentence.reading)
-  expect(wordHint(sentence, 'jis', 0, '', engine.hint)).toBe('heikan')
-  for (const key of 'heikann') engine.feed(key)
-  expect(
-    wordHint(sentence, 'jis', engine.position, 'heikann', engine.hint),
-  ).toBe('no')
-  const kana = new KanaEngine(sentence.reading)
-  const position = kana.target.indexOf('か\u3099') + 1
-  expect(
-    wordHint(sentence, 'kana', position, '', kana.target.slice(position)),
-  ).toBe('\u3099')
+it('keeps all rows at a fixed physical pitch and includes staggered special keys', () => {
+  for (const layout of ['jis', 'us', 'dvorak', 'kana'] as Layout[]) {
+    const slots = keyboardGeometry(layout)
+    expect(
+      slots.every((slot) => slot.column >= 1 && slot.column + slot.width <= 61),
+    ).toBe(true)
+    expect(slots.find((slot) => slot.code === 'KeyQ')?.column).toBe(7)
+    expect(slots.find((slot) => slot.code === 'KeyA')?.column).toBe(8)
+    expect(slots.find((slot) => slot.code === 'KeyZ')?.column).toBe(10)
+    expect(
+      new Set(
+        slots
+          .filter((slot) => slot.code.startsWith('Key'))
+          .map((slot) => slot.width),
+      ),
+    ).toEqual(new Set([4]))
+    expect(slots.find((slot) => slot.code === 'Enter')?.tall ?? false).toBe(
+      layout === 'jis' || layout === 'kana',
+    )
+  }
 })

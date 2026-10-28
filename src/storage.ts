@@ -14,12 +14,16 @@ export interface RecordEntry {
 export interface Settings {
   layout: Layout
   background: boolean
+  wordColors: boolean
+  consumeTyped: boolean
   guide: boolean
 }
 export const defaultSettings: Settings = {
   layout: 'jis',
   background: true,
   guide: true,
+  wordColors: false,
+  consumeTyped: false,
 }
 const HISTORY = 'yohaku.history.v1',
   SETTINGS = 'yohaku.settings.v1'
@@ -58,6 +62,9 @@ export function readSettings(): Settings {
       layout: layouts.includes(s?.layout) ? s.layout : 'jis',
       background: typeof s?.background === 'boolean' ? s.background : true,
       guide: typeof s?.guide === 'boolean' ? s.guide : true,
+      wordColors: typeof s?.wordColors === 'boolean' ? s.wordColors : false,
+      consumeTyped:
+        typeof s?.consumeTyped === 'boolean' ? s.consumeTyped : false,
     }
   } catch {
     return defaultSettings
