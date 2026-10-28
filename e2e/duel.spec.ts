@@ -194,3 +194,113 @@ test('human can win four RTC rounds; no next sentence is exposed and only one re
   await expect(page.locator('tbody tr')).toHaveCount(1)
   await expect(page.locator('tbody')).toContainText('CPU対戦 4–0')
 })
+
+test('duel roman rows use the same glyph columns, word gaps and shared scrolling with alternate spellings', async ({
+  page,
+}) => {
+  await page.clock.install()
+  await page.addInitScript(() => {
+    Math.random = () => 0
+    localStorage.setItem(
+      'yohaku.settings.v1',
+      JSON.stringify({
+        layout: 'jis',
+        background: false,
+        guide: true,
+        wordColors: true,
+        consumeTyped: true,
+      }),
+    )
+  })
+  await enter(page)
+  await page.getByLabel('CPU速度 (KPM)', { exact: true }).fill('60')
+  await page.getByLabel('CPU反応時間 (ms)', { exact: true }).fill('1500')
+  await page.getByLabel('CPUの打ち方', { exact: true }).selectOption('constant')
+  await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
+  await page.clock.fastForward(3100)
+  const aligned = async () => {
+    const result = await page.locator('.duel-roman').evaluate((el) => {
+      const player = el.querySelector('.duel-row-player')!
+      const cpu = el.querySelector('.duel-row-cpu')!
+      const top = [...player.querySelectorAll<HTMLElement>('[data-column]')]
+      const bottom = [...cpu.querySelectorAll<HTMLElement>('[data-column]')]
+      return {
+        sameText: player.textContent === cpu.textContent,
+        sameColumns:
+          top.length === bottom.length &&
+          top.every(
+            (cell, i) =>
+              Math.abs(
+                cell.getBoundingClientRect().x -
+                  bottom[i].getBoundingClientRect().x,
+              ) < 0.05 &&
+              Math.abs(
+                cell.getBoundingClientRect().width -
+                  bottom[i].getBoundingClientRect().width,
+              ) < 0.05,
+          ),
+        gaps: top
+          .filter((cell) => cell.classList.contains('word-start'))
+          .every(
+            (cell) => parseFloat(getComputedStyle(cell).marginInlineStart) > 0,
+          ),
+        colors: new Set(
+          [
+            ...el.querySelectorAll(
+              '.remaining-roman .duel-cell, .opponent-remaining .duel-cell',
+            ),
+          ].map((cell) => getComputedStyle(cell).color),
+        ).size,
+        tracks: el.querySelectorAll('.flow-track').length,
+      }
+    })
+    expect(result).toEqual({
+      sameText: true,
+      sameColumns: true,
+      gaps: true,
+      colors: 1,
+      tracks: 1,
+    })
+  }
+  await aligned()
+  await expect(page.getByLabel('入力の先行状況')).toHaveText('同じ位置')
+  const area = page.getByRole('region')
+  await area.focus()
+  await page.keyboard.type('hosi')
+  await expect(page.locator('.duel-row-player')).toContainText('hosi')
+  await expect(page.getByLabel('入力の先行状況')).toHaveText('YOU が先行')
+  await aligned()
+  await page.clock.runFor(7600)
+  await expect(page.getByLabel('入力の先行状況')).toHaveText('CPU が先行')
+  await aligned()
+  await page.screenshot({
+    path: 'artifacts/duel-aligned-desktop.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
+  await area.focus()
+  await page.keyboard.press('Escape')
+  const before = await page.locator('.opponent-typed').textContent()
+  await page.clock.fastForward(30000)
+  await expect(page.locator('.opponent-typed')).toHaveText(before!)
+  await page.setViewportSize({ width: 390, height: 1000 })
+  await aligned()
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
+  await page.screenshot({
+    path: 'artifacts/duel-aligned-mobile.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
+  await page.getByRole('button', { name: '対戦を再開する' }).click()
+  await page.clock.runFor(50)
+  await area.focus()
+  await page.keyboard.type(await input(page))
+  await expect(page.locator('[data-testid=player-points]')).toHaveText('1')
+  await page.clock.fastForward(700)
+  await aligned()
+  await expect(page.getByLabel('入力の先行状況')).toHaveText('同じ位置')
+})

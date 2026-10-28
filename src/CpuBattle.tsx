@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { mapKey } from './engine'
 import type { Layout } from './engine'
 import {
@@ -9,7 +9,7 @@ import {
 } from './cpuMatch'
 import type { CpuConfig } from './cpuMatch'
 import { shuffledPrompts } from './battlePrompts'
-import { OpponentInput } from './OpponentInput'
+import { DuelRomanGuide } from './DuelRomanGuide'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
 import { animalRank, scorePoint } from './scoring'
@@ -203,6 +203,33 @@ export function CpuBattle({
             : 0),
       )
     : 0
+  const guideSentence = match?.sentence
+  const guideTyped = match?.typed ?? ''
+  const guideHint = match?.engine.hint ?? ''
+  const guidePosition = match?.engine.position ?? 0
+  const guideKana = match?.layout === 'kana'
+  const romanGuide = useMemo(
+    () =>
+      guideSentence && settings.guide ? (
+        <DuelRomanGuide
+          sentence={guideSentence}
+          typed={guideTyped}
+          hint={guideHint}
+          playerPosition={guidePosition}
+          cpuKeys={cpuTyped}
+          kana={guideKana}
+        />
+      ) : undefined,
+    [
+      guideSentence,
+      guideTyped,
+      guideHint,
+      guidePosition,
+      guideKana,
+      settings.guide,
+      cpuTyped,
+    ],
+  )
   return (
     <section className="cpu-battle">
       <div className="battle-brief">
@@ -364,11 +391,7 @@ export function CpuBattle({
                   wordColors={settings.wordColors}
                   consumeTyped={settings.consumeTyped}
                   showNext={false}
-                />
-                <OpponentInput
-                  reading={match.sentence.reading}
-                  keys={cpuTyped}
-                  kana={match.layout === 'kana'}
+                  romanGuide={romanGuide}
                 />
                 <div className="cpu-progress">
                   <span>

@@ -1,4 +1,5 @@
 import { memo, useMemo, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { locateSegments } from './sentences'
 import type { Sentence } from './sentences'
 import { RubyText, RubyToken } from './RubyText'
@@ -20,6 +21,7 @@ export const SentenceView = memo(function SentenceView({
   consumeTyped,
   showNext = true,
   partialRoman = false,
+  romanGuide,
 }: {
   current: Sentence
   next?: Sentence
@@ -34,6 +36,7 @@ export const SentenceView = memo(function SentenceView({
   consumeTyped: boolean
   showNext?: boolean
   partialRoman?: boolean
+  romanGuide?: ReactNode
 }) {
   const host = useRef<HTMLParagraphElement>(null)
   const segments = useMemo(() => locateSegments(current, kana), [current, kana])
@@ -123,6 +126,7 @@ export const SentenceView = memo(function SentenceView({
         hint={hint}
         showRoman={guide && !kana}
         partialRoman={partialRoman}
+        romanGuide={romanGuide}
         done={done}
       />
       {showNext && !done && next && (
