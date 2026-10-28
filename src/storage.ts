@@ -10,6 +10,11 @@ export interface RecordEntry {
   misses: number
   kpm: number
   accuracy: number
+  point?: number
+  rank?: string
+  rawMisses?: number
+  scoreVersion?: number
+  mode?: 'practice' | 'cpu'
 }
 export interface Settings {
   layout: Layout
