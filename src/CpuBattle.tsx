@@ -8,7 +8,8 @@ import {
   migrateCpuPreset,
 } from './cpuMatch'
 import type { CpuConfig } from './cpuMatch'
-import { shuffledPrompts } from './battlePrompts'
+import { battleSets, seededBattlePrompts } from './battleSets'
+import { freshSeed } from './typewell'
 import { DuelRomanGuide } from './DuelRomanGuide'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
@@ -37,12 +38,46 @@ function loadCpu(): CpuConfig {
 export function CpuBattle({
   settings,
   onRecord,
+  replay,
+  onReplayConsumed,
 }: {
   settings: Settings
+  replay?: RecordEntry | null
+  onReplayConsumed?: () => void
   onRecord: (record: RecordEntry) => void
 }) {
-  const [config, setConfig] = useState<CpuConfig>(loadCpu)
-  const [layout, setLayout] = useState<Layout>(settings.layout)
+  const [config, setConfig] = useState<CpuConfig>(
+    () => replay?.cpuConfig ?? loadCpu(),
+  )
+  const [layout, setLayout] = useState<Layout>(
+    replay?.layout ?? settings.layout,
+  )
+  const [selection] = useState(() => {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem('galactype.cpu-prompts.v1') ?? 'null',
+      )
+      if (
+        saved &&
+        battleSets.some((s) => s.id === saved.id) &&
+        typeof saved.seed === 'string' &&
+        saved.seed.length > 0 &&
+        saved.seed.length <= 64
+      )
+        return saved as { id: string; seed: string; fixed: boolean }
+    } catch {
+      /* Defaults also work without storage. */
+    }
+    return { id: 'cpu-rtc', seed: freshSeed(), fixed: false }
+  })
+  const [setId, setSetId] = useState(replay?.passageId ?? selection.id)
+  const [seed, setSeed] = useState(replay?.seed ?? selection.seed)
+  const [fixed, setFixed] = useState(!!replay || !!selection.fixed)
+  const matchSource = useRef({
+    id: setId,
+    seed,
+    title: battleSets.find((s) => s.id === setId)?.title ?? 'RTCオリジナル',
+  })
   const [match, setMatch] = useState<RtcMatch | null>(null)
   const [, render] = useState(0)
   const model = useRef<RtcMatch | null>(null)
@@ -73,8 +108,8 @@ export function CpuBattle({
     const point = scorePoint(keys, penalty, value.totalElapsed)
     onRecord({
       id: crypto.randomUUID(),
-      passageId: 'cpu-rtc',
-      title: `CPU対戦 ${value.roundsPlayer}–${value.roundsCpu} / ${value.config.kpm} KPM`,
+      passageId: matchSource.current.id,
+      title: `CPU対戦 · ${matchSource.current.title} ${value.roundsPlayer}–${value.roundsCpu} / ${value.config.kpm} KPM`,
       layout: value.layout,
       date: new Date().toISOString(),
       elapsed: value.totalElapsed,
@@ -88,6 +123,10 @@ export function CpuBattle({
       scoreVersion: 3,
       missPenalty: penalty,
       mode: 'cpu',
+      seed: matchSource.current.seed,
+      replayVersion: 1,
+      cpuConfig: { ...value.config },
+      trace: value.trace.finish(value.totalElapsed),
     })
   }
   useEffect(() => {
@@ -115,7 +154,17 @@ export function CpuBattle({
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [match])
   const start = () => {
-    const value = new RtcMatch(shuffledPrompts(), layout, { ...config })
+    onReplayConsumed?.()
+    const nextSeed = fixed ? seed.trim() : freshSeed()
+    setSeed(nextSeed)
+    matchSource.current = {
+      id: setId,
+      seed: nextSeed,
+      title: battleSets.find((s) => s.id === setId)!.title,
+    }
+    const value = new RtcMatch(seededBattlePrompts(setId, nextSeed), layout, {
+      ...config,
+    })
     model.current = value
     clock.current = { now: 0, last: performance.now() }
     recorded.current = false
@@ -123,6 +172,10 @@ export function CpuBattle({
     setMatch(value)
     try {
       localStorage.setItem('yohaku.cpu.v1', JSON.stringify(config))
+      localStorage.setItem(
+        'galactype.cpu-prompts.v1',
+        JSON.stringify({ id: setId, seed: nextSeed, fixed }),
+      )
     } catch {
       /* Play without saved preferences. */
     }
@@ -156,7 +209,7 @@ export function CpuBattle({
       return
     const value = model.current
     if (!value) return
-    const key = mapKey(event.nativeEvent, value.layout)
+    const key = mapKey(event.nativeEvent, value.layout, value.engine.hint[0])
     if (!key) return
     event.preventDefault()
     const raw = value.misses.raw
@@ -326,12 +379,57 @@ export function CpuBattle({
             <option value="kana">JISかな</option>
           </select>
         </label>
+        <label className="battle-set-control">
+          文章セット
+          <select
+            aria-label="対戦の文章セット"
+            value={setId}
+            onChange={(e) => setSetId(e.target.value)}
+          >
+            {battleSets.map((s) => (
+              <option value={s.id} key={s.id}>
+                {s.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          対戦シード
+          <input
+            aria-label="対戦シード"
+            maxLength={64}
+            value={seed}
+            onChange={(e) => setSeed(e.target.value)}
+          />
+        </label>
+        <label className="battle-fixed">
+          <span>
+            <input
+              type="checkbox"
+              aria-label="対戦シードを固定する"
+              checked={fixed}
+              onChange={(e) => setFixed(e.target.checked)}
+            />{' '}
+            シードを固定する
+          </span>
+          <button
+            type="button"
+            disabled={fixed}
+            onClick={() => setSeed(freshSeed())}
+          >
+            シードを更新
+          </button>
+        </label>
       </fieldset>
       <p className="cpu-config-note">
         反応時間は出題から初打鍵までの待ち時間。KPMは加速後の定常速度です。プリセットは人の反応をイメージしたゲーム内設定です。
       </p>
       {!match ? (
-        <button className="primary-button" onClick={start}>
+        <button
+          className="primary-button"
+          disabled={fixed && !seed.trim()}
+          onClick={start}
+        >
           CPUと対戦する
         </button>
       ) : (
@@ -348,12 +446,49 @@ export function CpuBattle({
               <span>ROUND</span>
             </div>
           </div>
+          <div className="round-scoreboard" aria-label="このラウンドの得点">
+            <div className="round-score-side">
+              <span>YOU</span>
+              <strong
+                key={`you-${match.roundPlayer}`}
+                data-testid="player-points"
+              >
+                {match.roundPlayer}
+              </strong>
+              <div className="point-lights" aria-hidden="true">
+                {Array.from({ length: 10 }, (_, i) => (
+                  <i key={i} data-lit={i < match.roundPlayer} />
+                ))}
+              </div>
+            </div>
+            <div className="round-score-center">
+              <span>このラウンド</span>
+              <b>10点先取</b>
+              <small role="status">
+                {match.roundPlayer === match.roundCpu
+                  ? '同点'
+                  : match.roundPlayer > match.roundCpu
+                    ? 'YOUが先行'
+                    : 'CPUが先行'}
+              </small>
+            </div>
+            <div className="round-score-side cpu">
+              <span>CPU</span>
+              <strong key={`cpu-${match.roundCpu}`} data-testid="cpu-points">
+                {match.roundCpu}
+              </strong>
+              <div className="point-lights" aria-hidden="true">
+                {Array.from({ length: 10 }, (_, i) => (
+                  <i key={i} data-lit={i < match.roundCpu} />
+                ))}
+              </div>
+            </div>
+          </div>
+          <p className="battle-seed-info">
+            {matchSource.current.title} · シード {matchSource.current.seed} ·
+            RTC v1
+          </p>
           <div className="word-score">
-            <span>
-              このラウンド{' '}
-              <b data-testid="player-points">{match.roundPlayer}</b> :{' '}
-              <b data-testid="cpu-points">{match.roundCpu}</b> / 10点先取
-            </span>
             <span>
               正確率 <b>{(match.accuracy * 100).toFixed(1)}%</b> · ミス{' '}
               {match.misses.misses}（実打 {match.misses.raw}）
@@ -457,7 +592,11 @@ export function CpuBattle({
                 <span>
                   {point} pt · {animalRank(point)}
                 </span>
-                <button className="primary-button" onClick={start}>
+                <button
+                  className="primary-button"
+                  disabled={fixed && !seed.trim()}
+                  onClick={start}
+                >
                   再戦する
                 </button>
               </>

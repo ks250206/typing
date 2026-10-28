@@ -1,5 +1,12 @@
+import type { SessionTrace } from './telemetry'
+import type { CpuConfig } from './cpuMatch'
+import { archiveBests } from './recordStats'
+import { writeTraces } from './traceStore'
 import type { Layout } from './engine'
 export interface RecordEntry {
+  trace?: SessionTrace
+  hasTrace?: boolean
+  cpuConfig?: CpuConfig
   id: string
   passageId: string
   title: string
@@ -37,10 +44,11 @@ export const defaultSettings: Settings = {
 }
 const HISTORY = 'yohaku.history.v1',
   SETTINGS = 'yohaku.settings.v1'
+const BESTS = 'galactype.bests.v1'
 const layouts = ['jis', 'us', 'dvorak', 'kana']
-export function readHistory(): RecordEntry[] {
+function readRecords(key: string, limit: number): RecordEntry[] {
   try {
-    const data: unknown = JSON.parse(localStorage.getItem(HISTORY) ?? '[]')
+    const data: unknown = JSON.parse(localStorage.getItem(key) ?? '[]')
     return Array.isArray(data)
       ? data
           .filter(
@@ -61,6 +69,19 @@ export function readHistory(): RecordEntry[] {
           )
           .map((record): RecordEntry => ({
             ...record,
+            trace: undefined,
+            hasTrace: record.hasTrace === true ? true : undefined,
+            cpuConfig:
+              record.cpuConfig &&
+              Number.isFinite(record.cpuConfig.kpm) &&
+              record.cpuConfig.kpm >= 60 &&
+              record.cpuConfig.kpm <= 1800 &&
+              Number.isFinite(record.cpuConfig.reactionMs) &&
+              record.cpuConfig.reactionMs >= 100 &&
+              record.cpuConfig.reactionMs <= 1500 &&
+              ['constant', 'ease-in'].includes(record.cpuConfig.curve)
+                ? record.cpuConfig
+                : undefined,
             replayVersion:
               record.replayVersion === 2
                 ? 2
@@ -90,11 +111,20 @@ export function readHistory(): RecordEntry[] {
                 ? record.actualKeys
                 : undefined,
           }))
-          .slice(0, 200)
+          .slice(0, limit)
       : []
   } catch {
     return []
   }
+}
+export const readHistory = () => readRecords(HISTORY, 200)
+export const readBestHistory = () =>
+  archiveBests(readRecords(BESTS, Number.MAX_SAFE_INTEGER))
+function summaries(data: RecordEntry[]) {
+  return data.map(({ trace, ...r }) => ({
+    ...r,
+    hasTrace: r.hasTrace || (trace ? true : undefined),
+  }))
 }
 export function readSettings(): Settings {
   try {
@@ -112,7 +142,7 @@ export function readSettings(): Settings {
   }
 }
 export function saveHistory(data: RecordEntry[]) {
-  return save(HISTORY, data.slice(0, 200))
+  return save(HISTORY, summaries(data.slice(0, 200)))
 }
 export function saveSettings(data: Settings) {
   return save(SETTINGS, data)
@@ -128,11 +158,11 @@ function save(key: string, data: unknown) {
 
 // Share one lock for appends and deletion so simultaneous tabs cannot overwrite
 // each other's read-modify-write operations. HTTPS/localhost provides Web Locks.
-function withHistoryLock<T>(operation: () => T): Promise<T> {
+async function withHistoryLock<T>(operation: () => T | Promise<T>): Promise<T> {
   if (typeof navigator !== 'undefined' && navigator.locks) {
-    return navigator.locks.request(HISTORY, operation)
+    return await navigator.locks.request(HISTORY, operation)
   }
-  return Promise.resolve(operation())
+  return await operation()
 }
 export function mergeHistory(...groups: RecordEntry[][]): RecordEntry[] {
   return [...new Map(groups.flat().map((entry) => [entry.id, entry])).values()]
@@ -143,19 +173,41 @@ export function mergeHistory(...groups: RecordEntry[][]): RecordEntry[] {
     .slice(0, 200)
 }
 export function appendHistory(entry: RecordEntry, unsaved: RecordEntry[] = []) {
-  return withHistoryLock(() => {
+  return withHistoryLock(async () => {
     const records = mergeHistory(readHistory(), unsaved, [entry])
-    return { records, saved: saveHistory(records) }
+    const bests = archiveBests([...readBestHistory(), ...records])
+    const retained = [...new Set([...records, ...bests].map((r) => r.id))]
+    const tracesSaved = await writeTraces(
+      [...records, ...bests].filter((r) => !!r.trace),
+      undefined,
+    )
+    const bestsSaved = save(BESTS, summaries(bests))
+    const historySaved = saveHistory(records)
+    if (historySaved && bestsSaved && tracesSaved)
+      await writeTraces([], retained)
+    return { records, bests, saved: historySaved && bestsSaved && tracesSaved }
   })
 }
 export function clearHistory() {
-  return withHistoryLock(() => saveHistory([]))
+  return withHistoryLock(async () => {
+    const previous = readHistory(),
+      bests = readBestHistory()
+    const historySaved = saveHistory([]),
+      bestsSaved = save(BESTS, [])
+    const tracesSaved =
+      historySaved && bestsSaved && (await writeTraces([], []))
+    if (!tracesSaved) {
+      if (historySaved) saveHistory(previous)
+      if (bestsSaved) save(BESTS, summaries(bests))
+    }
+    return tracesSaved
+  })
 }
 export function subscribeHistory(listener: (records: RecordEntry[]) => void) {
   const handle = (event: StorageEvent) => {
     if (
       event.storageArea === localStorage &&
-      (event.key === HISTORY || event.key === null)
+      (event.key === HISTORY || event.key === BESTS || event.key === null)
     )
       listener(readHistory())
   }

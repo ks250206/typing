@@ -149,3 +149,14 @@ export function typewellDocument(
     plan,
   }
 }
+
+/** RTC uses one dictionary word per point, rather than the solo 400-key line. */
+export function typewellPromptPool(id: string): Sentence[] {
+  const set = typewellSets.find((s) => s.id === id)
+  if (!set) throw new Error(`Unknown TypeWell set: ${id}`)
+  return data[set.category].map(([text, reading]) => ({
+    text,
+    reading,
+    segments: [{ text, reading }],
+  }))
+}

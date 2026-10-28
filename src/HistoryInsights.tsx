@@ -1,0 +1,428 @@
+import { useEffect, useMemo, useState } from 'react'
+import type { RecordEntry } from './storage'
+import {
+  chronological,
+  recordGroup,
+  recordTrend,
+  topRecords,
+  modeOf,
+} from './recordStats'
+import { readTrace } from './traceStore'
+import { analyzeTrace } from './telemetry'
+import type { SessionTrace } from './telemetry'
+const modes = { practice: '練習', trainer: '60秒', cpu: 'CPU対戦' }
+const ms = (value: number) => `${(value / 1000).toFixed(2)}秒`
+
+export function HistoryInsights({
+  records,
+  bests,
+  onSelect,
+}: {
+  records: RecordEntry[]
+  bests: RecordEntry[]
+  onSelect: (r: RecordEntry) => void
+}) {
+  const all = useMemo(
+    () => [...new Map([...bests, ...records].map((r) => [r.id, r])).values()],
+    [records, bests],
+  )
+  const groups = useMemo(
+    () => [...new Map(all.map((r) => [recordGroup(r), r])).entries()],
+    [all],
+  )
+  const [selection, setSelection] = useState('')
+  const [sameSeed, setSameSeed] = useState(false)
+  const selected =
+    groups.find(([key]) => key === selection) ??
+    groups.find(([key]) => key === recordGroup(records[0])) ??
+    groups[0]
+  const group = selected?.[0]
+  const latest = chronological(records.filter((r) => recordGroup(r) === group))
+  const anchor = latest[0] ?? selected?.[1]
+  const match = (r: RecordEntry) =>
+    recordGroup(r) === group && (!sameSeed || r.seed === anchor?.seed)
+  const recent = latest.filter(match)
+  const trend = recordTrend(recent)
+  const top = topRecords(all.filter(match))
+  const points = trend.slice(-30)
+  const maximum = Math.max(
+    1,
+    ...points.map((p) => Math.max(p.record.kpm, p.average)),
+  )
+  return (
+    <section className="history-insights" aria-label="文章別の記録分析">
+      <h3>文章別の記録分析</h3>
+      <label>
+        比較する文章・配列・モード
+        <select
+          aria-label="比較する記録"
+          value={group ?? ''}
+          onChange={(e) => setSelection(e.target.value)}
+        >
+          {groups.map(([key, r]) => (
+            <option value={key} key={key}>
+              {r.title} / {r.layout} / {modes[modeOf(r)]}
+              {r.cpuConfig
+                ? ` / CPU ${r.cpuConfig.kpm}KPM ${r.cpuConfig.reactionMs}ms ${r.cpuConfig.curve}`
+                : ''}
+              {r.replayVersion ? ` / v${r.replayVersion}` : ''}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="inline-toggle">
+        <input
+          type="checkbox"
+          checked={sameSeed}
+          onChange={(e) => setSameSeed(e.target.checked)}
+        />
+        同じシードだけで比較
+      </label>
+      <div className="history-metrics">
+        <div>
+          <span>最新</span>
+          <strong>
+            {recent[0]?.kpm ?? '—'} <small>KPM</small>
+          </strong>
+        </div>
+        <div>
+          <span>前回</span>
+          <strong>
+            {recent[1]?.kpm ?? '—'} <small>KPM</small>
+          </strong>
+        </div>
+        <div>
+          <span>直近{Math.min(5, recent.length)}回の移動平均</span>
+          <strong>
+            {trend.at(-1)?.average.toFixed(1) ?? '—'} <small>KPM</small>
+          </strong>
+        </div>
+        <div>
+          <span>前回との差</span>
+          <strong>
+            {recent.length > 1
+              ? `${recent[0].kpm - recent[1].kpm >= 0 ? '+' : ''}${recent[0].kpm - recent[1].kpm}`
+              : '—'}
+          </strong>
+        </div>
+      </div>
+      {points.length > 0 && (
+        <svg
+          className="history-chart"
+          viewBox="0 0 640 160"
+          role="img"
+          aria-label="直近30回のKPMと5回移動平均"
+        >
+          <text x="8" y="15">
+            {maximum} KPM
+          </text>
+          <polyline
+            className="chart-kpm"
+            points={points
+              .map(
+                (p, i) =>
+                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (p.record.kpm / maximum) * 115}`,
+              )
+              .join(' ')}
+          />
+          {points.map((p, i) => (
+            <circle
+              key={p.record.id}
+              cx={20 + (i * 600) / Math.max(1, points.length - 1)}
+              cy={140 - (p.record.kpm / maximum) * 115}
+              r="3"
+              fill="#61e8ff"
+            >
+              <title>
+                {new Date(p.record.date).toLocaleString('ja-JP')} ·{' '}
+                {p.record.kpm} KPM
+              </title>
+            </circle>
+          ))}
+          <polyline
+            className="chart-average"
+            points={points
+              .map(
+                (p, i) =>
+                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (p.average / maximum) * 115}`,
+              )
+              .join(' ')}
+          />
+          <text x="8" y="157">
+            過去 → 最新 · シアン：KPM / 紫：移動平均
+          </text>
+        </svg>
+      )}
+      <h4>
+        歴代 TOP 10 <small>KPM順 · 同率は時間・実ミス・新しい日時の順</small>
+      </h4>
+      <ol className="top-records">
+        {top.map((r) => (
+          <li key={r.id}>
+            <button onClick={() => onSelect(r)}>
+              <strong>{r.kpm} KPM</strong>
+              <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
+              <small>
+                {r.accuracy}% · {ms(r.elapsed)}
+                {r.seed ? ` · ${r.seed}` : ''}
+              </small>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <p className="small muted">
+        同じ文章セット・配列・モード・出題バージョンを比較。CPU対戦はCPU設定も一致させます。TOP10は直近200件の保持枠から外れても残ります。移動平均は保存済みの直近履歴を使用します。
+      </p>
+    </section>
+  )
+}
+
+export function RecordDetails({
+  record,
+  onClose,
+}: {
+  record: RecordEntry
+  onClose: () => void
+}) {
+  const [loaded, setLoaded] = useState<{ trace?: SessionTrace } | null>(
+    record.trace ? { trace: record.trace } : null,
+  )
+  const [tab, setTab] = useState('trend')
+  const [page, setPage] = useState(0)
+  const [start, setStart] = useState(0)
+  useEffect(() => {
+    if (record.trace) return
+    let cancelled = false
+    void readTrace(record.id).then((trace) => {
+      if (!cancelled) setLoaded({ trace })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [record.id, record.trace])
+  const analysis = useMemo(
+    () => (loaded?.trace ? analyzeTrace(loaded.trace) : null),
+    [loaded],
+  )
+  const trace = loaded?.trace
+  const rows = analysis?.buckets.slice(start, start + 120) ?? []
+  const max = Math.max(1, ...rows.map((b) => b.kpm))
+  return (
+    <section className="record-details" aria-label="打鍵の詳細">
+      <div className="detail-heading">
+        <div>
+          <h3>打鍵の詳細 · {record.title}</h3>
+          <p>
+            {record.layout} · {record.kpm} KPM ·{' '}
+            {new Date(record.date).toLocaleString('ja-JP')}
+          </p>
+        </div>
+        <button className="text-button" onClick={onClose}>
+          詳細を閉じる
+        </button>
+      </div>
+      {!loaded ? (
+        <p role="status">詳細を読み込み中…</p>
+      ) : !trace || !analysis ? (
+        <p>
+          この記録には打鍵ログがありません。旧記録の集計値は引き続き比較できます。
+        </p>
+      ) : (
+        <>
+          <nav className="detail-tabs" aria-label="記録の詳細表示">
+            {[
+              ['trend', 'KPM・ミス推移'],
+              ['loss', '文字・文章のタイムロス'],
+              ['keys', '全打鍵ログ'],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                aria-pressed={tab === id}
+                onClick={() => setTab(id)}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+          <p className="small muted">
+            {trace.strokes.length}打鍵（実ミス{' '}
+            {trace.strokes.filter((s) => !s.correct).length}）·
+            一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
+          </p>
+          {tab === 'trend' && (
+            <>
+              <label>
+                表示開始秒
+                <input
+                  aria-label="表示開始秒"
+                  type="range"
+                  min={0}
+                  max={Math.max(0, analysis.buckets.length - 120)}
+                  value={start}
+                  onChange={(e) => setStart(Number(e.target.value))}
+                />
+              </label>
+              <svg
+                className="history-chart"
+                viewBox="0 0 640 160"
+                role="img"
+                aria-label="1秒区間のKPMとミス率"
+              >
+                <polyline
+                  className="chart-kpm"
+                  points={rows
+                    .map(
+                      (b, i) =>
+                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.kpm / max) * 115}`,
+                    )
+                    .join(' ')}
+                />
+                <polyline
+                  className="chart-average"
+                  points={rows
+                    .map(
+                      (b, i) =>
+                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.missRate / 100) * 115}`,
+                    )
+                    .join(' ')}
+                />
+                <text x="8" y="15">
+                  KPM 0–{max.toFixed(0)} / ミス率 0–100%
+                </text>
+                <text x="8" y="157">
+                  {start}–{Math.min(start + 120, analysis.buckets.length)}秒 ·
+                  シアン：KPM / 紫：実ミス率
+                </text>
+              </svg>
+              <div className="detail-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>区間の終了秒</th>
+                      <th>KPM</th>
+                      <th>ミス率</th>
+                      <th>累計ミス</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((b) => (
+                      <tr key={b.time}>
+                        <td>{b.time}秒</td>
+                        <td>{b.kpm.toFixed(1)}</td>
+                        <td>{b.missRate.toFixed(1)}%</td>
+                        <td>{b.cumulative}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+          {tab === 'loss' && (
+            <>
+              <p>
+                基準の打鍵間隔は正打鍵の中央値 {ms(analysis.baseline)}
+                。それを超えた時間を「タイムロスの目安」として表示します。ミス原因を断定する値ではありません。末尾の未入力時間は文章に加算します。
+              </p>
+              <h4>時間がかかったキー · 上位20打鍵</h4>
+              <div className="detail-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>問題</th>
+                      <th>文字 / 期待キー</th>
+                      <th>入力</th>
+                      <th>間隔</th>
+                      <th>超過時間</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysis.characters.slice(0, 20).map((s, i) => (
+                      <tr key={i}>
+                        <td>{s.prompt + 1}</td>
+                        <td>
+                          {s.character} / {s.expected}
+                        </td>
+                        <td>
+                          {s.key} {s.correct ? '✓' : 'ミス'}
+                        </td>
+                        <td>{ms(s.dt)}</td>
+                        <td>{ms(s.loss)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <h4>時間がかかった文章</h4>
+              <ol className="prompt-losses">
+                {[...analysis.prompts]
+                  .sort((a, b) => b.loss - a.loss)
+                  .map((p) => (
+                    <li key={p.index}>
+                      <p>
+                        {p.index + 1}. {p.text}
+                      </p>
+                      <small>
+                        {p.kpm.toFixed(1)} KPM · 実ミス {p.misses} · 所要{' '}
+                        {ms(p.end - p.start)} · 超過 {ms(p.loss)}
+                      </small>
+                    </li>
+                  ))}
+              </ol>
+            </>
+          )}
+          {tab === 'keys' && (
+            <>
+              <div className="log-pages">
+                <button disabled={!page} onClick={() => setPage((p) => p - 1)}>
+                  前の100打鍵
+                </button>
+                <span>
+                  {page * 100 + 1}–
+                  {Math.min((page + 1) * 100, trace.strokes.length)} /{' '}
+                  {trace.strokes.length}
+                </span>
+                <button
+                  disabled={(page + 1) * 100 >= trace.strokes.length}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  次の100打鍵
+                </button>
+              </div>
+              <div className="detail-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>経過</th>
+                      <th>問題</th>
+                      <th>文字</th>
+                      <th>入力 / 期待</th>
+                      <th>結果</th>
+                      <th>間隔</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {trace.strokes
+                      .slice(page * 100, (page + 1) * 100)
+                      .map((s, i) => (
+                        <tr key={i} data-correct={s.correct}>
+                          <td>{ms(s.t)}</td>
+                          <td>{s.prompt + 1}</td>
+                          <td>{s.character}</td>
+                          <td>
+                            {s.key} / {s.expected}
+                          </td>
+                          <td>{s.correct ? '正解' : 'ミス'}</td>
+                          <td>{ms(s.dt)}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </>
+      )}
+    </section>
+  )
+}
