@@ -70,6 +70,18 @@ function readRecords(key: string, limit: number): RecordEntry[] {
           .map((record): RecordEntry => ({
             ...record,
             trace: undefined,
+            mode:
+              record.mode === 'practice' ||
+              record.mode === 'cpu' ||
+              record.mode === 'trainer'
+                ? record.mode
+                : undefined,
+            rawMisses:
+              typeof record.rawMisses === 'number' &&
+              Number.isFinite(record.rawMisses) &&
+              record.rawMisses >= 0
+                ? record.rawMisses
+                : undefined,
             hasTrace: record.hasTrace === true ? true : undefined,
             cpuConfig:
               record.cpuConfig &&
