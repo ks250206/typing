@@ -1489,8 +1489,8 @@ main {
   height: 3.9em;
   box-sizing: content-box;
   line-height: 1.9;
-  margin: 6px -8px 10px;
-  padding: 10px 8px 12px;
+  margin: 6px -8px 2px;
+  padding: 4px 8px;
   overflow: auto;
   scrollbar-width: thin;
 }
@@ -1501,35 +1501,30 @@ main {
   margin: 0 0 18px;
 }
 .guide-row {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
+  min-width: 0;
 }
 .guide-row + .guide-row {
-  margin-top: 8px;
+  margin-top: 4px;
 }
-.guide-label {
-  font: 8px/24px monospace;
-  letter-spacing: 0.08em;
-  color: #798db0;
+.word-start {
+  margin-inline-start: 0.32em;
 }
 .guide-line {
-  height: 48px;
-  line-height: 24px;
+  height: 3em;
+  line-height: 1.5;
   overflow: auto;
   overflow-wrap: anywhere;
   scrollbar-width: thin;
-  padding: 0 3px;
+  padding: 0;
 }
 .kana-line {
-  font-size: 13px;
+  font-size: 20px;
   color: #b5cbe4;
   letter-spacing: 0.04em;
 }
 .roman-line {
   font-family: 'SFMono-Regular', Consolas, monospace;
-  font-size: 14px;
+  font-size: 20px;
   letter-spacing: 0.06em;
   color: #a9accf;
 }
@@ -1641,15 +1636,9 @@ main {
     height: 5.8em;
     line-height: 1.9;
   }
-  .guide-row {
-    grid-template-columns: 23px minmax(0, 1fr);
-    gap: 7px;
-  }
-  .kana-line {
-    font-size: 12px;
-  }
+  .kana-line,
   .roman-line {
-    font-size: 12px;
+    font-size: 18px;
   }
   .session-controls {
     margin: 0 16px;
