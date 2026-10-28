@@ -31,6 +31,8 @@ import {
   saveSettings,
   subscribeHistory,
 } from './storage'
+import { CpuBattle } from './CpuBattle'
+import { animalRank, MissEpisodes, scorePoint } from './scoring'
 import { KeyboardGuide } from './KeyboardGuide'
 import { MissionCarousel } from './MissionCarousel'
 import { RubyText } from './RubyText'
@@ -68,6 +70,7 @@ export default function App() {
     [elapsed, setElapsed] = useState(0),
     [keys, setKeys] = useState(0),
     [misses, setMisses] = useState(0),
+    [rawMisses, setRawMisses] = useState(0),
     [snapshot, setSnapshot] = useState(() => {
       const initial = makeEngine(
         sentencesByPassage[passages[0].id][0].reading,
@@ -93,7 +96,8 @@ export default function App() {
     started = useRef(0),
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
-    focusRevision = useRef(0)
+    focusRevision = useRef(0),
+    missEpisodes = useRef(new MissEpisodes())
   const paragraphSegments = useMemo(() => {
     let cursor = 0
     return passage.paragraphs.map((paragraph) => {
@@ -157,6 +161,8 @@ export default function App() {
     setElapsed(0)
     setKeys(0)
     setMisses(0)
+    setRawMisses(0)
+    missEpisodes.current = new MissEpisodes()
     setSnapshot({
       position: engine.current.position,
       target: engine.current.target,
@@ -253,6 +259,23 @@ export default function App() {
       previous?.focus()
     }
   }, [showSettings, confirmClear])
+  const persistResult = (result: RecordEntry) => {
+    void appendHistory(result, unsavedRecords.current).then(
+      ({ records: latest, saved }) => {
+        if (saved)
+          unsavedRecords.current = unsavedRecords.current.filter(
+            (r) => !latest.some((item) => item.id === r.id),
+          )
+        else {
+          unsavedRecords.current = mergeHistory(unsavedRecords.current, [
+            result,
+          ])
+          setNotice('記録を保存できません。JSON を書き出して保管してください。')
+        }
+        setRecords(mergeHistory(latest, unsavedRecords.current))
+      },
+    )
+  }
   const accept = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {
       e.preventDefault()
@@ -281,12 +304,14 @@ export default function App() {
       setStatus('running')
     }
     if (!engine.current.feed(key)) {
-      setMisses((v) => v + 1)
+      if (missEpisodes.current.miss()) setMisses(missEpisodes.current.misses)
+      setRawMisses(missEpisodes.current.raw)
       setMistake(true)
       clearTimeout(missTimer.current)
       missTimer.current = setTimeout(() => setMistake(false), 520)
       return
     }
+    missEpisodes.current.accept()
     const nextKeys = keys + 1
     setKeys(nextKeys)
     setSnapshot({
@@ -325,26 +350,15 @@ export default function App() {
           elapsed: duration,
           keys: nextKeys,
           misses,
+          rawMisses: missEpisodes.current.raw,
+          point: scorePoint(nextKeys, misses, duration),
+          rank: animalRank(scorePoint(nextKeys, misses, duration)),
+          scoreVersion: 2,
+          mode: 'practice',
           kpm: Math.round(nextKeys / (Math.max(duration, 1) / 60000)),
           accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
         }
-        void appendHistory(result, unsavedRecords.current).then(
-          ({ records: latest, saved }) => {
-            if (saved)
-              unsavedRecords.current = unsavedRecords.current.filter(
-                (r) => !latest.some((item) => item.id === r.id),
-              )
-            else {
-              unsavedRecords.current = mergeHistory(unsavedRecords.current, [
-                result,
-              ])
-              setNotice(
-                '記録を保存できません。JSON を書き出して保管してください。',
-              )
-            }
-            setRecords(mergeHistory(latest, unsavedRecords.current))
-          },
-        )
+        persistResult(result)
       }
     }
   }
@@ -354,6 +368,7 @@ export default function App() {
       : ((sentenceIndex + snapshot.position / snapshot.target.length) /
           sentences.length) *
         100
+  const point = scorePoint(keys, misses, elapsed)
   const kpm = elapsed > 0 ? Math.round(keys / (elapsed / 60000)) : 0,
     accuracy = keys + misses ? (keys / (keys + misses)) * 100 : 100
   const best = records
@@ -406,6 +421,7 @@ export default function App() {
           {[
             ['practice', Keyboard, 'タイピング'],
             ['library', BookOpen, '文章ライブラリ'],
+            ['battle', Target, 'CPU対戦'],
             ['history', History, '練習の記録'],
           ].map(([id, Icon, label]) => {
             const I = Icon as typeof Keyboard
@@ -458,6 +474,7 @@ export default function App() {
                   practice: 'タイピング',
                   library: '文章ライブラリ',
                   history: '練習の記録',
+                  battle: 'CPU対戦',
                 }[tab]
               }
             </span>
@@ -521,6 +538,9 @@ export default function App() {
                 <X size={14} />
               </button>
             </div>
+          )}
+          {tab === 'battle' && (
+            <CpuBattle settings={settings} onRecord={persistResult} />
           )}
           {tab === 'practice' && (
             <>
@@ -770,6 +790,14 @@ export default function App() {
                       <span className="tiny-label">THIS SESSION</span>
                       <AudioLines size={15} />
                     </div>
+                    <div className="point-panel">
+                      <strong>
+                        {point}
+                        <small> pt</small>
+                      </strong>
+                      <span>{animalRank(point)}</span>
+                      <small>正打鍵KPM × 正確率²</small>
+                    </div>
                     <div className="primary-stat">
                       <span>{kpm}</span>
                       <span>
@@ -794,6 +822,9 @@ export default function App() {
                     <div className="miss-stat">
                       <span>ミス</span>
                       <strong>{misses}</strong>
+                      {rawMisses !== misses && (
+                        <small>実ミス {rawMisses} 打鍵</small>
+                      )}
                       <span>打鍵</span>
                       <strong>{keys}</strong>
                     </div>
@@ -806,7 +837,13 @@ export default function App() {
                       </strong>
                     </div>
                   </div>
-                  <div className="config-card">
+                  <div
+                    className="config-card"
+                    onMouseDown={(e) => {
+                      if ((e.target as HTMLElement).closest('.toggle-row'))
+                        e.preventDefault()
+                    }}
+                  >
                     <span className="tiny-label">INPUT STYLE</span>
                     <label htmlFor="layout">入力方式</label>
                     <select
@@ -988,6 +1025,7 @@ export default function App() {
                       <tr>
                         <th>文章 / 日時</th>
                         <th>入力方式</th>
+                        <th>point / 称号</th>
                         <th>KPM</th>
                         <th>正確率</th>
                         <th>時間</th>
@@ -1003,6 +1041,15 @@ export default function App() {
                             </small>
                           </td>
                           <td>{layoutLabels[r.layout]}</td>
+                          <td>
+                            {scorePoint(r.keys, r.misses, r.elapsed)} pt
+                            <small>
+                              {animalRank(
+                                scorePoint(r.keys, r.misses, r.elapsed),
+                              )}
+                              {r.scoreVersion !== 2 ? ' · 旧ミス方式' : ''}
+                            </small>
+                          </td>
                           <td className="record-kpm">{r.kpm}</td>
                           <td>{r.accuracy}%</td>
                           <td>{time(r.elapsed)}</td>

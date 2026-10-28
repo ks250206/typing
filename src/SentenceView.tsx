@@ -1,11 +1,12 @@
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import { locateSegments } from './sentences'
 import type { Sentence } from './sentences'
 import { RubyText, RubyToken } from './RubyText'
+import { useSingleLineFlow } from './useSingleLineFlow'
 import { ReadingGuide } from './ReadingGuide'
 import { consumedOffsets, sentenceWordStarts, wordTone } from './wordSpacing'
 
-export function SentenceView({
+export const SentenceView = memo(function SentenceView({
   current,
   next,
   position,
@@ -17,6 +18,7 @@ export function SentenceView({
   guide,
   wordColors,
   consumeTyped,
+  showNext = true,
 }: {
   current: Sentence
   next?: Sentence
@@ -29,6 +31,7 @@ export function SentenceView({
   guide: boolean
   wordColors: boolean
   consumeTyped: boolean
+  showNext?: boolean
 }) {
   const host = useRef<HTMLParagraphElement>(null)
   const segments = useMemo(() => locateSegments(current, kana), [current, kana])
@@ -47,35 +50,13 @@ export function SentenceView({
   const consumed = consumeTyped
     ? consumedOffsets(target, position, typed, hint, words.reading, done)
     : { reading: 0, input: 0, roman: 0 }
-  useLayoutEffect(() => {
-    const el = host.current
-    if (!el) return
-    const reveal = () => {
-      const cursor = el.querySelector('[aria-current="location"]')
-      if (!cursor) return
-      const rect = cursor.getBoundingClientRect()
-      const viewport = el.getBoundingClientRect()
-      if (consumeTyped) {
-        if (rect.right > viewport.right)
-          el.scrollLeft += rect.right - viewport.right + 12
-        else if (rect.left < viewport.left)
-          el.scrollLeft += rect.left - viewport.left - 12
-        return
-      }
-      if (rect.bottom > viewport.bottom)
-        el.scrollTop += rect.bottom - viewport.bottom + 12
-      else if (rect.top < viewport.top)
-        el.scrollTop += rect.top - viewport.top - 12
-    }
-    if (position === 0 || consumeTyped) {
-      el.scrollTop = 0
-      el.scrollLeft = 0
-    }
-    reveal()
-    const observer = new ResizeObserver(reveal)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [current, position, kana, consumeTyped])
+  useSingleLineFlow(
+    host,
+    `${target}/${position}/${typed}/${consumed.input}`,
+    position === 0 && !typed,
+    consumeTyped,
+    '[aria-current="location"]',
+  )
   return (
     <div
       className={`prose ${wordColors ? 'word-colors' : ''}`}
@@ -85,9 +66,8 @@ export function SentenceView({
         {done ? 'COMPLETE' : 'NOW / 現在の文章'}
       </div>
       <p className="current-paragraph" ref={host} data-text={current.text}>
-        <span className="sentence-stream" key={consumed.input}>
+        <span className="sentence-stream flow-track">
           {segments.map((segment, index) => {
-            if (consumeTyped && segment.end <= consumed.input) return null
             const active =
               !done && position >= segment.start && position < segment.end
             return (
@@ -101,6 +81,21 @@ export function SentenceView({
                       : 'pending-token'
                 }`}
                 data-tone={wordTone(segment.start, inputWordStarts)}
+                data-consumed={
+                  consumeTyped && segment.end <= consumed.input
+                    ? 'true'
+                    : undefined
+                }
+                aria-hidden={
+                  consumeTyped && segment.end <= consumed.input
+                    ? true
+                    : undefined
+                }
+                data-word-anchor={
+                  consumeTyped && segment.start === consumed.input
+                    ? ''
+                    : undefined
+                }
               >
                 <RubyToken {...segment} active={active} />
               </span>
@@ -119,7 +114,7 @@ export function SentenceView({
         showRoman={guide && !kana}
         done={done}
       />
-      {!done && next && (
+      {showNext && !done && next && (
         <div className="next-sentence">
           <div className="sentence-label">UP NEXT / 次の文章</div>
           <p className="upcoming" data-text={next.text}>
@@ -129,4 +124,4 @@ export function SentenceView({
       )}
     </div>
   )
-}
+})

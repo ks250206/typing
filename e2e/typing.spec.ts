@@ -144,24 +144,26 @@ test('next reading stays visible with guide off, after resize and restart', asyn
   )
   const visible = () =>
     page.locator('.kana-line').evaluate((el) => {
-      const text = el.querySelector('.remaining-kana')!.firstChild!
-      const range = document.createRange()
-      range.setStart(text, 0)
-      range.setEnd(text, 1)
-      const next = range.getBoundingClientRect(),
-        viewport = el.getBoundingClientRect()
+      const cursor = el
+        .querySelector('[data-guide-cursor]')!
+        .getBoundingClientRect()
+      const viewport = el.getBoundingClientRect()
+      const transform = getComputedStyle(
+        el.querySelector('.flow-track')!,
+      ).transform
       return {
         visible:
-          next.top >= viewport.top - 1 && next.bottom <= viewport.bottom + 1,
-        scrollTop: el.scrollTop,
+          cursor.left >= viewport.left - 1 &&
+          cursor.right <= viewport.right + 1,
+        shift: new DOMMatrixReadOnly(transform).m41,
       }
     })
   await expect.poll(async () => (await visible()).visible).toBe(true)
-  expect((await visible()).scrollTop).toBeGreaterThan(0)
+  expect((await visible()).shift).toBeLessThan(0)
   await page.setViewportSize({ width: 1000, height: 900 })
   await expect.poll(async () => (await visible()).visible).toBe(true)
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
-  await expect.poll(async () => (await visible()).scrollTop).toBe(0)
+  await expect.poll(async () => (await visible()).shift).toBe(0)
 })
 
 test('two tabs keep simultaneous completions, synchronize deletion, and do not restore deleted history', async ({

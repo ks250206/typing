@@ -197,6 +197,8 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   const ruby = main.locator('ruby').first()
   await expect(ruby.locator('.token-text')).toHaveText('閉館')
   await expect(ruby.locator('rt')).toHaveText('へいかん')
+  await expect(page.getByLabel('単語の色分け', { exact: true })).toBeChecked()
+  await page.getByLabel('単語の色分け', { exact: true }).uncheck()
   const natural = await main
     .locator('.pending-token[data-tone="1"]')
     .first()
@@ -221,19 +223,33 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   await page.getByLabel('入力済み単語を消す', { exact: true }).check()
   await area.focus()
   await page.keyboard.type('heika')
-  await expect(main.locator('.token-text').first()).toHaveText('閉館')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('閉館')
   await page.keyboard.type('n')
-  await expect(main.locator('.token-text').first()).toHaveText('の')
-  await expect(page.locator('.typed-kana')).toHaveText('')
-  await expect(page.locator('.typed-roman')).toHaveText('')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('の')
+  await expect(
+    page.locator('.typed-kana > span:not([data-consumed])'),
+  ).toHaveCount(0)
+  await expect(
+    page.locator('.typed-roman > span:not([data-consumed])'),
+  ).toHaveCount(0)
   await expect(page.locator('.roman-current')).toHaveText('n')
   await page.keyboard.type('z')
-  await expect(main.locator('.token-text').first()).toHaveText('の')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('の')
   await page.keyboard.type('no')
-  await expect(main.locator('.token-text').first()).toHaveText('放送')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('放送')
   await expect(page.locator('[aria-current="location"]')).toHaveText('放送')
   await page.getByLabel('入力済み単語を消す', { exact: true }).uncheck()
-  await expect(main.locator('.token-text').first()).toHaveText('閉館')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('閉館')
   await expect(
     main.locator('.typed-token').first().locator('.token-text'),
   ).toHaveText('閉館')
@@ -266,9 +282,13 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
     'KeyT',
   ])
     await page.keyboard.press(code)
-  await expect(main.locator('.token-text').first()).toHaveText('が')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('が')
   await page.keyboard.press('BracketLeft')
-  await expect(main.locator('.token-text').first()).toHaveText('終')
+  await expect(
+    main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
+  ).toHaveText('終')
   await page.setViewportSize({ width: 390, height: 844 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(page.locator('.sentence-stream')).toHaveCSS(

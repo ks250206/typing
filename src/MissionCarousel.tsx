@@ -26,6 +26,7 @@ export function MissionCarousel({
         ))}
       </nav>
       <div className="mission-viewport">
+        <div className="mission-sweep" key={stage} aria-hidden="true" />
         {children.map((child, index) => (
           <div
             key={index}
