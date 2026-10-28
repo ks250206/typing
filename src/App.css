@@ -1658,3 +1658,235 @@ main {
     display: none;
   }
 }
+
+/* A quiet reading surface before entering the flow. */
+.passage-preview {
+  border-bottom: 1px solid #7897d526;
+  padding: 0 27px;
+}
+.passage-preview-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 0;
+  color: #b4daee;
+  background: none;
+  border: 0;
+  font-size: 12px;
+  cursor: pointer;
+}
+.passage-preview-toggle > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.passage-preview-toggle small {
+  color: #7d95b7;
+  font-size: 10px;
+}
+#passage-full-text {
+  padding-bottom: 20px;
+}
+#passage-full-text ol {
+  list-style: decimal;
+  padding-left: 25px;
+  margin: 8px 0 18px;
+  color: #7c9dc2;
+}
+#passage-full-text li {
+  padding-left: 8px;
+}
+#passage-full-text p {
+  color: #c2d3e7;
+  font-size: 15px;
+  line-height: 2.1;
+  letter-spacing: 0.04em;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
+/* Finger zones retain their color; the current word and key add separate glow levels. */
+.keyboard-guide {
+  margin: 8px 27px 20px;
+  padding: 15px 16px 12px;
+  border: 1px solid #6c94ce30;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #111c32c9, #111024d9);
+}
+.keyboard-guide figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  color: #7699bf;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  margin-bottom: 15px;
+}
+.next-key-label strong {
+  color: #b8f6ff;
+  font-size: 13px;
+  margin-left: 8px;
+}
+.keyboard-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.keyboard-row-1 {
+  margin-left: 3%;
+}
+.keyboard-row-2 {
+  margin-left: 5%;
+  margin-right: 2%;
+}
+.keyboard-row-3 {
+  margin-right: 1%;
+}
+.keyboard-row-4 {
+  justify-content: center;
+}
+.keyboard-key {
+  --finger: #ac8ce2;
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 43px;
+  border: 1px solid color-mix(in srgb, var(--finger) 40%, #1a2340);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  color: color-mix(in srgb, var(--finger) 80%, white);
+  background: color-mix(in srgb, var(--finger) 12%, #11192c);
+  font:
+    13px/1.1 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+.keyboard-key[data-finger$='ring'] {
+  --finger: #819ce6;
+}
+.keyboard-key[data-finger$='middle'] {
+  --finger: #5bbccc;
+}
+.keyboard-key[data-finger$='index'] {
+  --finger: #69c3a8;
+}
+.keyboard-key[data-finger='thumb'] {
+  --finger: #91a3bc;
+  flex: 0 1 45%;
+  height: 30px;
+}
+.keyboard-key small {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 8px;
+  opacity: 0.65;
+}
+.keyboard-key.wide-key {
+  flex-grow: 1.5;
+  font-size: 10px;
+}
+.keyboard-key.home-key {
+  border-bottom-color: var(--finger);
+}
+.home-ridge {
+  position: absolute;
+  bottom: 4px;
+  width: 10px;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.8;
+}
+.keyboard-key[data-state='word'] {
+  background: color-mix(in srgb, var(--finger) 27%, #11192c);
+  border-color: color-mix(in srgb, var(--finger) 80%, #1a2340);
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--finger) 18%, transparent);
+}
+.keyboard-key[data-state='next'] {
+  color: #edfeff;
+  background: #21677d;
+  border-color: #a1f7ff;
+  box-shadow:
+    0 0 15px #50dfff70,
+    inset 0 0 12px #8ff8ff40;
+  text-shadow: 0 0 7px #c4fcff;
+}
+.keyboard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 9px;
+  color: #91a3bc;
+}
+.keyboard-legend > span::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ac8ce2;
+  margin-right: 4px;
+}
+.keyboard-legend [data-tone='1']::before {
+  background: #819ce6;
+}
+.keyboard-legend [data-tone='2']::before {
+  background: #5bbccc;
+}
+.keyboard-legend [data-tone='3']::before {
+  background: #69c3a8;
+}
+.keyboard-legend [data-tone='4']::before {
+  background: #91a3bc;
+}
+.keyboard-legend .keyboard-state-legend::before {
+  display: none;
+}
+.keyboard-state-legend {
+  margin-left: auto;
+}
+@media (max-width: 480px) {
+  .passage-preview {
+    padding: 0 16px;
+  }
+  #passage-full-text p {
+    font-size: 14px;
+  }
+  .keyboard-guide {
+    margin: 8px 12px 18px;
+    padding: 12px 7px;
+  }
+  .keyboard-row {
+    gap: 2px;
+    margin-top: 3px;
+  }
+  .keyboard-key {
+    height: 33px;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .keyboard-key small {
+    font-size: 6px;
+    top: 2px;
+    right: 2px;
+  }
+  .keyboard-key.wide-key {
+    font-size: 7px;
+  }
+  .keyboard-legend {
+    gap: 6px;
+  }
+  .keyboard-state-legend {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+.keyboard-row-4 .keyboard-key {
+  flex: 0 1 45%;
+}

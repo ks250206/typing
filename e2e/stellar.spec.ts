@@ -24,9 +24,13 @@ test('integrated guides track alternate spellings, misses, transitions and reset
     )
   })
   expect(ordering).toBe(true)
+  await page
+    .locator('#passage-full-text')
+    .getByRole('button', { name: /練習へ進む/ })
+    .click()
   const guideTop = await page
     .locator('.sentence-guides')
-    .evaluate((el) => el.getBoundingClientRect().top)
+    .evaluate((el) => el.getBoundingClientRect().top + scrollY)
   const current = page.locator('.kana-line .guide-current')
   await area.focus()
   const input = 'heikannohousougaowaruto,tosilyo'
@@ -37,7 +41,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   expect(
     await page
       .locator('.sentence-guides')
-      .evaluate((el) => el.getBoundingClientRect().top),
+      .evaluate((el) => el.getBoundingClientRect().top + scrollY),
   ).toBe(guideTop)
   const model = new RomanEngine(sentencesByPassage['night-library'][0].reading)
   for (const key of input) expect(model.feed(key)).toBe(true)

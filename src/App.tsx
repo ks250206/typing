@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -31,6 +31,8 @@ import {
   saveSettings,
   subscribeHistory,
 } from './storage'
+import { KeyboardGuide } from './KeyboardGuide'
+import { wordHint } from './physicalKeyboard'
 import { SentenceView } from './SentenceView'
 import { sentencesByPassage } from './sentences'
 import type { RecordEntry } from './storage'
@@ -80,7 +82,8 @@ export default function App() {
     [mistake, setMistake] = useState(false),
     [notice, setNotice] = useState(''),
     [showSettings, setShowSettings] = useState(false),
-    [confirmClear, setConfirmClear] = useState(false)
+    [confirmClear, setConfirmClear] = useState(false),
+    [showPassage, setShowPassage] = useState(true)
   const passage = passages.find((p) => p.id === selected)!,
     sentences = sentencesByPassage[selected],
     engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -89,6 +92,24 @@ export default function App() {
     started = useRef(0),
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const keyboardWord = useMemo(
+    () =>
+      wordHint(
+        sentences[sentenceIndex],
+        settings.layout,
+        snapshot.position,
+        snapshot.typed,
+        snapshot.hint,
+      ),
+    [
+      sentences,
+      sentenceIndex,
+      settings.layout,
+      snapshot.position,
+      snapshot.typed,
+      snapshot.hint,
+    ],
+  )
   const elapsedNow = () =>
     accumulated.current +
     (started.current ? performance.now() - started.current : 0)
@@ -99,6 +120,7 @@ export default function App() {
     setSelected(id)
     setSentenceIndex(0)
     setStatus('ready')
+    setShowPassage(true)
     setElapsed(0)
     setKeys(0)
     setMisses(0)
@@ -223,6 +245,7 @@ export default function App() {
       // oxlint-disable-next-line react/purity
       started.current = performance.now()
       setStatus('running')
+      setShowPassage(false)
     }
     if (!engine.current.feed(key)) {
       setMisses((v) => v + 1)
@@ -503,6 +526,45 @@ export default function App() {
                     </div>
                     <span className="passage-symbol">{passage.accent}</span>
                   </div>
+                  <section className="passage-preview">
+                    <button
+                      className="passage-preview-toggle"
+                      aria-expanded={showPassage}
+                      aria-controls="passage-full-text"
+                      onClick={() => {
+                        pause()
+                        setShowPassage((value) => !value)
+                      }}
+                    >
+                      <span>
+                        <BookOpen size={15} /> 全文を確認{' '}
+                        <small>
+                          {sentences.length} 文 / {passage.paragraphs.length}{' '}
+                          段落
+                        </small>
+                      </span>
+                      <span>{showPassage ? '閉じる −' : '開く ＋'}</span>
+                    </button>
+                    <div id="passage-full-text" hidden={!showPassage}>
+                      <ol>
+                        {passage.paragraphs.map((paragraph, index) => (
+                          <li key={index}>
+                            <p>{paragraph.text}</p>
+                          </li>
+                        ))}
+                      </ol>
+                      <button
+                        className="text-button"
+                        onClick={() => {
+                          setShowPassage(false)
+                          if (status === 'paused') resume()
+                          else focus()
+                        }}
+                      >
+                        練習へ進む <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  </section>
                   <div
                     className="typing-area"
                     ref={area}
@@ -541,6 +603,11 @@ export default function App() {
                       typed={snapshot.typed}
                       hint={snapshot.hint}
                       guide={settings.guide}
+                    />
+                    <KeyboardGuide
+                      layout={settings.layout}
+                      word={keyboardWord}
+                      enabled={status === 'ready' || status === 'running'}
                     />
                     <div
                       className={`session-controls ${mistake ? 'mistake' : ''}`}
