@@ -255,7 +255,7 @@ test('GALACTYPE branding and cosmic word set work on desktop and mobile with a s
   await expect(page.locator('.brand')).toContainText('GALACTYPE')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page
-    .getByRole('button', { name: 'タイプウェル · 宇宙の名前', exact: true })
+    .getByRole('button', { name: 'タイプウェル準拠 · 宇宙の名前', exact: true })
     .click()
   await expect(page.locator('.passage-header')).toContainText('583の天体名')
   await page.getByLabel('シードを固定する').check()
