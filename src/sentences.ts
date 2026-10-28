@@ -12,16 +12,37 @@ export interface Sentence {
   segments: ReadingSegment[]
 }
 
-/** Explicit kanji readings avoid estimating display progress from character ratios. */
+/** Explicit alignments also support historical written kana with modern readings. */
 export const sentencesByPassage: Record<string, Sentence[]> =
   Object.fromEntries(
     passages.map((passage) => {
       const sentences: Sentence[] = []
       passage.paragraphs.forEach((paragraph, index) => {
-        const readings = kanjiReadings[passage.id][index].split('/')
-        let kanjiIndex = 0
+        const aligned =
+          paragraph.segments ??
+          (() => {
+            const readings = kanjiReadings[passage.id][index].split('/')
+            let kanjiIndex = 0
+            const parts = (paragraph.text.match(/[一-龯々]+|./gu) ?? []).map(
+              (text) => {
+                const reading = /^[一-龯々]/u.test(text)
+                  ? readings[kanjiIndex++]
+                  : normalizeReading(text)
+                if (!reading)
+                  throw new Error(`Missing reading: ${passage.id}/${text}`)
+                return { text, reading }
+              },
+            )
+            if (kanjiIndex !== readings.length)
+              throw new Error(`Reading count mismatch: ${passage.id}/${index}`)
+            return parts
+          })()
+        if (
+          aligned.map((s) => s.text).join('') !== paragraph.text ||
+          aligned.map((s) => s.reading).join('') !== paragraph.reading
+        )
+          throw new Error(`Reading alignment mismatch: ${passage.id}/${index}`)
         let segments: ReadingSegment[] = []
-        let reconstructed = ''
         const flush = () => {
           if (!segments.length) return
           sentences.push({
@@ -31,22 +52,11 @@ export const sentencesByPassage: Record<string, Sentence[]> =
           })
           segments = []
         }
-        for (const text of paragraph.text.match(/[一-龯々]+|./gu) ?? []) {
-          const reading = /^[一-龯々]/u.test(text)
-            ? readings[kanjiIndex++]
-            : normalizeReading(text)
-          if (!reading)
-            throw new Error(`Missing reading: ${passage.id}/${text}`)
-          segments.push({ text, reading })
-          reconstructed += reading
-          if (text === '。') flush()
+        for (const segment of aligned) {
+          segments.push(segment)
+          if (segment.text === '。') flush()
         }
         flush()
-        if (
-          reconstructed !== paragraph.reading ||
-          kanjiIndex !== readings.length
-        )
-          throw new Error(`Reading alignment mismatch: ${passage.id}/${index}`)
       })
       return [passage.id, sentences]
     }),

@@ -21,7 +21,7 @@ it('finds physical keys for all canonical passage input in all four layouts', ()
         for (const char of input) {
           const key = physicalKey(char, layout)
           expect(key, `${layout}: ${char}`).toBeDefined()
-          expect(keyOutput(key!.code, key!.shift, layout)).toBe(char)
+          expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
         }
       }
   }

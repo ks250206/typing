@@ -46,7 +46,12 @@ export function keyboardCodes(layout: Layout) {
     ])
     .concat([['Space']])
 }
-export function keyOutput(code: string, shift: boolean, layout: Layout) {
+export function keyOutput(
+  code: string,
+  shift: boolean,
+  layout: Layout,
+  expected?: string,
+) {
   if (code.startsWith('Shift')) return null
   const jis = layout === 'jis' || layout === 'kana'
   let key = ''
@@ -56,12 +61,13 @@ export function keyOutput(code: string, shift: boolean, layout: Layout) {
     key = shift ? (jis ? ')!"#$%&\'()' : ')!@#$%^&*(')[digit] : String(digit)
     if (jis && shift && digit === 0) key = ''
   } else key = (jis ? jisSymbols : usSymbols)[code]?.[Number(shift)] ?? ''
-  return mapKey({ code, key, shiftKey: shift }, layout)
+  return mapKey({ code, key, shiftKey: shift }, layout, expected)
 }
 export function physicalKey(character: string, layout: Layout) {
   for (const shift of [false, true]) {
     for (const code of keyboardCodes(layout).flat()) {
-      if (keyOutput(code, shift, layout) === character) return { code, shift }
+      if (keyOutput(code, shift, layout, character) === character)
+        return { code, shift }
     }
   }
 }

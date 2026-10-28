@@ -1,0 +1,2 @@
+# Preserve supplied XML snapshots byte-for-byte, including their original CRLF.
+src/data/etyping/*.xml -text whitespace=trailing-space,space-before-tab,cr-at-eol

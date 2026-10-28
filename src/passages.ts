@@ -1,10 +1,19 @@
+import { constitution } from './constitution'
+import { sakusaku } from './sakusaku'
+import { etypingPassages } from './etyping'
 export interface Passage {
   id: string
   title: string
   subtitle: string
   genre: string
   accent: string
-  paragraphs: { text: string; reading: string }[]
+  durationMs?: number
+  source?: { label: string; url?: string; kind?: 'public' | 'provided' }
+  paragraphs: {
+    text: string
+    reading: string
+    segments?: { text: string; reading: string }[]
+  }[]
 }
 export const passages: Passage[] = [
   {
@@ -151,4 +160,7 @@ export const passages: Passage[] = [
       },
     ],
   },
+  constitution,
+  sakusaku,
+  ...etypingPassages,
 ]

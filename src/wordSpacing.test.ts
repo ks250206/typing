@@ -14,7 +14,10 @@ it('maps Japanese word starts to exact reviewed readings for every passage', () 
       })
       const roman = new RomanEngine(sentence.reading).hint
       const starts = romanWordStarts(sentence.reading, roman, words.reading)
-      expect(starts.size).toBe(words.reading.size)
+      expect(
+        starts.size,
+        sentence.text + ' / ' + sentence.reading + ' / ' + [...words.reading],
+      ).toBe(words.reading.size)
       const engine = new RomanEngine(sentence.reading)
       for (let index = 0; index < roman.length; index++) {
         if (starts.has(index))

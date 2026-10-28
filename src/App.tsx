@@ -22,13 +22,15 @@ import {
 import { KanaEngine, RomanEngine, mapKey } from './engine'
 import type { Layout } from './engine'
 import { passages as essayPassages } from './passages'
+import { randomSentenceIndex } from './sakusaku'
+import { etypingDocument, isEtyping } from './etyping'
 import {
   freshSeed,
   isTypewell,
   strokeLimit,
   typewellDocument,
   typewellPassages,
-  typewellView,
+  typewellEngine,
 } from './typewell'
 import {
   appendHistory,
@@ -64,19 +66,25 @@ const time = (ms: number) =>
     .toString()
     .padStart(2, '0')}`
 const passages = [...essayPassages, ...typewellPassages]
-function practiceDocument(id: string, seed: string) {
+function practiceDocument(
+  id: string,
+  seed: string,
+  layout: Layout,
+  version: 1 | 2,
+) {
   return isTypewell(id)
-    ? typewellDocument(id, seed)
-    : {
-        passage: passages.find((p) => p.id === id)!,
-        sentences: sentencesByPassage[id],
-      }
+    ? typewellDocument(id, seed, layout, version)
+    : isEtyping(id)
+      ? etypingDocument(id, seed)
+      : {
+          passage: passages.find((p) => p.id === id)!,
+          sentences: sentencesByPassage[id],
+          plan: null,
+        }
 }
 type Status = 'ready' | 'running' | 'paused' | 'done'
-function makeEngine(reading: string, layout: Layout, natural = false) {
-  return layout === 'kana'
-    ? new KanaEngine(reading)
-    : new RomanEngine(reading, natural)
+function makeEngine(reading: string, layout: Layout) {
+  return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
 }
 export default function App() {
   const [seedPreferences] = useState(() => {
@@ -90,17 +98,22 @@ export default function App() {
         saved.seed.length > 0 &&
         saved.seed.length <= 64
       )
-        return { seed: saved.seed, fixed: true }
+        return {
+          seed: saved.seed,
+          fixed: true,
+          version: saved.version === 2 ? (2 as const) : (1 as const),
+        }
     } catch {
       /* A fresh seed also works without storage. */
     }
-    return { seed: freshSeed(), fixed: false }
+    return { seed: freshSeed(), fixed: false, version: 2 as const }
   })
   const [seed, setSeed] = useState(seedPreferences.seed)
+  const [replayVersion, setReplayVersion] = useState<1 | 2>(
+    seedPreferences.version,
+  )
   const [seedDraft, setSeedDraft] = useState(seed)
   const [fixedSeed, setFixedSeed] = useState(seedPreferences.fixed)
-  const [countdown, setCountdown] = useState(0)
-  const [countdownUntil, setCountdownUntil] = useState(0)
   const [selected, setSelected] = useState(passages[0].id),
     [tab, setTab] = useState('practice'),
     [genre, setGenre] = useState('すべて')
@@ -132,12 +145,15 @@ export default function App() {
     [confirmClear, setConfirmClear] = useState(false),
     [practiceStage, setPracticeStage] = useState(0)
   const practice = useMemo(
-    () => practiceDocument(selected, seed),
-    [selected, seed],
+    () => practiceDocument(selected, seed, settings.layout, replayVersion),
+    [selected, seed, settings.layout, replayVersion],
   )
   const { passage, sentences } = practice
   const typewell = isTypewell(selected)
+  const etyping = isEtyping(selected)
+  const seeded = typewell || etyping
   const limit = strokeLimit(settings.layout)
+  const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
     area = useRef<HTMLDivElement>(null),
     unsavedRecords = useRef<RecordEntry[]>([]),
@@ -145,19 +161,14 @@ export default function App() {
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
     focusRevision = useRef(0),
-    missEpisodes = useRef(new MissEpisodes())
+    missEpisodes = useRef(new MissEpisodes()),
+    liveKeys = useRef(0),
+    recorded = useRef(false),
+    runRevision = useRef(0),
+    finishTimer = useRef<(duration: number) => void>(() => {})
   const paragraphSegments = useMemo(() => {
     let cursor = 0
-    const preview = typewell
-      ? typewellView(
-          sentences[0],
-          '',
-          makeEngine(sentences[0].reading, settings.layout, true).hint,
-          settings.layout,
-          0,
-        ).current
-      : null
-    if (preview) return [preview.segments]
+    if (typewell) return [sentences[0].segments]
     return passage.paragraphs.map((paragraph) => {
       const segments = []
       let length = 0
@@ -168,7 +179,7 @@ export default function App() {
       }
       return segments
     })
-  }, [passage, sentences, typewell, settings.layout])
+  }, [passage, sentences, typewell])
   const handleStageChange = (stage: number) => {
     if (stage !== 2) pause()
     setPracticeStage(stage)
@@ -210,22 +221,26 @@ export default function App() {
     layout = settings.layout,
     stage = practiceStage,
     nextSeed = fixedSeed ? seed : freshSeed(),
+    version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
-    if (isTypewell(id)) {
+    if (isTypewell(id) || isEtyping(id)) {
+      setReplayVersion(version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
-    const doc = practiceDocument(id, nextSeed)
-    engine.current = makeEngine(
-      doc.sentences[0].reading,
-      layout,
-      isTypewell(id),
-    )
+    const doc = practiceDocument(id, nextSeed, layout, version)
+    const initialIndex = doc.passage.durationMs
+      ? randomSentenceIndex(doc.sentences.length)
+      : 0
+    engine.current = doc.plan
+      ? typewellEngine(doc.plan)
+      : makeEngine(doc.sentences[initialIndex].reading, layout)
     setSelected(id)
-    setSentenceIndex(0)
+    setSentenceIndex(initialIndex)
+    liveKeys.current = 0
+    recorded.current = false
+    runRevision.current++
     setStatus('ready')
-    setCountdown(0)
-    setCountdownUntil(0)
     setPracticeStage(stage)
     setElapsed(0)
     setKeys(0)
@@ -246,9 +261,11 @@ export default function App() {
     accumulated.current = 0
   }
   const pause = () => {
-    setCountdown(0)
-    setCountdownUntil(0)
     if (status === 'running') {
+      if (durationMs && elapsedNow() >= durationMs) {
+        finishTimer.current(durationMs)
+        return
+      }
       clearTimeout(missTimer.current)
       setMistake(false)
       accumulated.current = elapsedNow()
@@ -269,37 +286,23 @@ export default function App() {
     try {
       localStorage.setItem(
         'yohaku.typewell.v1',
-        JSON.stringify({ seed, fixed: fixedSeed }),
+        JSON.stringify({ seed, fixed: fixedSeed, version: replayVersion }),
       )
     } catch {
       /* Keep playing without persistence. */
     }
-  }, [seed, fixedSeed])
-  useEffect(() => {
-    if (!countdownUntil) return
-    const timer = setInterval(() => {
-      const remaining = Math.max(
-        0,
-        Math.ceil((countdownUntil - performance.now()) / 1000),
-      )
-      setCountdown(remaining)
-      if (!remaining) {
-        started.current = countdownUntil
-        setStatus('running')
-        setCountdownUntil(0)
-      }
-    }, 50)
-    return () => clearInterval(timer)
-  }, [countdownUntil])
+  }, [seed, fixedSeed, replayVersion])
   useEffect(() => {
     if (status !== 'running') return
-    const timer = setInterval(
-      () =>
-        setElapsed(accumulated.current + performance.now() - started.current),
-      100,
-    )
+    const revision = runRevision.current
+    const timer = setInterval(() => {
+      if (runRevision.current !== revision) return
+      const current = accumulated.current + performance.now() - started.current
+      if (durationMs && current >= durationMs) finishTimer.current(durationMs)
+      else setElapsed(current)
+    }, 50)
     return () => clearInterval(timer)
-  }, [status])
+  }, [status, durationMs])
   useEffect(() => {
     // Report a failure from the external storage system, once per settings change.
     if (!saveSettings(settings))
@@ -375,6 +378,64 @@ export default function App() {
       },
     )
   }
+  const finishSession = (nextKeys: number, sampledDuration = elapsedNow()) => {
+    if (recorded.current) return
+    recorded.current = true
+    const duration = durationMs
+      ? Math.min(durationMs, sampledDuration)
+      : sampledDuration
+    accumulated.current = duration
+    started.current = 0
+    setElapsed(duration)
+    clearTimeout(missTimer.current)
+    setMistake(false)
+    setStatus('done')
+    const scoredKeys = typewell ? limit : nextKeys
+    const result: RecordEntry = {
+      id: crypto.randomUUID(),
+      passageId: passage.id,
+      title: passage.title,
+      layout: settings.layout,
+      // Completion can be triggered by the last key or the timed-session deadline.
+      // oxlint-disable-next-line react/purity
+      date: new Date().toISOString(),
+      elapsed: duration,
+      keys: scoredKeys,
+      actualKeys: nextKeys,
+      misses: durationMs
+        ? missEpisodes.current.raw
+        : missEpisodes.current.misses,
+      rawMisses: missEpisodes.current.raw,
+      point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+      rank: animalRank(
+        scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+      ),
+      scoreVersion: 3,
+      missPenalty: missEpisodes.current.penalty,
+      ...(typewell
+        ? { seed, strokeLimit: limit, replayVersion }
+        : etyping
+          ? { seed, replayVersion: 1 as const }
+          : {}),
+      mode: durationMs ? 'trainer' : 'practice',
+      kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
+      accuracy: Number(
+        (
+          (nextKeys /
+            (nextKeys +
+              (durationMs
+                ? missEpisodes.current.raw
+                : missEpisodes.current.misses))) *
+          100
+        ).toFixed(2),
+      ),
+    }
+    persistResult(result)
+  }
+  useEffect(() => {
+    finishTimer.current = (duration) =>
+      finishSession(liveKeys.current, duration)
+  })
   const accept = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return
     if (e.key === 'Escape') {
@@ -393,14 +454,14 @@ export default function App() {
       )
       return
     }
-    if (typewell && status === 'ready') {
-      if (mapKey(e.nativeEvent, settings.layout)) e.preventDefault()
-      return
-    }
     if (status === 'paused' || status === 'done') return
-    const key = mapKey(e.nativeEvent, settings.layout)
+    const key = mapKey(e.nativeEvent, settings.layout, engine.current.hint[0])
     if (!key) return
     e.preventDefault()
+    if (durationMs && status === 'running' && elapsedNow() >= durationMs) {
+      finishSession(liveKeys.current, durationMs)
+      return
+    }
     if (status === 'ready') {
       // This clock is sampled only by the keyboard event handler.
       // oxlint-disable-next-line react/purity
@@ -417,7 +478,8 @@ export default function App() {
       return
     }
     missEpisodes.current.accept()
-    const nextKeys = keys + 1
+    const nextKeys = liveKeys.current + 1
+    liveKeys.current = nextKeys
     setKeys(nextKeys)
     setSnapshot({
       position: engine.current.position,
@@ -429,12 +491,19 @@ export default function App() {
           ? engine.current.position
           : (engine.current as RomanEngine).naturalProgress,
     })
-    const normalized =
-      settings.layout === 'kana'
-        ? engine.current.position
-        : (engine.current as RomanEngine).naturalProgress
-    if (engine.current.done || (typewell && normalized >= limit)) {
-      if (!typewell && sentenceIndex < sentences.length - 1) {
+    if (engine.current.done) {
+      if (durationMs) {
+        const index = randomSentenceIndex(sentences.length, sentenceIndex)
+        setSentenceIndex(index)
+        engine.current = makeEngine(sentences[index].reading, settings.layout)
+        setSnapshot({
+          position: 0,
+          target: engine.current.target,
+          hint: engine.current.hint,
+          typed: '',
+          naturalKeys: 0,
+        })
+      } else if (!typewell && sentenceIndex < sentences.length - 1) {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
         engine.current = makeEngine(sentences[n].reading, settings.layout)
@@ -446,64 +515,21 @@ export default function App() {
           naturalKeys: 0,
         })
       } else {
-        const duration = elapsedNow()
-        accumulated.current = duration
-        started.current = 0
-        setElapsed(duration)
-        clearTimeout(missTimer.current)
-        setMistake(false)
-        setStatus('done')
-        const scoredKeys = typewell ? limit : nextKeys
-        const result: RecordEntry = {
-          id: crypto.randomUUID(),
-          passageId: passage.id,
-          title: passage.title,
-          layout: settings.layout,
-          // Completion timestamp is produced only by the keyboard event handler.
-          // oxlint-disable-next-line react/purity
-          date: new Date().toISOString(),
-          elapsed: duration,
-          keys: scoredKeys,
-          actualKeys: nextKeys,
-          misses,
-          rawMisses: missEpisodes.current.raw,
-          point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-          rank: animalRank(
-            scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-          ),
-          scoreVersion: 3,
-          missPenalty: missEpisodes.current.penalty,
-          ...(typewell ? { seed, strokeLimit: limit } : {}),
-          mode: 'practice',
-          kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
-          accuracy: Number(((nextKeys / (nextKeys + misses)) * 100).toFixed(2)),
-        }
-        persistResult(result)
+        finishSession(nextKeys)
       }
     }
   }
   const normalizedKeys = typewell ? snapshot.naturalKeys : keys
-  const view = useMemo(
-    () =>
-      typewell
-        ? typewellView(
-            sentences[0],
-            snapshot.typed,
-            snapshot.hint,
-            settings.layout,
-            normalizedKeys,
-          )
-        : null,
-    [typewell, sentences, snapshot, settings.layout, normalizedKeys],
-  )
   const progress =
     status === 'done'
       ? 100
-      : typewell
-        ? Math.max(0, (normalizedKeys / limit) * 100)
-        : ((sentenceIndex + snapshot.position / snapshot.target.length) /
-            sentences.length) *
-          100
+      : durationMs
+        ? Math.min(100, (elapsed / durationMs) * 100)
+        : typewell
+          ? Math.max(0, (normalizedKeys / limit) * 100)
+          : ((sentenceIndex + snapshot.position / snapshot.target.length) /
+              sentences.length) *
+            100
   const point = scorePoint(
     typewell ? Math.max(0, normalizedKeys) : keys,
     missPenalty,
@@ -515,7 +541,10 @@ export default function App() {
             (typewell ? Math.max(0, normalizedKeys) : keys) / (elapsed / 60000),
           )
         : 0,
-    accuracy = keys + misses ? (keys / (keys + misses)) * 100 : 100
+    accuracy =
+      keys + (durationMs ? rawMisses : misses)
+        ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
+        : 100
   const best = records
     .filter((r) => r.passageId === selected && r.layout === settings.layout)
     .reduce((n, r) => Math.max(n, r.kpm), 0)
@@ -722,7 +751,11 @@ export default function App() {
                             <span className="muted small">
                               {typewell
                                 ? 'R 400打 / K 280打 · '
-                                : 'ORIGINAL ESSAY · '}
+                                : passage.source
+                                  ? passage.source.kind === 'provided'
+                                    ? 'PROVIDED TEXT · '
+                                    : 'PUBLIC TEXT · '
+                                  : 'ORIGINAL ESSAY · '}
                               {typewell
                                 ? 'ランダム出題'
                                 : passage.paragraphs.reduce(
@@ -733,12 +766,26 @@ export default function App() {
                             </span>
                             <h2>{passage.title}</h2>
                             <p>{passage.subtitle}</p>
+                            {passage.source?.url ? (
+                              <a
+                                className="text-button"
+                                href={passage.source.url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                出典：{passage.source.label}
+                              </a>
+                            ) : passage.source ? (
+                              <p className="small muted">
+                                出典：{passage.source.label}
+                              </p>
+                            ) : null}
                           </div>
                           <span className="passage-symbol">
                             {passage.accent}
                           </span>
                         </div>
-                        {typewell && (
+                        {seeded && (
                           <div className="seed-settings">
                             <label>
                               <input
@@ -780,14 +827,23 @@ export default function App() {
                                 reset(selected, settings.layout, 0, freshSeed())
                               }
                             >
-                              単語をシャッフル
+                              {etyping
+                                ? '問題をシャッフル'
+                                : '単語をシャッフル'}
                             </button>
                             <p>
-                              単語間のスペースも含め、自然な表記で{limit}
-                              打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
+                              {etyping ? (
+                                '同じシードで同じ15問・同じ順番を再現します。重複なしのランダム出題です。'
+                              ) : (
+                                <>
+                                  単語間のスペースも含め、自然な表記で{limit}
+                                  打。余分なローマ字は進捗に加算しません。末尾は単語の途中でも終了します。
+                                </>
+                              )}
                             </p>
                             <small>
-                              再現ID: {selected} / v1 / {seed} ·{' '}
+                              再現ID: {selected} / v
+                              {etyping ? 1 : replayVersion} / {seed} ·{' '}
                               {settings.layout}
                             </small>
                           </div>
@@ -822,7 +878,9 @@ export default function App() {
                           <p>
                             {typewell
                               ? `${limit}打分の単語列 / シード ${seed}`
-                              : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
+                              : etyping
+                                ? `15問 / シード ${seed}`
+                                : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
                           </p>
                         </div>
                         <div id="passage-full-text">
@@ -872,28 +930,41 @@ export default function App() {
                                   ready: 'READY WHEN YOU ARE',
                                   running: 'IN THE FLOW',
                                   paused: 'PAUSED',
-                                  done: 'SESSION COMPLETE',
+                                  done: durationMs
+                                    ? 'TIME UP'
+                                    : 'SESSION COMPLETE',
                                 }[status]
                               }
                             </span>
                             <span className="small muted">
                               {layoutLabels[settings.layout]} ·{' '}
-                              {typewell
-                                ? `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
-                                : `${sentenceIndex + 1} / ${sentences.length} 文`}
+                              {durationMs ? (
+                                <span aria-label="残り時間">
+                                  残り{' '}
+                                  {Math.max(
+                                    0,
+                                    Math.ceil((durationMs - elapsed) / 1000),
+                                  )}{' '}
+                                  秒
+                                </span>
+                              ) : typewell ? (
+                                `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
+                              ) : (
+                                `${sentenceIndex + 1} / ${sentences.length} 文`
+                              )}
                             </span>
                           </div>
                           <SentenceView
-                            current={view?.current ?? sentences[sentenceIndex]}
+                            current={sentences[sentenceIndex]}
                             next={sentences[sentenceIndex + 1]}
-                            showNext={!typewell}
+                            showNext={!typewell && !durationMs}
                             partialRoman={typewell}
                             position={snapshot.position}
                             kana={settings.layout === 'kana'}
-                            done={status === 'done'}
-                            target={view?.target ?? snapshot.target}
+                            done={status === 'done' && !durationMs}
+                            target={snapshot.target}
                             typed={snapshot.typed}
-                            hint={view?.hint ?? snapshot.hint}
+                            hint={snapshot.hint}
                             guide={settings.guide}
                             wordColors={settings.wordColors}
                             consumeTyped={settings.consumeTyped}
@@ -929,25 +1000,7 @@ export default function App() {
                             {status === 'ready' && (
                               <div className="start-hint">
                                 <Keyboard size={14} />
-                                {typewell ? (
-                                  <button
-                                    className="text-button"
-                                    onClick={() => {
-                                      setCountdownUntil(
-                                        performance.now() + 3000,
-                                      )
-                                      setCountdown(3)
-                                      focus()
-                                    }}
-                                    disabled={countdown > 0}
-                                  >
-                                    {countdown
-                                      ? `${countdown} · READY`
-                                      : `${limit}打の計測を開始`}
-                                  </button>
-                                ) : (
-                                  'ここをクリックして、最初の文字からスタート'
-                                )}
+                                ここをクリックして、最初の文字からスタート
                                 <span>IME OFF</span>
                               </div>
                             )}
@@ -963,7 +1016,9 @@ export default function App() {
                             {status === 'done' && (
                               <div className="finish-message">
                                 <Check size={20} />
-                                一篇を、最後まで。完走です。
+                                {durationMs
+                                  ? '60秒の計測が終了しました。'
+                                  : '一篇を、最後まで。完走です。'}
                                 <button
                                   onClick={() => {
                                     reset()
@@ -1057,8 +1112,8 @@ export default function App() {
                     </div>
                     <div className="miss-stat">
                       <span>ミス</span>
-                      <strong>{misses}</strong>
-                      {rawMisses !== misses && (
+                      <strong>{durationMs ? rawMisses : misses}</strong>
+                      {!durationMs && rawMisses !== misses && (
                         <small>実ミス {rawMisses} 打鍵</small>
                       )}
                       <span>打鍵</span>
@@ -1186,7 +1241,10 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <h2>文章ライブラリ</h2>
-                  <span className="muted">6 STORIES + 5 WORD SETS</span>
+                  <span className="muted">
+                    {essayPassages.length} TEXTS + {typewellPassages.length}{' '}
+                    WORD SETS
+                  </span>
                 </div>
               </div>
               <div className="filters">
@@ -1275,22 +1333,30 @@ export default function App() {
                         <tr key={r.id}>
                           <td>
                             {r.title}
-                            {r.seed && isTypewell(r.passageId) && (
-                              <button
-                                className="text-button"
-                                onClick={() => {
-                                  setFixedSeed(true)
-                                  reset(r.passageId, r.layout, 0, r.seed!)
-                                  setSettings((value) => ({
-                                    ...value,
-                                    layout: r.layout,
-                                  }))
-                                  setTab('practice')
-                                }}
-                              >
-                                シード {r.seed} を再現
-                              </button>
-                            )}
+                            {r.seed &&
+                              (isTypewell(r.passageId) ||
+                                isEtyping(r.passageId)) && (
+                                <button
+                                  className="text-button"
+                                  onClick={() => {
+                                    setFixedSeed(true)
+                                    reset(
+                                      r.passageId,
+                                      r.layout,
+                                      0,
+                                      r.seed!,
+                                      r.replayVersion ?? 1,
+                                    )
+                                    setSettings((value) => ({
+                                      ...value,
+                                      layout: r.layout,
+                                    }))
+                                    setTab('practice')
+                                  }}
+                                >
+                                  シード {r.seed} を再現
+                                </button>
+                              )}
                             <small>
                               {new Date(r.date).toLocaleString('ja-JP')}
                             </small>
