@@ -136,3 +136,11 @@ it('exposes failed appends for memory fallback and retries unsaved results', asy
   expect(recovered.saved).toBe(true)
   expect(readHistory()).toHaveLength(2)
 })
+
+it('defaults word colors on for new or legacy settings, while preserving an explicit opt-out', () => {
+  expect(readSettings().wordColors).toBe(true)
+  data.set('yohaku.settings.v1', '{"guide":false}')
+  expect(readSettings().wordColors).toBe(true)
+  data.set('yohaku.settings.v1', '{"wordColors":false}')
+  expect(readSettings().wordColors).toBe(false)
+})

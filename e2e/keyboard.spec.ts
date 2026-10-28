@@ -197,6 +197,8 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   const ruby = main.locator('ruby').first()
   await expect(ruby.locator('.token-text')).toHaveText('閉館')
   await expect(ruby.locator('rt')).toHaveText('へいかん')
+  await expect(page.getByLabel('単語の色分け', { exact: true })).toBeChecked()
+  await page.getByLabel('単語の色分け', { exact: true }).uncheck()
   const natural = await main
     .locator('.pending-token[data-tone="1"]')
     .first()
