@@ -50,7 +50,7 @@ test('complete longform, pause, persist, export and clear records', async ({
   await expect(page.locator('tbody tr')).toHaveCount(1)
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'JSON 書出し' }).click()
-  expect((await download).suggestedFilename()).toBe('yohaku-records.json')
+  expect((await download).suggestedFilename()).toBe('galactype-records.json')
   await page.getByRole('button', { name: '全記録を削除' }).click()
   await page.getByRole('button', { name: '削除する', exact: true }).click()
   await expect(page.getByText('最初の一篇から、はじめよう。')).toBeVisible()

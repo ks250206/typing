@@ -229,3 +229,70 @@ test('kana word set finishes at 280 including separate dakuten keys; mobile has 
     seed: 'replay-test',
   })
 })
+
+test('GALACTYPE branding and cosmic word set work on desktop and mobile with a seeded 400-stroke finish', async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  await page.clock.install()
+  await page.setViewportSize({ width: 1440, height: 1100 })
+  await page.goto('/')
+  await expect(page).toHaveTitle('GALACTYPE — 指先から、宇宙へ。')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /GALACTYPE/,
+  )
+  await expect(page.locator('.brand')).toContainText('GALACTYPE')
+  await page.getByLabel('3D 背景', { exact: true }).uncheck()
+  await page
+    .getByRole('button', { name: 'タイプウェル · 宇宙の名前', exact: true })
+    .click()
+  await expect(page.locator('.passage-header')).toContainText('64の天体名')
+  await page.getByLabel('シードを固定する').check()
+  await page.getByLabel('出題シード').fill('galactype')
+  await page.getByRole('button', { name: 'このシードを使う' }).click()
+  await enter(page)
+  const hint = await input(page)
+  expect(hint).toHaveLength(400)
+  await page.getByRole('button', { name: '400打の計測を開始' }).click()
+  await page.clock.runFor(3100)
+  await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await page.keyboard.type(hint.slice(0, 40))
+  await page.screenshot({
+    path: 'artifacts/galactype-space-desktop.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
+  await page.setViewportSize({ width: 390, height: 1000 })
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
+  await page.screenshot({
+    path: 'artifacts/galactype-space-mobile.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
+  await page.keyboard.type(hint.slice(40))
+  await expect(page.getByText('SESSION COMPLETE')).toBeVisible()
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
+      ),
+    )
+    .toBe(1)
+  const record = await page.evaluate(
+    () => JSON.parse(localStorage.getItem('yohaku.history.v1')!)[0],
+  )
+  expect(record).toMatchObject({
+    passageId: 'typewell-space',
+    seed: 'galactype',
+    keys: 400,
+    strokeLimit: 400,
+  })
+  expect(errors).toEqual([])
+})

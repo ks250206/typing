@@ -9,7 +9,11 @@ import {
 } from './typewell'
 
 it('aggregates all 17 pages into exactly four complete datasets', () => {
-  expect(typewellSets.map((s) => [s.pages, data[s.category].length])).toEqual([
+  expect(
+    typewellSets
+      .filter((s) => s.category !== 'space')
+      .map((s) => [s.pages, data[s.category].length]),
+  ).toEqual([
     [3, 2154],
     [6, 3170],
     [4, 3330],
@@ -90,4 +94,29 @@ it('a redundant-n session needs more physical keys but still ends at exactly 400
   expect(actual).toBeGreaterThan(400)
   expect(engine.naturalProgress).toBe(400)
   expect(engine.done).toBe(false)
+})
+
+import { spaceWordGroups, spaceWords } from './spaceWords'
+it('ships 64 distinct named celestial bodies with playable roman/kana readings', () => {
+  expect(Object.values(spaceWordGroups).map((group) => group.length)).toEqual([
+    22, 8, 10, 16, 8,
+  ])
+  expect(new Set(spaceWords.map(([text]) => text)).size).toBe(64)
+  for (const [text, reading] of spaceWords) {
+    const roman = new RomanEngine(reading, true)
+    for (const key of roman.hint) expect(roman.feed(key), text).toBe(true)
+    expect(roman.done, text).toBe(true)
+    const kana = new KanaEngine(reading)
+    for (const key of kana.target) expect(kana.feed(key), text).toBe(true)
+    expect(kana.done, text).toBe(true)
+  }
+  const source = typewellDocument('typewell-space', 'galaxy').sentences[0]
+  expect(source.text).toContain(' ')
+  for (const segment of source.segments.filter((s) => s.text !== ' '))
+    expect(
+      spaceWords.some(
+        ([text, reading]) =>
+          text === segment.text && reading === segment.reading,
+      ),
+    ).toBe(true)
 })

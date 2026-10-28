@@ -2540,3 +2540,24 @@ rt {
   font-family: 'SFMono-Regular', Consolas, monospace;
   letter-spacing: 0.06em;
 }
+/* Keep the full GALACTYPE wordmark within the sidebar and compact mobile nav. */
+.brand {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.brand-icon {
+  flex-shrink: 0;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-weight: 700;
+}
+@media (max-width: 600px) {
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    gap: 6px;
+  }
+  .brand-caption {
+    font-size: 5px;
+    letter-spacing: 0.7px;
+  }
+}

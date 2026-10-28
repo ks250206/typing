@@ -1,9 +1,12 @@
-import data from './data/typewell.json' with { type: 'json' }
+import classicData from './data/typewell.json' with { type: 'json' }
+import { spaceWords } from './spaceWords'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
 import type { Passage } from './passages'
 import type { Sentence } from './sentences'
 import { readingCursor } from './readingCursor'
+
+const data = { ...classicData, space: spaceWords }
 
 export const typewellSets = [
   { id: 'typewell-basic', category: 'basic', title: '基本常用語', pages: 3 },
@@ -20,12 +23,16 @@ export const typewellSets = [
     title: '慣用句・ことわざ',
     pages: 4,
   },
+  { id: 'typewell-space', category: 'space', title: '宇宙の名前', pages: 0 },
 ] as const
 export const typewellPassages: Passage[] = typewellSets.map((set, index) => ({
   id: set.id,
   title: `タイプウェル · ${set.title}`,
   genre: 'タイプウェル',
-  subtitle: `全${set.pages}ページ・${data[set.category].length.toLocaleString()}語を集約。R 400打 / K 280打。`,
+  subtitle:
+    set.category === 'space'
+      ? `${spaceWords.length}の天体名。恒星・銀河・小惑星・衛星・惑星を旅する。R 400打 / K 280打。`
+      : `全${set.pages}ページ・${data[set.category].length.toLocaleString()}語を集約。R 400打 / K 280打。`,
   accent: `T${index + 1}`,
   paragraphs: [],
 }))

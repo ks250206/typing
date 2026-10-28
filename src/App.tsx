@@ -527,7 +527,7 @@ export default function App() {
     )
     const a = document.createElement('a')
     a.href = url
-    a.download = 'yohaku-records.json'
+    a.download = 'galactype-records.json'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -556,9 +556,11 @@ export default function App() {
             setTab('practice')
           }}
         >
-          <span className="brand-icon">余</span>
+          <span className="brand-icon" aria-hidden="true">
+            G
+          </span>
           <span>
-            yohaku<span className="brand-caption">JAPANESE TYPING</span>
+            GALACTYPE<span className="brand-caption">COSMIC TYPING</span>
           </span>
         </a>
         <div className="nav-label">WORKSPACE</div>
@@ -1184,7 +1186,7 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <h2>文章ライブラリ</h2>
-                  <span className="muted">6 STORIES + 4 WORD SETS</span>
+                  <span className="muted">6 STORIES + 5 WORD SETS</span>
                 </div>
               </div>
               <div className="filters">
@@ -1338,7 +1340,7 @@ export default function App() {
           )}
           <footer className="page-footer">
             <span>
-              yohaku <span>—</span> 言葉と、自分に向き合う時間。
+              GALACTYPE <span>—</span> 言葉と、自分に向き合う時間。
             </span>
             <span>NO RUSH. JUST FLOW.</span>
           </footer>
