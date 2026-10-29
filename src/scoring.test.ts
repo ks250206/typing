@@ -50,3 +50,31 @@ it('uses 21 unique animal ranks at every 50-point boundary and caps only the tit
   expect(animalRank(10000)).toBe('チーター')
   expect(scorePoint(1500, 0, 60000)).toBe(1500)
 })
+
+import { typingTitle, missPrefixes } from './scoring'
+it('uses all nine miss prefixes at inclusive boundaries, with unrounded zero separate', () => {
+  expect(missPrefixes).toHaveLength(9)
+  const cases = [
+    [0, '星々に祝福されし'],
+    [1, '至高の'],
+    [50, '至高の'],
+    [51, '研ぎ澄まされた'],
+    [100, '研ぎ澄まされた'],
+    [101, '精緻な'],
+    [200, '精緻な'],
+    [201, '堅実な'],
+    [300, '堅実な'],
+    [301, '歴戦の'],
+    [500, '歴戦の'],
+    [501, '荒削りな'],
+    [800, '荒削りな'],
+    [801, '暴走する'],
+    [1200, '暴走する'],
+    [1201, '混沌の'],
+  ] as const
+  for (const [misses, prefix] of cases)
+    expect(typingTitle(1000, 10000 - misses, misses)).toBe(`${prefix}チーター`)
+  expect(typingTitle(0, 0, 0)).toBe('カメ')
+  expect(typingTitle(0, 0, 1)).toBe('混沌のカメ')
+  expect(typingTitle(1000, 9999999, 1)).toBe('至高のチーター')
+})

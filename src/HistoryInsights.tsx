@@ -8,9 +8,10 @@ import {
   modeOf,
   recordPoint,
   recordValue,
+  recordTitle,
+  recordMissLabel,
 } from './recordStats'
 import type { RecordMetric } from './recordStats'
-import { animalRank } from './scoring'
 import { readTrace } from './traceStore'
 import { analyzeTrace } from './telemetry'
 import type { SessionTrace } from './telemetry'
@@ -93,7 +94,7 @@ export function HistoryInsights({
           </strong>
           <small>
             {recent[0]
-              ? `${animalRank(recordPoint(recent[0]))} · ${recent[0].kpm} KPM`
+              ? `${recordTitle(recent[0])} · ${recent[0].kpm} KPM`
               : 'KPM —'}
           </small>
         </div>
@@ -104,7 +105,7 @@ export function HistoryInsights({
           </strong>
           <small>
             {recent[1]
-              ? `${animalRank(recordPoint(recent[1]))} · ${recent[1].kpm} KPM`
+              ? `${recordTitle(recent[1])} · ${recent[1].kpm} KPM`
               : 'KPM —'}
           </small>
         </div>
@@ -204,12 +205,12 @@ export function HistoryInsights({
                 {recordValue(r, metric)} {unit}
               </strong>
               <span>
-                {animalRank(recordPoint(r))} ·{' '}
+                {recordTitle(r)} ·{' '}
                 {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
               </span>
               <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
               <small>
-                {r.accuracy}% · {ms(r.elapsed)}
+                {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
                 {r.seed ? ` · ${r.seed}` : ''}
               </small>
             </button>
@@ -260,11 +261,13 @@ export function RecordDetails({
           <h3>打鍵の詳細 · {record.title}</h3>
           <p>
             <strong className="detail-point">
-              {recordPoint(record)} pt · {animalRank(recordPoint(record))}
+              {recordPoint(record)} pt · {recordTitle(record)}
             </strong>
             <br />
             {record.layout} · {record.kpm} KPM ·{' '}
             {new Date(record.date).toLocaleString('ja-JP')}
+            <br />
+            {recordMissLabel(record)}
           </p>
         </div>
         <button className="text-button" onClick={onClose}>

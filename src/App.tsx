@@ -45,9 +45,14 @@ import {
 import { CpuBattle } from './CpuBattle'
 import { TypingTrace } from './telemetry'
 import { readTraces } from './traceStore'
-import { recordPoint } from './recordStats'
+import { recordPoint, recordTitle, recordMissLabel } from './recordStats'
 import { HistoryInsights, RecordDetails } from './HistoryInsights'
-import { animalRank, MissEpisodes, scorePoint } from './scoring'
+import {
+  typingTitle,
+  formatMissRate,
+  MissEpisodes,
+  scorePoint,
+} from './scoring'
 import { KeyboardGuide } from './KeyboardGuide'
 import { MissionCarousel } from './MissionCarousel'
 import { RubyText } from './RubyText'
@@ -420,8 +425,10 @@ export default function App() {
         : missEpisodes.current.misses,
       rawMisses: missEpisodes.current.raw,
       point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-      rank: animalRank(
+      rank: typingTitle(
         scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+        nextKeys,
+        missEpisodes.current.raw,
       ),
       scoreVersion: 3,
       missPenalty: missEpisodes.current.penalty,
@@ -590,7 +597,7 @@ export default function App() {
     const clean = (rows: RecordEntry[]) =>
       rows.map(({ trace, ...r }) => {
         void trace
-        return { ...r, point: recordPoint(r), rank: animalRank(recordPoint(r)) }
+        return { ...r, point: recordPoint(r), rank: recordTitle(r) }
       })
     const url = URL.createObjectURL(
       new Blob(
@@ -1145,7 +1152,12 @@ export default function App() {
                         {point}
                         <small> pt</small>
                       </strong>
-                      <span>{animalRank(point)}</span>
+                      <span>{typingTitle(point, keys, rawMisses)}</span>
+                      <small>
+                        {keys + rawMisses
+                          ? `実ミス率 ${formatMissRate(keys, rawMisses)}`
+                          : '入力後に精度称号を判定'}
+                      </small>
                       <small>正打鍵KPM × 補正正確率²</small>
                       <small>
                         連続ミス減点 1 / .75 / .5 / .35 / .25（5回〜）
@@ -1462,8 +1474,11 @@ export default function App() {
                           <td className="record-point">
                             {recordPoint(r)} pt
                             <small>
-                              {animalRank(recordPoint(r))}
+                              {recordTitle(r)}
                               {r.scoreVersion !== 3 ? ' · 旧ミス方式' : ''}
+                              <span className="record-miss-label">
+                                {recordMissLabel(r)}
+                              </span>
                             </small>
                           </td>
                           <td className="record-kpm">{r.kpm}</td>

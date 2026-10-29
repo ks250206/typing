@@ -1,9 +1,13 @@
 import type { RecordEntry } from './storage'
-import { scorePoint } from './scoring'
+import { scorePoint, typingTitle, formatMissRate } from './scoring'
 export type RecordMetric = 'point' | 'kpm'
 /** Same calculation as the existing history table, including legacy miss-count fallback. */
 export const recordPoint = (r: RecordEntry) =>
   scorePoint(r.keys, r.missPenalty ?? r.misses, r.elapsed)
+export const recordTitle = (r: RecordEntry) =>
+  typingTitle(recordPoint(r), r.actualKeys ?? r.keys, r.rawMisses ?? r.misses)
+export const recordMissLabel = (r: RecordEntry) =>
+  `${r.rawMisses === undefined ? '旧集約ミス率' : '実ミス率'} ${formatMissRate(r.actualKeys ?? r.keys, r.rawMisses ?? r.misses)}`
 export const recordValue = (r: RecordEntry, metric: RecordMetric = 'point') =>
   metric === 'point' ? recordPoint(r) : r.kpm
 export const modeOf = (r: RecordEntry) => r.mode ?? 'practice'

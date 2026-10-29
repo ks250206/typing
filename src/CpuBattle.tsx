@@ -13,7 +13,7 @@ import { freshSeed } from './typewell'
 import { DuelRomanGuide } from './DuelRomanGuide'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
-import { animalRank, scorePoint } from './scoring'
+import { typingTitle, formatMissRate, scorePoint } from './scoring'
 import type { RecordEntry, Settings } from './storage'
 
 function loadCpu(): CpuConfig {
@@ -119,7 +119,7 @@ export function CpuBattle({
       kpm: Math.round((keys * 60000) / Math.max(1, value.totalElapsed)),
       accuracy: Number((value.totalAccuracy * 100).toFixed(2)),
       point,
-      rank: animalRank(point),
+      rank: typingTitle(point, keys, value.totalRaw + value.misses.raw),
       scoreVersion: 3,
       missPenalty: penalty,
       mode: 'cpu',
@@ -256,6 +256,9 @@ export function CpuBattle({
             : 0),
       )
     : 0
+  const titleKeys = match ? match.totalKeys + match.keys : 0
+  const titleMisses = match ? match.totalRaw + match.misses.raw : 0
+  const title = typingTitle(point, titleKeys, titleMisses)
   const guideSentence = match?.sentence
   const guideTyped = match?.typed ?? ''
   const guideHint = match?.engine.hint ?? ''
@@ -590,7 +593,7 @@ export function CpuBattle({
                     : 'CPU WINS / 敗北'}
                 </strong>
                 <span>
-                  {point} pt · {animalRank(point)}
+                  {point} pt · {title}
                 </span>
                 <button
                   className="primary-button"
@@ -609,7 +612,8 @@ export function CpuBattle({
           </div>
           <div className="battle-actions">
             <span>
-              {point} pt · {animalRank(point)}
+              {point} pt · {title} · 実ミス率{' '}
+              {formatMissRate(titleKeys, titleMisses)}
             </span>
             <button
               onClick={pause}

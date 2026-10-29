@@ -2989,3 +2989,20 @@ rt {
   color: #a8bdd5;
   margin-top: 5px;
 }
+
+.point-panel {
+  height: auto;
+  min-height: 160px;
+}
+.point-panel > span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.record-miss-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #91afc7;
+  margin-top: 4px;
+}

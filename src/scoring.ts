@@ -56,3 +56,32 @@ export class MissEpisodes {
     this.streak = 0
   }
 }
+
+/** Bounds are inclusive; zero is a dedicated no-miss title. */
+export const missPrefixes = [
+  [0, '星々に祝福されし'],
+  [0.5, '至高の'],
+  [1, '研ぎ澄まされた'],
+  [2, '精緻な'],
+  [3, '堅実な'],
+  [5, '歴戦の'],
+  [8, '荒削りな'],
+  [12, '暴走する'],
+  [Infinity, '混沌の'],
+] as const
+export function rawMissRate(keys: number, misses: number) {
+  return keys + misses > 0 ? (misses / (keys + misses)) * 100 : 0
+}
+export function typingTitle(point: number, keys: number, misses: number) {
+  const total = keys + misses
+  if (total <= 0) return animalRank(point)
+  // Compare counts before rounding the displayed percentage.
+  const prefix = missPrefixes.find(
+    ([upper]) => misses * 100 <= total * upper,
+  )![1]
+  return `${prefix}${animalRank(point)}`
+}
+export function formatMissRate(keys: number, misses: number) {
+  const rate = rawMissRate(keys, misses)
+  return rate > 0 && rate < 0.0001 ? '<0.0001%' : `${Number(rate.toFixed(4))}%`
+}

@@ -115,3 +115,20 @@ it('retains distinct historical point and speed top tens after the recent record
   expect(topRecords(archive).every((r) => Number(r.id) < 10)).toBe(true)
   expect(topRecords(archive, 'kpm').every((r) => Number(r.id) >= 10)).toBe(true)
 })
+
+import { recordTitle, recordMissLabel } from './recordStats'
+it('uses actual accepted keys and raw consecutive misses for titles, and labels legacy fallback', () => {
+  const r = {
+    ...row(1, 400),
+    keys: 400,
+    actualKeys: 500,
+    misses: 1,
+    rawMisses: 60,
+    missPenalty: 10,
+  }
+  expect(recordTitle(r)).toMatch(/^暴走する/)
+  expect(recordMissLabel(r)).toContain('実ミス率')
+  const legacy = { ...row(2, 400), misses: 10 }
+  expect(recordTitle(legacy)).toMatch(/^堅実な/)
+  expect(recordMissLabel(legacy)).toMatch(/^旧集約ミス率/)
+})

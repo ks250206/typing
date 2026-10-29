@@ -144,6 +144,7 @@ test('seeded CPU set selection, prominent scores, full RTC trace persistence and
   expect(saved).toMatchObject({
     passageId: 'etyping-face-idioms',
     seed: 'rtc-analytics',
+    rank: expect.stringMatching(/^星々に祝福されし/),
     hasTrace: true,
     mode: 'cpu',
     cpuConfig: { kpm: 60, reactionMs: 1500, curve: 'constant' },
