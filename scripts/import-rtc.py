@@ -3,6 +3,7 @@ Run: python3 scripts/import-rtc.py
 """
 from functools import lru_cache
 from pathlib import Path
+from data_paths import generated_path
 from zipfile import ZipFile
 import hashlib
 import json
@@ -52,7 +53,7 @@ def align(text, raw):
 def main():
     result=[]
     for archive, entries in FILES.items():
-        path=ROOT/'src/data/rtc-sources'/archive
+        path=ROOT/'data/sources/rtc'/archive
         with ZipFile(path) as z:
             for member, identifier in entries:
                 raw=z.read(member);root=ET.fromstring(raw)
@@ -66,6 +67,6 @@ def main():
                     if not rows:raise ValueError('Empty part: '+member)
                     parts.append(rows)
                 result.append({'id':'rtc-'+identifier,'title':root.findtext('Name'),'author':root.findtext('Author'),'source':{'archive':archive,'member':member,'zipSha256':hashlib.sha256(path.read_bytes()).hexdigest(),'xmlSha256':hashlib.sha256(raw).hexdigest()},'parts':parts})
-    (ROOT/'src/data/rtc.json').write_text(json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n')
+    generated_path('rtc.json').write_text(json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n')
     print('Imported',len(result),'sets',sum(len(p) for s in result for p in s['parts']),'fragments')
 if __name__=='__main__': main()

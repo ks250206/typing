@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
-import data from './data/rtc.json' with { type: 'json' }
+import data from './data/generated/rtc.json' with { type: 'json' }
 import { rtcDocument, rtcPassages, rtcPrompts } from './rtcWords'
 import { KanaEngine, RomanEngine } from './engine'
 import { physicalKey, keyOutput } from './physicalKeyboard'
@@ -15,7 +15,7 @@ it('preserves all 20 supplied two-part word files, raw readings, order and prove
   ).toBe(5994)
   for (const set of data) {
     const path = new URL(
-      `./data/rtc-sources/${set.source.archive}`,
+      `../data/sources/rtc/${set.source.archive}`,
       import.meta.url,
     ).pathname
     expect(createHash('sha256').update(readFileSync(path)).digest('hex')).toBe(

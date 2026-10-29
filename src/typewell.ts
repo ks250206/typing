@@ -1,4 +1,4 @@
-import classicData from './data/typewell.json' with { type: 'json' }
+import classicData from './data/generated/typewell.json' with { type: 'json' }
 import { legacySpaceWords, spaceWords } from './spaceWords'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'

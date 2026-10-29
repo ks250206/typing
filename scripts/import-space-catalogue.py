@@ -3,6 +3,7 @@
 python3 scripts/import-space-catalogue.py
 Changes to this snapshot require a new replay version.
 """
+from data_paths import generated_path
 import html
 import json
 from pathlib import Path
@@ -52,5 +53,6 @@ for value in re.findall(r'<td[^>]*class="name(?:5)?"[^>]*>(.*?)</td>', fetch(CON
 if len(constellations) != 88 or len(stars) < 400:
     raise ValueError("Source format/count changed; inspect the source before updating")
 result = {"恒星": stars, "星座": constellations}
-ROOT.joinpath("src/data/spaceCatalogue.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+ROOT.joinpath("data/sources/space/spaceCatalogue.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(f"Added {len(stars)} stars and {len(constellations)} constellations")
+generated_path("spaceCatalogue.json").write_bytes(ROOT.joinpath("data/sources/space/spaceCatalogue.json").read_bytes())

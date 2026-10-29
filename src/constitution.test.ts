@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { constitution } from './constitution'
-import official from './data/constitutionPreamble.json' with { type: 'json' }
+import official from '../data/sources/constitution/preamble.json' with { type: 'json' }
 import { sentencesByPassage } from './sentences'
 
 it('includes all four preamble paragraphs exactly as published by the House of Representatives', () => {

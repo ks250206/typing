@@ -6,6 +6,7 @@ import {
   sakusakuEntries,
 } from './sakusaku'
 import { sentencesByPassage } from './sentences'
+import source from '../data/sources/trainers/sakusaku-trainer.json'
 
 it('retains the supplied 15 sentences in preview order without serial numbers or added punctuation', () => {
   const sentences = sentencesByPassage[sakusaku.id]
@@ -17,6 +18,13 @@ it('retains the supplied 15 sentences in preview order without serial numbers or
   expect(sentences[10].text).toContain('科学')
   expect(sentences[12].text).toMatch(/提出すること$/u)
   expect(sakusaku.durationMs).toBe(60_000)
+  expect(sakusakuEntries).toEqual(source.entries)
+  for (const sentence of sentences) {
+    expect(sentence.segments.map((s) => s.text).join('')).toBe(sentence.text)
+    expect(sentence.segments.map((s) => s.reading).join('')).toBe(
+      sentence.reading,
+    )
+  }
 })
 it('random selection covers every sentence and excludes the immediately previous one', () => {
   const length = 15

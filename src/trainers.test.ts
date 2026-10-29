@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
-import highSpeed from './data/trainer-sources/trainer-high-speed.json'
-import longform from './data/trainer-sources/trainer-longform.json'
+import highSpeed from '../data/sources/trainers/trainer-high-speed.json'
+import longform from '../data/sources/trainers/trainer-longform.json'
 import { trainerPassages, isTrainer, createTrainerOrder } from './sakusaku'
 import { sentencesByPassage } from './sentences'
 import { battleSets, seededBattlePrompts } from './battleSets'

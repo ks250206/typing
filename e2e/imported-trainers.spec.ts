@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test'
-import data from '../src/data/trainers.json' with { type: 'json' }
+import data from '../src/data/generated/trainers.json' with { type: 'json' }
 import { createTrainerOrder } from '../src/sakusaku'
 import { RomanEngine } from '../src/engine'
 import { choose } from './select'
 import { startPractice } from './startPractice'
 
 for (const set of data) {
-  test(`${set.title}: complete HTML corpus, seeded timer record, replay, ghost and CPU selection`, async ({
+  test(`${set.title}: complete generated corpus, seeded timer record, replay, ghost and CPU selection`, async ({
     page,
   }) => {
     await page.clock.install()
@@ -41,7 +41,9 @@ for (const set of data) {
       ),
     ).toBeVisible()
     await expect(
-      page.getByRole('link', { name: '出典：タイパー養成所 · 保存HTML' }),
+      page.getByRole('link', {
+        name: `出典：${set.source.label ?? 'タイパー養成所 · 保存HTML'}`,
+      }),
     ).toHaveAttribute('href', set.source.url)
     await page.getByRole('button', { name: '全文を読む', exact: true }).click()
     const paragraphs = page.locator('#passage-full-text li p')

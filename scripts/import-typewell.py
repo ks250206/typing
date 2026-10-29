@@ -3,6 +3,7 @@
 Run from the repository: python3 scripts/import-typewell.py
 A dataset change requires a new replay version in src/typewell.ts.
 """
+from data_paths import generated_path
 import html
 import json
 from pathlib import Path
@@ -37,5 +38,6 @@ for category, ids in PAGES.items():
         print(category, page_id, len(rows))
     result[category] = pairs
 
-output = Path(__file__).resolve().parents[1] / "src/data/typewell.json"
+output = Path(__file__).resolve().parents[1] / "data/sources/typewell/typewell.json"
 output.write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+generated_path("typewell.json").write_bytes(output.read_bytes())
