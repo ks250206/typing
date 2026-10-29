@@ -74,7 +74,7 @@ export const SentenceView = memo(function SentenceView({
       data-flow={consumeTyped ? 'consume' : 'dim'}
     >
       <div className="sentence-label">
-        {done ? 'COMPLETE' : 'NOW / 現在の文章'}
+        {done ? 'COMPLETE' : (current.label ?? 'NOW / 現在の文章')}
       </div>
       <p className="current-paragraph" ref={host} data-text={current.text}>
         <span className="sentence-stream flow-track">

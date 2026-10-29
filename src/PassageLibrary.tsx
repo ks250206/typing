@@ -5,6 +5,7 @@ import { isTypewell } from './typewell'
 import { isRtc } from './rtcWords'
 import { isEtyping } from './etyping'
 import { isTrainer } from './sakusaku'
+import { isConstitutionArticles } from './constitutionArticles'
 
 export function PassageLibrary({
   passages,
@@ -80,13 +81,15 @@ export function PassageLibrary({
               <span>
                 {isTypewell(p.id)
                   ? 'R 400打 / K 280打 · シード再現'
-                  : isRtc(p.id)
-                    ? '15問 · パートをランダム連結'
-                    : isTrainer(p.id)
-                      ? `${p.paragraphs.length}文 · 60秒 · シード再現`
-                      : isEtyping(p.id)
-                        ? '15問 · シードでシャッフル'
-                        : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
+                  : isConstitutionArticles(p.id)
+                    ? '全14条 · 条単位のシャッフル · シード再現'
+                    : isRtc(p.id)
+                      ? '15問 · パートをランダム連結'
+                      : isTrainer(p.id)
+                        ? `${p.paragraphs.length}文 · 60秒 · シード再現`
+                        : isEtyping(p.id)
+                          ? '15問 · シードでシャッフル'
+                          : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
               </span>
               <ArrowRight size={15} />
             </div>

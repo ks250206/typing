@@ -37,6 +37,7 @@ function displaySentence(p: TracePrompt): Sentence {
       segments = text.map((text, i) => ({ text, reading: reading[i] }))
   }
   return {
+    ...(typeof p.label === 'string' ? { label: p.label } : {}),
     text: p.text,
     reading: p.reading,
     segments: segments ?? [{ text: p.text, reading: p.reading }],

@@ -1,3 +1,7 @@
+import {
+  constitutionArticleDocument,
+  isConstitutionArticles,
+} from './constitutionArticles'
 import { rtcPassages, isRtc, rtcDocument } from './rtcWords'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -80,17 +84,19 @@ function practiceDocument(
   layout: Layout,
   version: 1 | 2,
 ) {
-  return isTypewell(id)
-    ? typewellDocument(id, seed, layout, version)
-    : isRtc(id)
-      ? rtcDocument(id, seed)
-      : isEtyping(id)
-        ? etypingDocument(id, seed)
-        : {
-            passage: passages.find((p) => p.id === id)!,
-            sentences: sentencesByPassage[id],
-            plan: null,
-          }
+  return isConstitutionArticles(id)
+    ? constitutionArticleDocument(seed)
+    : isTypewell(id)
+      ? typewellDocument(id, seed, layout, version)
+      : isRtc(id)
+        ? rtcDocument(id, seed)
+        : isEtyping(id)
+          ? etypingDocument(id, seed)
+          : {
+              passage: passages.find((p) => p.id === id)!,
+              sentences: sentencesByPassage[id],
+              plan: null,
+            }
 }
 type Status = 'ready' | 'countdown' | 'running' | 'paused' | 'done'
 function makeEngine(reading: string, layout: Layout) {
@@ -169,7 +175,8 @@ export default function App() {
   const etyping = isEtyping(selected)
   const rtc = isRtc(selected)
   const trainer = isTrainer(selected)
-  const seeded = typewell || etyping || rtc || trainer
+  const articles = isConstitutionArticles(selected)
+  const seeded = typewell || etyping || rtc || trainer || articles
   const limit = strokeLimit(settings.layout)
   const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -277,8 +284,16 @@ export default function App() {
     nextSeed = fixedSeed ? seed : freshSeed(),
     version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
-    if (isTypewell(id) || isEtyping(id) || isRtc(id) || isTrainer(id)) {
-      setReplayVersion(isTrainer(id) ? 1 : version)
+    if (
+      isTypewell(id) ||
+      isEtyping(id) ||
+      isRtc(id) ||
+      isTrainer(id) ||
+      isConstitutionArticles(id)
+    ) {
+      setReplayVersion(
+        isTrainer(id) || isConstitutionArticles(id) ? 1 : version,
+      )
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
@@ -487,7 +502,7 @@ export default function App() {
       missPenalty: missEpisodes.current.penalty,
       ...(typewell
         ? { seed, strokeLimit: limit, replayVersion }
-        : etyping || rtc || trainer
+        : etyping || rtc || trainer || articles
           ? { seed, replayVersion: 1 as const }
           : {}),
       mode: durationMs ? 'trainer' : 'practice',
@@ -936,12 +951,14 @@ export default function App() {
                                 reset(selected, settings.layout, 0, freshSeed())
                               }
                             >
-                              {etyping || rtc || trainer
+                              {etyping || rtc || trainer || articles
                                 ? '問題をシャッフル'
                                 : '単語をシャッフル'}
                             </button>
                             <p>
-                              {trainer ? (
+                              {articles ? (
+                                '指定14条を各1回、条単位でシャッフルします。各条の全項を収録し、条内の順序は保ちます。同じシードで同じ順番を再現します。'
+                              ) : trainer ? (
                                 `同じシードで同じ出題順を再現します。同じ文は連続しません。全文確認は収録${sentences.length}文の一覧です。`
                               ) : rtc ? (
                                 '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
@@ -956,8 +973,10 @@ export default function App() {
                             </p>
                             <small>
                               再現ID: {selected} / v
-                              {etyping || rtc || trainer ? 1 : replayVersion} /{' '}
-                              {seed} · {settings.layout}
+                              {etyping || rtc || trainer || articles
+                                ? 1
+                                : replayVersion}{' '}
+                              / {seed} · {settings.layout}
                             </small>
                           </div>
                         )}
@@ -978,15 +997,25 @@ export default function App() {
                           <p>
                             {typewell
                               ? `${limit}打分の単語列 / シード ${seed}`
-                              : etyping || rtc
-                                ? `15問 / シード ${seed}`
-                                : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
+                              : articles
+                                ? `全14条（全項）/ シード ${seed}`
+                                : etyping || rtc
+                                  ? `15問 / シード ${seed}`
+                                  : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
                           </p>
                         </div>
                         <div id="passage-full-text">
                           <ol>
                             {paragraphSegments.map((segments, index) => (
                               <li key={index}>
+                                {passage.paragraphs[index]?.label && (
+                                  <h3>{passage.paragraphs[index].label}</h3>
+                                )}
+                                {passage.paragraphs[index]?.note && (
+                                  <small>
+                                    {passage.paragraphs[index].note}
+                                  </small>
+                                )}
                                 <p>
                                   <RubyText segments={segments} />
                                 </p>
@@ -1048,6 +1077,8 @@ export default function App() {
                                 </span>
                               ) : typewell ? (
                                 `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
+                              ) : articles ? (
+                                `${sentenceIndex + 1} / ${sentences.length} 条`
                               ) : (
                                 `${sentenceIndex + 1} / ${sentences.length} 文`
                               )}
@@ -1511,6 +1542,7 @@ export default function App() {
                               (isTypewell(r.passageId) ||
                                 isEtyping(r.passageId) ||
                                 isTrainer(r.passageId) ||
+                                isConstitutionArticles(r.passageId) ||
                                 isRtc(r.passageId)) && (
                                 <button
                                   className="text-button"
