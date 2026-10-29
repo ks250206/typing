@@ -50,3 +50,21 @@ it('reproduces an unbounded seeded trainer order with no adjacent repeats', () =
   const one = createTrainerOrder('one', 1)
   expect([one(), one()]).toEqual([0, 0])
 })
+
+it('shuffles a complete fresh lap indefinitely, with no omissions or repeated lap order', () => {
+  for (const length of [15, 18]) {
+    const next = createTrainerOrder('fast-typist', length)
+    let previous: number[] = []
+    for (let lap = 0; lap < 100; lap++) {
+      const current = Array.from({ length }, () => next())
+      expect([...current].sort((a, b) => a - b)).toEqual(
+        Array.from({ length }, (_, i) => i),
+      )
+      if (lap) {
+        expect(current).not.toEqual(previous)
+        expect(current[0]).not.toBe(previous.at(-1))
+      }
+      previous = current
+    }
+  }
+})

@@ -91,14 +91,36 @@ export function randomSentenceIndex(
   const index = Math.floor(random() * (length - 1))
   return index >= previous ? index + 1 : index
 }
-/** Version 1: deterministic draws with replacement, excluding the last prompt. */
+/** v1 preserves old draws; v2 shuffles a fresh complete bag on every lap. */
 export function createTrainerOrder(
   seed: string,
   length: number = sakusakuEntries.length,
+  version: 1 | 2 = 2,
 ) {
-  const random = seededRandom(`sakusaku-v1/${seed}`)
+  const random = seededRandom(`sakusaku-v${version}/${seed}`)
   let previous = -1
-  return () => (previous = randomSentenceIndex(length, previous, random))
+  if (version === 1)
+    return () => (previous = randomSentenceIndex(length, previous, random))
+  let bag: number[] = []
+  let cursor = 0
+  let previousBag: number[] = []
+  return () => {
+    if (cursor >= bag.length) {
+      bag = Array.from({ length }, (_, i) => i)
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1))
+        ;[bag[i], bag[j]] = [bag[j], bag[i]]
+      }
+      // Keep lap boundaries smooth and avoid repeating the previous full order.
+      // With 1 or 2 prompts, distinct laps and no adjacent repeat are incompatible.
+      if (length > 1 && bag[0] === previous) [bag[0], bag[1]] = [bag[1], bag[0]]
+      if (length > 2 && bag.every((n, i) => n === previousBag[i]))
+        [bag[1], bag[2]] = [bag[2], bag[1]]
+      previousBag = [...bag]
+      cursor = 0
+    }
+    return (previous = bag[cursor++] ?? 0)
+  }
 }
 export const sakusaku: Passage = {
   id: 'sakusaku-trainer',

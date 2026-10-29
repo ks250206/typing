@@ -1,3 +1,4 @@
+import { libraryCategory } from './libraryCategories'
 import { useMemo, useState } from 'react'
 import { BookOpen, Check, ArrowRight } from 'lucide-react'
 import type { Passage } from './passages'
@@ -22,8 +23,8 @@ export function PassageLibrary({
     () =>
       passages.filter(
         (p) =>
-          (genre === 'すべて' || p.genre === genre) &&
-          `${p.title} ${p.subtitle} ${p.genre}`
+          (genre === 'すべて' || libraryCategory(p) === genre) &&
+          `${p.title} ${p.subtitle} ${p.genre} ${libraryCategory(p)}`
             .toLocaleLowerCase('ja')
             .includes(search.trim().toLocaleLowerCase('ja')),
       ),
@@ -47,7 +48,7 @@ export function PassageLibrary({
         />
       </label>
       <div className="filters" aria-label="文章のジャンル">
-        {['すべて', ...new Set(passages.map((p) => p.genre))].map((g) => (
+        {['すべて', ...new Set(passages.map(libraryCategory))].map((g) => (
           <button
             key={g}
             className={genre === g ? 'selected' : ''}

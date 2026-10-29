@@ -193,11 +193,22 @@ export default function App() {
     missEpisodes = useRef(new MissEpisodes()),
     liveKeys = useRef(0),
     trace = useRef(new TypingTrace()),
-    trainerOrder = useRef(createTrainerOrder(seed, sentences.length)),
+    trainerOrder = useRef(
+      createTrainerOrder(seed, sentences.length, replayVersion),
+    ),
     recorded = useRef(false),
     runRevision = useRef(0),
     finishTimer = useRef<(duration: number) => void>(() => {})
+  const previewParagraphs = useMemo(() => {
+    if (!trainer || replayVersion === 1) return passage.paragraphs
+    const next = createTrainerOrder(seed, sentences.length, replayVersion)
+    return Array.from(
+      { length: sentences.length },
+      () => passage.paragraphs[next()],
+    )
+  }, [trainer, replayVersion, seed, sentences.length, passage])
   const paragraphSegments = useMemo(() => {
+    if (trainer) return previewParagraphs.map((p) => p.segments!)
     let cursor = 0
     if (typewell) return [sentences[0].segments]
     return passage.paragraphs.map((paragraph) => {
@@ -210,7 +221,7 @@ export default function App() {
       }
       return segments
     })
-  }, [passage, sentences, typewell])
+  }, [passage, sentences, typewell, trainer, previewParagraphs])
   const handleStageChange = (stage: number) => {
     if (stage !== 2) pause()
     setPracticeStage(stage)
@@ -291,15 +302,17 @@ export default function App() {
       isTrainer(id) ||
       isConstitutionArticles(id)
     ) {
-      setReplayVersion(
-        isTrainer(id) || isConstitutionArticles(id) ? 1 : version,
-      )
+      setReplayVersion(isConstitutionArticles(id) ? 1 : version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
     clearCountdown()
     const doc = practiceDocument(id, nextSeed, layout, version)
-    trainerOrder.current = createTrainerOrder(nextSeed, doc.sentences.length)
+    trainerOrder.current = createTrainerOrder(
+      nextSeed,
+      doc.sentences.length,
+      version,
+    )
     const initialIndex = doc.passage.durationMs ? trainerOrder.current() : 0
     engine.current = doc.plan
       ? typewellEngine(doc.plan)
@@ -502,9 +515,11 @@ export default function App() {
       missPenalty: missEpisodes.current.penalty,
       ...(typewell
         ? { seed, strokeLimit: limit, replayVersion }
-        : etyping || rtc || trainer || articles
-          ? { seed, replayVersion: 1 as const }
-          : {}),
+        : trainer
+          ? { seed, replayVersion }
+          : etyping || rtc || articles
+            ? { seed, replayVersion: 1 as const }
+            : {}),
       mode: durationMs ? 'trainer' : 'practice',
       trace: trace.current.finish(duration),
       kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
@@ -959,7 +974,11 @@ export default function App() {
                               {articles ? (
                                 '指定14条を各1回、条単位でシャッフルします。各条の全項を収録し、条内の順序は保ちます。同じシードで同じ順番を再現します。'
                               ) : trainer ? (
-                                `同じシードで同じ出題順を再現します。同じ文は連続しません。全文確認は収録${sentences.length}文の一覧です。`
+                                replayVersion === 1 ? (
+                                  '旧記録の出題方式（v1）を再現しています。'
+                                ) : (
+                                  `全${sentences.length}文を1周するごとに再シャッフルします。全文確認は1周目のみ。同じシードで2周目以降も再現します。`
+                                )
                               ) : rtc ? (
                                 '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
                               ) : etyping ? (
@@ -973,10 +992,8 @@ export default function App() {
                             </p>
                             <small>
                               再現ID: {selected} / v
-                              {etyping || rtc || trainer || articles
-                                ? 1
-                                : replayVersion}{' '}
-                              / {seed} · {settings.layout}
+                              {etyping || rtc || articles ? 1 : replayVersion} /{' '}
+                              {seed} · {settings.layout}
                             </small>
                           </div>
                         )}
@@ -1008,13 +1025,11 @@ export default function App() {
                           <ol>
                             {paragraphSegments.map((segments, index) => (
                               <li key={index}>
-                                {passage.paragraphs[index]?.label && (
-                                  <h3>{passage.paragraphs[index].label}</h3>
+                                {previewParagraphs[index]?.label && (
+                                  <h3>{previewParagraphs[index].label}</h3>
                                 )}
-                                {passage.paragraphs[index]?.note && (
-                                  <small>
-                                    {passage.paragraphs[index].note}
-                                  </small>
+                                {previewParagraphs[index]?.note && (
+                                  <small>{previewParagraphs[index].note}</small>
                                 )}
                                 <p>
                                   <RubyText segments={segments} />

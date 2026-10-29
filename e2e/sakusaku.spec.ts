@@ -1,6 +1,6 @@
 import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
-import { sakusakuEntries } from '../src/sakusaku'
+import { sakusakuEntries, createTrainerOrder } from '../src/sakusaku'
 
 const remaining = async (page: Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +
@@ -38,12 +38,15 @@ test('15 supplied texts, random next sentence, paused clock, partial 60-second r
   await page.getByRole('button', { name: '全文を読む', exact: true }).click()
   const paragraphs = page.locator('#passage-full-text li p')
   await expect(paragraphs).toHaveCount(15)
+  const previewOrder = createTrainerOrder(
+    await page.getByLabel('出題シード', { exact: true }).inputValue(),
+  )
   for (let i = 0; i < 15; i++)
     expect(
       (await paragraphs.nth(i).locator('.token-text').allTextContents()).join(
         '',
       ),
-    ).toBe(sakusakuEntries[i][0])
+    ).toBe(sakusakuEntries[previewOrder()][0])
   await enter(page)
   await expect(page.getByLabel('残り時間')).toContainText('60 秒')
   await page.clock.runFor(1500)

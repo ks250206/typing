@@ -98,7 +98,7 @@ test('trainer seed controls reproduce the same order across pauses, restart and 
   ).toMatchObject({
     mode: 'trainer',
     seed: 'trainer-fixed',
-    replayVersion: 1,
+    replayVersion: 2,
     title: sakusaku.title,
   })
   await page
