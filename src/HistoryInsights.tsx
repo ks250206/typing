@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { RecordEntry } from './storage'
 import {
   chronological,
@@ -15,6 +15,7 @@ import type { RecordMetric } from './recordStats'
 import { readTrace } from './traceStore'
 import { analyzeTrace } from './telemetry'
 import type { SessionTrace } from './telemetry'
+const ReplayPlayer = lazy(() => import('./ReplayPlayer'))
 const modes = { practice: '練習', trainer: '60秒', cpu: 'CPU対戦' }
 const ms = (value: number) => `${(value / 1000).toFixed(2)}秒`
 
@@ -227,14 +228,16 @@ export function HistoryInsights({
 export function RecordDetails({
   record,
   onClose,
+  initialView = 'trend',
 }: {
   record: RecordEntry
   onClose: () => void
+  initialView?: string
 }) {
   const [loaded, setLoaded] = useState<{ trace?: SessionTrace } | null>(
     record.trace ? { trace: record.trace } : null,
   )
-  const [tab, setTab] = useState('trend')
+  const [tab, setTab] = useState(initialView)
   const [page, setPage] = useState(0)
   const [start, setStart] = useState(0)
   useEffect(() => {
@@ -284,6 +287,7 @@ export function RecordDetails({
         <>
           <nav className="detail-tabs" aria-label="記録の詳細表示">
             {[
+              ['replay', 'リプレイ'],
               ['trend', 'KPM・ミス推移'],
               ['loss', '文字・文章のタイムロス'],
               ['keys', '全打鍵ログ'],
@@ -302,6 +306,15 @@ export function RecordDetails({
             {trace.strokes.filter((s) => !s.correct).length}）·
             一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
           </p>
+          {tab === 'replay' && (
+            <Suspense fallback={<p role="status">リプレイを準備中…</p>}>
+              <ReplayPlayer
+                trace={trace}
+                layout={record.layout}
+                strokeLimit={record.strokeLimit}
+              />
+            </Suspense>
+          )}
           {tab === 'trend' && (
             <>
               <label>

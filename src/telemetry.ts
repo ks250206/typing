@@ -1,4 +1,4 @@
-import type { Sentence } from './sentences'
+import type { Sentence, ReadingSegment } from './sentences'
 import type { Layout } from './engine'
 
 export interface Stroke {
@@ -12,6 +12,7 @@ export interface Stroke {
   character: string
 }
 export interface TracePrompt {
+  segments?: ReadingSegment[]
   text: string
   reading: string
   start: number
@@ -37,6 +38,7 @@ export class TypingTrace {
     const last = this.data.prompts.at(-1)
     if (last) last.end = time
     this.data.prompts.push({
+      segments: sentence.segments.map((s) => ({ ...s })),
       text: sentence.text,
       reading: sentence.reading,
       start: time,
@@ -82,7 +84,10 @@ export class TypingTrace {
     return {
       ...this.data,
       elapsed,
-      prompts: this.data.prompts.map((p) => ({ ...p })),
+      prompts: this.data.prompts.map((p) => ({
+        ...p,
+        segments: p.segments?.map((s) => ({ ...s })),
+      })),
       strokes: this.data.strokes.map((s) => ({ ...s })),
     }
   }

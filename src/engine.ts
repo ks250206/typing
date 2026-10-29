@@ -213,6 +213,8 @@ export class RomanEngine {
       '！': '!',
       '？': '?',
       '　': ' ',
+      '＆': '&',
+      '・': '/',
     }
     if (punctuation[c]) edges.push({ end: pos + 1, text: punctuation[c] })
     else if (/^[\x20-\x7e]$/.test(c))
@@ -263,7 +265,11 @@ export class KanaEngine {
   target: string
   position = 0
   constructor(reading: string) {
-    this.target = normalizeReading(reading).normalize('NFD')
+    this.target = normalizeReading(reading)
+      .replace(/[A-Z]/g, (c) => c.toLowerCase())
+      .replace(/＆/g, '&')
+      .replace(/？/g, '?')
+      .normalize('NFD')
   }
   feed(key: string) {
     const k = key.normalize('NFD')
@@ -396,14 +402,12 @@ export function mapKey(
   layout: Layout,
   expected?: string,
 ): string | null {
-  // Numeric/symbol positions in supplied kana readings use their literal keys.
-  if (layout === 'kana' && expected && /^[0-9/]$/.test(expected)) {
-    if (
-      event.code === `Digit${expected}` ||
-      event.code === `Numpad${expected}` ||
-      (expected === '/' && ['Slash', 'NumpadDivide'].includes(event.code))
-    )
-      return expected
+  // Literal positions use JIS alphanumeric keys, including incorrect attempts.
+  if (layout === 'kana' && expected && /^[ -~]$/.test(expected)) {
+    if (event.key.length === 1 && /^[ -~]$/.test(event.key))
+      return event.key.toLowerCase()
+    if (/^Key[A-Z]$/.test(event.code)) return event.code.slice(3).toLowerCase()
+    if (/^Numpad[0-9]$/.test(event.code)) return event.code.slice(6)
   }
   if (layout === 'kana')
     return (
