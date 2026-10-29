@@ -110,15 +110,11 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   await expect(page.locator('.battle-countdown')).toBeVisible()
   await expect(page.locator('.next-sentence')).toHaveCount(0)
   await page.clock.fastForward(3100)
-  await expect(page.locator('.cpu-progress')).toContainText('反応待ち')
+  await expect(page.locator('.cpu-progress')).toHaveCount(0)
+  await expect(page.locator('.opponent-typed')).toHaveText('')
   await page.clock.fastForward(400)
-  await expect(page.locator('.cpu-progress')).toContainText('CPU · 0/')
+  await expect(page.locator('.opponent-typed')).toHaveText('')
   await page.clock.fastForward(700)
-  expect(
-    await page
-      .locator('.cpu-progress > div i')
-      .evaluate((el) => parseFloat((el as HTMLElement).style.width)),
-  ).toBeGreaterThan(0)
   await expect(page.getByLabel('CPUのローマ字入力')).toBeVisible()
   expect(
     (await page.locator('.opponent-typed').textContent())!.length,
@@ -126,16 +122,9 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   await page.screenshot({ path: 'artifacts/cpu-active.png', fullPage: true })
   await page.getByRole('region').focus()
   await page.keyboard.press('Escape')
-  const before = await page
-    .locator('.cpu-progress > div i')
-    .getAttribute('style')
   const opponentBefore = await page.locator('.opponent-typed').textContent()
   await page.clock.fastForward(60000)
   await expect(page.locator('.opponent-typed')).toHaveText(opponentBefore!)
-  await expect(page.locator('.cpu-progress > div i')).toHaveAttribute(
-    'style',
-    before!,
-  )
   await page.setViewportSize({ width: 390, height: 844 })
   expect(
     await page.evaluate(

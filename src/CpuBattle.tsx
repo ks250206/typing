@@ -237,13 +237,6 @@ export function CpuBattle({
         p.reactionMs === config.reactionMs &&
         p.curve === config.curve,
     )?.name ?? 'カスタム'
-  const progress = match
-    ? Math.min(
-        1,
-        cpuCharacters(match.elapsedInWord(clock.current.now), match.config) /
-          match.cpuLength,
-      )
-    : 0
   const cpuTyped = match
     ? Math.min(
         match.cpuLength,
@@ -533,20 +526,6 @@ export function CpuBattle({
                       showNext={false}
                       romanGuide={romanGuide}
                     />
-                    <div className="cpu-progress">
-                      <span>
-                        CPU · {cpuTyped}/{match.cpuLength} keys ·{' '}
-                        {phase === 'playing' &&
-                        clock.current.now - match.wordStart < config.reactionMs
-                          ? '反応待ち'
-                          : config.curve === 'ease-in'
-                            ? '加速走行'
-                            : '定速走行'}
-                      </span>
-                      <div>
-                        <i style={{ width: `${progress * 100}%` }} />
-                      </div>
-                    </div>
                     <KeyboardGuide
                       layout={match.layout}
                       nextCharacter={

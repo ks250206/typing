@@ -267,7 +267,7 @@ test('page and carousel transitions animate and honor reduced motion', async ({
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('.mission-face.is-active')).toHaveCSS(
     'animation-name',
-    'mission-arrive',
+    'mission-slide',
   )
   await expect(page.locator('.mission-face.is-active')).toHaveCSS(
     'transform',
@@ -324,11 +324,13 @@ test('navigation animates under OS reduced motion, can follow OS or stop, and pe
         return { first, second }
       }, name)
     expect(Number(frames.first.opacity)).toBeGreaterThan(0)
-    expect(Number(frames.second.opacity)).toBeGreaterThan(
-      Number(frames.first.opacity),
-    )
+    if (name === 'page-arrive')
+      expect(Number(frames.second.opacity)).toBeGreaterThan(
+        Number(frames.first.opacity),
+      )
     expect(frames.first.transform).not.toBe(frames.second.transform)
     await expect(page.locator(selector)).toHaveCSS('transform', 'none')
+    return frames
   }
   for (const label of [
     '練習の記録',
@@ -339,12 +341,18 @@ test('navigation animates under OS reduced motion, can follow OS or stop, and pe
   ]) {
     await page.getByRole('button', { name: label, exact: true }).click()
     await observe('.page-view', 'page-arrive')
+    await expect(page.locator('.hero')).toHaveCount(0)
   }
   const height = await page
     .locator('.mission-viewport')
     .evaluate((el) => el.clientHeight)
   await page.getByRole('button', { name: '全文確認へ', exact: true }).click()
-  await observe('.mission-face.is-active', 'mission-arrive')
+  const forward = await observe('.mission-face.is-active', 'mission-slide')
+  expect(Number(forward.first.transform.split(',')[4])).toBeGreaterThan(0)
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
+  const backward = await observe('.mission-face.is-active', 'mission-slide')
+  expect(Number(backward.first.transform.split(',')[4])).toBeLessThan(0)
+  await expect(page.locator('.mission-sweep')).toHaveCount(0)
   expect(
     await page.locator('.mission-viewport').evaluate((el) => el.clientHeight),
   ).toBe(height)
@@ -370,10 +378,7 @@ test('navigation animates under OS reduced motion, can follow OS or stop, and pe
     'animation-name',
     'none',
   )
-  await expect(page.locator('.mission-sweep')).toHaveCSS(
-    'animation-name',
-    'none',
-  )
+  await expect(page.locator('.mission-sweep')).toHaveCount(0)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
   await page.reload()
