@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { seededBattlePrompts } from '../src/battleSets'
 import { test, expect } from '@playwright/test'
 const enter = async (page: import('@playwright/test').Page) => {
@@ -89,21 +90,22 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   page.on('pageerror', (error) => errors.push(error.message))
   await page.clock.install()
   await enter(page)
-  await page
-    .getByLabel('CPUプリセット', { exact: true })
-    .selectOption({ label: 'ウサギ' })
+  await pick(page.getByLabel('CPUプリセット', { exact: true }), {
+    label: 'ウサギ',
+  })
   await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
     '535',
   )
   await expect(
     page.getByLabel('CPU反応時間 (ms)', { exact: true }),
   ).toHaveValue('185')
-  await expect(page.getByLabel('CPUの打ち方', { exact: true })).toHaveValue(
+  await expect(page.getByLabel('CPUの打ち方', { exact: true })).toHaveAttribute(
+    'data-value',
     'ease-in',
   )
   await page.getByLabel('CPU速度 (KPM)', { exact: true }).fill('1800')
   await page.getByLabel('CPU反応時間 (ms)', { exact: true }).fill('1000')
-  await page.getByLabel('CPUの打ち方', { exact: true }).selectOption('constant')
+  await pick(page.getByLabel('CPUの打ち方', { exact: true }), 'constant')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
   await expect(page.locator('.battle-countdown')).toBeVisible()
   await expect(page.locator('.next-sentence')).toHaveCount(0)
@@ -153,6 +155,11 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
     }
   }
   await expect(page.getByText('CPU WINS / 敗北')).toBeVisible()
+  await expect(page.locator('.cpu-results')).toHaveAttribute(
+    'data-result',
+    'defeat',
+  )
+  await expect(page.locator('.round-reports details')).toHaveCount(4)
   await expect(page.locator('[data-testid=cpu-rounds]')).toHaveText('4')
   await page.screenshot({ path: 'artifacts/cpu-result.png', fullPage: true })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
@@ -189,6 +196,16 @@ test('human can win four RTC rounds; no next sentence is exposed and only one re
       await page.getByRole('button', { name: '次のラウンド' }).click()
   }
   await expect(page.getByText('VICTORY / 勝利')).toBeVisible()
+  await expect(page.locator('.cpu-results')).toHaveAttribute(
+    'data-result',
+    'victory',
+  )
+  await expect(page.locator('.round-reports details')).toHaveCount(4)
+  await page.screenshot({
+    path: 'artifacts/cpu-victory-result.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
   await expect(page.locator('[data-testid=player-rounds]')).toHaveText('4')
   await page.clock.fastForward(60000)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
@@ -216,7 +233,7 @@ test('duel roman rows use the same glyph columns, word gaps and shared scrolling
   await enter(page)
   await page.getByLabel('CPU速度 (KPM)', { exact: true }).fill('60')
   await page.getByLabel('CPU反応時間 (ms)', { exact: true }).fill('1500')
-  await page.getByLabel('CPUの打ち方', { exact: true }).selectOption('constant')
+  await pick(page.getByLabel('CPUの打ち方', { exact: true }), 'constant')
   const seed = Array.from({ length: 2000 }, (_, i) => String(i)).find((s) =>
     seededBattlePrompts('cpu-rtc', s)[0].reading.startsWith('ほし'),
   )!

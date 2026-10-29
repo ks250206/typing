@@ -65,6 +65,8 @@ import type { RecordEntry } from './storage'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
 )
+import { SessionResult } from './SessionResult'
+import { Select } from './Select'
 import './App.css'
 const time = (ms: number) =>
   `${Math.floor(ms / 60000)
@@ -99,6 +101,7 @@ export default function App() {
   const [bestRecords, setBestRecords] = useState(readBestHistory)
   const [detailReplay, setDetailReplay] = useState(false)
   const [detail, setDetail] = useState<RecordEntry | null>(null)
+  const [finishedResult, setFinishedResult] = useState<RecordEntry | null>(null)
   const [ghostSource, setGhostSource] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const [seedPreferences] = useState(() => {
@@ -236,7 +239,7 @@ export default function App() {
   const reset = (
     id = selected,
     layout = settings.layout,
-    stage = practiceStage,
+    stage = practiceStage === 3 ? 2 : practiceStage,
     nextSeed = fixedSeed ? seed : freshSeed(),
     version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
@@ -258,6 +261,7 @@ export default function App() {
     recorded.current = false
     runRevision.current++
     setStatus('ready')
+    setFinishedResult(null)
     setPracticeStage(stage)
     setElapsed(0)
     setKeys(0)
@@ -453,6 +457,8 @@ export default function App() {
         ).toFixed(2),
       ),
     }
+    setFinishedResult(result)
+    setPracticeStage(3)
     persistResult(result)
   }
   useEffect(() => {
@@ -726,7 +732,7 @@ export default function App() {
             FOCUS MODE <span className="keycap">⌘</span>
           </span>
         </header>
-        <div className="content">
+        <div className="content page-view" key={tab}>
           <section className="hero">
             <div className="hero-content">
               <div className="eyebrow">
@@ -824,6 +830,7 @@ export default function App() {
                   <MissionCarousel
                     stage={practiceStage}
                     onStage={handleStageChange}
+                    hasResult={!!finishedResult}
                   >
                     {[
                       <div key="selected">
@@ -1010,9 +1017,7 @@ export default function App() {
                                   ready: 'READY WHEN YOU ARE',
                                   running: 'IN THE FLOW',
                                   paused: 'PAUSED',
-                                  done: durationMs
-                                    ? 'TIME UP'
-                                    : 'SESSION COMPLETE',
+                                  done: 'INPUT FINISHED',
                                 }[status]
                               }
                             </span>
@@ -1095,17 +1100,9 @@ export default function App() {
                             {status === 'done' && (
                               <div className="finish-message">
                                 <Check size={20} />
-                                {durationMs
-                                  ? '60秒の計測が終了しました。'
-                                  : '一篇を、最後まで。完走です。'}
-                                <button
-                                  onClick={() => {
-                                    reset()
-                                    focus()
-                                  }}
-                                >
-                                  もう一度
-                                  <RotateCcw size={14} />
+                                入力終了。
+                                <button onClick={() => handleStageChange(3)}>
+                                  結果を見る
                                 </button>
                               </div>
                             )}
@@ -1148,6 +1145,41 @@ export default function App() {
                           </div>
                         </div>
                       </div>,
+                      finishedResult ? (
+                        <SessionResult
+                          key={finishedResult.id}
+                          record={finishedResult}
+                          heading={durationMs ? 'TIME UP' : 'SESSION COMPLETE'}
+                          history={[...records, ...bestRecords]}
+                          message={
+                            durationMs
+                              ? '60秒の計測が終了しました。'
+                              : '一篇を、最後まで。完走です。'
+                          }
+                          actions={
+                            <>
+                              <button
+                                className="primary-button"
+                                onClick={() => {
+                                  reset(selected, settings.layout, 2)
+                                  focus()
+                                }}
+                              >
+                                もう一度
+                              </button>
+                              <button
+                                onClick={() =>
+                                  reset(selected, settings.layout, 0)
+                                }
+                              >
+                                文章を選び直す
+                              </button>
+                            </>
+                          }
+                        />
+                      ) : (
+                        <div key="result-empty" />
+                      ),
                     ]}
                   </MissionCarousel>
                 </div>
@@ -1224,22 +1256,20 @@ export default function App() {
                   >
                     <span className="tiny-label">INPUT STYLE</span>
                     <label htmlFor="layout">入力方式</label>
-                    <select
+                    <Select
                       id="layout"
+                      label="入力方式"
                       value={settings.layout}
                       disabled={status === 'running' || status === 'paused'}
-                      onChange={(e) => {
-                        const layout = e.target.value as Layout
+                      options={Object.entries(layoutLabels).map(
+                        ([value, label]) => ({ value, label }),
+                      )}
+                      onChange={(value) => {
+                        const layout = value as Layout
                         setSettings((s) => ({ ...s, layout }))
                         reset(selected, layout)
                       }}
-                    >
-                      {Object.entries(layoutLabels).map(([k, v]) => (
-                        <option key={k} value={k}>
-                          {v}
-                        </option>
-                      ))}
-                    </select>
+                    />
                     <label className="toggle-row">
                       <span>3D 背景</span>
                       <input

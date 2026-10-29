@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { etypingDocument, etypingPassages } from '../src/etyping'
 import { KanaEngine, RomanEngine } from '../src/engine'
@@ -125,7 +126,7 @@ test('JIS kana accepts literal numeric positions and continues into kana; changi
   expect(seed).not.toBe('')
   await choose(page, 'バレンタイン', seed)
   const expected = etypingDocument('etyping-valentine', seed)
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   expect(await preview(page)).toEqual(expected.sentences.map((s) => s.text))
   await enter(page)
   const engine = new KanaEngine(expected.sentences[0].reading)

@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { RomanEngine } from '../src/engine'
 import { passages } from '../src/passages'
@@ -75,10 +76,11 @@ test('library, settings persistence, screenshots and responsive layout', async (
   await expect(page.locator('.passage-header')).toContainText(
     '星の光が届くまで',
   )
-  await page.getByLabel('入力方式', { exact: true }).selectOption('dvorak')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'dvorak')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page.reload()
-  await expect(page.getByLabel('入力方式', { exact: true })).toHaveValue(
+  await expect(page.getByLabel('入力方式', { exact: true })).toHaveAttribute(
+    'data-value',
     'dvorak',
   )
   await expect(page.getByLabel('3D 背景', { exact: true })).not.toBeChecked()
@@ -97,7 +99,7 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   await page.goto('/')
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await page.getByRole('region').focus()
   // へいかん: Equal, E, T, Y
   for (const key of ['Equal', 'KeyE', 'KeyT', 'KeyY'])
@@ -201,7 +203,7 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await page.getByRole('button', { name: '削除する', exact: true }).click()
   await expect(other.getByText('最初の一篇から、はじめよう。')).toBeVisible()
   await other.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await other.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await other.getByRole('button', { name: 'もう一度', exact: true }).click()
   await complete(other)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録' }).click()
@@ -264,7 +266,7 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   await expect(cursor).toHaveCount(0)
   await expect(page.locator('.keyburst')).toHaveCount(1)
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await page.getByRole('button', { name: 'もう一度', exact: true }).click()
   await page.getByRole('region').focus()
   await page.keyboard.type('h')
   await expect(page.locator('.keyburst')).toBeHidden()

@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { passages } from '../src/passages'
 import { RomanEngine } from '../src/engine'
@@ -107,13 +108,13 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   await page.keyboard.type(model.hint)
   await expect(key('KeyM')).toHaveAttribute('data-state', 'next')
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
-  await page.getByLabel('入力方式', { exact: true }).selectOption('dvorak')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'dvorak')
   await expect(key('KeyJ')).toHaveAttribute('data-state', 'next')
   await expect(key('KeyJ').locator('> span')).toHaveText('H')
-  await page.getByLabel('入力方式', { exact: true }).selectOption('us')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'us')
   await expect(key('KeyH')).toHaveAttribute('data-state', 'next')
   await expect(key('IntlYen')).toHaveCount(0)
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await expect(key('Equal')).toHaveAttribute('data-state', 'next')
   await area.focus()
   for (const code of [
@@ -139,7 +140,7 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   await page.keyboard.press('Shift+Comma')
   await expect(key('KeyS')).toHaveAttribute('data-state', 'next')
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
-  await page.getByLabel('入力方式', { exact: true }).selectOption('jis')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'jis')
   await area.focus()
   for (const sentence of sentencesByPassage['night-library'])
     await page.keyboard.type(new RomanEngine(sentence.reading).hint)
@@ -170,7 +171,7 @@ test('keyboard stays within desktop and mobile viewport and respects reduced mot
       'workman',
       'kana',
     ]) {
-      await page.getByLabel('入力方式', { exact: true }).selectOption(layout)
+      await pick(page.getByLabel('入力方式', { exact: true }), layout)
       await expect(page.locator('.keyboard-guide')).toBeVisible()
       expect(
         await page.evaluate(
@@ -276,7 +277,7 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   ).toBeChecked()
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await area.focus()
   for (const code of [
     'Equal',

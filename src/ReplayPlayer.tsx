@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { SessionTrace } from './telemetry'
 import type { Layout } from './engine'
+import { Select } from './Select'
 import { ReplayTimeline } from './replay'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
@@ -97,17 +98,15 @@ export default function ReplayPlayer({
         </button>
         <label>
           再生速度
-          <select
-            aria-label="リプレイ速度"
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-          >
-            {[0.25, 0.5, 1, 1.5, 2, 4].map((v) => (
-              <option value={v} key={v}>
-                {v}倍
-              </option>
-            ))}
-          </select>
+          <Select
+            label="リプレイ速度"
+            value={String(speed)}
+            onChange={(value) => setSpeed(Number(value))}
+            options={[0.25, 0.5, 1, 1.5, 2, 4].map((v) => ({
+              value: String(v),
+              label: `${v}倍`,
+            }))}
+          />
         </label>
       </div>
       <label className="replay-seek">

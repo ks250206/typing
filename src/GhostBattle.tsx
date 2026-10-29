@@ -7,6 +7,7 @@ import { GhostRace } from './ghost'
 import { mapKey } from './engine'
 import { SentenceView } from './SentenceView'
 import { KeyboardGuide } from './KeyboardGuide'
+import { SessionResult } from './SessionResult'
 import { formatMissRate } from './scoring'
 
 export default function GhostBattle({
@@ -121,6 +122,7 @@ function GhostSession({
   const [status, setStatus] = useState<'ready' | 'running' | 'paused' | 'done'>(
     'ready',
   )
+  const [result, setResult] = useState<RecordEntry | null>(null)
   const [, render] = useState(0)
   const phase = useRef(status)
   const area = useRef<HTMLDivElement>(null)
@@ -200,11 +202,33 @@ function GhostSession({
       setStatus('done')
       if (!saved.current) {
         saved.current = true
-        onRecord(race.record())
+        const record = race.record()
+        setResult(record)
+        onRecord(record)
       }
     }
     render((n) => n + 1)
   }
+  if (result)
+    return (
+      <SessionResult
+        record={result}
+        heading={race.result}
+        variant={
+          race.result === 'YOU WIN'
+            ? 'win'
+            : race.result === 'GHOST WIN'
+              ? 'loss'
+              : 'neutral'
+        }
+        message={`ゴースト到達 ${(race.finishTime / 1000).toFixed(2)}秒`}
+        actions={
+          <button className="primary-button" onClick={onRetry}>
+            同じゴーストと再挑戦
+          </button>
+        }
+      />
+    )
   const frame = race.ghost(race.elapsed, status === 'ready')
   const player = race.playerDistance
   const ghost = status === 'ready' ? 0 : race.ghostDistance()
@@ -227,11 +251,6 @@ function GhostSession({
           {(race.elapsed / 1000).toFixed(2)}秒 · ゴースト到達{' '}
           {(race.finishTime / 1000).toFixed(2)}秒
         </span>
-        {status === 'done' && (
-          <span className="detail-point">
-            {race.point} pt · {race.rank}
-          </span>
-        )}
         <label>
           YOU{' '}
           <progress

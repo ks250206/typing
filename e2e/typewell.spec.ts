@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { mapKey } from '../src/engine'
 import { typewellDocument } from '../src/typewell'
@@ -139,7 +140,7 @@ test('kana word set finishes at 280 including separate dakuten keys; mobile has 
   await page.clock.install()
   await page.setViewportSize({ width: 390, height: 1000 })
   await choose(page)
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await enter(page)
   const source = typewellDocument('typewell-basic', 'replay-test', 'kana')
     .sentences[0].reading.normalize('NFD')

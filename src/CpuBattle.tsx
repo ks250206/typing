@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { CpuResults } from './CpuResults'
+import { Select } from './Select'
 import { mapKey, layoutLabels } from './engine'
 import type { Layout } from './engine'
 import {
@@ -78,6 +80,7 @@ export function CpuBattle({
     seed,
     title: battleSets.find((s) => s.id === setId)?.title ?? 'RTCオリジナル',
   })
+  const [result, setResult] = useState<RecordEntry | null>(null)
   const [match, setMatch] = useState<RtcMatch | null>(null)
   const [, render] = useState(0)
   const model = useRef<RtcMatch | null>(null)
@@ -106,7 +109,7 @@ export function CpuBattle({
       misses = value.totalMisses + value.misses.misses
     const penalty = value.totalPenalty + value.misses.penalty
     const point = scorePoint(keys, penalty, value.totalElapsed)
-    onRecord({
+    const record: RecordEntry = {
       id: crypto.randomUUID(),
       passageId: matchSource.current.id,
       title: `CPU対戦 · ${matchSource.current.title} ${value.roundsPlayer}–${value.roundsCpu} / ${value.config.kpm} KPM`,
@@ -127,11 +130,14 @@ export function CpuBattle({
       replayVersion: 1,
       cpuConfig: { ...value.config },
       trace: value.trace.finish(value.totalElapsed),
-    })
+    }
+    setResult(record)
+    onRecord(record)
   }
   useEffect(() => {
     if (!match) return
     const tick = () => {
+      if (['round-result', 'finished', 'paused'].includes(match.phase)) return
       match.advance(synchronize())
       saveResult(match)
       render((v) => v + 1)
@@ -168,6 +174,7 @@ export function CpuBattle({
     model.current = value
     clock.current = { now: 0, last: performance.now() }
     recorded.current = false
+    setResult(null)
     setMistake(false)
     setMatch(value)
     try {
@@ -293,21 +300,18 @@ export function CpuBattle({
       >
         <label>
           CPUプリセット
-          <select
-            aria-label="CPUプリセット"
+          <Select
+            label="CPUプリセット"
             value={preset}
-            onChange={(e) => {
-              const p = cpuPresets.find((p) => p.name === e.target.value)
+            options={[
+              ...cpuPresets.map((p) => ({ value: p.name, label: p.name })),
+              { value: 'カスタム', label: 'カスタム', disabled: true },
+            ]}
+            onChange={(value) => {
+              const p = cpuPresets.find((p) => p.name === value)
               if (p) setConfig({ ...p })
             }}
-          >
-            {cpuPresets.map((p) => (
-              <option key={p.name}>{p.name}</option>
-            ))}
-            <option value="カスタム" disabled>
-              カスタム
-            </option>
-          </select>
+          />
         </label>
         <label>
           CPU速度 (KPM)
@@ -347,47 +351,38 @@ export function CpuBattle({
         </label>
         <label>
           打ち方
-          <select
-            aria-label="CPUの打ち方"
+          <Select
+            label="CPUの打ち方"
             value={config.curve}
-            onChange={(e) =>
-              setConfig((c) => ({
-                ...c,
-                curve: e.target.value as CpuConfig['curve'],
-              }))
+            options={[
+              { value: 'constant', label: '一定速度' },
+              { value: 'ease-in', label: 'イーズイン（徐々に加速）' },
+            ]}
+            onChange={(value) =>
+              setConfig((c) => ({ ...c, curve: value as CpuConfig['curve'] }))
             }
-          >
-            <option value="constant">一定速度</option>
-            <option value="ease-in">イーズイン（徐々に加速）</option>
-          </select>
+          />
         </label>
         <label>
           入力方式
-          <select
-            aria-label="対戦の入力方式"
+          <Select
+            label="対戦の入力方式"
             value={layout}
-            onChange={(e) => setLayout(e.target.value as Layout)}
-          >
-            {Object.entries(layoutLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+            options={Object.entries(layoutLabels).map(([value, label]) => ({
+              value,
+              label,
+            }))}
+            onChange={(value) => setLayout(value as Layout)}
+          />
         </label>
         <label className="battle-set-control">
           文章セット
-          <select
-            aria-label="対戦の文章セット"
+          <Select
+            label="対戦の文章セット"
             value={setId}
-            onChange={(e) => setSetId(e.target.value)}
-          >
-            {battleSets.map((s) => (
-              <option value={s.id} key={s.id}>
-                {s.title}
-              </option>
-            ))}
-          </select>
+            options={battleSets.map((s) => ({ value: s.id, label: s.title }))}
+            onChange={setSetId}
+          />
         </label>
         <label>
           対戦シード
@@ -490,118 +485,95 @@ export function CpuBattle({
               {match.misses.misses}（実打 {match.misses.raw}）
             </span>
           </div>
-          <div
-            className="battle-arena"
-            ref={area}
-            tabIndex={0}
-            role="region"
-            aria-label="CPU対戦の入力領域"
-            onKeyDown={accept}
-            onBlur={pause}
-          >
-            {mistake && <div className="damage-overlay" aria-hidden="true" />}
-            {match.awaitingStart ? (
-              <div className="battle-countdown" role="status">
-                {Math.max(
-                  1,
-                  Math.ceil((match.deadline - clock.current.now) / 1000),
+          {phase === 'round-result' || phase === 'finished' ? (
+            <CpuResults
+              match={match}
+              result={result}
+              onNext={() => {
+                match.nextRound(synchronize())
+                render((v) => v + 1)
+                requestAnimationFrame(() => area.current?.focus())
+              }}
+              onRematch={start}
+            />
+          ) : (
+            <>
+              <div
+                className="battle-arena"
+                ref={area}
+                tabIndex={0}
+                role="region"
+                aria-label="CPU対戦の入力領域"
+                onKeyDown={accept}
+                onBlur={pause}
+              >
+                {mistake && (
+                  <div className="damage-overlay" aria-hidden="true" />
                 )}
-                <small>同時スタート</small>
-              </div>
-            ) : (
-              <>
-                <SentenceView
-                  current={match.sentence}
-                  position={match.engine.position}
-                  kana={match.layout === 'kana'}
-                  done={match.engine.done}
-                  target={match.engine.target}
-                  typed={match.typed}
-                  hint={match.engine.hint}
-                  wordColors={settings.wordColors}
-                  consumeTyped={settings.consumeTyped}
-                  showNext={false}
-                  romanGuide={romanGuide}
-                />
-                <div className="cpu-progress">
-                  <span>
-                    CPU · {cpuTyped}/{match.cpuLength} keys ·{' '}
-                    {phase === 'playing' &&
-                    clock.current.now - match.wordStart < config.reactionMs
-                      ? '反応待ち'
-                      : config.curve === 'ease-in'
-                        ? '加速走行'
-                        : '定速走行'}
-                  </span>
-                  <div>
-                    <i style={{ width: `${progress * 100}%` }} />
+                {match.awaitingStart ? (
+                  <div className="battle-countdown" role="status">
+                    {Math.max(
+                      1,
+                      Math.ceil((match.deadline - clock.current.now) / 1000),
+                    )}
+                    <small>同時スタート</small>
                   </div>
-                </div>
-                <KeyboardGuide
-                  layout={match.layout}
-                  nextCharacter={
-                    match.layout === 'kana'
-                      ? (match.engine.target[match.engine.position] ?? '')
-                      : (match.engine.hint[0] ?? '')
-                  }
-                  enabled={phase === 'playing'}
-                />
-              </>
-            )}
-          </div>
-          <div className="battle-status" role="status">
-            {phase === 'word-result' && (
-              <span>
-                {match.lastWord === 'player' ? 'YOU +1' : 'CPU +1'} · 次の問題へ
-              </span>
-            )}
-            {phase === 'round-result' && (
-              <>
-                <strong>
-                  {match.lastRound === 'player'
-                    ? 'ラウンド獲得'
-                    : 'CPUがラウンド獲得'}
-                </strong>
-                {match.accuracyReversal && (
-                  <span>正確率95%ルールによる逆転</span>
+                ) : (
+                  <>
+                    <SentenceView
+                      current={match.sentence}
+                      position={match.engine.position}
+                      kana={match.layout === 'kana'}
+                      done={match.engine.done}
+                      target={match.engine.target}
+                      typed={match.typed}
+                      hint={match.engine.hint}
+                      wordColors={settings.wordColors}
+                      consumeTyped={settings.consumeTyped}
+                      showNext={false}
+                      romanGuide={romanGuide}
+                    />
+                    <div className="cpu-progress">
+                      <span>
+                        CPU · {cpuTyped}/{match.cpuLength} keys ·{' '}
+                        {phase === 'playing' &&
+                        clock.current.now - match.wordStart < config.reactionMs
+                          ? '反応待ち'
+                          : config.curve === 'ease-in'
+                            ? '加速走行'
+                            : '定速走行'}
+                      </span>
+                      <div>
+                        <i style={{ width: `${progress * 100}%` }} />
+                      </div>
+                    </div>
+                    <KeyboardGuide
+                      layout={match.layout}
+                      nextCharacter={
+                        match.layout === 'kana'
+                          ? (match.engine.target[match.engine.position] ?? '')
+                          : (match.engine.hint[0] ?? '')
+                      }
+                      enabled={phase === 'playing'}
+                    />
+                  </>
                 )}
-                <button
-                  className="primary-button"
-                  onClick={() => {
-                    match.nextRound(synchronize())
-                    render((v) => v + 1)
-                    requestAnimationFrame(() => area.current?.focus())
-                  }}
-                >
-                  次のラウンド
-                </button>
-              </>
-            )}
-            {phase === 'finished' && (
-              <>
-                <strong>
-                  {match.roundsPlayer >= 4
-                    ? 'VICTORY / 勝利'
-                    : 'CPU WINS / 敗北'}
-                </strong>
-                <span>
-                  {point} pt · {title}
-                </span>
-                <button
-                  className="primary-button"
-                  disabled={fixed && !seed.trim()}
-                  onClick={start}
-                >
-                  再戦する
-                </button>
-              </>
-            )}
-            {phase === 'paused' && (
-              <button className="primary-button" onClick={resume}>
-                対戦を再開する
-              </button>
-            )}
-          </div>
+              </div>
+              <div className="battle-status" role="status">
+                {phase === 'word-result' && (
+                  <span>
+                    {match.lastWord === 'player' ? 'YOU +1' : 'CPU +1'} ·
+                    次の問題へ
+                  </span>
+                )}
+                {phase === 'paused' && (
+                  <button className="primary-button" onClick={resume}>
+                    対戦を再開する
+                  </button>
+                )}
+              </div>
+            </>
+          )}
           <div className="battle-actions">
             <span>
               {point} pt · {title} · 実ミス率{' '}

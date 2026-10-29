@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { rtcDocument, rtcPassages } from '../src/rtcWords'
 import { RomanEngine } from '../src/engine'
@@ -128,7 +129,7 @@ test('replay steps actual spelling and mistakes, pauses, changes speed and seeks
   const paused = await replay.getByLabel('リプレイ再生位置').inputValue()
   await page.clock.runFor(500)
   await expect(replay.getByLabel('リプレイ再生位置')).toHaveValue(paused)
-  await replay.getByLabel('リプレイ速度').selectOption('2')
+  await pick(replay.getByLabel('リプレイ速度'), '2')
   await replay.getByRole('button', { name: '再生', exact: true }).click()
   await page.clock.runFor(400)
   await expect(replay.locator('.typed-roman')).toHaveText('sika')
@@ -245,7 +246,7 @@ test('RTC sets generate seeded two-part sentences, complete 15 prompts and repla
   )
   await expect(replay.locator('.replay-event')).toContainText('問題 15 / 15')
   await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
-  await page.getByLabel('対戦の文章セット').selectOption(selected.id)
+  await pick(page.getByLabel('対戦の文章セット'), selected.id)
   await page.getByLabel('対戦シードを固定する', { exact: true }).check()
   await page.getByLabel('対戦シード', { exact: true }).fill('rtc-combine')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()

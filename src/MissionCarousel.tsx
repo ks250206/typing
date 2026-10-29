@@ -4,26 +4,31 @@ export function MissionCarousel({
   stage,
   onStage,
   children,
+  hasResult = false,
 }: {
   stage: number
   onStage: (stage: number) => void
+  hasResult?: boolean
   children: ReactNode[]
 }) {
   return (
     <div className="mission-carousel" data-stage={stage}>
       <nav className="mission-steps" aria-label="練習ステップ">
-        {['文章選択', '全文確認', '入力'].map((label, index) => (
-          <button
-            key={label}
-            aria-label={index === 2 ? '入力へ進む' : `${label}へ`}
-            aria-current={stage === index ? 'step' : undefined}
-            onClick={() => onStage(index)}
-          >
-            <small>0{index + 1}</small>
-            {label}
-            <span aria-hidden="true">{stage === index ? '◈' : '◇'}</span>
-          </button>
-        ))}
+        {['文章選択', '全文確認', '入力', '結果']
+          .slice(0, children.length)
+          .map((label, index) => (
+            <button
+              key={label}
+              aria-label={index === 2 ? '入力へ進む' : `${label}へ`}
+              disabled={index === 3 && !hasResult}
+              aria-current={stage === index ? 'step' : undefined}
+              onClick={() => onStage(index)}
+            >
+              <small>0{index + 1}</small>
+              {label}
+              <span aria-hidden="true">{stage === index ? '◈' : '◇'}</span>
+            </button>
+          ))}
       </nav>
       <div className="mission-viewport">
         <div className="mission-sweep" key={stage} aria-hidden="true" />
