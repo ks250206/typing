@@ -1,4 +1,5 @@
 import type { Passage } from './passages'
+import importedTrainers from './data/trainers.json' with { type: 'json' }
 import { seededRandom } from './typewell'
 import { normalizeReading } from './engine'
 
@@ -99,14 +100,13 @@ export function createTrainerOrder(
   let previous = -1
   return () => (previous = randomSentenceIndex(length, previous, random))
 }
-export const isTrainer = (id: string) => id === 'sakusaku-trainer'
 export const sakusaku: Passage = {
   id: 'sakusaku-trainer',
   title: '打鍵トレーナー · さくさくタイピング',
   genre: '60秒トレーナー',
   accent: '60',
   subtitle:
-    '15文をシードでランダム出題。最初の打鍵から60秒間の正打鍵数を計測。',
+    '15文をシードでランダム出題。3秒カウント後に60秒間の正打鍵数を計測。',
   durationMs: 60000,
   source: {
     label: 'ユーザー提供の本文・読み（15文）',
@@ -130,3 +130,31 @@ export const sakusaku: Passage = {
     return { text, reading, segments }
   }),
 }
+
+/** Data-only extracts from the supplied HTML; scripts and external assets are excluded. */
+export const trainerPassages: Passage[] = [
+  sakusaku,
+  ...importedTrainers.map((set): Passage => ({
+    id: set.id,
+    title: `打鍵トレーナー · ${set.title}`,
+    genre: '60秒トレーナー',
+    accent: '60',
+    subtitle: `${set.entries.length}文をシードでランダム出題。3秒カウント後に60秒間の正打鍵数を計測。`,
+    durationMs: set.durationMs,
+    source: {
+      label: 'タイパー養成所 · 保存HTML',
+      url: set.source.url,
+      kind: 'provided',
+    },
+    paragraphs: set.entries.map(([text, reading, alignment]) => ({
+      text: text as string,
+      reading: reading as string,
+      segments: (alignment as string[][]).map(([text, reading]) => ({
+        text,
+        reading,
+      })),
+    })),
+  })),
+]
+export const isTrainer = (id: string) =>
+  trainerPassages.some((p) => p.id === id)
