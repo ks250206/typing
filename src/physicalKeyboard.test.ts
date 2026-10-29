@@ -19,18 +19,20 @@ it('finds physical keys for all canonical passage input in all six layouts', () 
     'workman',
     'kana',
   ] as Layout[]) {
+    const characters = new Set<string>()
     for (const sentences of Object.values(sentencesByPassage))
       for (const sentence of sentences) {
         const input =
           layout === 'kana'
             ? new KanaEngine(sentence.reading).target
             : new RomanEngine(sentence.reading).hint
-        for (const char of input) {
-          const key = physicalKey(char, layout)
-          expect(key, `${layout}: ${char}`).toBeDefined()
-          expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
-        }
+        for (const char of input) characters.add(char)
       }
+    for (const char of characters) {
+      const key = physicalKey(char, layout)
+      expect(key).toBeDefined()
+      expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
+    }
   }
 })
 it('maps layout-specific punctuation, Dvorak and kana modifiers to physical keys', () => {
