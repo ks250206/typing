@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import official from './data/constitutionArticlesSource.json' with { type: 'json' }
+import official from '../data/sources/constitution/articles.json' with { type: 'json' }
 import {
   constitutionArticles,
   constitutionArticleDocument,

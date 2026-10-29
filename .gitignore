@@ -26,3 +26,10 @@ dist-ssr
 artifacts/
 test-results/
 playwright-report/
+
+# Python data importers
+__pycache__/
+
+# RTC official originals are kept locally; redistribution permission is unconfirmed.
+/data/sources/rtc/*.zip
+/src/data/rtc-sources/*.zip

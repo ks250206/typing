@@ -1,4 +1,4 @@
-import catalogue from './data/spaceCatalogue.json' with { type: 'json' }
+import catalogue from './data/generated/spaceCatalogue.json' with { type: 'json' }
 
 /** Independent GALACTYPE corpus. Names checked against the references in README. */
 const originalGroups = {

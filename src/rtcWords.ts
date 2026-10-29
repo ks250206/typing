@@ -1,4 +1,4 @@
-import data from './data/rtc.json' with { type: 'json' }
+import data from './data/generated/rtc.json' with { type: 'json' }
 import type { Passage } from './passages'
 import type { Sentence } from './sentences'
 import { seededRandom } from './typewell'

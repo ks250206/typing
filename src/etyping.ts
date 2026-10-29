@@ -1,4 +1,4 @@
-import data from './data/etyping.json' with { type: 'json' }
+import data from './data/generated/etyping.json' with { type: 'json' }
 import type { Passage } from './passages'
 import { seededRandom } from './typewell'
 

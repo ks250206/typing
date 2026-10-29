@@ -2,7 +2,7 @@
 import { expect, it } from 'vitest'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
-import data from './data/etyping.json' with { type: 'json' }
+import data from './data/generated/etyping.json' with { type: 'json' }
 import { etypingDocument, etypingPassages } from './etyping'
 import { mapKey } from './engine'
 import { sentenceWordStarts } from './wordSpacing'
@@ -25,7 +25,7 @@ it('imports all supplied XML words and readings in order; only identical Valenti
     expect(set.title).not.toMatch(/[0-9]/)
     for (const source of set.sources) {
       const raw = readFileSync(
-        new URL(`./data/etyping/${source.file}`, import.meta.url),
+        new URL(`../data/sources/etyping/${source.file}`, import.meta.url),
       )
       expect(createHash('sha256').update(raw).digest('hex')).toBe(source.sha256)
       // These snapshots have no XML entities in the word data.

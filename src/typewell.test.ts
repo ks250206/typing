@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import data from './data/typewell.json' with { type: 'json' }
+import data from './data/generated/typewell.json' with { type: 'json' }
 import { KanaEngine, RomanEngine } from './engine'
 import {
   strokeLimit,

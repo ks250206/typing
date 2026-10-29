@@ -6,6 +6,7 @@ Only identical same-title sets are deduplicated; differing sets fail explicitly.
 """
 from functools import lru_cache
 from pathlib import Path
+from data_paths import generated_path
 import hashlib
 import json
 import re
@@ -14,7 +15,7 @@ import unicodedata
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = ROOT / 'src/data/etyping'
+SOURCES = ROOT / 'data/sources/etyping'
 IDS = {'バレンタイン': 'valentine', '元気が出る言葉': 'encouragement',
        '春の言葉': 'spring', '思い出の言葉': 'memories', '顔の慣用句': 'face-idioms', '擬音・擬態語': 'onomatopoeia'}
 
@@ -96,7 +97,7 @@ def main():
             continue
         rows = [[text, reading, align(text, reading)] for text, reading in pairs]
         result[identifier] = {'id': 'etyping-' + identifier, 'title': title, 'sources': [source], 'entries': rows}
-    output = ROOT / 'src/data/etyping.json'
+    output = generated_path('etyping.json')
     output.write_text(json.dumps(list(result.values()), ensure_ascii=False, separators=(',', ':')) + '\n')
     for data in result.values():
         print(data['title'], len(data['entries']), 'sources:', len(data['sources']))
