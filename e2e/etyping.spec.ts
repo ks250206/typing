@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { etypingDocument, etypingPassages } from '../src/etyping'
@@ -27,6 +28,7 @@ const enter = async (page: Page) => {
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page)
 }
 
 test('all six clean titles provide seeded 15-question previews; completing 15 saves the seed and replays the same order', async ({

@@ -92,7 +92,7 @@ function practiceDocument(
             plan: null,
           }
 }
-type Status = 'ready' | 'running' | 'paused' | 'done'
+type Status = 'ready' | 'countdown' | 'running' | 'paused' | 'done'
 function makeEngine(reading: string, layout: Layout) {
   return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
 }
@@ -135,6 +135,7 @@ export default function App() {
   const [settings, setSettings] = useState(readSettings),
     [records, setRecords] = useState(readHistory),
     [status, setStatus] = useState<Status>('ready'),
+    [startCount, setStartCount] = useState(3),
     [sentenceIndex, setSentenceIndex] = useState(0),
     [elapsed, setElapsed] = useState(0),
     [keys, setKeys] = useState(0),
@@ -177,6 +178,10 @@ export default function App() {
     started = useRef(0),
     accumulated = useRef(0),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
+    countdownDeadline = useRef(0),
+    countdownTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+      undefined,
+    ),
     focusRevision = useRef(0),
     missEpisodes = useRef(new MissEpisodes()),
     liveKeys = useRef(0),
@@ -235,6 +240,36 @@ export default function App() {
       })
     })
   }
+  const clearCountdown = () => {
+    clearTimeout(countdownTimer.current)
+    countdownDeadline.current = 0
+  }
+  const beginCountdown = () => {
+    const revision = runRevision.current
+    countdownDeadline.current = performance.now() + 3000
+    setStartCount(3)
+    setStatus('countdown')
+    const tick = () => {
+      if (revision !== runRevision.current || !countdownDeadline.current) return
+      const remaining = Math.ceil(
+        (countdownDeadline.current - performance.now()) / 1000,
+      )
+      if (remaining > 0) {
+        setStartCount(remaining)
+        countdownTimer.current = setTimeout(tick, 50)
+        return
+      }
+      clearCountdown()
+      if (document.hidden || !area.current?.contains(document.activeElement)) {
+        setStatus('ready')
+        return
+      }
+      started.current = performance.now()
+      trace.current.begin(sentences[sentenceIndex], 0, settings.layout)
+      setStatus('running')
+    }
+    countdownTimer.current = setTimeout(tick, 50)
+  }
   const reset = (
     id = selected,
     layout = settings.layout,
@@ -247,6 +282,7 @@ export default function App() {
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
+    clearCountdown()
     const doc = practiceDocument(id, nextSeed, layout, version)
     trainerOrder.current = createTrainerOrder(nextSeed, doc.sentences.length)
     const initialIndex = doc.passage.durationMs ? trainerOrder.current() : 0
@@ -281,6 +317,11 @@ export default function App() {
     accumulated.current = 0
   }
   const pause = () => {
+    if (countdownDeadline.current) {
+      clearCountdown()
+      setStatus('ready')
+      return
+    }
     if (status === 'running') {
       if (durationMs && elapsedNow() >= durationMs) {
         finishTimer.current(durationMs)
@@ -299,6 +340,7 @@ export default function App() {
       // oxlint-disable-next-line react/purity
       started.current = performance.now()
       setStatus('running')
+      area.current?.focus()
     }
     focus()
   }
@@ -345,7 +387,13 @@ export default function App() {
       }),
     [],
   )
-  useEffect(() => () => clearTimeout(missTimer.current), [])
+  useEffect(
+    () => () => {
+      clearTimeout(missTimer.current)
+      clearTimeout(countdownTimer.current)
+    },
+    [],
+  )
   useEffect(() => {
     if (!showSettings && !confirmClear) return
     const previous = document.activeElement as HTMLElement | null
@@ -471,7 +519,11 @@ export default function App() {
       pause()
       return
     }
-    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    if (e.repeat) {
+      if (e.code === 'Space') e.preventDefault()
+      return
+    }
     if (
       e.nativeEvent.isComposing ||
       e.key === 'Process' ||
@@ -482,6 +534,16 @@ export default function App() {
       )
       return
     }
+    if (status === 'ready' || status === 'countdown') {
+      if (e.key.length === 1 || e.code === 'Space') e.preventDefault()
+      if (
+        status === 'ready' &&
+        !countdownDeadline.current &&
+        e.code === 'Space'
+      )
+        beginCountdown()
+      return
+    }
     if (status === 'paused' || status === 'done') return
     const key = mapKey(e.nativeEvent, settings.layout, engine.current.hint[0])
     if (!key) return
@@ -489,13 +551,6 @@ export default function App() {
     if (durationMs && status === 'running' && elapsedNow() >= durationMs) {
       finishSession(liveKeys.current, durationMs)
       return
-    }
-    if (status === 'ready') {
-      // This clock is sampled only by the keyboard event handler.
-      // oxlint-disable-next-line react/purity
-      started.current = performance.now()
-      trace.current.begin(sentences[sentenceIndex], 0, settings.layout)
-      setStatus('running')
     }
     const keyTime = elapsedNow()
     const position = engine.current.position
@@ -859,7 +914,9 @@ export default function App() {
                             <button
                               className="text-button"
                               disabled={
-                                !seedDraft.trim() || status === 'running'
+                                !seedDraft.trim() ||
+                                status === 'running' ||
+                                status === 'countdown'
                               }
                               onClick={() =>
                                 reset(
@@ -971,6 +1028,7 @@ export default function App() {
                               {
                                 {
                                   ready: 'READY WHEN YOU ARE',
+                                  countdown: 'STARTING',
                                   running: 'IN THE FLOW',
                                   paused: 'PAUSED',
                                   done: 'INPUT FINISHED',
@@ -995,6 +1053,58 @@ export default function App() {
                               )}
                             </span>
                           </div>
+                          {status === 'ready' && (
+                            <div
+                              className="practice-overlay"
+                              data-phase="ready"
+                              role="group"
+                              aria-label="練習の開始"
+                            >
+                              <button
+                                className="practice-start-button"
+                                onClick={() => {
+                                  beginCountdown()
+                                  area.current?.focus()
+                                }}
+                              >
+                                <kbd>Space</kbd>でスタート
+                              </button>
+                              <p>3秒のカウント後に計測開始 · IME OFF</p>
+                            </div>
+                          )}
+                          {status === 'paused' && (
+                            <div
+                              className="practice-overlay"
+                              data-phase="paused"
+                              role="group"
+                              aria-label="一時停止中"
+                            >
+                              <span className="practice-pause-label">
+                                PAUSED
+                              </span>
+                              <button
+                                className="practice-start-button"
+                                onClick={resume}
+                              >
+                                <Play size={24} />
+                                再開する
+                              </button>
+                              <p>計測を止めています</p>
+                            </div>
+                          )}
+                          {status === 'countdown' && (
+                            <div
+                              className="practice-overlay practice-countdown"
+                              data-phase="countdown"
+                              role="status"
+                              aria-live="polite"
+                              aria-atomic="true"
+                              aria-label={`開始まで${startCount}秒`}
+                            >
+                              <strong>{startCount}</strong>
+                              <span>まもなくスタート</span>
+                            </div>
+                          )}
                           <SentenceView
                             current={sentences[sentenceIndex]}
                             next={sentences[sentenceIndex + 1]}
@@ -1037,22 +1147,6 @@ export default function App() {
                                   ))}
                                 </span>
                               )}
-                            {status === 'ready' && (
-                              <div className="start-hint">
-                                <Keyboard size={14} />
-                                ここをクリックして、最初の文字からスタート
-                                <span>IME OFF</span>
-                              </div>
-                            )}
-                            {status === 'paused' && (
-                              <button
-                                className="resume-button"
-                                onClick={resume}
-                              >
-                                <Play size={14} />
-                                再開する
-                              </button>
-                            )}
                             {status === 'done' && (
                               <div className="finish-message">
                                 <Check size={20} />
@@ -1094,7 +1188,11 @@ export default function App() {
                                 <Pause size={14} />
                               )}
                               <span>
-                                {status === 'paused' ? '再開' : '一時停止'}
+                                {status === 'paused'
+                                  ? '再開'
+                                  : status === 'countdown'
+                                    ? 'キャンセル'
+                                    : '一時停止'}
                               </span>
                               <kbd>esc</kbd>
                             </button>
@@ -1216,7 +1314,11 @@ export default function App() {
                       id="layout"
                       label="入力方式"
                       value={settings.layout}
-                      disabled={status === 'running' || status === 'paused'}
+                      disabled={
+                        status === 'running' ||
+                        status === 'paused' ||
+                        status === 'countdown'
+                      }
                       options={Object.entries(layoutLabels).map(
                         ([value, label]) => ({ value, label }),
                       )}

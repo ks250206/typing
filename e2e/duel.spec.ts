@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { seededBattlePrompts } from '../src/battleSets'
 import { test, expect } from '@playwright/test'
@@ -55,6 +56,7 @@ test('mission frame stays fixed across faces, and every typing line scrolls hori
   }
   const area = page.getByRole('region')
   await area.focus()
+  await startPractice(page)
   const hint = await input(page)
   await page.keyboard.type(hint.slice(0, -1))
   await expect
@@ -76,6 +78,7 @@ test('mission frame stays fixed across faces, and every typing line scrolls hori
   })
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('zzzz')
   await expect(page.locator('.miss-stat > strong').first()).toHaveText('1')
   await expect(page.locator('.miss-stat')).toContainText('実ミス 4 打鍵')

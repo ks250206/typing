@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { mapKey } from '../src/engine'
@@ -49,6 +50,7 @@ test('word sets share the library and mission; seeded R run includes spaces, ext
   ).toHaveCount(0)
   const area = page.getByRole('region', { name: /タイピング入力/ })
   await area.focus()
+  await startPractice(page, true)
   const first = guide[0]
   await page.keyboard.type(first === 'z' ? 'qqqqqq' : 'zzzzzz')
   const alternate = guide.replace('si', 'shi')
@@ -146,6 +148,7 @@ test('kana word set finishes at 280 including separate dakuten keys; mobile has 
     .sentences[0].reading.normalize('NFD')
     .slice(0, 280)
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   const physical = new Map<string, { code: string; shiftKey: boolean }>()
   for (const code of [
     'Backquote',
@@ -267,6 +270,7 @@ test('GALACTYPE branding and cosmic word set work on desktop and mobile with a s
   const hint = await input(page)
   expect(hint).toHaveLength(400)
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   await page.keyboard.type(hint.slice(0, 40))
   await page.screenshot({
     path: 'artifacts/galactype-space-desktop.png',

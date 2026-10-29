@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { test, expect } from '@playwright/test'
 import { constitution } from '../src/constitution'
 import { sentencesByPassage } from '../src/sentences'
@@ -47,6 +48,7 @@ test('the complete official preamble is selectable, readable, typable and saved'
     animations: 'disabled',
   })
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page)
   for (const sentence of sentencesByPassage[constitution.id]) {
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',

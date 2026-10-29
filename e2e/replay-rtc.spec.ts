@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { rtcDocument, rtcPassages } from '../src/rtcWords'
@@ -211,6 +212,7 @@ test('RTC sets generate seeded two-part sentences, complete 15 prompts and repla
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page)
   for (const sentence of doc.sentences) {
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',

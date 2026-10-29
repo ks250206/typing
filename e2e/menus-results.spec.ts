@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
 import { choose } from './select'
 import { typewellDocument } from '../src/typewell'
@@ -144,6 +145,7 @@ test('finishing opens the result face with point, errors, loss, full log and rep
   const doc = typewellDocument('typewell-basic', 'result-screen', 'jis', 2)
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
+  await startPractice(page)
   await page.keyboard.type('%%%')
   await page.keyboard.type(doc.plan.reference)
   const result = page.getByRole('region', {

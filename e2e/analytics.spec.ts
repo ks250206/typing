@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
@@ -211,6 +212,7 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
     new Date(await page.evaluate(() => Date.now() + 10_000)),
   )
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   const guide = await input(page)
   await page.keyboard.type(guide[0])
   await page.clock.runFor(200)
@@ -221,6 +223,7 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
   await page.clock.fastForward(30000)
   await page.getByRole('button', { name: '再開する', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   await page.clock.runFor(250)
   const tail = guide.slice(1)
   for (let offset = 0; offset < tail.length; offset += 20) {
@@ -347,6 +350,7 @@ test('unavailable detail storage warns and keeps every stroke exportable in memo
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   await page.keyboard.type((await input(page))[0])
   await page.clock.fastForward(60050)
   await expect(page.getByText('TIME UP', { exact: true })).toBeVisible()

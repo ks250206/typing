@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { cpuPresets } from '../src/cpuMatch'
@@ -22,6 +23,7 @@ async function enter(page: Page) {
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
+  await startPractice(page, true)
 }
 async function physicalType(page: Page, text: string, layout: Layout) {
   for (const char of text) {
@@ -54,7 +56,9 @@ test('trainer seed controls reproduce the same order across pauses, restart and 
   const next = createTrainerOrder('trainer-fixed')
   const order = Array.from({ length: 6 }, () => next())
   await enter(page)
-  await page.clock.pauseAt(new Date(Date.now() + 1000))
+  await page.clock.pauseAt(
+    new Date(await page.evaluate(() => Date.now() + 1000)),
+  )
   for (let i = 0; i < 3; i++) {
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
@@ -70,6 +74,7 @@ test('trainer seed controls reproduce the same order across pauses, restart and 
   )
   await page.getByRole('button', { name: '再開する', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
+  await startPractice(page, true)
   await page.keyboard.type(await guide(page))
   await expect(page.locator('.current-paragraph')).toHaveAttribute(
     'data-text',

@@ -269,6 +269,7 @@ h1 {
   margin-top: 6px;
 }
 .typing-area {
+  position: relative;
   outline: none;
 }
 .typing-area:focus-visible {
@@ -341,23 +342,6 @@ h1 {
   letter-spacing: 0;
 }
 
-.start-hint {
-  border-top: 1px solid #ffffff08;
-  margin-top: 13px;
-  padding-top: 12px;
-  font-size: 9px;
-  color: #61a3b1;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.start-hint > span {
-  font-size: 7px;
-  margin-left: auto;
-  border: 1px solid #ffffff1a;
-  padding: 2px 4px;
-  border-radius: 3px;
-}
 .practice-footer {
   border-top: 1px solid #ffffff0c;
   padding: 14px 24px;
@@ -1040,9 +1024,6 @@ td small {
   .config-help {
     font-size: 8px;
   }
-  .start-hint {
-    font-size: 8px;
-  }
   .library-grid {
     grid-template-columns: 1fr;
   }
@@ -1429,11 +1410,6 @@ main {
 .session-controls .keyburst {
   top: 5px;
   right: 15px;
-}
-.session-controls .start-hint {
-  margin: 0;
-  padding: 12px 0 18px;
-  font-size: 10px;
 }
 .session-controls .resume-button {
   margin: 0 0 16px;
@@ -3532,4 +3508,68 @@ rt {
 }
 .navigation-motion-setting > .custom-select {
   width: 100%;
+}
+
+.practice-overlay {
+  position: absolute;
+  inset: 45px 0 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #b5f7ff;
+  background: #091020e8;
+  text-align: center;
+  padding: 24px;
+}
+.practice-countdown strong {
+  font:
+    700 88px/1 'SFMono-Regular',
+    Consolas,
+    monospace;
+  text-shadow: 0 0 32px #70defb80;
+}
+.practice-countdown span {
+  color: #94afc9;
+  font-size: 13px;
+}
+
+.practice-start-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 22px 32px;
+  border: 1px solid #7ae6fba0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #173c51, #292447);
+  box-shadow:
+    0 0 36px #65dfff22,
+    inset 0 0 22px #73eaff12;
+  color: #d5faff;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+}
+.practice-start-button kbd {
+  font:
+    600 0.8em 'SFMono-Regular',
+    Consolas,
+    monospace;
+  padding: 6px 16px;
+  border: 1px solid #83dcef90;
+  border-bottom-width: 3px;
+  border-radius: 7px;
+  background: #0b1928;
+}
+.practice-overlay > p,
+.practice-pause-label {
+  color: #a0b8d2;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.practice-pause-label {
+  letter-spacing: 0.2em;
 }

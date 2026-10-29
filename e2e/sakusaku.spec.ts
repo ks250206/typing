@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
 import { sakusakuEntries } from '../src/sakusaku'
 
@@ -50,6 +51,7 @@ test('15 supplied texts, random next sentence, paused clock, partial 60-second r
   const original = await page
     .locator('.current-paragraph')
     .getAttribute('data-text')
+  await startPractice(page, true)
   const first = await remaining(page)
   await page.keyboard.type(first)
   await expect(page.locator('.current-paragraph')).not.toHaveAttribute(
@@ -66,6 +68,7 @@ test('15 supplied texts, random next sentence, paused clock, partial 60-second r
   expect(await history(page)).toHaveLength(0)
   await page.getByRole('button', { name: '再開する' }).click()
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   await page.screenshot({
     path: 'artifacts/sakusaku-desktop.png',
     fullPage: true,
@@ -109,12 +112,13 @@ test('15 supplied texts, random next sentence, paused clock, partial 60-second r
   expect(errors).toEqual([])
 })
 
-test('mistakes start the clock; a key arriving at the deadline is excluded before the timer tick', async ({
+test('mistakes after countdown are counted; a key arriving at the deadline is excluded before the timer tick', async ({
   page,
 }) => {
   await page.clock.install()
   await choose(page)
   await enter(page)
+  await startPractice(page, true)
   const first = (await remaining(page))[0]
   await page.keyboard.type(first === 'z' ? 'qqq' : 'zzz')
   await expect(page.locator('.miss-stat')).toContainText('ミス3')

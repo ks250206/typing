@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { RomanEngine } from '../src/engine'
@@ -22,6 +23,7 @@ test('complete longform, pause, persist, export and clear records', async ({
     sentencesByPassage[passages[0].id][1].text,
   )
   await area.focus()
+  await startPractice(page)
   await page.keyboard.type('x')
   await expect(page.locator('.miss-stat')).toContainText('1')
   await page.keyboard.press('Escape')
@@ -101,6 +103,7 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await page.getByRole('region').focus()
+  await startPractice(page)
   // へいかん: Equal, E, T, Y
   for (const key of ['Equal', 'KeyE', 'KeyT', 'KeyY'])
     await page.keyboard.press(key)
@@ -139,6 +142,7 @@ test('guides stay visible with a legacy opt-out, after resize and restart', asyn
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region').focus()
+  await startPractice(page)
   const sentences = sentencesByPassage['starlight']
   await expect(page.locator('.roman-line')).toBeVisible()
   const longest = sentences.reduce(
@@ -190,6 +194,7 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
     await tab.getByRole('button', { name: '入力へ進む', exact: true }).click()
     await expect(tab.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
     await tab.getByRole('region').focus()
+    await startPractice(tab)
     for (const p of passages[0].paragraphs)
       await tab.keyboard.type(new RomanEngine(p.reading).hint)
     await expect(tab.getByText('SESSION COMPLETE')).toBeVisible()
@@ -236,6 +241,7 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
     ])
   expect(sizes[1]).toBeLessThan(sizes[0])
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('z')
   await expect(cursor).toHaveText('閉館')
   await expect(page.locator('.keyburst')).toHaveCount(0)
@@ -249,6 +255,7 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
   await expect(cursor).toHaveText('閉館')
   await page.getByRole('region').focus()
+  await startPractice(page)
   for (let i = 0; i < sentences.length; i++) {
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
@@ -268,6 +275,7 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.getByRole('button', { name: 'もう一度', exact: true }).click()
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('h')
   await expect(page.locator('.keyburst')).toBeHidden()
 })
