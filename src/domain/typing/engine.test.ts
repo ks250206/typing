@@ -64,8 +64,10 @@ describe('branching roman input', () => {
     for (const c of 'na') expect(e.feed(c)).toBe(true)
     expect(e.done).toBe(true)
   })
-  it('all corpus readings are reachable and guides survive alternate spellings', () => {
-    for (const p of passages)
+  // Keep each corpus independently bounded as the library grows.
+  it.each(passages)(
+    '$id: corpus readings remain reachable with a guide after every key',
+    (p) => {
       for (const part of p.paragraphs) {
         const e = new RomanEngine(part.reading)
         for (let steps = 0; !e.done && steps < 5000; steps++) {
@@ -75,7 +77,8 @@ describe('branching roman input', () => {
         }
         expect(e.done).toBe(true)
       }
-  })
+    },
+  )
 })
 describe('physical layouts and kana', () => {
   const key = (code: string, shiftKey = false, key = '') => ({
