@@ -35,12 +35,14 @@ export interface Settings {
   background: boolean
   wordColors: boolean
   consumeTyped: boolean
+  navigationMotion: 'on' | 'system' | 'off'
 }
 export const defaultSettings: Settings = {
   layout: 'jis',
   background: true,
   wordColors: true,
   consumeTyped: false,
+  navigationMotion: 'on',
 }
 const HISTORY = 'yohaku.history.v1',
   SETTINGS = 'yohaku.settings.v1'
@@ -147,6 +149,9 @@ export function readSettings(): Settings {
   try {
     const s = JSON.parse(localStorage.getItem(SETTINGS) ?? '{}')
     return {
+      navigationMotion: ['on', 'system', 'off'].includes(s?.navigationMotion)
+        ? s.navigationMotion
+        : 'on',
       layout: layouts.includes(s?.layout) ? s.layout : 'jis',
       background: typeof s?.background === 'boolean' ? s.background : true,
       wordColors: typeof s?.wordColors === 'boolean' ? s.wordColors : true,

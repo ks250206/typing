@@ -5,11 +5,13 @@ async function setup(page: Page, reduced = true) {
   await page.emulateMedia({
     reducedMotion: reduced ? 'reduce' : 'no-preference',
   })
-  await page.addInitScript(() =>
-    localStorage.setItem(
-      'yohaku.settings.v1',
-      JSON.stringify({ background: false }),
-    ),
+  await page.addInitScript(
+    () =>
+      !localStorage.getItem('yohaku.settings.v1') &&
+      localStorage.setItem(
+        'yohaku.settings.v1',
+        JSON.stringify({ background: false }),
+      ),
   )
   await page.goto('/')
 }
@@ -127,7 +129,7 @@ test('finishing opens the result face with point, errors, loss, full log and rep
 }) => {
   await setup(page)
   const frame = page.locator('.mission-viewport'),
-    height = await frame.evaluate((el) => el.getBoundingClientRect().height)
+    height = await frame.evaluate((el) => el.clientHeight)
   await expect(
     page.getByRole('button', { name: '結果へ', exact: true }),
   ).toBeDisabled()
@@ -160,9 +162,7 @@ test('finishing opens the result face with point, errors, loss, full log and rep
   await expect(
     result.getByRole('img', { name: '1秒ごとのKPMとミス' }),
   ).toBeVisible()
-  expect(await frame.evaluate((el) => el.getBoundingClientRect().height)).toBe(
-    height,
-  )
+  expect(await frame.evaluate((el) => el.clientHeight)).toBe(height)
   await page.screenshot({
     path: 'artifacts/session-result-desktop.png',
     fullPage: true,
@@ -278,6 +278,12 @@ test('page and carousel transitions animate and honor reduced motion', async ({
     'animation-name',
     'page-arrive',
   )
+  await page.getByRole('button', { name: '環境設定', exact: true }).click()
+  await choose(
+    page.getByRole('combobox', { name: '画面切り替えのアニメーション' }),
+    'system',
+  )
+  await page.getByRole('button', { name: '設定を閉じる', exact: true }).click()
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
   await page.getByRole('button', { name: 'タイピング', exact: true }).click()
@@ -285,4 +291,101 @@ test('page and carousel transitions animate and honor reduced motion', async ({
     'animation-name',
     'none',
   )
+})
+
+test('navigation animates under OS reduced motion, can follow OS or stop, and persists', async ({
+  page,
+}) => {
+  await setup(page)
+  const shell = page.locator('.app-shell')
+  await expect(shell).toHaveAttribute('data-navigation-motion', 'on')
+  // Observe rendered intermediate frames, not merely a CSS animation name.
+  const observe = async (selector: string, name: string) => {
+    const frames = await page
+      .locator(selector)
+      .evaluate(async (element, name) => {
+        const animation = element
+          .getAnimations()
+          .find((a) => a instanceof CSSAnimation && a.animationName === name)!
+        animation.pause()
+        animation.currentTime = 60
+        await new Promise(requestAnimationFrame)
+        const first = {
+          opacity: getComputedStyle(element).opacity,
+          transform: getComputedStyle(element).transform,
+        }
+        animation.currentTime = 140
+        await new Promise(requestAnimationFrame)
+        const second = {
+          opacity: getComputedStyle(element).opacity,
+          transform: getComputedStyle(element).transform,
+        }
+        animation.finish()
+        return { first, second }
+      }, name)
+    expect(Number(frames.first.opacity)).toBeGreaterThan(0)
+    expect(Number(frames.second.opacity)).toBeGreaterThan(
+      Number(frames.first.opacity),
+    )
+    expect(frames.first.transform).not.toBe(frames.second.transform)
+    await expect(page.locator(selector)).toHaveCSS('transform', 'none')
+  }
+  for (const label of [
+    '練習の記録',
+    'CPU対戦',
+    'タイピング',
+    '練習の記録',
+    'タイピング',
+  ]) {
+    await page.getByRole('button', { name: label, exact: true }).click()
+    await observe('.page-view', 'page-arrive')
+  }
+  const height = await page
+    .locator('.mission-viewport')
+    .evaluate((el) => el.clientHeight)
+  await page.getByRole('button', { name: '全文確認へ', exact: true }).click()
+  await observe('.mission-face.is-active', 'mission-arrive')
+  expect(
+    await page.locator('.mission-viewport').evaluate((el) => el.clientHeight),
+  ).toBe(height)
+  const setMode = async (value: string) => {
+    await page.getByRole('button', { name: '環境設定', exact: true }).click()
+    await choose(
+      page.getByRole('combobox', { name: '画面切り替えのアニメーション' }),
+      value,
+    )
+    await page
+      .getByRole('button', { name: '設定を閉じる', exact: true })
+      .click()
+  }
+  await setMode('system')
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await observe('.page-view', 'page-arrive')
+  await setMode('off')
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('.mission-face.is-active')).toHaveCSS(
+    'animation-name',
+    'none',
+  )
+  await expect(page.locator('.mission-sweep')).toHaveCSS(
+    'animation-name',
+    'none',
+  )
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
+  await page.reload()
+  await expect(shell).toHaveAttribute('data-navigation-motion', 'off')
+  await setMode('on')
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await observe('.page-view', 'page-arrive')
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
 })

@@ -3697,3 +3697,34 @@ rt {
     transition: none;
   }
 }
+
+/* Explicit navigation preference can override the OS-wide motion reduction.
+   Keep this limited to navigation: background, typing and damage still obey OS. */
+.app-shell[data-navigation-motion='on'] .page-view {
+  animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='on'] .mission-face.is-active {
+  animation: mission-arrive 0.48s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='on'] .mission-sweep {
+  animation: mission-sweep 0.65s ease-out both !important;
+}
+.app-shell[data-navigation-motion='off']
+  :is(.page-view, .mission-face, .mission-sweep) {
+  animation: none !important;
+  transition: none !important;
+}
+.navigation-motion-setting {
+  margin-block: 20px;
+}
+.navigation-motion-setting > p {
+  margin-top: 10px;
+}
+
+.navigation-motion-setting > label {
+  display: block;
+  margin-bottom: 8px;
+}
+.navigation-motion-setting > .custom-select {
+  width: 100%;
+}

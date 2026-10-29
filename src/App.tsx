@@ -634,7 +634,10 @@ export default function App() {
     URL.revokeObjectURL(url)
   }
   return (
-    <div className="app-shell">
+    <div
+      className="app-shell"
+      data-navigation-motion={settings.navigationMotion}
+    >
       {settings.background && (
         <Suspense
           fallback={<div className="space-loading" aria-hidden="true" />}
@@ -1553,6 +1556,30 @@ export default function App() {
                 }
               />
             </label>
+            <div className="navigation-motion-setting">
+              <label htmlFor="navigation-motion">
+                画面切り替えのアニメーション
+              </label>
+              <Select
+                id="navigation-motion"
+                label="画面切り替えのアニメーション"
+                value={settings.navigationMotion}
+                options={[
+                  { value: 'on', label: 'オン' },
+                  { value: 'system', label: 'OSに合わせる' },
+                  { value: 'off', label: 'オフ' },
+                ]}
+                onChange={(value) =>
+                  setSettings((s) => ({
+                    ...s,
+                    navigationMotion: value as typeof s.navigationMotion,
+                  }))
+                }
+              />
+              <p>
+                ページ・カルーセルの切り替え専用です。オンではOSの「動きを減らす」が有効でも動きます。
+              </p>
+            </div>
             <p>
               記録と設定はこのブラウザのみに保存されます。ブラウザのデータを消すと失われるため、記録画面から書き出しておけます。
             </p>
