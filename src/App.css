@@ -1757,9 +1757,9 @@ main {
   transform: translateX(calc(var(--direction) * 100%));
   transform-origin: center;
   transition:
-    transform 0.36s cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 0.36s,
-    visibility 0.36s;
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.65s,
+    visibility 0.65s;
   backface-visibility: hidden;
   pointer-events: none;
 }
@@ -3251,7 +3251,7 @@ rt {
   cursor: default;
 }
 .mission-face.is-active {
-  animation: mission-slide 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation: mission-slide 0.65s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
 @keyframes mission-slide {
   from {
@@ -3513,7 +3513,7 @@ rt {
   animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
 }
 .app-shell[data-navigation-motion='on'] .mission-face.is-active {
-  animation: mission-slide 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
+  animation: mission-slide 0.65s cubic-bezier(0.4, 0, 0.2, 1) backwards !important;
 }
 .app-shell[data-navigation-motion='off'] :is(.page-view, .mission-face) {
   animation: none !important;
