@@ -207,7 +207,9 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Freeze the clock after the carousel transition; CI keyboard dispatch is slower.
-  await page.clock.pauseAt(new Date())
+  await page.clock.pauseAt(
+    new Date(await page.evaluate(() => Date.now() + 10_000)),
+  )
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   const guide = await input(page)
   await page.keyboard.type(guide[0])

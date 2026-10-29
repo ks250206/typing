@@ -21,7 +21,9 @@ async function choose(page: Page) {
 async function enter(page: Page) {
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
-  await page.clock.pauseAt(new Date())
+  await page.clock.pauseAt(
+    new Date(await page.evaluate(() => Date.now() + 10_000)),
+  )
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
 }
 
