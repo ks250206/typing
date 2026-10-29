@@ -1,5 +1,5 @@
 import { constitution } from './constitution'
-import { sakusaku } from './sakusaku'
+import { trainerPassages } from './sakusaku'
 import { etypingPassages } from './etyping'
 export interface Passage {
   id: string
@@ -161,6 +161,6 @@ export const passages: Passage[] = [
     ],
   },
   constitution,
-  sakusaku,
+  ...trainerPassages,
   ...etypingPassages,
 ]
