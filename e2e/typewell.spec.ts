@@ -1,8 +1,8 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
-import { mapKey } from '../src/engine'
-import { typewellDocument } from '../src/typewell'
+import { mapKey } from '../src/domain/typing/engine'
+import { typewellDocument } from '../src/domain/content/typewell'
 
 const input = async (page: import('@playwright/test').Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +

@@ -1,6 +1,6 @@
 import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
-import { sakusakuEntries, createTrainerOrder } from '../src/sakusaku'
+import { sakusakuEntries, createTrainerOrder } from '../src/domain/content/sakusaku'
 
 const remaining = async (page: Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +

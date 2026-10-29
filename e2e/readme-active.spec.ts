@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { startPractice } from './startPractice'
-import { rtcPassages } from '../src/rtcWords'
+import { rtcPassages } from '../src/domain/content/rtcWords'
 import { choose } from './select'
 test('new RTC sets are available in solo and CPU, and README shows real active input', async ({
   page,

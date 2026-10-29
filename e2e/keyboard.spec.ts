@@ -1,9 +1,9 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
-import { passages } from '../src/passages'
-import { RomanEngine } from '../src/engine'
-import { sentencesByPassage } from '../src/sentences'
+import { passages } from '../src/domain/content/passages'
+import { RomanEngine } from '../src/domain/typing/engine'
+import { sentencesByPassage } from '../src/domain/content/sentences'
 
 test('mission carousel isolates selection, full passage and typing, pausing on return', async ({
   page,

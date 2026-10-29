@@ -1,7 +1,7 @@
 """Aggregate all public source pages, preserving text/reading pairs and duplicates.
 
 Run from the repository: python3 scripts/import-typewell.py
-A dataset change requires a new replay version in src/typewell.ts.
+A dataset change requires a new replay version in src/domain/content/typewell.ts.
 """
 from data_paths import generated_path
 import html

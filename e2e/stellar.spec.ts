@@ -1,8 +1,8 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
-import { RomanEngine } from '../src/engine'
-import { sentencesByPassage } from '../src/sentences'
+import { RomanEngine } from '../src/domain/typing/engine'
+import { sentencesByPassage } from '../src/domain/content/sentences'
 
 test('integrated guides track alternate spellings, misses, transitions and resets', async ({
   page,

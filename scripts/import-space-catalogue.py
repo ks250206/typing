@@ -32,7 +32,7 @@ def clean(value):
 def reading(name):
     return "".join(chr(ord(c) - 0x60) if "ァ" <= c <= "ヶ" else c for c in name).replace("・", "").replace(" ", "")
 
-legacy = ROOT.joinpath("src/spaceWords.ts").read_text().split("export const legacySpaceWords")[0]
+legacy = ROOT.joinpath("src/domain/content/spaceWords.ts").read_text().split("export const legacySpaceWords")[0]
 seen = set(re.findall(r"\['([^']+)', '[^']+'\]", legacy))
 stars = []
 for row in re.findall(r"<tr[^>]*>(.*?)</tr>", fetch(STARS), re.S):
