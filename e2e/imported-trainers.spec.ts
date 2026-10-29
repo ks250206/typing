@@ -33,9 +33,12 @@ for (const set of data) {
       .getByRole('button', { name: 'このシードを使う', exact: true })
       .click()
     await expect(
-      page.getByText(`全文確認は収録${set.entries.length}文の一覧です。`, {
-        exact: false,
-      }),
+      page.getByText(
+        `全${set.entries.length}文を1周するごとに再シャッフルします。`,
+        {
+          exact: false,
+        },
+      ),
     ).toBeVisible()
     await expect(
       page.getByRole('link', { name: '出典：タイパー養成所 · 保存HTML' }),
@@ -43,8 +46,9 @@ for (const set of data) {
     await page.getByRole('button', { name: '全文を読む', exact: true }).click()
     const paragraphs = page.locator('#passage-full-text li p')
     await expect(paragraphs).toHaveCount(set.entries.length)
+    const previewOrder = createTrainerOrder('html-source', set.entries.length)
     for (let i = 0; i < set.entries.length; i++) {
-      const row = set.entries[i]
+      const row = set.entries[previewOrder()]
       expect(
         (await paragraphs.nth(i).locator('.token-text').allTextContents()).join(
           '',
@@ -91,7 +95,7 @@ for (const set of data) {
       seed: 'html-source',
       elapsed: 60000,
       keys: input.length,
-      replayVersion: 1,
+      replayVersion: 2,
     })
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
     await page

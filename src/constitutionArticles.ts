@@ -102,7 +102,7 @@ export const constitutionArticles = source.articles.map((article) => {
 export const constitutionArticlePassage: Passage = {
   id: 'constitution-articles',
   title: '日本国憲法 条文集',
-  genre: '教養',
+  genre: '公的文書',
   accent: '法',
   subtitle:
     '指定14条の全項を、条単位のランダム順で最後まで。シード再現に対応。',

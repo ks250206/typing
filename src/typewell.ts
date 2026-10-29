@@ -27,7 +27,7 @@ export const typewellSets = [
 export const typewellPassages: Passage[] = typewellSets.map((set, index) => ({
   id: set.id,
   title: `${set.category === 'space' ? 'タイプウェル準拠' : 'タイプウェル'} · ${set.title}`,
-  genre: set.category === 'space' ? 'タイプウェル準拠' : 'タイプウェル',
+  genre: 'タイプウェル',
   subtitle:
     set.category === 'space'
       ? `${spaceWords.length}の天体名。恒星・銀河・小惑星・衛星・惑星を旅する。R 400打 / K 280打。`

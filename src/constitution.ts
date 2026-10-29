@@ -35,7 +35,7 @@ const paragraphs = annotated.map((paragraph) => {
 export const constitution: Passage = {
   id: 'constitution-preamble',
   title: '日本国憲法 前文',
-  genre: '公的文章',
+  genre: '公的文書',
   accent: '07',
   subtitle: '衆議院掲載の前文4段落を全文収録。本文は原文、入力は現代の読み。',
   source: constitutionSource,
