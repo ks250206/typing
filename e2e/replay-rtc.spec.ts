@@ -177,86 +177,92 @@ test('replay steps actual spelling and mistakes, pauses, changes speed and seeks
   ).toBe(before)
 })
 
-test('RTC sets generate seeded two-part sentences, complete 15 prompts and replay the stored input', async ({
-  page,
-}) => {
-  const errors: string[] = []
-  page.on('pageerror', (e) => errors.push(e.message))
-  await page.goto('/')
-  await page.getByLabel('3D 背景', { exact: true }).uncheck()
-  const selected = rtcPassages.find((s) => s.id === 'rtc-2025-all')!
-  await page.getByRole('button', { name: selected.title, exact: true }).click()
-  await page.getByLabel('シードを固定する', { exact: true }).check()
-  await page.getByLabel('出題シード', { exact: true }).fill('rtc-combine')
-  await page
-    .getByRole('button', { name: 'このシードを使う', exact: true })
-    .click()
-  const doc = rtcDocument(selected.id, 'rtc-combine')
-  await page.getByRole('button', { name: '全文を読む', exact: true }).click()
-  await expect(page.locator('#passage-full-text li')).toHaveCount(15)
-  const text = await page
-    .locator('#passage-full-text li p')
-    .evaluateAll((nodes) =>
-      nodes.map((n) =>
-        [...n.querySelectorAll('.token-text')]
-          .map((s) => s.textContent)
-          .join(''),
-      ),
+for (const setId of ['rtc-2025-all', 'rtc-2019-all', 'rtc-2023-all'])
+  test(`${setId} generates seeded two-part sentences, completes 15 prompts and replays the stored input`, async ({
+    page,
+  }) => {
+    const errors: string[] = []
+    page.on('pageerror', (e) => errors.push(e.message))
+    await page.goto('/')
+    await page.getByLabel('3D 背景', { exact: true }).uncheck()
+    const selected = rtcPassages.find((s) => s.id === setId)!
+    await page
+      .getByRole('button', { name: selected.title, exact: true })
+      .click()
+    await page.getByLabel('シードを固定する', { exact: true }).check()
+    await page.getByLabel('出題シード', { exact: true }).fill('rtc-combine')
+    await page
+      .getByRole('button', { name: 'このシードを使う', exact: true })
+      .click()
+    const doc = rtcDocument(selected.id, 'rtc-combine')
+    await page.getByRole('button', { name: '全文を読む', exact: true }).click()
+    await expect(page.locator('#passage-full-text li')).toHaveCount(15)
+    const text = await page
+      .locator('#passage-full-text li p')
+      .evaluateAll((nodes) =>
+        nodes.map((n) =>
+          [...n.querySelectorAll('.token-text')]
+            .map((s) => s.textContent)
+            .join(''),
+        ),
+      )
+    expect(text).toEqual(doc.sentences.map((s) => s.text))
+    await page.screenshot({
+      path: 'artifacts/rtc-wordset.png',
+      fullPage: true,
+      animations: 'disabled',
+    })
+    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
+    await page.getByRole('region', { name: /タイピング入力/ }).focus()
+    await startPractice(page)
+    for (const sentence of doc.sentences) {
+      await expect(page.locator('.current-paragraph')).toHaveAttribute(
+        'data-text',
+        sentence.text,
+      )
+      await page.keyboard.type(new RomanEngine(sentence.reading).hint)
+    }
+    await expect(
+      page.getByText('SESSION COMPLETE', { exact: true }),
+    ).toBeVisible()
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]')
+              .length,
+        ),
+      )
+      .toBe(1)
+    await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page
+      .getByRole('button', { name: 'リプレイを見る', exact: true })
+      .click()
+    const replay = page.getByRole('region', { name: '記録リプレイ' })
+    await expect(replay.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
+      doc.sentences[0].text,
     )
-  expect(text).toEqual(doc.sentences.map((s) => s.text))
-  await page.screenshot({
-    path: 'artifacts/rtc-wordset.png',
-    fullPage: true,
-    animations: 'disabled',
-  })
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
-  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
-  await page.getByRole('region', { name: /タイピング入力/ }).focus()
-  await startPractice(page)
-  for (const sentence of doc.sentences) {
+    await replay.getByLabel('リプレイ再生位置').focus()
+    await page.keyboard.press('End')
+    await expect(replay.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
+      doc.sentences[14].text,
+    )
+    await expect(replay.locator('.replay-event')).toContainText('問題 15 / 15')
+    await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+    await pick(page.getByLabel('対戦の文章セット'), selected.id)
+    await page.getByLabel('対戦シードを固定する', { exact: true }).check()
+    await page.getByLabel('対戦シード', { exact: true }).fill('rtc-combine')
+    await page
+      .getByRole('button', { name: 'CPUと対戦する', exact: true })
+      .click()
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
-      sentence.text,
+      doc.sentences[0].text,
+      { timeout: 7000 },
     )
-    await page.keyboard.type(new RomanEngine(sentence.reading).hint)
-  }
-  await expect(
-    page.getByText('SESSION COMPLETE', { exact: true }),
-  ).toBeVisible()
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
-      ),
-    )
-    .toBe(1)
-  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
-  await page
-    .getByRole('button', { name: 'リプレイを見る', exact: true })
-    .click()
-  const replay = page.getByRole('region', { name: '記録リプレイ' })
-  await expect(replay.locator('.current-paragraph')).toHaveAttribute(
-    'data-text',
-    doc.sentences[0].text,
-  )
-  await replay.getByLabel('リプレイ再生位置').focus()
-  await page.keyboard.press('End')
-  await expect(replay.locator('.current-paragraph')).toHaveAttribute(
-    'data-text',
-    doc.sentences[14].text,
-  )
-  await expect(replay.locator('.replay-event')).toContainText('問題 15 / 15')
-  await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
-  await pick(page.getByLabel('対戦の文章セット'), selected.id)
-  await page.getByLabel('対戦シードを固定する', { exact: true }).check()
-  await page.getByLabel('対戦シード', { exact: true }).fill('rtc-combine')
-  await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
-  await expect(page.locator('.current-paragraph')).toHaveAttribute(
-    'data-text',
-    doc.sentences[0].text,
-    { timeout: 7000 },
-  )
-  await expect(page.locator('.next-sentence')).toHaveCount(0)
-  expect(errors).toEqual([])
-})
+    await expect(page.locator('.next-sentence')).toHaveCount(0)
+    expect(errors).toEqual([])
+  })

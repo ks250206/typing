@@ -12,18 +12,20 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {
     'RTC2018-Words.zip': [('00RTC ALLE.xml','2018-all'),('01RTC EsportsC.xml','2018-esports'),('02RTC GenkiC.xml','2018-genki'),('03RTC TypingD.xml','2018-typing')],
+    'RTC2019word5.zip': [('RTC2019word5/all_word5.xml','2019-all'),('RTC2019word5/heisei_word3.xml','2019-heisei'),('RTC2019word5/sports_word3.xml','2019-sports'),('RTC2019word5/computer_word3.xml','2019-computer')],
+    'RTC2023word2.zip': [('RTC2023word2/RTC2023_all_word_jp.xml','2023-all'),('RTC2023word2/RTC2023_nittere_word_jp.xml','2023-nittere'),('RTC2023word2/RTC2023_tabemono_word_jp.xml','2023-food'),('RTC2023word2/RTC2023_business_word_jp.xml','2023-business')],
     'RTC2024word.zip': [('RTC2024word/RTC2024ALLWord2.xml','2024-all'),('RTC2024word/RTC2024LifeWord2.xml','2024-life'),('RTC2024word/RTC2024NittereWord2.xml','2024-nittere'),('RTC2024word/RTC2024RyokoWord2.xml','2024-travel')],
     'RTC2025word.zip': [('RTC2025word/RTC2025_all_word.xml','2025-all'),('RTC2025word/RTC2025_genki_word.xml','2025-genki'),('RTC2025word/RTC2025_business_word.xml','2025-business'),('RTC2025word/RTC2025_sports_word.xml','2025-sports')],
 }
 # Explicitly reviewed ambiguous kana anchors; populated from the supplied readings.
-REVIEWED = {'自分の可能性を':'じぶん/かのうせい','ローマ字入力に最適な':'じにゅうりょく/さいてき','箱根駅伝で疾走した':'はこねえきでん/しっそう','遥か彼方の':'はる/かなた'}
+REVIEWED = {'風と共に去りぬ':'かぜ/とも/さ','自分の可能性を':'じぶん/かのうせい','ローマ字入力に最適な':'じにゅうりょく/さいてき','箱根駅伝で疾走した':'はこねえきでん/しっそう','遥か彼方の':'はる/かなた'}
 def norm(s):
     s=unicodedata.normalize('NFKC',s)
     return ''.join(chr(ord(c)-0x60) if 'ァ'<=c<='ヶ' else c.lower() if 'A'<=c<='Z' else c for c in s)
 @lru_cache(None)
 def align(text, raw):
     reading=norm(raw)
-    if text == 'また笑えばいい ': return [*align(text[:-1],raw), (' ','')]
+    if text.endswith(' ') and not reading.endswith(' '): return [*align(text[:-1],raw), (' ','')]
     parts=re.findall(r'[一-龯々ヶ]+|.',text)
     fixed=iter(REVIEWED.get(text,'').split('/'))
     known={i:next(fixed) for i,p in enumerate(parts) if text in REVIEWED and re.match(r'[一-龯々ヶ]',p)}
