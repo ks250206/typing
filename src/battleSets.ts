@@ -1,3 +1,4 @@
+import { rtcPassages, isRtc, rtcPrompts } from './rtcWords'
 import { battlePrompts } from './battlePrompts'
 import { passages } from './passages'
 import { sentencesByPassage } from './sentences'
@@ -11,9 +12,11 @@ export const battleSets = [
   { id: 'cpu-rtc', title: 'RTCオリジナル' },
   ...passages,
   ...typewellPassages,
+  ...rtcPassages,
 ].map((p) => ({ id: p.id, title: p.title }))
 /** The match can consume at most 7 × 19 prompts. Same seed reproduces every round. */
 export function seededBattlePrompts(id: string, seed: string) {
+  if (isRtc(id)) return rtcPrompts(id, seed, 133)
   const source =
     id === 'cpu-rtc'
       ? battlePrompts

@@ -1,3 +1,4 @@
+import { rtcPassages, isRtc, rtcDocument } from './rtcWords'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
@@ -75,7 +76,7 @@ const time = (ms: number) =>
     .padStart(2, '0')}:${Math.floor((ms / 1000) % 60)
     .toString()
     .padStart(2, '0')}`
-const passages = [...essayPassages, ...typewellPassages]
+const passages = [...essayPassages, ...typewellPassages, ...rtcPassages]
 function practiceDocument(
   id: string,
   seed: string,
@@ -84,13 +85,15 @@ function practiceDocument(
 ) {
   return isTypewell(id)
     ? typewellDocument(id, seed, layout, version)
-    : isEtyping(id)
-      ? etypingDocument(id, seed)
-      : {
-          passage: passages.find((p) => p.id === id)!,
-          sentences: sentencesByPassage[id],
-          plan: null,
-        }
+    : isRtc(id)
+      ? rtcDocument(id, seed)
+      : isEtyping(id)
+        ? etypingDocument(id, seed)
+        : {
+            passage: passages.find((p) => p.id === id)!,
+            sentences: sentencesByPassage[id],
+            plan: null,
+          }
 }
 type Status = 'ready' | 'running' | 'paused' | 'done'
 function makeEngine(reading: string, layout: Layout) {
@@ -98,6 +101,7 @@ function makeEngine(reading: string, layout: Layout) {
 }
 export default function App() {
   const [bestRecords, setBestRecords] = useState(readBestHistory)
+  const [detailReplay, setDetailReplay] = useState(false)
   const [detail, setDetail] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const [seedPreferences] = useState(() => {
@@ -164,7 +168,8 @@ export default function App() {
   const { passage, sentences } = practice
   const typewell = isTypewell(selected)
   const etyping = isEtyping(selected)
-  const seeded = typewell || etyping
+  const rtc = isRtc(selected)
+  const seeded = typewell || etyping || rtc
   const limit = strokeLimit(settings.layout)
   const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -237,7 +242,7 @@ export default function App() {
     nextSeed = fixedSeed ? seed : freshSeed(),
     version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
-    if (isTypewell(id) || isEtyping(id)) {
+    if (isTypewell(id) || isEtyping(id) || isRtc(id)) {
       setReplayVersion(version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
@@ -434,7 +439,7 @@ export default function App() {
       missPenalty: missEpisodes.current.penalty,
       ...(typewell
         ? { seed, strokeLimit: limit, replayVersion }
-        : etyping
+        : etyping || rtc
           ? { seed, replayVersion: 1 as const }
           : {}),
       mode: durationMs ? 'trainer' : 'practice',
@@ -896,12 +901,14 @@ export default function App() {
                                 reset(selected, settings.layout, 0, freshSeed())
                               }
                             >
-                              {etyping
+                              {etyping || rtc
                                 ? '問題をシャッフル'
                                 : '単語をシャッフル'}
                             </button>
                             <p>
-                              {etyping ? (
+                              {rtc ? (
+                                '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
+                              ) : etyping ? (
                                 '同じシードで同じ15問・同じ順番を再現します。重複なしのランダム出題です。'
                               ) : (
                                 <>
@@ -912,7 +919,7 @@ export default function App() {
                             </p>
                             <small>
                               再現ID: {selected} / v
-                              {etyping ? 1 : replayVersion} / {seed} ·{' '}
+                              {etyping || rtc ? 1 : replayVersion} / {seed} ·{' '}
                               {settings.layout}
                             </small>
                           </div>
@@ -947,7 +954,7 @@ export default function App() {
                           <p>
                             {typewell
                               ? `${limit}打分の単語列 / シード ${seed}`
-                              : etyping
+                              : etyping || rtc
                                 ? `15問 / シード ${seed}`
                                 : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
                           </p>
@@ -1319,8 +1326,8 @@ export default function App() {
                 <div>
                   <h2>文章ライブラリ</h2>
                   <span className="muted">
-                    {essayPassages.length} TEXTS + {typewellPassages.length}{' '}
-                    WORD SETS
+                    {essayPassages.length} TEXTS +{' '}
+                    {typewellPassages.length + rtcPassages.length} WORD SETS
                   </span>
                 </div>
               </div>
@@ -1360,7 +1367,9 @@ export default function App() {
                         <span>
                           {isTypewell(p.id)
                             ? 'R 400打 / K 280打 · シード再現対応'
-                            : `${p.paragraphs.reduce((n, p) => n + p.text.length, 0)} 文字 · ${p.paragraphs.length} 段落`}
+                            : isRtc(p.id)
+                              ? '15問 · パートをランダム連結'
+                              : `${p.paragraphs.reduce((n, p) => n + p.text.length, 0)} 文字 · ${p.paragraphs.length} 段落`}
                         </span>
                         <ArrowRight size={17} />
                       </div>
@@ -1396,12 +1405,16 @@ export default function App() {
                 <HistoryInsights
                   records={records}
                   bests={bestRecords}
-                  onSelect={setDetail}
+                  onSelect={(r) => {
+                    setDetailReplay(false)
+                    setDetail(r)
+                  }}
                 />
               )}
               {detail && (
                 <RecordDetails
-                  key={detail.id}
+                  key={`${detail.id}/${detailReplay}`}
+                  initialView={detailReplay ? 'replay' : 'trend'}
                   record={detail}
                   onClose={() => setDetail(null)}
                 />
@@ -1426,10 +1439,24 @@ export default function App() {
                             {r.title}
                             <button
                               className="text-button"
-                              onClick={() => setDetail(r)}
+                              onClick={() => {
+                                setDetailReplay(false)
+                                setDetail(r)
+                              }}
                             >
                               詳細を見る
                             </button>
+                            {(r.hasTrace || r.trace) && (
+                              <button
+                                className="text-button"
+                                onClick={() => {
+                                  setDetailReplay(true)
+                                  setDetail(r)
+                                }}
+                              >
+                                リプレイを見る
+                              </button>
+                            )}
                             {r.mode === 'cpu' && r.seed && (
                               <button
                                 className="text-button"
@@ -1444,7 +1471,8 @@ export default function App() {
                             {r.seed &&
                               r.mode !== 'cpu' &&
                               (isTypewell(r.passageId) ||
-                                isEtyping(r.passageId)) && (
+                                isEtyping(r.passageId) ||
+                                isRtc(r.passageId)) && (
                                 <button
                                   className="text-button"
                                   onClick={() => {

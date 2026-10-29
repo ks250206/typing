@@ -1,3 +1,4 @@
+import { rtcPassages } from './rtcWords'
 import { expect, it } from 'vitest'
 import { battleSets, seededBattlePrompts } from './battleSets'
 import { etypingPassages } from './etyping'
@@ -9,6 +10,7 @@ it('offers every registered set plus the original RTC set', () => {
     'cpu-rtc',
     ...passages.map((p) => p.id),
     ...typewellPassages.map((p) => p.id),
+    ...rtcPassages.map((p) => p.id),
   ])
 })
 it('fixes the complete BO7 prompt order from seed, changes with another seed and preserves corpus order', () => {

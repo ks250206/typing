@@ -177,3 +177,14 @@ describe('review regressions', () => {
     expect(e.position).toBe(e.target.length)
   })
 })
+
+it('uses literal ASCII for correct and incorrect kana-mode attempts in RTC letter/symbol positions', () => {
+  const q = { code: 'KeyQ', key: 'q', shiftKey: false }
+  expect(mapKey(q, 'kana', 'r')).toBe('q')
+  expect(mapKey(q, 'kana', 'か')).toBe('た')
+  expect(
+    mapKey({ code: 'Digit6', key: '&', shiftKey: true }, 'kana', '&'),
+  ).toBe('&')
+  const engine = new KanaEngine('RTC＆チャレンジ？')
+  expect(engine.target).toBe('rtc&ちゃれんし\u3099?')
+})
