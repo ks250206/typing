@@ -267,7 +267,9 @@ test('unified selection filters and searches the library; briefing wraps while t
   await library
     .getByRole('searchbox', { name: '文章を検索', exact: true })
     .fill('憲法')
-  await expect(library.locator('.story-card')).toHaveCount(1)
+  await expect(library.locator('.story-card')).toHaveCount(
+    passages.filter((p) => p.title.includes('憲法')).length,
+  )
   const constitution = passages.find((p) => p.title.includes('憲法'))!
   await library
     .getByRole('button', { name: constitution.title, exact: true })

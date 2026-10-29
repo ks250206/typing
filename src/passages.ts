@@ -1,4 +1,5 @@
 import { constitution } from './constitution'
+import { constitutionArticlePassage } from './constitutionArticles'
 import { trainerPassages } from './sakusaku'
 import { etypingPassages } from './etyping'
 export interface Passage {
@@ -7,9 +8,12 @@ export interface Passage {
   subtitle: string
   genre: string
   accent: string
+  splitSentences?: boolean
   durationMs?: number
   source?: { label: string; url?: string; kind?: 'public' | 'provided' }
   paragraphs: {
+    label?: string
+    note?: string
     text: string
     reading: string
     segments?: { text: string; reading: string }[]
@@ -161,6 +165,7 @@ export const passages: Passage[] = [
     ],
   },
   constitution,
+  constitutionArticlePassage,
   ...trainerPassages,
   ...etypingPassages,
 ]

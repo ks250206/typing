@@ -12,6 +12,7 @@ export interface Stroke {
   character: string
 }
 export interface TracePrompt {
+  label?: string
   segments?: ReadingSegment[]
   text: string
   reading: string
@@ -39,6 +40,7 @@ export class TypingTrace {
     if (last) last.end = time
     this.data.prompts.push({
       segments: sentence.segments.map((s) => ({ ...s })),
+      ...(sentence.label ? { label: sentence.label } : {}),
       text: sentence.text,
       reading: sentence.reading,
       start: time,

@@ -14,9 +14,10 @@ describe('main text and reading alignment', () => {
         passage.paragraphs.map((p) => p.reading).join(''),
       )
       for (const sentence of sentences) {
-        expect(sentence.text.match(/。/g) ?? []).toHaveLength(
-          passage.durationMs || passage.genre === 'e-typing' ? 0 : 1,
-        )
+        if (passage.splitSentences !== false)
+          expect(sentence.text.match(/。/g) ?? []).toHaveLength(
+            passage.durationMs || passage.genre === 'e-typing' ? 0 : 1,
+          )
         for (const kana of [false, true]) {
           const engine = kana
             ? new KanaEngine(sentence.reading)

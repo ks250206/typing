@@ -3573,3 +3573,15 @@ rt {
 .practice-pause-label {
   letter-spacing: 0.2em;
 }
+
+#passage-full-text h3 {
+  font-size: 14px;
+  color: #b5e8f4;
+  margin: 8px 0;
+}
+#passage-full-text small {
+  display: block;
+  color: #8ea8c6;
+  margin-bottom: 10px;
+  line-height: 1.8;
+}

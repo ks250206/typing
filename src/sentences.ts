@@ -7,6 +7,8 @@ export interface ReadingSegment {
   reading: string
 }
 export interface Sentence {
+  label?: string
+  note?: string
   text: string
   reading: string
   segments: ReadingSegment[]
@@ -46,6 +48,7 @@ export const sentencesByPassage: Record<string, Sentence[]> =
         const flush = () => {
           if (!segments.length) return
           sentences.push({
+            ...(paragraph.label ? { label: paragraph.label } : {}),
             text: segments.map((s) => s.text).join(''),
             reading: segments.map((s) => s.reading).join(''),
             segments,
@@ -54,7 +57,7 @@ export const sentencesByPassage: Record<string, Sentence[]> =
         }
         for (const segment of aligned) {
           segments.push(segment)
-          if (segment.text === '。') flush()
+          if (segment.text === '。' && passage.splitSentences !== false) flush()
         }
         flush()
       })
