@@ -201,6 +201,8 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
     .click()
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
+  // Freeze the clock after the carousel transition; CI keyboard dispatch is slower.
+  await page.clock.pauseAt(new Date())
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   const guide = await input(page)
   await page.keyboard.type(guide[0])
@@ -213,13 +215,17 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
   await page.getByRole('button', { name: '再開する', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   await page.clock.runFor(250)
-  await page.keyboard.type(guide.slice(1))
+  const tail = guide.slice(1)
+  for (let offset = 0; offset < tail.length; offset += 20) {
+    await page.clock.runFor(100)
+    await page.keyboard.type(tail.slice(offset, offset + 20))
+  }
   await expect(
     page.getByText('SESSION COMPLETE', { exact: true }),
   ).toBeVisible()
   await expect.poll(async () => (await records(page)).length).toBe(1)
   const record = (await records(page))[0]
-  expect(record.elapsed).toBeLessThan(5000)
+  expect(record.elapsed).toBeCloseTo(2750, 0)
   const trace = (await dbTrace(page, record.id)) as {
     strokes: { correct: boolean; dt: number }[]
   }
