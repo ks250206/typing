@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
 
 export function MissionCarousel({
   stage,
@@ -11,6 +11,10 @@ export function MissionCarousel({
   hasResult?: boolean
   children: ReactNode[]
 }) {
+  const [motion, setMotion] = useState({ stage, direction: 1 })
+  if (motion.stage !== stage) {
+    setMotion({ stage, direction: stage > motion.stage ? 1 : -1 })
+  }
   return (
     <div className="mission-carousel" data-stage={stage}>
       <nav className="mission-steps" aria-label="練習ステップ">
@@ -30,8 +34,10 @@ export function MissionCarousel({
             </button>
           ))}
       </nav>
-      <div className="mission-viewport">
-        <div className="mission-sweep" key={stage} aria-hidden="true" />
+      <div
+        className="mission-viewport"
+        style={{ '--slide-direction': motion.direction } as CSSProperties}
+      >
         {children.map((child, index) => (
           <div
             key={index}
@@ -39,9 +45,7 @@ export function MissionCarousel({
             data-face={index}
             aria-hidden={stage !== index}
             inert={stage !== index}
-            style={
-              { '--direction': index < stage ? -1 : 1 } as React.CSSProperties
-            }
+            style={{ '--direction': index < stage ? -1 : 1 } as CSSProperties}
           >
             {child}
           </div>

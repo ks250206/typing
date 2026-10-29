@@ -21,6 +21,7 @@ it('round trips settings and rejects unknown layouts', () => {
       background: false,
       wordColors: true,
       consumeTyped: true,
+      navigationMotion: 'system',
     }),
   ).toBe(true)
   expect(readSettings()).toEqual({
@@ -28,6 +29,7 @@ it('round trips settings and rejects unknown layouts', () => {
     background: false,
     wordColors: true,
     consumeTyped: true,
+    navigationMotion: 'system',
   })
   data.set('yohaku.settings.v1', '{"layout":"bad"}')
   expect(readSettings().layout).toBe('jis')

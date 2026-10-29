@@ -4,7 +4,6 @@ import {
   ArrowDownToLine,
   ArrowRight,
   AudioLines,
-  BookOpen,
   Check,
   ChevronRight,
   Clock3,
@@ -634,7 +633,10 @@ export default function App() {
     URL.revokeObjectURL(url)
   }
   return (
-    <div className="app-shell">
+    <div
+      className="app-shell"
+      data-navigation-motion={settings.navigationMotion}
+    >
       {settings.background && (
         <Suspense
           fallback={<div className="space-loading" aria-hidden="true" />}
@@ -733,52 +735,6 @@ export default function App() {
           </span>
         </header>
         <div className="content page-view" key={tab}>
-          <section className="hero">
-            <div className="hero-content">
-              <div className="eyebrow">
-                <span />
-                DEEP SPACE · JAPANESE TYPING
-              </div>
-              <h1>
-                {tab === 'history' ? (
-                  '積み重ねた、あなたの軌跡。'
-                ) : tab === 'ghost' ? (
-                  '過去の自分と、競い合う。'
-                ) : (
-                  <>
-                    指先から、
-                    <br />
-                    宇宙へ。
-                  </>
-                )}
-              </h1>
-              <p>
-                {tab === 'history'
-                  ? '昨日の自分から、少しずつ。数字に、続けてきた時間が宿る。'
-                  : tab === 'ghost'
-                    ? '同じ言葉、同じ軌道。あの日のリズムを追い越そう。'
-                    : '一打ごとに、言葉が光る。\n次の一文を先読みして、自分だけの軌道へ。'}
-              </p>
-              <div className="hero-tags">
-                <span>
-                  <BookOpen size={13} />
-                  長文に没頭
-                </span>
-                <span>
-                  <Keyboard size={13} />
-                  6つの入力方式
-                </span>
-                <span>
-                  <History size={13} />
-                  記録はこの端末に
-                </span>
-              </div>
-            </div>
-            <div className="orbit-label">
-              <span className="orbit-line" /> A SPACE FOR YOUR FLOW{' '}
-              <span>01 — ∞</span>
-            </div>
-          </section>
           {notice && (
             <div role="status" className="notice">
               {notice}
@@ -1553,6 +1509,30 @@ export default function App() {
                 }
               />
             </label>
+            <div className="navigation-motion-setting">
+              <label htmlFor="navigation-motion">
+                画面切り替えのアニメーション
+              </label>
+              <Select
+                id="navigation-motion"
+                label="画面切り替えのアニメーション"
+                value={settings.navigationMotion}
+                options={[
+                  { value: 'on', label: 'オン' },
+                  { value: 'system', label: 'OSに合わせる' },
+                  { value: 'off', label: 'オフ' },
+                ]}
+                onChange={(value) =>
+                  setSettings((s) => ({
+                    ...s,
+                    navigationMotion: value as typeof s.navigationMotion,
+                  }))
+                }
+              />
+              <p>
+                ページ・カルーセルの切り替え専用です。オンではOSの「動きを減らす」が有効でも動きます。
+              </p>
+            </div>
             <p>
               記録と設定はこのブラウザのみに保存されます。ブラウザのデータを消すと失われるため、記録画面から書き出しておけます。
             </p>

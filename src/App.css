@@ -159,20 +159,6 @@ main {
   padding: 0 42px;
   margin: auto;
 }
-.hero {
-  position: relative;
-  min-height: 319px;
-  overflow: hidden;
-  border-bottom: 1px solid #ffffff0c;
-  display: flex;
-  align-items: center;
-}
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding: 32px 0 34px;
-  pointer-events: none;
-}
 .eyebrow {
   display: flex;
   align-items: center;
@@ -196,46 +182,7 @@ h1 {
   font-weight: 400;
   margin: 17px 0 13px;
 }
-.hero p {
-  font-size: 11px;
-  color: #6fabb8;
-  line-height: 2;
-  white-space: pre-line;
-  letter-spacing: 0.5px;
-}
-.hero-tags {
-  display: flex;
-  gap: 22px;
-  margin-top: 24px;
-  font-size: 9px;
-  color: #6ca9b7;
-}
-.hero-tags > span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
 
-.orbit-label {
-  position: absolute;
-  bottom: 35px;
-  right: 12px;
-  color: #4f919f;
-  letter-spacing: 2px;
-  font-size: 7px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.orbit-label > span:last-child {
-  margin-left: 15px;
-  color: #80b5c1;
-}
-.orbit-line {
-  width: 26px;
-  height: 1px;
-  background: #5094a3;
-}
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -859,12 +806,6 @@ td small {
   .content {
     padding: 0 65px;
   }
-  .hero {
-    min-height: 345px;
-  }
-  .hero h1 {
-    font-size: 43px;
-  }
   .practice-grid {
     grid-template-columns: minmax(0, 1fr) 270px;
   }
@@ -924,18 +865,8 @@ td small {
   .config-card {
     padding: 15px;
   }
-  .hero h1 {
-    font-size: 33px;
-  }
   .library-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .orbit-label {
-    font-size: 6px;
-    right: 0;
-  }
-  .hero-content {
-    max-width: 80%;
   }
 }
 @media (max-width: 800px) {
@@ -1000,26 +931,7 @@ td small {
   .content {
     padding: 0 22px;
   }
-  .hero {
-    min-height: 295px;
-  }
-  .hero-content {
-    max-width: 100%;
-    padding-top: 30px;
-  }
-  .hero h1 {
-    font-size: 32px;
-  }
 
-  .orbit-label {
-    display: none;
-  }
-  .hero p {
-    font-size: 10px;
-  }
-  .hero-tags {
-    gap: 16px;
-  }
   .practice-grid {
     grid-template-columns: 1fr;
   }
@@ -1062,20 +974,6 @@ td small {
   }
   .topbar {
     padding: 0 17px;
-  }
-  .hero h1 {
-    font-size: 29px;
-    letter-spacing: 3px;
-  }
-  .hero p {
-    font-size: 9px;
-  }
-  .hero-tags {
-    font-size: 8px;
-    gap: 12px;
-  }
-  .hero-tags svg {
-    width: 11px;
   }
   .eyebrow {
     font-size: 6px;
@@ -1178,9 +1076,6 @@ td small {
   .section-heading > div {
     gap: 8px;
   }
-  .hero {
-    min-height: 285px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1218,20 +1113,8 @@ td small {
   color: #8cefff;
   box-shadow: inset 2px 0 #5fe6ff;
 }
-.hero {
-  background: radial-gradient(ellipse at 80% 50%, #8749ff1c, transparent 60%);
-}
-.hero h1 {
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  color: #eef6ff;
-  text-shadow: 0 0 40px #639cff40;
-}
 .eyebrow {
   color: #8cefff;
-}
-.hero-tags svg {
-  color: #a995ff;
 }
 .practice-main,
 .session-card,
@@ -1468,16 +1351,8 @@ main {
   right: 5%;
   background: radial-gradient(at 30% 30%, #edb18c, #ae4d45, #341c30);
 }
-.hero {
-  background: linear-gradient(90deg, #090d1be8, #090d1b70 42%, transparent 75%);
-}
 .topbar {
   background: #090d1b99;
-}
-.hero h1 {
-  text-shadow:
-    0 3px 0 #050919,
-    0 0 36px #639cff50;
 }
 .prose {
   overflow: visible;
@@ -1623,11 +1498,6 @@ main {
   }
   100% {
     opacity: 0;
-  }
-}
-@media (max-width: 800px) {
-  .hero {
-    background: linear-gradient(90deg, #090d1be8, #090d1b70 65%, transparent);
   }
 }
 @media (max-width: 480px) {
@@ -1884,13 +1754,12 @@ main {
   inset: 0;
   visibility: hidden;
   opacity: 0;
-  transform: translateX(calc(var(--direction) * 22%))
-    rotateY(calc(var(--direction) * 38deg));
+  transform: translateX(calc(var(--direction) * 100%));
   transform-origin: center;
   transition:
-    transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 0.35s,
-    visibility 0.48s;
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.65s,
+    visibility 0.65s;
   backface-visibility: hidden;
   pointer-events: none;
 }
@@ -2128,33 +1997,6 @@ rt {
   margin-top: auto;
   flex-shrink: 0;
 }
-.mission-sweep {
-  position: absolute;
-  z-index: 4;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 35%,
-    #76efff1f 49%,
-    #bcaaff30 50%,
-    transparent 65%
-  );
-  animation: mission-sweep 0.65s ease-out both;
-}
-@keyframes mission-sweep {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
 /* No text wrapping: move the intact line in its own clipping window. */
 .prose .current-paragraph,
 [data-flow='consume'] .current-paragraph {
@@ -2330,25 +2172,6 @@ rt {
   color: #93b6cb;
   letter-spacing: 0.15em;
 }
-.cpu-progress {
-  margin: 12px 27px 22px;
-  font-size: 10px;
-  color: #b5a9d5;
-}
-.cpu-progress > div {
-  height: 7px;
-  border-radius: 5px;
-  overflow: hidden;
-  background: #131228;
-  margin-top: 9px;
-}
-.cpu-progress i {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, #7898ed, #c391ec);
-  transition: width 0.05s linear;
-  box-shadow: 0 0 15px #c391ec70;
-}
 .battle-status {
   min-height: 65px;
   display: flex;
@@ -2406,9 +2229,6 @@ rt {
   .battle-arena {
     min-height: 430px;
   }
-  .cpu-progress {
-    margin-inline: 16px;
-  }
   .point-panel {
     grid-template-columns: 1fr;
   }
@@ -2417,16 +2237,9 @@ rt {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mission-sweep {
-    animation: none;
-    display: none;
-  }
   .flow-track,
   [data-flow='consume'] .sentence-stream {
     transition: none !important;
-  }
-  .cpu-progress i {
-    transition: none;
   }
 }
 .point-panel {
@@ -3417,6 +3230,7 @@ rt {
   }
 }
 .page-view {
+  padding-top: 24px;
   animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
 }
 @keyframes page-arrive {
@@ -3437,19 +3251,14 @@ rt {
   cursor: default;
 }
 .mission-face.is-active {
-  animation: mission-arrive 0.48s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation: mission-slide 0.65s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
-@keyframes mission-arrive {
+@keyframes mission-slide {
   from {
-    opacity: 0;
-    transform: translateX(calc(var(--direction) * 12%))
-      rotateY(calc(var(--direction) * 20deg));
-    filter: blur(2px);
+    transform: translateX(calc(var(--slide-direction) * 100%));
   }
   to {
-    opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 .session-result {
@@ -3696,4 +3505,31 @@ rt {
   .custom-select svg {
     transition: none;
   }
+}
+
+/* Explicit navigation preference can override the OS-wide motion reduction.
+   Keep this limited to navigation: background, typing and damage still obey OS. */
+.app-shell[data-navigation-motion='on'] .page-view {
+  animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='on'] .mission-face.is-active {
+  animation: mission-slide 0.65s cubic-bezier(0.4, 0, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='off'] :is(.page-view, .mission-face) {
+  animation: none !important;
+  transition: none !important;
+}
+.navigation-motion-setting {
+  margin-block: 20px;
+}
+.navigation-motion-setting > p {
+  margin-top: 10px;
+}
+
+.navigation-motion-setting > label {
+  display: block;
+  margin-bottom: 8px;
+}
+.navigation-motion-setting > .custom-select {
+  width: 100%;
 }
