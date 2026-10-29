@@ -8,11 +8,11 @@ import { rtcDocument, rtcPassages, rtcPrompts } from './rtcWords'
 import { KanaEngine, RomanEngine } from './engine'
 import { physicalKey, keyOutput } from './physicalKeyboard'
 import type { Layout } from './engine'
-it('preserves all 12 supplied two-part word files, raw readings, order and provenance', () => {
-  expect(data).toHaveLength(12)
+it('preserves all 20 supplied two-part word files, raw readings, order and provenance', () => {
+  expect(data).toHaveLength(20)
   expect(
     data.reduce((n, s) => n + s.parts.reduce((n, p) => n + p.length, 0), 0),
-  ).toBe(3594)
+  ).toBe(5994)
   for (const set of data) {
     const path = new URL(
       `./data/rtc-sources/${set.source.archive}`,
