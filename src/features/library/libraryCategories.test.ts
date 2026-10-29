@@ -10,7 +10,7 @@ it('groups both constitution sets, the six original essays, and all five TypeWel
   ).toEqual(['constitution-preamble', 'constitution-articles'])
   expect(
     passages
-      .filter((p) => libraryCategory(p) === 'オリジナル文章')
+      .filter((p) => libraryCategory(p) === 'オリジナル')
       .map((p) => p.genre),
   ).toEqual(['文学', '旅', '科学', '日常', '思索', '音楽'])
   expect(typewellPassages).toHaveLength(5)
