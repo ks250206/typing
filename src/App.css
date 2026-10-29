@@ -1708,7 +1708,7 @@ main {
   margin-left: 8px;
 }
 .keyboard-key {
-  --finger: #ed8ccf;
+  --finger: #6390ff;
   position: relative;
   min-width: 0;
   flex: 1;
@@ -1728,7 +1728,7 @@ main {
     monospace;
 }
 .keyboard-key[data-finger$='ring'] {
-  --finger: #8893ff;
+  --finger: #ed8ccf;
 }
 .keyboard-key[data-finger$='middle'] {
   --finger: #4fe2ef;
@@ -1781,11 +1781,11 @@ main {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #ed8ccf;
+  background: #6390ff;
   margin-right: 4px;
 }
 .keyboard-legend [data-tone='1']::before {
-  background: #8893ff;
+  background: #ed8ccf;
 }
 .keyboard-legend [data-tone='2']::before {
   background: #4fe2ef;
@@ -2955,4 +2955,37 @@ rt {
   .round-score-side strong {
     animation: none;
   }
+}
+
+/* Points lead the record summary; speed remains available beside it. */
+.record-point {
+  font-size: 22px;
+  font-weight: 600;
+  color: #9ceaff;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.record-point small {
+  white-space: normal;
+}
+.history-table .record-kpm {
+  font-size: 16px;
+  font-weight: 400;
+  color: #adc3db;
+}
+.detail-point {
+  color: #a7edff;
+  font-size: 20px;
+  font-weight: 600;
+}
+.history-metrics > div > small {
+  color: #a9bed4;
+  line-height: 1.6;
+}
+.best-kpm {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #a8bdd5;
+  margin-top: 5px;
 }

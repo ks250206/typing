@@ -84,3 +84,34 @@ it('keeps historical top scores after they leave the latest 200 summaries', asyn
     vi.unstubAllGlobals()
   }
 })
+
+import { recordPoint } from './recordStats'
+it('ranks by adjusted points first, keeps KPM ranking and computes both moving averages', () => {
+  const fast = { ...row(1, 600), missPenalty: 600, point: 9999 }
+  const accurate = row(2, 400)
+  expect(recordPoint(fast)).toBe(150)
+  expect(topRecords([fast, accurate]).map((r) => r.id)).toEqual(['2', '1'])
+  expect(topRecords([fast, accurate], 'kpm').map((r) => r.id)).toEqual([
+    '1',
+    '2',
+  ])
+  expect(recordTrend([fast, accurate]).at(-1)).toMatchObject({
+    pointAverage: 275,
+    kpmAverage: 500,
+    average: 275,
+  })
+  expect(recordTrend([fast, accurate], 'kpm').at(-1)?.average).toBe(500)
+  const legacy = { ...row(3, 300), misses: 100 }
+  expect(recordPoint(legacy)).toBe(168)
+})
+it('retains distinct historical point and speed top tens after the recent record limit', async () => {
+  const slowAccurate = Array.from({ length: 10 }, (_, i) => row(i, 400 + i))
+  const fastInaccurate = Array.from({ length: 10 }, (_, i) => ({
+    ...row(i + 10, 800 + i),
+    missPenalty: 800,
+  }))
+  const archive = archiveBests([...slowAccurate, ...fastInaccurate])
+  expect(archive).toHaveLength(20)
+  expect(topRecords(archive).every((r) => Number(r.id) < 10)).toBe(true)
+  expect(topRecords(archive, 'kpm').every((r) => Number(r.id) >= 10)).toBe(true)
+})

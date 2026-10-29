@@ -6,7 +6,11 @@ import {
   recordTrend,
   topRecords,
   modeOf,
+  recordPoint,
+  recordValue,
 } from './recordStats'
+import type { RecordMetric } from './recordStats'
+import { animalRank } from './scoring'
 import { readTrace } from './traceStore'
 import { analyzeTrace } from './telemetry'
 import type { SessionTrace } from './telemetry'
@@ -32,6 +36,9 @@ export function HistoryInsights({
   )
   const [selection, setSelection] = useState('')
   const [sameSeed, setSameSeed] = useState(false)
+  const [metric, setMetric] = useState<RecordMetric>('point')
+  const metricName = metric === 'point' ? 'point' : 'KPM'
+  const unit = metric === 'point' ? 'pt' : 'KPM'
   const selected =
     groups.find(([key]) => key === selection) ??
     groups.find(([key]) => key === recordGroup(records[0])) ??
@@ -42,12 +49,12 @@ export function HistoryInsights({
   const match = (r: RecordEntry) =>
     recordGroup(r) === group && (!sameSeed || r.seed === anchor?.seed)
   const recent = latest.filter(match)
-  const trend = recordTrend(recent)
-  const top = topRecords(all.filter(match))
+  const trend = recordTrend(recent, metric)
+  const top = topRecords(all.filter(match), metric)
   const points = trend.slice(-30)
   const maximum = Math.max(
     1,
-    ...points.map((p) => Math.max(p.record.kpm, p.average)),
+    ...points.map((p) => Math.max(recordValue(p.record, metric), p.average)),
   )
   return (
     <section className="history-insights" aria-label="文章別の記録分析">
@@ -82,46 +89,75 @@ export function HistoryInsights({
         <div>
           <span>最新</span>
           <strong>
-            {recent[0]?.kpm ?? '—'} <small>KPM</small>
+            {recent[0] ? recordPoint(recent[0]) : '—'} <small>pt</small>
           </strong>
+          <small>
+            {recent[0]
+              ? `${animalRank(recordPoint(recent[0]))} · ${recent[0].kpm} KPM`
+              : 'KPM —'}
+          </small>
         </div>
         <div>
           <span>前回</span>
           <strong>
-            {recent[1]?.kpm ?? '—'} <small>KPM</small>
+            {recent[1] ? recordPoint(recent[1]) : '—'} <small>pt</small>
           </strong>
+          <small>
+            {recent[1]
+              ? `${animalRank(recordPoint(recent[1]))} · ${recent[1].kpm} KPM`
+              : 'KPM —'}
+          </small>
         </div>
         <div>
           <span>直近{Math.min(5, recent.length)}回の移動平均</span>
           <strong>
-            {trend.at(-1)?.average.toFixed(1) ?? '—'} <small>KPM</small>
+            {trend.at(-1)?.pointAverage.toFixed(1) ?? '—'} <small>pt</small>
           </strong>
+          <small>{trend.at(-1)?.kpmAverage.toFixed(1) ?? '—'} KPM</small>
         </div>
         <div>
           <span>前回との差</span>
           <strong>
             {recent.length > 1
-              ? `${recent[0].kpm - recent[1].kpm >= 0 ? '+' : ''}${recent[0].kpm - recent[1].kpm}`
-              : '—'}
+              ? `${recordPoint(recent[0]) - recordPoint(recent[1]) >= 0 ? '+' : ''}${recordPoint(recent[0]) - recordPoint(recent[1])}`
+              : '—'}{' '}
+            <small>pt</small>
           </strong>
+          <small>
+            {recent.length > 1
+              ? `${recent[0].kpm - recent[1].kpm >= 0 ? '+' : ''}${recent[0].kpm - recent[1].kpm}`
+              : '—'}{' '}
+            KPM
+          </small>
         </div>
       </div>
+      <label>
+        推移・ランキングの指標
+        <select
+          aria-label="記録の主指標"
+          value={metric}
+          onChange={(e) => setMetric(e.target.value as RecordMetric)}
+        >
+          <option value="point">point（メイン）</option>
+          <option value="kpm">KPM</option>
+        </select>
+      </label>
       {points.length > 0 && (
         <svg
           className="history-chart"
           viewBox="0 0 640 160"
           role="img"
-          aria-label="直近30回のKPMと5回移動平均"
+          aria-label={`直近30回の${metricName}と5回移動平均`}
         >
           <text x="8" y="15">
-            {maximum} KPM
+            {maximum.toFixed(1)} {unit}
           </text>
           <polyline
             className="chart-kpm"
             points={points
               .map(
                 (p, i) =>
-                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (p.record.kpm / maximum) * 115}`,
+                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (recordValue(p.record, metric) / maximum) * 115}`,
               )
               .join(' ')}
           />
@@ -129,13 +165,13 @@ export function HistoryInsights({
             <circle
               key={p.record.id}
               cx={20 + (i * 600) / Math.max(1, points.length - 1)}
-              cy={140 - (p.record.kpm / maximum) * 115}
+              cy={140 - (recordValue(p.record, metric) / maximum) * 115}
               r="3"
               fill="#61e8ff"
             >
               <title>
                 {new Date(p.record.date).toLocaleString('ja-JP')} ·{' '}
-                {p.record.kpm} KPM
+                {recordValue(p.record, metric)} {unit}
               </title>
             </circle>
           ))}
@@ -149,18 +185,28 @@ export function HistoryInsights({
               .join(' ')}
           />
           <text x="8" y="157">
-            過去 → 最新 · シアン：KPM / 紫：移動平均
+            過去 → 最新 · シアン：{metricName} / 紫：移動平均
           </text>
         </svg>
       )}
       <h4>
-        歴代 TOP 10 <small>KPM順 · 同率は時間・実ミス・新しい日時の順</small>
+        歴代 TOP 10{' '}
+        <small>
+          {metricName}順 · 同率は{metric === 'point' ? 'KPM' : 'point'}
+          ・時間・実ミス・新しい日時の順
+        </small>
       </h4>
       <ol className="top-records">
         {top.map((r) => (
           <li key={r.id}>
             <button onClick={() => onSelect(r)}>
-              <strong>{r.kpm} KPM</strong>
+              <strong>
+                {recordValue(r, metric)} {unit}
+              </strong>
+              <span>
+                {animalRank(recordPoint(r))} ·{' '}
+                {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
+              </span>
               <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
               <small>
                 {r.accuracy}% · {ms(r.elapsed)}
@@ -213,6 +259,10 @@ export function RecordDetails({
         <div>
           <h3>打鍵の詳細 · {record.title}</h3>
           <p>
+            <strong className="detail-point">
+              {recordPoint(record)} pt · {animalRank(recordPoint(record))}
+            </strong>
+            <br />
             {record.layout} · {record.kpm} KPM ·{' '}
             {new Date(record.date).toLocaleString('ja-JP')}
           </p>

@@ -45,6 +45,7 @@ import {
 import { CpuBattle } from './CpuBattle'
 import { TypingTrace } from './telemetry'
 import { readTraces } from './traceStore'
+import { recordPoint } from './recordStats'
 import { HistoryInsights, RecordDetails } from './HistoryInsights'
 import { animalRank, MissEpisodes, scorePoint } from './scoring'
 import { KeyboardGuide } from './KeyboardGuide'
@@ -569,14 +570,17 @@ export default function App() {
       keys + (durationMs ? rawMisses : misses)
         ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
         : 100
-  const best = [...records, ...bestRecords]
-    .filter(
-      (r) =>
-        r.passageId === selected &&
-        r.layout === settings.layout &&
-        r.mode !== 'cpu',
-    )
-    .reduce((n, r) => Math.max(n, r.kpm), 0)
+  const comparableRecords = [...records, ...bestRecords].filter(
+    (r) =>
+      r.passageId === selected &&
+      r.layout === settings.layout &&
+      r.mode !== 'cpu',
+  )
+  const best = comparableRecords.reduce(
+    (n, r) => Math.max(n, recordPoint(r)),
+    0,
+  )
+  const bestKpm = comparableRecords.reduce((n, r) => Math.max(n, r.kpm), 0)
   const exportRecords = async () => {
     const all = [
       ...new Map([...bestRecords, ...records].map((r) => [r.id, r])).values(),
@@ -586,7 +590,7 @@ export default function App() {
     const clean = (rows: RecordEntry[]) =>
       rows.map(({ trace, ...r }) => {
         void trace
-        return r
+        return { ...r, point: recordPoint(r), rank: animalRank(recordPoint(r)) }
       })
     const url = URL.createObjectURL(
       new Blob(
@@ -1182,7 +1186,10 @@ export default function App() {
                       <span>この文章の自己ベスト</span>
                       <strong>
                         {best || '—'}
-                        <small> KPM</small>
+                        <small> pt</small>
+                        <span className="best-kpm">
+                          KPM最高 {bestKpm || '—'}
+                        </span>
                       </strong>
                     </div>
                   </div>
@@ -1452,21 +1459,10 @@ export default function App() {
                             </small>
                           </td>
                           <td>{layoutLabels[r.layout]}</td>
-                          <td>
-                            {scorePoint(
-                              r.keys,
-                              r.missPenalty ?? r.misses,
-                              r.elapsed,
-                            )}{' '}
-                            pt
+                          <td className="record-point">
+                            {recordPoint(r)} pt
                             <small>
-                              {animalRank(
-                                scorePoint(
-                                  r.keys,
-                                  r.missPenalty ?? r.misses,
-                                  r.elapsed,
-                                ),
-                              )}
+                              {animalRank(recordPoint(r))}
                               {r.scoreVersion !== 3 ? ' · 旧ミス方式' : ''}
                             </small>
                           </td>

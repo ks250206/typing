@@ -34,3 +34,19 @@ it('reduces the penalty of a miss streak while keeping a nonzero penalty from mi
   expect(counter.penalty).toBe(4.35)
   expect(scorePoint(300, 3.35, 60000)).toBeLessThan(scorePoint(300, 1, 60000))
 })
+
+import { animalRanks } from './scoring'
+it('uses 21 unique animal ranks at every 50-point boundary and caps only the title', () => {
+  expect(animalRanks.map(([p]) => p)).toEqual(
+    Array.from({ length: 21 }, (_, i) => i * 50),
+  )
+  expect(new Set(animalRanks.map(([, name]) => name)).size).toBe(21)
+  for (const [index, [threshold, name]] of animalRanks.entries()) {
+    expect(animalRank(threshold)).toBe(name)
+    expect(animalRank(threshold + 49)).toBe(name)
+    if (index > 0)
+      expect(animalRank(threshold - 1)).toBe(animalRanks[index - 1][1])
+  }
+  expect(animalRank(10000)).toBe('チーター')
+  expect(scorePoint(1500, 0, 60000)).toBe(1500)
+})

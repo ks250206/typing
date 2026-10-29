@@ -1,4 +1,11 @@
 import type { RecordEntry } from './storage'
+import { scorePoint } from './scoring'
+export type RecordMetric = 'point' | 'kpm'
+/** Same calculation as the existing history table, including legacy miss-count fallback. */
+export const recordPoint = (r: RecordEntry) =>
+  scorePoint(r.keys, r.missPenalty ?? r.misses, r.elapsed)
+export const recordValue = (r: RecordEntry, metric: RecordMetric = 'point') =>
+  metric === 'point' ? recordPoint(r) : r.kpm
 export const modeOf = (r: RecordEntry) => r.mode ?? 'practice'
 export const recordGroup = (r: RecordEntry) =>
   [
@@ -20,11 +27,16 @@ export const chronological = (rows: RecordEntry[]) =>
     (a, b) =>
       Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
   )
-export function topRecords(rows: RecordEntry[]) {
+export function topRecords(
+  rows: RecordEntry[],
+  metric: RecordMetric = 'point',
+) {
   return [...rows]
     .sort(
       (a, b) =>
-        b.kpm - a.kpm ||
+        recordValue(b, metric) - recordValue(a, metric) ||
+        recordValue(b, metric === 'point' ? 'kpm' : 'point') -
+          recordValue(a, metric === 'point' ? 'kpm' : 'point') ||
         a.elapsed - b.elapsed ||
         (a.rawMisses ?? a.misses) - (b.rawMisses ?? b.misses) ||
         Date.parse(b.date) - Date.parse(a.date),
@@ -37,14 +49,30 @@ export function archiveBests(rows: RecordEntry[]) {
     const key = recordGroup(row)
     groups.set(key, [...(groups.get(key) ?? []), row])
   }
-  return [...groups.values()].flatMap(topRecords)
+  return [...groups.values()].flatMap((rows) => [
+    ...new Map(
+      [...topRecords(rows, 'point'), ...topRecords(rows, 'kpm')].map((r) => [
+        r.id,
+        r,
+      ]),
+    ).values(),
+  ])
 }
-export function recordTrend(rows: RecordEntry[]) {
+export function recordTrend(
+  rows: RecordEntry[],
+  metric: RecordMetric = 'point',
+) {
   const sorted = chronological(rows).reverse()
-  return sorted.map((r, i) => ({
-    record: r,
-    average:
-      sorted.slice(Math.max(0, i - 4), i + 1).reduce((n, r) => n + r.kpm, 0) /
-      Math.min(5, i + 1),
-  }))
+  return sorted.map((r, i) => {
+    const recent = sorted.slice(Math.max(0, i - 4), i + 1)
+    const pointAverage =
+      recent.reduce((n, r) => n + recordPoint(r), 0) / recent.length
+    const kpmAverage = recent.reduce((n, r) => n + r.kpm, 0) / recent.length
+    return {
+      record: r,
+      pointAverage,
+      kpmAverage,
+      average: metric === 'point' ? pointAverage : kpmAverage,
+    }
+  })
 }

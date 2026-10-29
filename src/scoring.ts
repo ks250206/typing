@@ -4,15 +4,28 @@ export function scorePoint(keys: number, misses: number, elapsedMs: number) {
   const accuracy = keys / (keys + Math.max(0, misses))
   return Math.max(0, Math.floor(((keys * 60000) / elapsedMs) * accuracy ** 2))
 }
+// An original game progression inspired by running speed, not measured speed tiers.
 export const animalRanks = [
   [0, 'カメ'],
-  [100, 'ハリネズミ'],
-  [200, 'リス'],
-  [300, 'ネコ'],
+  [50, 'ハリネズミ'],
+  [100, 'コアラ'],
+  [150, 'リス'],
+  [200, 'アライグマ'],
+  [250, 'パンダ'],
+  [300, 'タヌキ'],
+  [350, 'ネコ'],
   [400, 'キツネ'],
+  [450, 'イヌ'],
   [500, 'ウサギ'],
-  [650, 'ダチョウ'],
-  [800, 'プロングホーン'],
+  [550, 'シマウマ'],
+  [600, 'シカ'],
+  [650, 'カンガルー'],
+  [700, 'サラブレッド'],
+  [750, 'ダチョウ'],
+  [800, 'ヌー'],
+  [850, 'ガゼル'],
+  [900, 'スプリングボック'],
+  [950, 'プロングホーン'],
   [1000, 'チーター'],
 ] as const
 export function animalRank(point: number) {
