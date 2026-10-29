@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { passages } from '../src/passages'
@@ -50,6 +51,7 @@ test('mission carousel isolates selection, full passage and typing, pausing on r
   const area = page.getByRole('region')
   await expect(area).toBeFocused()
   await expect(face(1)).toHaveAttribute('inert', '')
+  await startPractice(page)
   await page.keyboard.type('he')
   await expect(page.locator('.typed-roman')).toHaveText('he')
   await page.getByRole('button', { name: '全文確認へ' }).click()
@@ -94,6 +96,7 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   await expect(key('KeyF')).toHaveAttribute('data-finger', 'left-index')
   await expect(key('KeyJ')).toHaveAttribute('data-finger', 'right-index')
   await area.focus()
+  await startPractice(page)
   await page.keyboard.type('z')
   await expect(key('KeyH')).toHaveAttribute('data-state', 'next')
   await page.keyboard.type('h')
@@ -117,6 +120,7 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await expect(key('Equal')).toHaveAttribute('data-state', 'next')
   await area.focus()
+  await startPractice(page)
   for (const code of [
     'Equal',
     'KeyE',
@@ -142,6 +146,7 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()
   await pick(page.getByLabel('入力方式', { exact: true }), 'jis')
   await area.focus()
+  await startPractice(page)
   for (const sentence of sentencesByPassage['night-library'])
     await page.keyboard.type(new RomanEngine(sentence.reading).hint)
   await expect(page.getByText('SESSION COMPLETE')).toBeVisible()
@@ -232,6 +237,7 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   )
   await page.getByLabel('入力済み単語を消す', { exact: true }).check()
   await area.focus()
+  await startPractice(page)
   await page.keyboard.type('heika')
   await expect(
     main.locator('.flow-track > span:not([data-consumed]) .token-text').first(),
@@ -279,6 +285,7 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await area.focus()
+  await startPractice(page)
   for (const code of [
     'Equal',
     'KeyE',

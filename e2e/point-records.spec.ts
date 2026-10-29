@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
@@ -145,6 +146,7 @@ test('live adjective uses raw misses and matches the saved record, detail and JS
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.point-panel > span')).toHaveText('カメ')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
+  await startPractice(page, true)
   await page.keyboard.type(
     (await page.locator('.roman-current').textContent())!,
   )

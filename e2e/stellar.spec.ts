@@ -1,3 +1,4 @@
+import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { RomanEngine } from '../src/engine'
@@ -32,6 +33,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
     .evaluate((el) => el.getBoundingClientRect().top + scrollY)
   const current = page.locator('.kana-line .guide-current')
   await area.focus()
+  await startPractice(page)
   const input = 'heikannohousougaowaruto,tosilyo'
   await page.keyboard.type(input)
   await expect(page.locator('.typed-roman')).toHaveText(input)
@@ -64,6 +66,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await expect(page.locator('.roman-line')).toHaveCount(0)
   await area.focus()
+  await startPractice(page)
   for (const key of [
     'Equal',
     'KeyE',
@@ -93,6 +96,7 @@ test('damage covers the viewport, never blocks typing, clears and respects reduc
   const area = page.getByRole('region')
   const damage = page.locator('.damage-overlay')
   await area.focus()
+  await startPractice(page)
   await page.keyboard.type('zzzz')
   await expect(damage).toHaveCount(1)
   const layout = await damage.evaluate((el) => {
@@ -117,6 +121,7 @@ test('damage covers the viewport, never blocks typing, clears and respects reduc
   await expect(damage).toHaveCount(0)
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await area.focus()
+  await startPractice(page)
   await page.keyboard.type('z')
   await expect(damage).toHaveCSS('animation-name', 'none')
   await expect(damage).toHaveCSS('background-image', 'none')
@@ -140,6 +145,7 @@ test('stellar scene animates, freezes on reduced motion, resizes and releases it
   await page.waitForTimeout(350) // Sample actual animation across two rendered frames.
   expect((await scene.screenshot()).equals(first)).toBe(false)
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('heikanno')
   await expect(page.locator('.typed-roman')).toHaveText('heikanno')
   await expect(page.locator('[aria-current="location"]')).toHaveText('放送')
@@ -194,6 +200,7 @@ test('CSS planets remain visible when WebGL is unavailable', async ({
   await expect(page.locator('.space-fallback')).toBeVisible()
   await expect(page.locator('.space-scene canvas')).toHaveCount(0)
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('hei')
   await expect(page.locator('.typed-roman')).toHaveText('hei')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
@@ -251,6 +258,7 @@ test('word-spaced guides are large, label-free and close to the main text on des
     })
   }
   await page.getByRole('region').focus()
+  await startPractice(page)
   await page.keyboard.type('heikannnohousougaowaruto,tosilyo')
   await expect(page.locator('.typed-roman')).toHaveText(
     'heikannnohousougaowaruto,tosilyo',
