@@ -26,7 +26,7 @@ pnpm dev
 
 | 場所                                            | 役割                                                                         |
 | ----------------------------------------------- | ---------------------------------------------------------------------------- |
-| `data/sources/rtc/`                             | 提供ZIPの原本                                                                |
+| `data/sources/rtc/`                             | RTC公式ZIPのローカル保存先（Git管理対象外）                                  |
 | `data/sources/etyping/`                         | 提供XMLの原本                                                                |
 | `data/sources/trainers/`                        | 保存HTMLからの抽出JSONと、さくさく15文の本文・読み・漢字の読み区切りJSON     |
 | `data/sources/constitution/`                    | 公的本文のスナップショットと確認済みの読み注釈                               |
@@ -40,13 +40,16 @@ pnpm dev
 python3 scripts/rebuild-data.py
 # 一時ディレクトリに再生成して照合。保存済みファイルは書き換えない
 python3 scripts/rebuild-data.py --check
+# RTCの全ZIP原本が必要な完全再生成・照合
+python3 scripts/rebuild-data.py --require-rtc-sources
+python3 scripts/rebuild-data.py --check --require-rtc-sources
 # 再生成と照合コマンドのテスト（CIでも実施）
 python3 -m unittest discover -s scripts -p 'test_*.py'
 ```
 
-修正は `data/sources/` または `scripts/import-*.py` の読み対応に加え、一括再生成後に原本と生成JSONをまとめてコミットします。通常の再生成ではWebから再取得しません。タイプウェルは `python3 scripts/import-typewell.py`、追加の恒星・星座は `python3 scripts/import-space-catalogue.py` でオンラインの再取得ができ、再生成用スナップショットとアプリ用JSONを両方更新します。内容・語順・抽出処理を変える場合は、履歴のシード・リプレイを保つため出題バージョンの更新も検討します。
+修正は `data/sources/` または `scripts/import-*.py` の読み対応に加え、一括再生成後にGit管理対象の入力と生成JSONをまとめてコミットします。RTC公式ZIPは再配布の許諾を確認できていないためコミットせず、`data/sources/rtc/*.zip` は `.gitignore` の対象です。過去のGit履歴は変更していません。通常の再生成ではWebから再取得しません。タイプウェルは `python3 scripts/import-typewell.py`、追加の恒星・星座は `python3 scripts/import-space-catalogue.py` でオンラインの再取得ができ、再生成用スナップショットとアプリ用JSONを両方更新します。内容・語順・抽出処理を変える場合は、履歴のシード・リプレイを保つため出題バージョンの更新も検討します。
 
-`pnpm build` は保存済みの生成JSONをバンドルします。PythonやZIP/XML原本はアプリ実行時に不要で、`dist/` だけを静的HTTPサーバーに配置すればクライアント側で動作します。問題集を取得する外部通信やバックエンドはありません。CIでは生成物と原本の一致も検証します。
+`pnpm build` は保存済みの生成JSONをバンドルします。PythonやZIP/XML原本はアプリ実行時に不要で、`dist/` だけを静的HTTPサーバーに配置すればクライアント側で動作します。問題集を取得する外部通信やバックエンドはありません。CIでは同梱された再生成用データとの一致を検証します。RTCのZIPがそろわない場合は登録済みの `rtc.json` を維持し、ZIPとの照合をスキップした旨を表示します。RTCの生成データ自体の構造・読み対応・シード再現性は常にテストし、ローカルにZIPがある場合は原本のSHA-256・XMLとの一致も検証します。
 
 ## 練習
 
@@ -354,7 +357,7 @@ point・KPMそれぞれの歴代TOP10を重複をまとめて保持します（�
 
 通常練習は開始前に15問、CPU対戦はBO7全体の最大133問分を生成します。同じセット・シード・出題v1なら同じ組み合わせと順序になり、通常練習の15問はCPU対戦の先頭15問とも一致します。同じシードなら配列変更でも問題は同じです。固定シード・全文確認・履歴からのシード再出題に対応します。RTC競技の勝敗ルールはCPU対戦の10点先取・4ラウンド先取・正確率95%判定を使います。ソロの出題数とpoint計算はGALACTYPEのルールです。
 
-提供ZIPの原本を `data/sources/rtc/` に保存しています。`python3 scripts/import-rtc.py` でアーカイブを展開せず読み、`src/data/generated/rtc.json` を再生成できます。ZIP/XMLのSHA-256、メンバー名、著者、元の本文・読みを保持します。出題v1の辞書・抽出順を変更する場合は新しい出題バージョンとして扱います。
+RTC公式で公開されたZIPは再配布の許諾を確認できていないためGit管理対象から外し、手元の原本を `data/sources/rtc/` に保存します（`.gitignore` 対象）。必要な5ファイルは [原本の配置手順](data/sources/rtc/README.md) を参照してください。すべてそろえたうえで `python3 scripts/import-rtc.py` を実行すると、アーカイブを展開せず読み、`src/data/generated/rtc.json` を再生成できます。通常のクローン・CI・ビルドにはZIPは不要です。ZIP/XMLのSHA-256、メンバー名、著者、元の本文・読みを保持します。出題v1の辞書・抽出順を変更する場合は新しい出題バージョンとして扱います。
 
 原文の本文表記は保持し、入力用の読みはカタカナをひらがな、大文字英字を小文字、全角英数記号を半角にそろえます。英字の大小は区別しません。かな配列でも英字・記号の区間は対応するJIS英数キーで入力できます。中点はローマ字入力で `/`、かな入力では `Shift + Slash` です。提供データの「また笑えばいい 」には読みのない末尾空白があるため、表示には残し、打鍵は追加しません。曖昧な漢字の読み対応はインポータ内で確認済みの対応を明示しています。
 

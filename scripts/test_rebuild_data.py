@@ -48,6 +48,33 @@ class RebuildDataTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertEqual(files(GENERATED), files(Path(directory)))
 
+    def test_without_originals_retains_rtc_and_checks_other_generated_data(self):
+        with tempfile.TemporaryDirectory() as directory:
+            sources = Path(directory) / 'empty-rtc'
+            sources.mkdir()
+            output = Path(directory) / 'generated'
+            result = run('--rtc-sources', str(sources), '--output', str(output))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('original ZIP comparison skipped', result.stdout)
+            self.assertEqual(files(GENERATED), files(output))
+            result = run('--check', '--rtc-sources', str(sources), '--output', str(output))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            (output / 'trainers.json').write_text('[]\n')
+            result = run('--check', '--rtc-sources', str(sources), '--output', str(output))
+            self.assertEqual(result.returncode, 1)
+            self.assertIn('trainers.json', result.stderr)
+
+    def test_strict_regeneration_requires_every_original_and_leaves_output_untouched(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'generated'
+            shutil.copytree(GENERATED, output)
+            before = files(output)
+            result = run('--require-rtc-sources', '--rtc-sources', directory,
+                         '--output', str(output))
+            self.assertEqual(result.returncode, 1)
+            self.assertIn('Missing RTC originals', result.stderr)
+            self.assertEqual(before, files(output))
+
 
 if __name__ == '__main__':
     unittest.main()

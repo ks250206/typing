@@ -3,7 +3,7 @@ Run: python3 scripts/import-rtc.py
 """
 from functools import lru_cache
 from pathlib import Path
-from data_paths import generated_path
+from data_paths import generated_path, rtc_sources_dir
 from zipfile import ZipFile
 import hashlib
 import json
@@ -53,7 +53,7 @@ def align(text, raw):
 def main():
     result=[]
     for archive, entries in FILES.items():
-        path=ROOT/'data/sources/rtc'/archive
+        path=rtc_sources_dir()/archive
         with ZipFile(path) as z:
             for member, identifier in entries:
                 raw=z.read(member);root=ET.fromstring(raw)
