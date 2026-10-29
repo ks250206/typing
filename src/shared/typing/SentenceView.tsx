@@ -5,7 +5,11 @@ import type { Sentence } from '../../domain/content/sentences'
 import { RubyText, RubyToken } from './RubyText'
 import { useSingleLineFlow } from './useSingleLineFlow'
 import { ReadingGuide } from './ReadingGuide'
-import { consumedOffsets, sentenceWordStarts, wordTone } from '../../domain/typing/wordSpacing'
+import {
+  consumedOffsets,
+  sentenceWordStarts,
+  wordTone,
+} from '../../domain/typing/wordSpacing'
 
 export const SentenceView = memo(function SentenceView({
   current,
@@ -76,7 +80,12 @@ export const SentenceView = memo(function SentenceView({
       <div className="sentence-label">
         {done ? 'COMPLETE' : (current.label ?? 'NOW / 現在の文章')}
       </div>
-      <p className="current-paragraph" ref={host} data-text={current.text}>
+      <p
+        className="current-paragraph"
+        ref={host}
+        data-text={current.text}
+        data-continuous={current.continuous || undefined}
+      >
         <span className="sentence-stream flow-track">
           {segments.map((segment, index) => {
             const active =
@@ -127,7 +136,7 @@ export const SentenceView = memo(function SentenceView({
         romanGuide={romanGuide}
         done={done}
       />
-      {showNext && !done && next && (
+      {showNext && !current.continuous && !done && next && (
         <div className="next-sentence">
           <div className="sentence-label">UP NEXT / 次の文章</div>
           <p className="upcoming" data-text={next.text}>

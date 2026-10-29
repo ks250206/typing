@@ -8,7 +8,10 @@ import {
 import { practicePreview } from '../../domain/content/practicePreview'
 import { isRtc } from '../../domain/content/rtcWords'
 import { createTrainerOrder, isTrainer } from '../../domain/content/sakusaku'
-import { sentencesByPassage } from '../../domain/content/sentences'
+import {
+  sentencesByPassage,
+  type Sentence,
+} from '../../domain/content/sentences'
 import {
   freshSeed,
   isTypewell,
@@ -72,7 +75,8 @@ export function usePracticeSession(
     () => practiceDocument(selected, seed, settings.layout, replayVersion),
     [selected, seed, settings.layout, replayVersion],
   )
-  const { passage, sentences } = practice
+  const { passage } = practice
+  const sentences: Sentence[] = practice.sentences
   const typewell = isTypewell(selected)
   const etyping = isEtyping(selected)
   const rtc = isRtc(selected)

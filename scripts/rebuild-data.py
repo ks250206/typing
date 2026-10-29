@@ -28,7 +28,7 @@ def rebuild(output, rtc_sources, require_rtc_sources):
     else:
         subprocess.run([sys.executable, str(ROOT / 'scripts/import-rtc.py')],
                        cwd=ROOT, env=env, check=True)
-    for name in ('etyping', 'trainers', 'constitution'):
+    for name in ('etyping', 'trainers', 'constitution', 'original-long'):
         subprocess.run([sys.executable, str(ROOT / f'scripts/import-{name}.py')],
                        cwd=ROOT, env=env, check=True)
     for source in ('typewell/typewell.json', 'space/spaceCatalogue.json'):

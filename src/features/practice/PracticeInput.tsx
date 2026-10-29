@@ -94,6 +94,8 @@ export function PracticeInput({
               <span aria-label="残り時間">
                 残り {Math.max(0, Math.ceil((durationMs - elapsed) / 1000))} 秒
               </span>
+            ) : sentences[sentenceIndex].continuous ? (
+              `全文1問 · ${sentences[sentenceIndex].text.length}文字`
             ) : typewell ? (
               `${Math.max(0, normalizedKeys)} / ${limit} 打 · ${seed}`
             ) : articles ? (

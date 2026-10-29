@@ -39,13 +39,15 @@ export function PracticePreview({
         <span className="eyebrow">MISSION BRIEFING</span>
         <h2>{passage.title}</h2>
         <p>
-          {typewell
-            ? `${limit}打分の単語列 / シード ${seed}`
-            : articles
-              ? `全14条（全項）/ シード ${seed}`
-              : etyping || rtc
-                ? `15問 / シード ${seed}`
-                : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
+          {passage.continuous
+            ? `全文1問 · ${passage.paragraphs[0].text.length}文字 · 途中の切り替えなし`
+            : typewell
+              ? `${limit}打分の単語列 / シード ${seed}`
+              : articles
+                ? `全14条（全項）/ シード ${seed}`
+                : etyping || rtc
+                  ? `15問 / シード ${seed}`
+                  : `${sentences.length} 文 / ${passage.paragraphs.length} 段落`}
         </p>
       </div>
       <div id="passage-full-text">
