@@ -80,17 +80,19 @@ export function PassageLibrary({
             <p>{p.subtitle}</p>
             <div>
               <span>
-                {isTypewell(p.id)
-                  ? 'R 400打 / K 280打 · シード再現'
-                  : isConstitutionArticles(p.id)
-                    ? '全14条 · 条単位のシャッフル · シード再現'
-                    : isRtc(p.id)
-                      ? '15問 · パートをランダム連結'
-                      : isTrainer(p.id)
-                        ? `${p.paragraphs.length}文 · 60秒 · シード再現`
-                        : isEtyping(p.id)
-                          ? '15問 · シードでシャッフル'
-                          : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
+                {p.continuous
+                  ? `全文1問 · ${p.paragraphs[0].text.length}文字 · 途中の切り替えなし`
+                  : isTypewell(p.id)
+                    ? 'R 400打 / K 280打 · シード再現'
+                    : isConstitutionArticles(p.id)
+                      ? '全14条 · 条単位のシャッフル · シード再現'
+                      : isRtc(p.id)
+                        ? '15問 · パートをランダム連結'
+                        : isTrainer(p.id)
+                          ? `${p.paragraphs.length}文 · 60秒 · シード再現`
+                          : isEtyping(p.id)
+                            ? '15問 · シードでシャッフル'
+                            : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
               </span>
               <ArrowRight size={15} />
             </div>

@@ -4,7 +4,9 @@ import type { Sentence } from './sentences'
 import { seededRandom } from './typewell'
 export const rtcPassages: Passage[] = data.map((set) => ({
   id: set.id,
-  title: `${set.title}（RTC準拠）`,
+  title: set.title
+    .replace(/^(.+)[（(](RTC\d{4})[）)]$/u, '$2 $1')
+    .replace(/^(RTC\d{4})\s*/u, '$1 '),
   genre: 'RTC準拠',
   accent: 'RTC',
   subtitle: `${set.parts.map((p) => p.length).join(' × ')}通りのフレーズを連結。シードでランダムに15問出題。`,

@@ -12,6 +12,7 @@
 | `constitution/preamble-annotations.json` / `article-readings.json` | 確認済みの本文と読みの対応・歴史的仮名遣いの読み・条文の見出し。生成時に保存本文との一致を検証します。                                     |
 | `typewell/typewell.json`                                           | 公開17ページから集約した登録済み単語・読みのスナップショット。語順・重複を保持。取得HTML原本ではありません。                               |
 | `space/spaceCatalogue.json`                                        | 恒星・星座の登録済み名前と読みのスナップショット。取得HTML原本ではありません。                                                             |
+| `original-long/` | ユーザー提供のオリジナル長文21編のJSON原本と、追加した明示的な読み対応。本文とSHA-256を照合します。 |
 
 再生成: `python3 scripts/rebuild-data.py`。変更せずに照合: `python3 scripts/rebuild-data.py --check`。どちらもPython 3標準ライブラリだけで動き、ネット接続は不要です。RTCの全ZIPがそろっていない場合は登録済みの `rtc.json` を維持し、原本照合をスキップした旨を表示します。RTCも必ず原本から生成・照合するには `--require-rtc-sources` を追加してください。
 

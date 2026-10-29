@@ -19,7 +19,9 @@ it('fixes the complete BO7 prompt order from seed, changes with another seed and
     const a = seededBattlePrompts(set.id, 'replay')
     expect(a).toHaveLength(133)
     expect(a).toEqual(seededBattlePrompts(set.id, 'replay'))
-    expect(a).not.toEqual(seededBattlePrompts(set.id, 'other'))
+    // A complete long passage is a singleton pool, so its order cannot vary.
+    if (new Set(a.map((prompt) => prompt.text)).size > 1)
+      expect(a).not.toEqual(seededBattlePrompts(set.id, 'other'))
     expect(JSON.stringify(sentencesByPassage[set.id])).toBe(before)
   }
 })

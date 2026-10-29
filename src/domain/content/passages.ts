@@ -1,3 +1,4 @@
+import { originalLongPassages } from './originalLong'
 import { constitution } from './constitution'
 import { constitutionArticlePassage } from './constitutionArticles'
 import { trainerPassages } from './sakusaku'
@@ -9,6 +10,7 @@ export interface Passage {
   genre: string
   accent: string
   splitSentences?: boolean
+  continuous?: boolean
   durationMs?: number
   source?: { label: string; url?: string; kind?: 'public' | 'provided' }
   paragraphs: {
@@ -168,4 +170,5 @@ export const passages: Passage[] = [
   constitutionArticlePassage,
   ...trainerPassages,
   ...etypingPassages,
+  ...originalLongPassages,
 ]

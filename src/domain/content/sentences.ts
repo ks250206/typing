@@ -7,6 +7,7 @@ export interface ReadingSegment {
   reading: string
 }
 export interface Sentence {
+  continuous?: boolean
   label?: string
   note?: string
   text: string
@@ -48,6 +49,7 @@ export const sentencesByPassage: Record<string, Sentence[]> =
         const flush = () => {
           if (!segments.length) return
           sentences.push({
+            ...(passage.continuous ? { continuous: true } : {}),
             ...(paragraph.label ? { label: paragraph.label } : {}),
             text: segments.map((s) => s.text).join(''),
             reading: segments.map((s) => s.reading).join(''),
