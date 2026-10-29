@@ -15,7 +15,9 @@ test('mission carousel isolates selection, full passage and typing, pausing on r
     fullPage: true,
   })
   await expect(face(2)).toHaveAttribute('inert', '')
-  await expect(page.getByRole('region')).toHaveCount(0)
+  await expect(
+    page.getByRole('region', { name: /タイピング入力領域/ }),
+  ).toHaveCount(0)
   await page.getByRole('button', { name: '全文を読む' }).click()
   await expect(face(1)).toHaveClass(/is-active/)
   await expect(face(0)).toHaveAttribute('inert', '')

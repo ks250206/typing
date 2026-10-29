@@ -211,3 +211,14 @@ it('discards corrupted optional comparison metadata before ranking history', () 
     rawMisses: undefined,
   })
 })
+
+it('round trips ghost comparison metadata without converting it into a practice result', () => {
+  const ghost = {
+    ...record('ghost'),
+    mode: 'ghost' as const,
+    ghostSourceId: 'original',
+    seed: 'reproducible',
+  }
+  expect(saveHistory([ghost])).toBe(true)
+  expect(readHistory()[0]).toMatchObject(ghost)
+})

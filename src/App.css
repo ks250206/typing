@@ -2185,8 +2185,7 @@ rt {
 [data-consumed='true'] {
   visibility: hidden;
 }
-.prose .upcoming,
-#passage-full-text p {
+.prose .upcoming {
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
@@ -3084,4 +3083,241 @@ rt {
   .replay-event {
     margin: 8px 12px;
   }
+}
+
+/* The briefing wraps; only the live typing rows keep their single-line flow. */
+#passage-full-text p {
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.selection-library {
+  padding: 22px 27px;
+  min-width: 0;
+}
+.selection-library-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.selection-library-heading h3 {
+  margin: 0 0 12px;
+}
+.selection-library-heading span {
+  font-size: 11px;
+  color: #a7bed6;
+}
+.library-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #bad9eb;
+}
+.library-search input {
+  flex: 1;
+  min-width: 140px;
+  padding: 9px;
+  border: 1px solid #6d9ac04d;
+  background: #0c1529;
+  border-radius: 6px;
+  color: #d9eaf8;
+}
+.selection-library .filters {
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.selection-library .library-grid {
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 4px;
+  scrollbar-width: thin;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.selection-library .story-card {
+  padding-bottom: 13px;
+  min-width: 0;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+.selection-library .story-card:hover {
+  transform: none;
+}
+.selection-library .story-card[aria-pressed='true'] {
+  border-color: #80eaff;
+  background: #14293e;
+  box-shadow: inset 0 0 0 1px #80eaff66;
+}
+.selection-library .story-art {
+  height: 68px;
+}
+.selection-library .story-art > span:first-child {
+  font-size: 80px;
+  top: -20px;
+}
+.selection-library .story-art .story-selected {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #9fffe4;
+}
+.selection-library .story-card h3 {
+  font-size: 15px;
+  margin: 12px 12px 6px;
+}
+.selection-library .story-card p {
+  margin: 0 12px 12px;
+  line-height: 1.6;
+}
+.selection-library .story-card > div:last-child {
+  margin: 0 12px;
+}
+.ghost-battle {
+  padding: 22px;
+  border: 1px solid #6b93ba40;
+  border-radius: 14px;
+  background: #0b1327e8;
+  min-width: 0;
+}
+.ghost-battle .detail-heading p {
+  overflow-wrap: anywhere;
+}
+.ghost-scoreboard {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  background: linear-gradient(110deg, #102d43, #261b3c);
+  border: 1px solid #85dfff55;
+  border-radius: 12px;
+  margin: 16px 0;
+  font-variant-numeric: tabular-nums;
+}
+.ghost-scoreboard > strong {
+  font-size: 26px;
+  color: #a3edff;
+}
+.ghost-scoreboard > span {
+  font-size: 12px;
+  color: #b8cfe6;
+}
+.ghost-scoreboard label {
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr) 60px;
+  gap: 12px;
+  font-size: 12px;
+  align-items: center;
+}
+.ghost-scoreboard progress {
+  width: 100%;
+  accent-color: #79ebff;
+  height: 14px;
+}
+.ghost-scoreboard label:last-child progress {
+  accent-color: #ffb778;
+}
+.ghost-player,
+.ghost-opponent {
+  min-width: 0;
+  border: 1px solid #6c98c440;
+  border-radius: 10px;
+  margin-top: 14px;
+  padding: 15px 0 0;
+  background: #101b30;
+}
+.ghost-player:focus-visible {
+  outline: 2px solid #8deaff;
+  outline-offset: 3px;
+}
+.ghost-opponent {
+  border-color: #dd997a55;
+  background: #211b2c;
+}
+.ghost-player h3,
+.ghost-opponent h3,
+.ghost-player > p,
+.ghost-opponent > p {
+  margin: 0 20px 10px;
+}
+.ghost-player h3,
+.ghost-opponent h3 {
+  font-size: 13px;
+}
+.ghost-battle .prose {
+  padding: 0 20px 12px;
+}
+.ghost-battle .current-paragraph {
+  font-size: 23px;
+  height: 3.4em;
+}
+.ghost-battle .small {
+  color: #b7c9db;
+  line-height: 1.7;
+}
+.ghost-battle .keyboard-guide {
+  margin: 20px 0 0;
+}
+@media (max-width: 680px) {
+  .selection-library {
+    padding: 18px 15px;
+  }
+  .selection-library .library-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ghost-battle {
+    padding: 14px;
+  }
+  .ghost-scoreboard {
+    padding: 12px;
+  }
+  .ghost-scoreboard label {
+    gap: 6px;
+    grid-template-columns: 44px minmax(0, 1fr) 50px;
+  }
+  .ghost-player h3,
+  .ghost-opponent h3,
+  .ghost-player > p,
+  .ghost-opponent > p {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  .ghost-battle .prose {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.ghost-player.replay-mistake,
+.ghost-opponent.replay-mistake {
+  border-color: #ff6687;
+  box-shadow:
+    inset 0 0 35px #ff406f30,
+    0 0 12px #ff66873b;
+  background: #381627;
+}
+.ghost-scoreboard progress {
+  appearance: none;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #17263b;
+}
+.ghost-scoreboard progress::-webkit-progress-bar {
+  background: #17263b;
+}
+.ghost-scoreboard progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #3aa6ce, #9cf5ff);
+}
+.ghost-scoreboard label:last-child progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #b97059, #ffd09a);
+}
+.ghost-scoreboard progress::-moz-progress-bar {
+  background: #9cf5ff;
+}
+.ghost-scoreboard label:last-child progress::-moz-progress-bar {
+  background: #ffd09a;
 }

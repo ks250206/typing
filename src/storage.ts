@@ -26,7 +26,8 @@ export interface RecordEntry {
   replayVersion?: 1 | 2
   strokeLimit?: number
   actualKeys?: number
-  mode?: 'practice' | 'cpu' | 'trainer'
+  ghostSourceId?: string
+  mode?: 'practice' | 'cpu' | 'trainer' | 'ghost'
 }
 export interface Settings {
   layout: Layout
@@ -73,8 +74,13 @@ function readRecords(key: string, limit: number): RecordEntry[] {
             mode:
               record.mode === 'practice' ||
               record.mode === 'cpu' ||
-              record.mode === 'trainer'
+              record.mode === 'trainer' ||
+              record.mode === 'ghost'
                 ? record.mode
+                : undefined,
+            ghostSourceId:
+              typeof record.ghostSourceId === 'string'
+                ? record.ghostSourceId
                 : undefined,
             rawMisses:
               typeof record.rawMisses === 'number' &&

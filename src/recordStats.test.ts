@@ -132,3 +132,17 @@ it('uses actual accepted keys and raw consecutive misses for titles, and labels 
   expect(recordTitle(legacy)).toMatch(/^堅実な/)
   expect(recordMissLabel(legacy)).toMatch(/^旧集約ミス率/)
 })
+
+it('keeps ghost races separate from ordinary practice and groups only the same source record', () => {
+  const practice = row(1)
+  const ghost = {
+    ...practice,
+    mode: 'ghost' as const,
+    ghostSourceId: 'original',
+  }
+  expect(recordGroup(ghost)).not.toBe(recordGroup(practice))
+  expect(recordGroup(ghost)).toBe(recordGroup({ ...ghost, id: 'retry' }))
+  expect(recordGroup(ghost)).not.toBe(
+    recordGroup({ ...ghost, ghostSourceId: 'other' }),
+  )
+})

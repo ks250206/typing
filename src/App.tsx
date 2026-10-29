@@ -44,6 +44,8 @@ import {
   subscribeHistory,
 } from './storage'
 import { CpuBattle } from './CpuBattle'
+import { PassageLibrary } from './PassageLibrary'
+const GhostBattle = lazy(() => import('./GhostBattle'))
 import { TypingTrace } from './telemetry'
 import { readTraces } from './traceStore'
 import { recordPoint, recordTitle, recordMissLabel } from './recordStats'
@@ -103,6 +105,7 @@ export default function App() {
   const [bestRecords, setBestRecords] = useState(readBestHistory)
   const [detailReplay, setDetailReplay] = useState(false)
   const [detail, setDetail] = useState<RecordEntry | null>(null)
+  const [ghostSource, setGhostSource] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const [seedPreferences] = useState(() => {
     try {
@@ -132,8 +135,7 @@ export default function App() {
   const [seedDraft, setSeedDraft] = useState(seed)
   const [fixedSeed, setFixedSeed] = useState(seedPreferences.fixed)
   const [selected, setSelected] = useState(passages[0].id),
-    [tab, setTab] = useState('practice'),
-    [genre, setGenre] = useState('すべて')
+    [tab, setTab] = useState('practice')
   const [settings, setSettings] = useState(readSettings),
     [records, setRecords] = useState(readHistory),
     [status, setStatus] = useState<Status>('ready'),
@@ -586,7 +588,8 @@ export default function App() {
     (r) =>
       r.passageId === selected &&
       r.layout === settings.layout &&
-      r.mode !== 'cpu',
+      r.mode !== 'cpu' &&
+      r.mode !== 'ghost',
   )
   const best = comparableRecords.reduce(
     (n, r) => Math.max(n, recordPoint(r)),
@@ -665,7 +668,6 @@ export default function App() {
         <nav>
           {[
             ['practice', Keyboard, 'タイピング'],
-            ['library', BookOpen, '文章ライブラリ'],
             ['battle', Target, 'CPU対戦'],
             ['history', History, '練習の記録'],
           ].map(([id, Icon, label]) => {
@@ -717,7 +719,7 @@ export default function App() {
               {
                 {
                   practice: 'タイピング',
-                  library: '文章ライブラリ',
+                  ghost: 'ゴースト対戦',
                   history: '練習の記録',
                   battle: 'CPU対戦',
                 }[tab]
@@ -739,8 +741,8 @@ export default function App() {
               <h1>
                 {tab === 'history' ? (
                   '積み重ねた、あなたの軌跡。'
-                ) : tab === 'library' ? (
-                  '次に潜る、言葉の世界。'
+                ) : tab === 'ghost' ? (
+                  '過去の自分と、競い合う。'
                 ) : (
                   <>
                     指先から、
@@ -752,8 +754,8 @@ export default function App() {
               <p>
                 {tab === 'history'
                   ? '昨日の自分から、少しずつ。数字に、続けてきた時間が宿る。'
-                  : tab === 'library'
-                    ? '文学、科学、日常。気分に合う一篇を、今日の練習に。'
+                  : tab === 'ghost'
+                    ? '同じ言葉、同じ軌道。あの日のリズムを追い越そう。'
                     : '一打ごとに、言葉が光る。\n次の一文を先読みして、自分だけの軌道へ。'}
               </p>
               <div className="hero-tags">
@@ -784,6 +786,17 @@ export default function App() {
               </button>
             </div>
           )}
+          {tab === 'ghost' && ghostSource && (
+            <Suspense fallback={<p role="status">ゴースト対戦を準備中…</p>}>
+              <GhostBattle
+                key={ghostSource.id}
+                record={ghostSource}
+                settings={settings}
+                onClose={() => setTab('history')}
+                onRecord={persistResult}
+              />
+            </Suspense>
+          )}
           {tab === 'battle' && (
             <CpuBattle
               settings={settings}
@@ -804,7 +817,7 @@ export default function App() {
                   className="text-button"
                   onClick={() => {
                     pause()
-                    setTab('library')
+                    handleStageChange(0)
                   }}
                 >
                   文章を選ぶ
@@ -819,6 +832,11 @@ export default function App() {
                   >
                     {[
                       <div key="selected">
+                        <PassageLibrary
+                          passages={passages}
+                          selected={selected}
+                          onSelect={(id) => reset(id, settings.layout, 0)}
+                        />
                         <div className="passage-header">
                           <div>
                             <span className="tag">{passage.genre}</span>
@@ -926,19 +944,6 @@ export default function App() {
                         )}
                         <div className="mission-select-actions">
                           <p>言葉の軌道を選んで、読み、指先で旅をする。</p>
-                          <div className="mission-story-choices">
-                            {passages.map((item) => (
-                              <button
-                                key={item.id}
-                                aria-pressed={selected === item.id}
-                                onClick={() =>
-                                  reset(item.id, settings.layout, 0)
-                                }
-                              >
-                                {item.title}
-                              </button>
-                            ))}
-                          </div>
                           <button
                             className="primary-button"
                             onClick={() => handleStageChange(1)}
@@ -1320,64 +1325,6 @@ export default function App() {
               </div>
             </>
           )}
-          {tab === 'library' && (
-            <>
-              <div className="section-heading">
-                <div>
-                  <h2>文章ライブラリ</h2>
-                  <span className="muted">
-                    {essayPassages.length} TEXTS +{' '}
-                    {typewellPassages.length + rtcPassages.length} WORD SETS
-                  </span>
-                </div>
-              </div>
-              <div className="filters">
-                {['すべて', ...new Set(passages.map((p) => p.genre))].map(
-                  (g) => (
-                    <button
-                      className={genre === g ? 'selected' : ''}
-                      key={g}
-                      onClick={() => setGenre(g)}
-                    >
-                      {g}
-                    </button>
-                  ),
-                )}
-              </div>
-              <div className="library-grid">
-                {passages
-                  .filter((p) => genre === 'すべて' || p.genre === genre)
-                  .map((p) => (
-                    <button
-                      className="story-card"
-                      key={p.id}
-                      onClick={() => {
-                        reset(p.id, settings.layout, 0)
-                        setTab('practice')
-                      }}
-                    >
-                      <div className="story-art">
-                        <span>{p.accent}</span>
-                        <BookOpen size={38} />
-                        <span className="tag">{p.genre}</span>
-                      </div>
-                      <h3>{p.title}</h3>
-                      <p>{p.subtitle}</p>
-                      <div>
-                        <span>
-                          {isTypewell(p.id)
-                            ? 'R 400打 / K 280打 · シード再現対応'
-                            : isRtc(p.id)
-                              ? '15問 · パートをランダム連結'
-                              : `${p.paragraphs.reduce((n, p) => n + p.text.length, 0)} 文字 · ${p.paragraphs.length} 段落`}
-                        </span>
-                        <ArrowRight size={17} />
-                      </div>
-                    </button>
-                  ))}
-              </div>
-            </>
-          )}
           {tab === 'history' && (
             <>
               <div className="section-heading">
@@ -1416,6 +1363,10 @@ export default function App() {
                   key={`${detail.id}/${detailReplay}`}
                   initialView={detailReplay ? 'replay' : 'trend'}
                   record={detail}
+                  onGhost={(record) => {
+                    setGhostSource(record)
+                    setTab('ghost')
+                  }}
                   onClose={() => setDetail(null)}
                 />
               )}
@@ -1457,6 +1408,17 @@ export default function App() {
                                 リプレイを見る
                               </button>
                             )}
+                            {(r.hasTrace || r.trace) && (
+                              <button
+                                className="text-button"
+                                onClick={() => {
+                                  setGhostSource(r)
+                                  setTab('ghost')
+                                }}
+                              >
+                                ゴーストと対戦
+                              </button>
+                            )}
                             {r.mode === 'cpu' && r.seed && (
                               <button
                                 className="text-button"
@@ -1470,6 +1432,7 @@ export default function App() {
                             )}
                             {r.seed &&
                               r.mode !== 'cpu' &&
+                              r.mode !== 'ghost' &&
                               (isTypewell(r.passageId) ||
                                 isEtyping(r.passageId) ||
                                 isRtc(r.passageId)) && (
