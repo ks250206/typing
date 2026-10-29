@@ -2,6 +2,7 @@ import type { SessionTrace } from './telemetry'
 import type { CpuConfig } from './cpuMatch'
 import { archiveBests } from './recordStats'
 import { writeTraces } from './traceStore'
+import { layoutLabels } from './engine'
 import type { Layout } from './engine'
 export interface RecordEntry {
   trace?: SessionTrace
@@ -34,19 +35,17 @@ export interface Settings {
   background: boolean
   wordColors: boolean
   consumeTyped: boolean
-  guide: boolean
 }
 export const defaultSettings: Settings = {
   layout: 'jis',
   background: true,
-  guide: true,
   wordColors: true,
   consumeTyped: false,
 }
 const HISTORY = 'yohaku.history.v1',
   SETTINGS = 'yohaku.settings.v1'
 const BESTS = 'galactype.bests.v1'
-const layouts = ['jis', 'us', 'dvorak', 'kana']
+const layouts = Object.keys(layoutLabels)
 function readRecords(key: string, limit: number): RecordEntry[] {
   try {
     const data: unknown = JSON.parse(localStorage.getItem(key) ?? '[]')
@@ -92,7 +91,7 @@ function readRecords(key: string, limit: number): RecordEntry[] {
             cpuConfig:
               record.cpuConfig &&
               Number.isFinite(record.cpuConfig.kpm) &&
-              record.cpuConfig.kpm >= 60 &&
+              record.cpuConfig.kpm >= 35 &&
               record.cpuConfig.kpm <= 1800 &&
               Number.isFinite(record.cpuConfig.reactionMs) &&
               record.cpuConfig.reactionMs >= 100 &&
@@ -150,7 +149,6 @@ export function readSettings(): Settings {
     return {
       layout: layouts.includes(s?.layout) ? s.layout : 'jis',
       background: typeof s?.background === 'boolean' ? s.background : true,
-      guide: typeof s?.guide === 'boolean' ? s.guide : true,
       wordColors: typeof s?.wordColors === 'boolean' ? s.wordColors : true,
       consumeTyped:
         typeof s?.consumeTyped === 'boolean' ? s.consumeTyped : false,

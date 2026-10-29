@@ -7,6 +7,7 @@ import {
   RtcMatch,
   roundWinner,
 } from './cpuMatch'
+import { animalRanks } from './scoring'
 import { RomanEngine } from './engine'
 import { battlePrompts, shuffledPrompts } from './battlePrompts'
 const short = {
@@ -136,28 +137,38 @@ it('pause/resume never advances the clock or reveals a countdown prompt', () => 
   expect(match.roundPlayer).toBe(1)
 })
 
-it('offers ten speed profiles from 250ms to 140ms', () => {
-  expect(cpuPresets).toHaveLength(10)
-  expect(new Set(cpuPresets.map((p) => p.kpm)).size).toBe(10)
-  const reactions = cpuPresets.map((p) => p.reactionMs)
-  expect(reactions[0]).toBe(250)
-  expect(reactions.at(-1)).toBe(140)
-  expect(
-    reactions.every((r, index) => index === 0 || r < reactions[index - 1]),
-  ).toBe(true)
+it('offers exactly one CPU per rank at the band upper bound minus 15, with smooth 250–120ms reactions', () => {
+  expect(cpuPresets).toHaveLength(animalRanks.length)
+  expect(cpuPresets.map((p) => p.name)).toEqual(animalRanks.map((r) => r[1]))
+  cpuPresets.forEach((p, index) => {
+    const upper = animalRanks[index + 1]?.[0] ?? 1050
+    expect(p.kpm).toBe(upper - 15)
+    expect(p.reactionMs).toBe(Math.round(250 - (130 * index) / 20))
+    if (index)
+      expect(p.reactionMs).toBeLessThan(cpuPresets[index - 1].reactionMs)
+  })
+  expect(cpuPresets[0]).toMatchObject({
+    name: 'カメ',
+    kpm: 35,
+    reactionMs: 250,
+  })
+  expect(cpuPresets.at(-1)).toMatchObject({
+    name: 'チーター',
+    kpm: 1035,
+    reactionMs: 120,
+  })
 })
-
-it('updates saved preset reaction times without changing custom settings', () => {
+it('migrates exact legacy presets, preserves custom values and leaves new profiles stable', () => {
   expect(
-    migrateCpuPreset({ kpm: 300, reactionMs: 280, curve: 'ease-in' })
-      .reactionMs,
-  ).toBe(210)
+    migrateCpuPreset({ kpm: 300, reactionMs: 280, curve: 'ease-in' }),
+  ).toEqual(cpuPresets.find((p) => p.name === 'ネコ'))
   expect(
-    migrateCpuPreset({ kpm: 1200, reactionMs: 260, curve: 'constant' })
-      .reactionMs,
-  ).toBe(140)
+    migrateCpuPreset({ kpm: 300, reactionMs: 210, curve: 'ease-in' }),
+  ).toEqual(cpuPresets.find((p) => p.name === 'ネコ'))
   expect(
-    migrateCpuPreset({ kpm: 300, reactionMs: 1000, curve: 'ease-in' })
-      .reactionMs,
-  ).toBe(1000)
+    migrateCpuPreset({ kpm: 1200, reactionMs: 260, curve: 'constant' }),
+  ).toEqual(cpuPresets.at(-1))
+  const custom = { kpm: 300, reactionMs: 1000, curve: 'ease-in' as const }
+  expect(migrateCpuPreset(custom)).toBe(custom)
+  for (const p of cpuPresets) expect(migrateCpuPreset(p)).toEqual(p)
 })

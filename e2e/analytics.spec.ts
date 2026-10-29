@@ -334,7 +334,7 @@ test('unavailable detail storage warns and keeps every stroke exportable in memo
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page
     .getByRole('button', {
-      name: '打鍵トレーナー準拠 · さくさくタイピング',
+      name: '打鍵トレーナー · さくさくタイピング',
       exact: true,
     })
     .click()

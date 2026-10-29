@@ -1,5 +1,10 @@
 import { expect, it } from 'vitest'
-import { randomSentenceIndex, sakusaku, sakusakuEntries } from './sakusaku'
+import {
+  createTrainerOrder,
+  randomSentenceIndex,
+  sakusaku,
+  sakusakuEntries,
+} from './sakusaku'
 import { sentencesByPassage } from './sentences'
 
 it('retains the supplied 15 sentences in preview order without serial numbers or added punctuation', () => {
@@ -28,4 +33,20 @@ it('random selection covers every sentence and excludes the immediately previous
     expect(choices).not.toContain(previous)
   }
   expect(randomSentenceIndex(1, 0)).toBe(0)
+})
+
+it('reproduces an unbounded seeded trainer order with no adjacent repeats', () => {
+  const sequence = (seed: string) => {
+    const next = createTrainerOrder(seed)
+    return Array.from({ length: 1000 }, () => next())
+  }
+  const first = sequence('trainer-seed')
+  expect(first).toEqual(sequence('trainer-seed'))
+  expect(first).not.toEqual(sequence('different'))
+  expect(new Set(first).size).toBe(15)
+  expect(
+    first.every((n, i) => n >= 0 && n < 15 && (!i || n !== first[i - 1])),
+  ).toBe(true)
+  const one = createTrainerOrder('one', 1)
+  expect([one(), one()]).toEqual([0, 0])
 })

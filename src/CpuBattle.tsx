@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { mapKey } from './engine'
+import { mapKey, layoutLabels } from './engine'
 import type { Layout } from './engine'
 import {
   RtcMatch,
@@ -22,7 +22,7 @@ function loadCpu(): CpuConfig {
     if (
       value &&
       Number.isFinite(value.kpm) &&
-      value.kpm >= 60 &&
+      value.kpm >= 35 &&
       value.kpm <= 1800 &&
       Number.isFinite(value.reactionMs) &&
       value.reactionMs >= 100 &&
@@ -33,7 +33,7 @@ function loadCpu(): CpuConfig {
   } catch {
     /* Defaults also work without storage. */
   }
-  return cpuPresets.find((p) => p.name === 'ネコ / 標準')!
+  return cpuPresets.find((p) => p.name === 'ネコ')!
 }
 export function CpuBattle({
   settings,
@@ -266,7 +266,7 @@ export function CpuBattle({
   const guideKana = match?.layout === 'kana'
   const romanGuide = useMemo(
     () =>
-      guideSentence && settings.guide ? (
+      guideSentence ? (
         <DuelRomanGuide
           sentence={guideSentence}
           typed={guideTyped}
@@ -276,15 +276,7 @@ export function CpuBattle({
           kana={guideKana}
         />
       ) : undefined,
-    [
-      guideSentence,
-      guideTyped,
-      guideHint,
-      guidePosition,
-      guideKana,
-      settings.guide,
-      cpuTyped,
-    ],
+    [guideSentence, guideTyped, guideHint, guidePosition, guideKana, cpuTyped],
   )
   return (
     <section className="cpu-battle">
@@ -322,13 +314,13 @@ export function CpuBattle({
           <input
             aria-label="CPU速度 (KPM)"
             type="number"
-            min={60}
+            min={35}
             max={1800}
             value={config.kpm}
             onChange={(e) =>
               setConfig((c) => ({
                 ...c,
-                kpm: Math.min(1800, Math.max(60, Number(e.target.value) || 60)),
+                kpm: Math.min(1800, Math.max(35, Number(e.target.value) || 35)),
               }))
             }
           />
@@ -340,7 +332,7 @@ export function CpuBattle({
             type="number"
             min={100}
             max={1500}
-            step={10}
+            step={1}
             value={config.reactionMs}
             onChange={(e) =>
               setConfig((c) => ({
@@ -376,10 +368,11 @@ export function CpuBattle({
             value={layout}
             onChange={(e) => setLayout(e.target.value as Layout)}
           >
-            <option value="jis">QWERTY JIS</option>
-            <option value="us">QWERTY US</option>
-            <option value="dvorak">Dvorak</option>
-            <option value="kana">JISかな</option>
+            {Object.entries(layoutLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
         </label>
         <label className="battle-set-control">
@@ -525,7 +518,6 @@ export function CpuBattle({
                   target={match.engine.target}
                   typed={match.typed}
                   hint={match.engine.hint}
-                  guide={settings.guide}
                   wordColors={settings.wordColors}
                   consumeTyped={settings.consumeTyped}
                   showNext={false}

@@ -19,7 +19,6 @@ it('round trips settings and rejects unknown layouts', () => {
     saveSettings({
       layout: 'dvorak',
       background: false,
-      guide: true,
       wordColors: true,
       consumeTyped: true,
     }),
@@ -27,7 +26,6 @@ it('round trips settings and rejects unknown layouts', () => {
   expect(readSettings()).toEqual({
     layout: 'dvorak',
     background: false,
-    guide: true,
     wordColors: true,
     consumeTyped: true,
   })
@@ -221,4 +219,21 @@ it('round trips ghost comparison metadata without converting it into a practice 
   }
   expect(saveHistory([ghost])).toBe(true)
   expect(readHistory()[0]).toMatchObject(ghost)
+})
+
+it('ignores legacy guide opt-outs and accepts new layouts and the slowest CPU preset', () => {
+  for (const layout of ['colemak', 'workman'] as const) {
+    data.set('yohaku.settings.v1', JSON.stringify({ layout, guide: false }))
+    expect(readSettings().layout).toBe(layout)
+    expect(readSettings()).not.toHaveProperty('guide')
+    saveHistory([
+      {
+        ...record(layout),
+        layout,
+        mode: 'cpu',
+        cpuConfig: { kpm: 35, reactionMs: 250, curve: 'ease-in' },
+      },
+    ])
+    expect(readHistory()[0]).toMatchObject({ layout, cpuConfig: { kpm: 35 } })
+  }
 })

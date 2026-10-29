@@ -100,6 +100,35 @@ describe('physical layouts and kana', () => {
     expect(mapKey(key('Semicolon'), 'dvorak')).toBe('s')
     expect(mapKey(key('Quote'), 'dvorak')).toBe('-')
   })
+  it('matches standard Colemak and Workman letters, shifted punctuation and US symbols', () => {
+    for (const [layout, rows] of [
+      ['colemak', ['qwfpgjluy;', 'arstdhneio', 'zxcvbkm']],
+      ['workman', ['qdrwbjfup;', 'ashtgyneoi', 'zxmcvkl']],
+    ] as const) {
+      ;['QWERTYUIOP', 'ASDFGHJKL;', 'ZXCVBNM'].forEach((row, index) => {
+        ;[...row].forEach((position, offset) => {
+          const code = position === ';' ? 'Semicolon' : `Key${position}`
+          const output = rows[index][offset]
+          expect(mapKey(key(code, false, 'wrong-host-key'), layout)).toBe(
+            output,
+          )
+          expect(mapKey(key(code, true), layout)).toBe(
+            output === ';' ? ':' : output,
+          )
+        })
+      })
+      expect(mapKey(key('Quote'), layout)).toBe("'")
+      expect(mapKey(key('Quote', true), layout)).toBe('"')
+      expect(mapKey(key('BracketLeft'), layout)).toBe('[')
+      expect(mapKey(key('BracketRight', true), layout)).toBe('}')
+      expect(mapKey(key('Digit2', true), layout)).toBe('@')
+      expect(mapKey(key('Digit7', true), layout)).toBe('&')
+      expect(mapKey(key('Slash', true), layout)).toBe('?')
+      expect(mapKey(key('Backslash', true), layout)).toBe('|')
+      expect(mapKey(key('Space'), layout)).toBe(' ')
+      expect(mapKey(key('AltLeft'), layout)).toBeNull()
+    }
+  })
   it('kana combines voicing and shifted small kana', () => {
     const e = new KanaEngine('がぱっ。ー')
     for (const code of ['KeyT', 'BracketLeft', 'KeyF', 'BracketRight'])

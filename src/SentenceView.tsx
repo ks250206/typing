@@ -16,7 +16,6 @@ export const SentenceView = memo(function SentenceView({
   target,
   typed,
   hint,
-  guide,
   wordColors,
   consumeTyped,
   showNext = true,
@@ -31,7 +30,6 @@ export const SentenceView = memo(function SentenceView({
   target: string
   typed: string
   hint: string
-  guide: boolean
   wordColors: boolean
   consumeTyped: boolean
   showNext?: boolean
@@ -124,7 +122,7 @@ export const SentenceView = memo(function SentenceView({
         position={position}
         typed={typed}
         hint={hint}
-        showRoman={guide && !kana}
+        showRoman={!kana}
         partialRoman={partialRoman}
         romanGuide={romanGuide}
         done={done}
