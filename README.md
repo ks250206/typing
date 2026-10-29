@@ -27,9 +27,10 @@ pnpm dev
 | 場所 | 責務 |
 | --- | --- |
 | `src/app/` | Appの組み立て、アプリ全体のスタイル、背景 |
-| `src/features/practice/` | 通常練習の画面とステップ移動 |
+| `src/features/practice/` | 通常練習の選択・プレビュー・入力・統計画面、セッション制御・計時・シード保存 |
 | `src/features/battle/` | CPU・ゴースト対戦の画面と対戦用ガイド |
-| `src/features/history/` | 記録一覧・詳細分析・リプレイ表示 |
+| `src/features/history/` | 記録一覧・詳細分析・リプレイ表示、履歴購読・書出し・削除 |
+| `src/features/settings/` | 設定の保存・設定ダイアログ |
 | `src/features/library/` | 問題集選択とカテゴリ |
 | `src/features/results/` | 各モード共通の結果表示 |
 | `src/domain/typing/` | 入力判定・配列・読み位置・採点・単語境界 |
@@ -44,6 +45,16 @@ pnpm dev
 依存は `app → features → shared / domain / infrastructure`、`infrastructure → domain` を基本とします。ドメインはReactや保存実装をimportしません（保存との結合テストを除く）。共有UIはfeaturesやappに依存しません。各機能から共通の結果・履歴表示を利用できますが、相互importを増やさず、画面間の接続はAppが担当します。
 
 新規ファイルはまず担当機能へ置き、複数機能で共有する純粋処理をdomain、ブラウザの保存APIを扱う処理をinfrastructureに置きます。テストは対象モジュールに併置し、E2Eは `e2e/` にまとめます。生成物と原本の配置は次節の区分を守ります。
+
+### Appと各機能の境界
+
+`app/App.tsx` は画面の接続を担当し、`AppShell` が背景・ナビゲーション・ヘッダーを描画します。練習・履歴のhookはAppの寿命で保持し、別画面へ移動しても練習の一時停止位置や履歴の選択を失いません。CPU・ゴースト画面は従来どおり画面を離れるとアンマウントします。
+
+- `usePracticeSession`: 入力エンジン、状態遷移、採点、完了の一回性。UIには読み取り用の状態と開始・停止・リセット等の操作を返し、ゲーム内部のsetterを公開しません。
+- `usePracticeClock` / `usePracticeFocus` / `usePracticeSeed`: 計時とカウントダウン、カルーセル移動後のフォーカス、保存済みシードと出題バージョン。それぞれが副作用の登録・解除を担当します。
+- `domain/content/practiceDocument.ts` / `practicePreview.ts`: 出題の選択とプレビューの本文・読み対応。`domain/records/practiceResult.ts` は計測済みの入力から保存用記録を組み立てます。
+- `useHistory`: 記録・ベスト・保存に失敗した記録の所有者。購読・保存・書出し・削除と詳細選択を一箇所で扱い、練習・対戦は完了記録を渡します。
+- `useSettings` と各ダイアログ: 設定保存とダイアログUI。共通の `useModalFocus` がそのダイアログ内でフォーカスを循環し、閉じた際に元の操作へ戻します。ダイアログは画面遷移のtransformの影響を受けないAppShellの外枠に置きます。
 
 ## 問題データの配置と再生成
 
