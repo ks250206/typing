@@ -21,7 +21,7 @@ test('trainer previews only lap one, then plays three separately shuffled full l
     exact: true,
   })
   for (const [category, count] of [
-    ['オリジナル文章', 6],
+    ['オリジナル', 6],
     ['公的文書', 2],
     ['タイプウェル', 5],
   ] as const) {

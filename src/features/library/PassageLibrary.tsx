@@ -17,6 +17,13 @@ export function PassageLibrary({
   selected: string
   onSelect: (id: string) => void
 }) {
+  const categories = useMemo(() => {
+    const priority = (category: string) =>
+      category === 'オリジナル' ? 0 : category === 'オリジナル長文' ? 1 : 2
+    return [...new Set(passages.map(libraryCategory))].sort(
+      (a, b) => priority(a) - priority(b),
+    )
+  }, [passages])
   const [genre, setGenre] = useState('すべて')
   const [search, setSearch] = useState('')
   const filtered = useMemo(
@@ -48,7 +55,7 @@ export function PassageLibrary({
         />
       </label>
       <div className="filters" aria-label="文章のジャンル">
-        {['すべて', ...new Set(passages.map(libraryCategory))].map((g) => (
+        {['すべて', ...categories].map((g) => (
           <button
             key={g}
             className={genre === g ? 'selected' : ''}

@@ -73,7 +73,7 @@ test('library, settings persistence, screenshots and responsive layout', async (
   )
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
   await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
-  await page.getByRole('button', { name: 'オリジナル文章', exact: true }).click()
+  await page.getByRole('button', { name: 'オリジナル', exact: true }).click()
   await page.getByRole('button', { name: /星の光が届くまで/ }).click()
   await expect(page.locator('.passage-header')).toContainText(
     '星の光が届くまで',
