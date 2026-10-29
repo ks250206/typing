@@ -122,8 +122,15 @@ it('uses recorded prompt order and partial endpoints, skipping words with no mea
     'しか',
   ])
 })
-it('supports voicing in kana and all three roman layouts, preserving source layout', () => {
-  for (const layout of ['jis', 'us', 'dvorak', 'kana'] as const) {
+it('supports voicing in kana and all five roman layouts, preserving source layout', () => {
+  for (const layout of [
+    'jis',
+    'us',
+    'dvorak',
+    'colemak',
+    'workman',
+    'kana',
+  ] as const) {
     const input = layout === 'kana' ? 'か\u3099' : 'ga'
     const race = new GhostRace(
       { ...source, layout },

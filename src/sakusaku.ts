@@ -1,4 +1,5 @@
 import type { Passage } from './passages'
+import { seededRandom } from './typewell'
 import { normalizeReading } from './engine'
 
 /** Text and readings provided by the user, in their original order and spelling. */
@@ -89,12 +90,23 @@ export function randomSentenceIndex(
   const index = Math.floor(random() * (length - 1))
   return index >= previous ? index + 1 : index
 }
+/** Version 1: deterministic draws with replacement, excluding the last prompt. */
+export function createTrainerOrder(
+  seed: string,
+  length: number = sakusakuEntries.length,
+) {
+  const random = seededRandom(`sakusaku-v1/${seed}`)
+  let previous = -1
+  return () => (previous = randomSentenceIndex(length, previous, random))
+}
+export const isTrainer = (id: string) => id === 'sakusaku-trainer'
 export const sakusaku: Passage = {
   id: 'sakusaku-trainer',
-  title: '打鍵トレーナー準拠 · さくさくタイピング',
+  title: '打鍵トレーナー · さくさくタイピング',
   genre: '60秒トレーナー',
   accent: '60',
-  subtitle: '提供15文をランダム出題。最初の打鍵から60秒間の正打鍵数を計測。',
+  subtitle:
+    '15文をシードでランダム出題。最初の打鍵から60秒間の正打鍵数を計測。',
   durationMs: 60000,
   source: {
     label: 'ユーザー提供の本文・読み（15文）',

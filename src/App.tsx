@@ -20,10 +20,10 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
-import { KanaEngine, RomanEngine, mapKey } from './engine'
+import { KanaEngine, RomanEngine, mapKey, layoutLabels } from './engine'
 import type { Layout } from './engine'
 import { passages as essayPassages } from './passages'
-import { randomSentenceIndex } from './sakusaku'
+import { createTrainerOrder, isTrainer } from './sakusaku'
 import { etypingDocument, isEtyping } from './etyping'
 import {
   freshSeed,
@@ -66,12 +66,6 @@ const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
 )
 import './App.css'
-const layoutLabels: Record<Layout, string> = {
-  jis: 'QWERTY · JIS',
-  us: 'QWERTY · US',
-  dvorak: 'Dvorak',
-  kana: 'JIS かな',
-}
 const time = (ms: number) =>
   `${Math.floor(ms / 60000)
     .toString()
@@ -171,7 +165,8 @@ export default function App() {
   const typewell = isTypewell(selected)
   const etyping = isEtyping(selected)
   const rtc = isRtc(selected)
-  const seeded = typewell || etyping || rtc
+  const trainer = isTrainer(selected)
+  const seeded = typewell || etyping || rtc || trainer
   const limit = strokeLimit(settings.layout)
   const durationMs = passage.durationMs ?? 0
   const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
@@ -184,6 +179,7 @@ export default function App() {
     missEpisodes = useRef(new MissEpisodes()),
     liveKeys = useRef(0),
     trace = useRef(new TypingTrace()),
+    trainerOrder = useRef(createTrainerOrder(seed, sentences.length)),
     recorded = useRef(false),
     runRevision = useRef(0),
     finishTimer = useRef<(duration: number) => void>(() => {})
@@ -244,15 +240,14 @@ export default function App() {
     nextSeed = fixedSeed ? seed : freshSeed(),
     version: 1 | 2 = fixedSeed && id === selected ? replayVersion : 2,
   ) => {
-    if (isTypewell(id) || isEtyping(id) || isRtc(id)) {
-      setReplayVersion(version)
+    if (isTypewell(id) || isEtyping(id) || isRtc(id) || isTrainer(id)) {
+      setReplayVersion(isTrainer(id) ? 1 : version)
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
     const doc = practiceDocument(id, nextSeed, layout, version)
-    const initialIndex = doc.passage.durationMs
-      ? randomSentenceIndex(doc.sentences.length)
-      : 0
+    trainerOrder.current = createTrainerOrder(nextSeed, doc.sentences.length)
+    const initialIndex = doc.passage.durationMs ? trainerOrder.current() : 0
     engine.current = doc.plan
       ? typewellEngine(doc.plan)
       : makeEngine(doc.sentences[initialIndex].reading, layout)
@@ -441,7 +436,7 @@ export default function App() {
       missPenalty: missEpisodes.current.penalty,
       ...(typewell
         ? { seed, strokeLimit: limit, replayVersion }
-        : etyping || rtc
+        : etyping || rtc || trainer
           ? { seed, replayVersion: 1 as const }
           : {}),
       mode: durationMs ? 'trainer' : 'practice',
@@ -530,7 +525,7 @@ export default function App() {
     })
     if (engine.current.done) {
       if (durationMs) {
-        const index = randomSentenceIndex(sentences.length, sentenceIndex)
+        const index = trainerOrder.current()
         setSentenceIndex(index)
         engine.current = makeEngine(sentences[index].reading, settings.layout)
         trace.current.begin(sentences[index], keyTime, settings.layout)
@@ -765,7 +760,7 @@ export default function App() {
                 </span>
                 <span>
                   <Keyboard size={13} />
-                  4つの入力方式
+                  6つの入力方式
                 </span>
                 <span>
                   <History size={13} />
@@ -843,11 +838,13 @@ export default function App() {
                             <span className="muted small">
                               {typewell
                                 ? 'R 400打 / K 280打 · '
-                                : passage.source
-                                  ? passage.source.kind === 'provided'
-                                    ? 'PROVIDED TEXT · '
-                                    : 'PUBLIC TEXT · '
-                                  : 'ORIGINAL ESSAY · '}
+                                : etyping
+                                  ? 'WORD SET · '
+                                  : passage.source
+                                    ? passage.source.kind === 'provided'
+                                      ? 'PROVIDED TEXT · '
+                                      : 'PUBLIC TEXT · '
+                                    : 'ORIGINAL ESSAY · '}
                               {typewell
                                 ? 'ランダム出題'
                                 : passage.paragraphs.reduce(
@@ -919,12 +916,14 @@ export default function App() {
                                 reset(selected, settings.layout, 0, freshSeed())
                               }
                             >
-                              {etyping || rtc
+                              {etyping || rtc || trainer
                                 ? '問題をシャッフル'
                                 : '単語をシャッフル'}
                             </button>
                             <p>
-                              {rtc ? (
+                              {trainer ? (
+                                '同じシードで同じ出題順を再現します。同じ文は連続しません。全文確認は収録15文の一覧です。'
+                              ) : rtc ? (
                                 '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
                               ) : etyping ? (
                                 '同じシードで同じ15問・同じ順番を再現します。重複なしのランダム出題です。'
@@ -937,8 +936,8 @@ export default function App() {
                             </p>
                             <small>
                               再現ID: {selected} / v
-                              {etyping || rtc ? 1 : replayVersion} / {seed} ·{' '}
-                              {settings.layout}
+                              {etyping || rtc || trainer ? 1 : replayVersion} /{' '}
+                              {seed} · {settings.layout}
                             </small>
                           </div>
                         )}
@@ -1046,7 +1045,6 @@ export default function App() {
                             target={snapshot.target}
                             typed={snapshot.typed}
                             hint={snapshot.hint}
-                            guide={settings.guide}
                             wordColors={settings.wordColors}
                             consumeTyped={settings.consumeTyped}
                           />
@@ -1243,19 +1241,6 @@ export default function App() {
                       ))}
                     </select>
                     <label className="toggle-row">
-                      <span>入力ガイド</span>
-                      <input
-                        type="checkbox"
-                        checked={settings.guide}
-                        onChange={(e) =>
-                          setSettings((s) => ({
-                            ...s,
-                            guide: e.target.checked,
-                          }))
-                        }
-                      />
-                    </label>
-                    <label className="toggle-row">
                       <span>3D 背景</span>
                       <input
                         type="checkbox"
@@ -1302,8 +1287,10 @@ export default function App() {
                     <p className="config-help">
                       IME を OFF にして入力。
                       <br />
-                      {settings.layout === 'dvorak'
-                        ? '物理キーを Dvorak 配列に変換します。OS は QWERTY に設定。'
+                      {['dvorak', 'colemak', 'workman'].includes(
+                        settings.layout,
+                      )
+                        ? `物理キーを ${layoutLabels[settings.layout]} 配列に変換します。OS は QWERTY に設定。`
                         : settings.layout === 'kana'
                           ? 'JIS 物理配列に対応。濁点・半濁点は別打鍵です。'
                           : 'し → shi / si など、打ち方は自由。'}
@@ -1435,6 +1422,7 @@ export default function App() {
                               r.mode !== 'ghost' &&
                               (isTypewell(r.passageId) ||
                                 isEtyping(r.passageId) ||
+                                isTrainer(r.passageId) ||
                                 isRtc(r.passageId)) && (
                                 <button
                                   className="text-button"
@@ -1532,16 +1520,6 @@ export default function App() {
                 checked={settings.background}
                 onChange={(e) =>
                   setSettings((s) => ({ ...s, background: e.target.checked }))
-                }
-              />
-            </label>
-            <label className="toggle-row">
-              入力ガイド
-              <input
-                type="checkbox"
-                checked={settings.guide}
-                onChange={(e) =>
-                  setSettings((s) => ({ ...s, guide: e.target.checked }))
                 }
               />
             </label>

@@ -91,13 +91,13 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   await enter(page)
   await page
     .getByLabel('CPUプリセット', { exact: true })
-    .selectOption({ label: 'ウサギ / 上級' })
+    .selectOption({ label: 'ウサギ' })
   await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
-    '500',
+    '535',
   )
   await expect(
     page.getByLabel('CPU反応時間 (ms)', { exact: true }),
-  ).toHaveValue('190')
+  ).toHaveValue('185')
   await expect(page.getByLabel('CPUの打ち方', { exact: true })).toHaveValue(
     'ease-in',
   )

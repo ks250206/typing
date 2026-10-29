@@ -162,7 +162,14 @@ test('keyboard stays within desktop and mobile viewport and respects reduced mot
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1100 })
-    for (const layout of ['jis', 'us', 'dvorak', 'kana']) {
+    for (const layout of [
+      'jis',
+      'us',
+      'dvorak',
+      'colemak',
+      'workman',
+      'kana',
+    ]) {
       await page.getByLabel('入力方式', { exact: true }).selectOption(layout)
       await expect(page.locator('.keyboard-guide')).toBeVisible()
       expect(

@@ -117,21 +117,28 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   await expect(page.getByRole('button', { name: '再開する' })).toBeVisible()
 })
 
-test('next reading stays visible with guide off, after resize and restart', async ({
+test('guides stay visible with a legacy opt-out, after resize and restart', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      'yohaku.settings.v1',
+      JSON.stringify({ guide: false }),
+    ),
+  )
   await page.goto('/')
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page.getByRole('button', { name: /星の光が届くまで/ }).click()
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
-  await page.getByLabel('入力ガイド', { exact: true }).uncheck()
+  await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region').focus()
   const sentences = sentencesByPassage['starlight']
+  await expect(page.locator('.roman-line')).toBeVisible()
   const longest = sentences.reduce(
     (best, s, i) =>
       s.reading.length > sentences[best].reading.length ? i : best,

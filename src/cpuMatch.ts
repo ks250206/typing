@@ -2,7 +2,7 @@ import { TypingTrace } from './telemetry'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
 import type { Sentence } from './sentences'
-import { MissEpisodes } from './scoring'
+import { MissEpisodes, animalRanks } from './scoring'
 
 export type Curve = 'constant' | 'ease-in'
 export interface CpuConfig {
@@ -10,47 +10,44 @@ export interface CpuConfig {
   reactionMs: number
   curve: Curve
 }
-export const cpuPresets = [
-  { name: 'カメ / はじめて', kpm: 90, reactionMs: 250, curve: 'ease-in' },
-  {
-    name: 'ハリネズミ / ゆっくり',
-    kpm: 130,
-    reactionMs: 235,
-    curve: 'ease-in',
-  },
-  { name: 'リス / 入門', kpm: 180, reactionMs: 220, curve: 'ease-in' },
-  { name: 'ネコ / 標準', kpm: 300, reactionMs: 210, curve: 'ease-in' },
-  { name: 'キツネ / 中級', kpm: 400, reactionMs: 200, curve: 'ease-in' },
-  { name: 'ウサギ / 上級', kpm: 500, reactionMs: 190, curve: 'ease-in' },
-  { name: 'ダチョウ / 熟練', kpm: 650, reactionMs: 180, curve: 'ease-in' },
-  {
-    name: 'プロングホーン / 高速',
-    kpm: 800,
-    reactionMs: 165,
-    curve: 'constant',
-  },
-  { name: 'チーター / 達人', kpm: 900, reactionMs: 150, curve: 'constant' },
-  { name: 'ハヤブサ / 超高速', kpm: 1200, reactionMs: 140, curve: 'constant' },
-] satisfies (CpuConfig & { name: string })[]
-/** Upgrade only exact saved presets; preserve custom reaction settings. */
+/** Each rank gets one 50pt band; the open-ended top rank uses 1050 as its preset bound. */
+export const cpuPresets = animalRanks.map(([threshold, name], index) => ({
+  name,
+  kpm: (animalRanks[index + 1]?.[0] ?? threshold + 50) - 15,
+  reactionMs: Math.round(250 - (130 * index) / (animalRanks.length - 1)),
+  curve: threshold >= 800 ? ('constant' as const) : ('ease-in' as const),
+}))
+/** Upgrade only exact previous profiles. Historical match records bypass this migration. */
 export function migrateCpuPreset(config: CpuConfig): CpuConfig {
-  const oldReactions: Record<number, number[]> = {
-    90: [300],
-    130: [300],
-    180: [290, 500],
-    300: [280, 320],
-    400: [280],
-    500: [270, 240],
-    650: [270],
-    800: [260],
-    900: [260, 180],
-    1200: [260],
-  }
-  const preset = cpuPresets.find(
-    (p) => p.kpm === config.kpm && p.curve === config.curve,
+  const legacy = [
+    { name: 'カメ', kpm: 90, reactions: [250, 300], curve: 'ease-in' },
+    { name: 'ハリネズミ', kpm: 130, reactions: [235, 300], curve: 'ease-in' },
+    { name: 'リス', kpm: 180, reactions: [220, 290, 500], curve: 'ease-in' },
+    { name: 'ネコ', kpm: 300, reactions: [210, 280, 320], curve: 'ease-in' },
+    { name: 'キツネ', kpm: 400, reactions: [200, 280], curve: 'ease-in' },
+    { name: 'ウサギ', kpm: 500, reactions: [190, 270, 240], curve: 'ease-in' },
+    { name: 'ダチョウ', kpm: 650, reactions: [180, 270], curve: 'ease-in' },
+    {
+      name: 'プロングホーン',
+      kpm: 800,
+      reactions: [165, 260],
+      curve: 'constant',
+    },
+    {
+      name: 'チーター',
+      kpm: 900,
+      reactions: [150, 260, 180],
+      curve: 'constant',
+    },
+    { name: 'チーター', kpm: 1200, reactions: [140, 260], curve: 'constant' },
+  ].find(
+    (p) =>
+      p.kpm === config.kpm &&
+      p.curve === config.curve &&
+      p.reactions.includes(config.reactionMs),
   )
-  return preset && oldReactions[config.kpm]?.includes(config.reactionMs)
-    ? { ...preset }
+  return legacy
+    ? { ...cpuPresets.find((p) => p.name === legacy.name)! }
     : config
 }
 export function cpuCharacters(elapsedMs: number, config: CpuConfig) {

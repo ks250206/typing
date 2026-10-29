@@ -1,4 +1,12 @@
-export type Layout = 'jis' | 'us' | 'dvorak' | 'kana'
+export type Layout = 'jis' | 'us' | 'dvorak' | 'colemak' | 'workman' | 'kana'
+export const layoutLabels: Record<Layout, string> = {
+  jis: 'QWERTY · JIS',
+  us: 'QWERTY · US',
+  dvorak: 'Dvorak',
+  colemak: 'Colemak',
+  workman: 'Workman',
+  kana: 'JIS かな',
+}
 const table: Record<string, string[]> = {}
 const add = (kana: string, ...forms: string[]) => {
   table[kana] = forms
@@ -328,6 +336,17 @@ const us = "`1234567890-=qwertyuiop[]asdfghjkl;'zxcvbnm,./"
 const usShift = '~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'
 const dv = "`1234567890[]',.pyfgcrl/=aoeuidhtns-;qjkxbmwvz"
 const dvShift = '~!@#$%^&*(){}"<>PYFGCRL?+AOEUIDHTNS_:QJKXBMWVZ'
+// Standard Colemak and Workman, US symbols; host keyboard remains QWERTY.
+const cm = "`1234567890-=qwfpgjluy;[]arstdhneio'zxcvbkm,./"
+const cmShift = '~!@#$%^&*()_+QWFPGJLUY:{}ARSTDHNEIO"ZXCVBKM<>?'
+const wm = "`1234567890-=qdrwbjfup;[]ashtgyneoi'zxmcvkl,./"
+const wmShift = '~!@#$%^&*()_+QDRWBJFUP:{}ASHTGYNEOI"ZXMCVKL<>?'
+const physicalLayouts = {
+  us: [us, usShift],
+  dvorak: [dv, dvShift],
+  colemak: [cm, cmShift],
+  workman: [wm, wmShift],
+}
 const kana: Record<string, string> = {
   Digit1: 'ぬ',
   Digit2: 'ふ',
@@ -420,13 +439,10 @@ export function mapKey(
     return event.key.length === 1 ? event.key.toLowerCase() : null
   if (event.code === 'Backslash') return event.shiftKey ? '|' : '\\'
   const index = codes.indexOf(event.code)
-  if (layout === 'dvorak')
+  const rows = physicalLayouts[layout]
+  if (rows)
     return index < 0
       ? null
-      : ((event.shiftKey ? dvShift : dv)[index]?.toLowerCase() ?? null)
-  if (layout === 'us')
-    return index < 0
-      ? null
-      : ((event.shiftKey ? usShift : us)[index]?.toLowerCase() ?? null)
+      : (rows[Number(event.shiftKey)][index]?.toLowerCase() ?? null)
   return event.key.length === 1 ? event.key.toLowerCase() : null
 }

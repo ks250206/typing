@@ -10,20 +10,29 @@ import {
   keyboardGeometry,
 } from './physicalKeyboard'
 
-it('finds physical keys for all canonical passage input in all four layouts', () => {
-  for (const layout of ['jis', 'us', 'dvorak', 'kana'] as Layout[]) {
+it('finds physical keys for all canonical passage input in all six layouts', () => {
+  for (const layout of [
+    'jis',
+    'us',
+    'dvorak',
+    'colemak',
+    'workman',
+    'kana',
+  ] as Layout[]) {
+    const characters = new Set<string>()
     for (const sentences of Object.values(sentencesByPassage))
       for (const sentence of sentences) {
         const input =
           layout === 'kana'
             ? new KanaEngine(sentence.reading).target
             : new RomanEngine(sentence.reading).hint
-        for (const char of input) {
-          const key = physicalKey(char, layout)
-          expect(key, `${layout}: ${char}`).toBeDefined()
-          expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
-        }
+        for (const char of input) characters.add(char)
       }
+    for (const char of characters) {
+      const key = physicalKey(char, layout)
+      expect(key).toBeDefined()
+      expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
+    }
   }
 })
 it('maps layout-specific punctuation, Dvorak and kana modifiers to physical keys', () => {
@@ -47,7 +56,14 @@ it('maps layout-specific punctuation, Dvorak and kana modifiers to physical keys
   expect(fingerFor('KeyJ')).toBe('right-index')
 })
 it('keeps all rows at a fixed physical pitch and includes staggered special keys', () => {
-  for (const layout of ['jis', 'us', 'dvorak', 'kana'] as Layout[]) {
+  for (const layout of [
+    'jis',
+    'us',
+    'dvorak',
+    'colemak',
+    'workman',
+    'kana',
+  ] as Layout[]) {
     const slots = keyboardGeometry(layout)
     expect(
       slots.every((slot) => slot.column >= 1 && slot.column + slot.width <= 61),
@@ -65,5 +81,22 @@ it('keeps all rows at a fixed physical pitch and includes staggered special keys
     expect(slots.find((slot) => slot.code === 'Enter')?.tall ?? false).toBe(
       layout === 'jis' || layout === 'kana',
     )
+  }
+})
+
+it('locates every printable US symbol on the two new layouts, including the grave key', () => {
+  for (const layout of ['colemak', 'workman'] as const) {
+    for (let code = 32; code < 127; code++) {
+      const char = String.fromCharCode(code)
+      if (/[A-Z]/.test(char)) continue // Latin input is case-insensitive.
+      const key = physicalKey(char, layout)
+      expect(key, `${layout}/${char}`).toBeDefined()
+      expect(keyOutput(key!.code, key!.shift, layout)).toBe(char)
+    }
+    expect(physicalKey('`', layout)).toEqual({
+      code: 'Backquote',
+      shift: false,
+    })
+    expect(physicalKey('~', layout)).toEqual({ code: 'Backquote', shift: true })
   }
 })

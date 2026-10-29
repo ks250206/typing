@@ -146,7 +146,6 @@ export default function ReplayPlayer({
           target={frame.target}
           typed={frame.typed}
           hint={frame.hint}
-          guide
           wordColors
           consumeTyped={false}
           showNext={false}

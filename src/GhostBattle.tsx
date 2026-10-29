@@ -309,7 +309,6 @@ function GhostSession({
           target={race.engine.target}
           typed={race.typed}
           hint={race.engine.hint}
-          guide={settings.guide}
           wordColors={settings.wordColors}
           consumeTyped={settings.consumeTyped}
           showNext={false}
@@ -338,7 +337,6 @@ function GhostSession({
           target={frame.target}
           typed={frame.typed}
           hint={frame.hint}
-          guide
           wordColors={false}
           consumeTyped={false}
           showNext={false}

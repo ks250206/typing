@@ -59,8 +59,15 @@ it('generates 15 seeded combinations and extends the same sequence to all 133 RT
       ).toBe(true)
   }
 })
-it('keeps every fragment aligned and typable in all four layouts, including literal ASCII in kana', () => {
-  const layouts = ['jis', 'us', 'dvorak', 'kana'] as Layout[]
+it('keeps every fragment aligned and typable in all six layouts, including literal ASCII in kana', () => {
+  const layouts = [
+    'jis',
+    'us',
+    'dvorak',
+    'colemak',
+    'workman',
+    'kana',
+  ] as Layout[]
   const characters = new Map(layouts.map((l) => [l, new Set<string>()]))
   for (const set of data)
     for (const part of set.parts)

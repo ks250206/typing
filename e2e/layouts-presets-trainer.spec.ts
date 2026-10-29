@@ -1,0 +1,298 @@
+import { test, expect, type Page } from '@playwright/test'
+import { cpuPresets } from '../src/cpuMatch'
+import { createTrainerOrder, sakusaku, sakusakuEntries } from '../src/sakusaku'
+import { typewellDocument } from '../src/typewell'
+import { physicalKey } from '../src/physicalKeyboard'
+import type { Layout } from '../src/engine'
+
+async function setup(page: Page, layout: Layout = 'jis') {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.addInitScript(
+    (layout) =>
+      localStorage.setItem(
+        'yohaku.settings.v1',
+        JSON.stringify({ layout, background: false, guide: false }),
+      ),
+    layout,
+  )
+  await page.goto('/')
+}
+async function enter(page: Page) {
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
+  await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
+}
+async function physicalType(page: Page, text: string, layout: Layout) {
+  for (const char of text) {
+    const key = physicalKey(char, layout)
+    expect(key, `${layout}/${char}`).toBeDefined()
+    await page.keyboard.press(`${key!.shift ? 'Shift+' : ''}${key!.code}`)
+  }
+}
+const guide = (page: Page) =>
+  page
+    .locator('.roman-line')
+    .evaluate((el) =>
+      [...el.querySelectorAll('.roman-current, .remaining-roman')]
+        .map((n) => n.textContent)
+        .join(''),
+    )
+
+test('trainer seed controls reproduce the same order across pauses, restart and saved history', async ({
+  page,
+}) => {
+  await page.clock.install()
+  await setup(page)
+  await page.getByRole('button', { name: sakusaku.title, exact: true }).click()
+  await expect(page.locator('.passage-header')).not.toContainText('準拠')
+  await page.getByLabel('シードを固定する', { exact: true }).check()
+  await page.getByLabel('出題シード', { exact: true }).fill('trainer-fixed')
+  await page
+    .getByRole('button', { name: 'このシードを使う', exact: true })
+    .click()
+  const next = createTrainerOrder('trainer-fixed')
+  const order = Array.from({ length: 6 }, () => next())
+  await enter(page)
+  await page.clock.pauseAt(new Date(Date.now() + 1000))
+  for (let i = 0; i < 3; i++) {
+    await expect(page.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
+      sakusakuEntries[order[i]][0],
+    )
+    await page.keyboard.type(await guide(page))
+  }
+  await page.keyboard.press('Escape')
+  await page.clock.runFor(5000)
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
+    sakusakuEntries[order[3]][0],
+  )
+  await page.getByRole('button', { name: '再開する', exact: true }).click()
+  await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
+  await page.keyboard.type(await guide(page))
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
+    sakusakuEntries[order[4]][0],
+  )
+  await page.clock.runFor(60050)
+  await expect(page.getByText('60秒の計測が終了しました。')).toBeVisible()
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
+      ),
+    )
+    .toBe(1)
+  expect(
+    await page.evaluate(
+      () => JSON.parse(localStorage.getItem('yohaku.history.v1')!)[0],
+    ),
+  ).toMatchObject({
+    mode: 'trainer',
+    seed: 'trainer-fixed',
+    replayVersion: 1,
+    title: sakusaku.title,
+  })
+  await page
+    .getByRole('button', { name: 'シード trainer-fixed を再現', exact: true })
+    .click()
+  await enter(page)
+  for (let i = 0; i < 3; i++) {
+    await expect(page.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
+      sakusakuEntries[order[i]][0],
+    )
+    await page.keyboard.type(await guide(page))
+  }
+  await page.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
+    sakusakuEntries[order[0]][0],
+  )
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
+  await page.getByLabel('出題シード', { exact: true }).fill('another-trainer')
+  await page
+    .getByRole('button', { name: 'このシードを使う', exact: true })
+    .click()
+  await enter(page)
+  await expect(page.locator('.current-paragraph')).toHaveAttribute(
+    'data-text',
+    sakusakuEntries[createTrainerOrder('another-trainer')()][0],
+  )
+})
+
+test('CPU has 21 rank-based profiles, migrates old defaults and persists the 35KPM profile', async ({
+  page,
+}) => {
+  await page.addInitScript(
+    () =>
+      !localStorage.getItem('yohaku.cpu.v1') &&
+      localStorage.setItem(
+        'yohaku.cpu.v1',
+        JSON.stringify({ kpm: 300, reactionMs: 210, curve: 'ease-in' }),
+      ),
+  )
+  await setup(page)
+  await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+  await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
+    '385',
+  )
+  await expect(
+    page.getByLabel('CPU反応時間 (ms)', { exact: true }),
+  ).toHaveValue('205')
+  const presets = page.getByLabel('CPUプリセット', { exact: true })
+  await expect(presets.locator('option:not(:disabled)')).toHaveCount(21)
+  for (const p of cpuPresets) {
+    await presets.selectOption(p.name)
+    await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
+      String(p.kpm),
+    )
+    await expect(
+      page.getByLabel('CPU反応時間 (ms)', { exact: true }),
+    ).toHaveValue(String(p.reactionMs))
+    expect(
+      await page
+        .getByLabel('CPU反応時間 (ms)', { exact: true })
+        .evaluate((el: HTMLInputElement) => el.validity.valid),
+    ).toBe(true)
+  }
+  await presets.selectOption('カメ')
+  await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => JSON.parse(localStorage.getItem('yohaku.cpu.v1')!).kpm,
+      ),
+    )
+    .toBe(35)
+  await page.reload()
+  await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+  await expect(presets).toHaveValue('カメ')
+  await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
+    '35',
+  )
+  await presets.selectOption('カメ')
+  await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
+  await expect(page.locator('.battle-countdown')).toBeVisible()
+})
+
+for (const layout of ['colemak', 'workman'] as const)
+  test(`${layout} supports physical typing, records, replay, ghosts, CPU and always-on guides`, async ({
+    page,
+  }) => {
+    const errors: string[] = []
+    page.on('pageerror', (e) => errors.push(e.message))
+    await page.clock.install()
+    await setup(page, layout)
+    await expect(page.getByLabel('入力方式', { exact: true })).toHaveValue(
+      layout,
+    )
+    await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
+    await page
+      .getByRole('button', {
+        name: 'タイプウェル準拠 · 宇宙の名前',
+        exact: true,
+      })
+      .click()
+    await page.getByLabel('シードを固定する', { exact: true }).check()
+    await page.getByLabel('出題シード', { exact: true }).fill('new-layout')
+    await page
+      .getByRole('button', { name: 'このシードを使う', exact: true })
+      .click()
+    const reference = typewellDocument(
+      'typewell-space',
+      'new-layout',
+      layout,
+      2,
+    ).plan.reference
+    await enter(page)
+    await expect(page.locator('.roman-line')).toBeVisible()
+    await expect(page.locator('[data-code="KeyE"] > span')).toHaveText(
+      layout === 'colemak' ? 'F' : 'R',
+    )
+    await expect(page.locator('[data-code="KeyJ"] > span')).toHaveText('N')
+    await expect(page.locator('[data-code="Semicolon"] > span')).toHaveText(
+      layout === 'colemak' ? 'O' : 'I',
+    )
+    await physicalType(page, reference.slice(0, 5), layout)
+    await expect(page.locator('.typed-roman')).toHaveText(reference.slice(0, 5))
+    if (layout === 'workman')
+      await page.setViewportSize({ width: 390, height: 1000 })
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    await page.screenshot({
+      path: `artifacts/${layout}-typing.png`,
+      fullPage: true,
+      animations: 'disabled',
+    })
+    await physicalType(page, reference.slice(5), layout)
+    await expect(
+      page.getByText('SESSION COMPLETE', { exact: true }),
+    ).toBeVisible()
+    await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]')
+              .length,
+        ),
+      )
+      .toBe(1)
+    expect(
+      await page.evaluate(
+        () => JSON.parse(localStorage.getItem('yohaku.history.v1')!)[0],
+      ),
+    ).toMatchObject({ layout, keys: 400, rawMisses: 0 })
+    await page
+      .getByRole('button', { name: 'リプレイを見る', exact: true })
+      .click()
+    const replay = page.getByRole('region', {
+      name: '記録リプレイ',
+      exact: true,
+    })
+    await replay.getByRole('button', { name: '次の1打鍵', exact: true }).click()
+    await expect(replay.locator('.typed-roman')).toHaveText(reference[0])
+    await page
+      .getByRole('button', { name: 'この記録のゴーストと対戦', exact: true })
+      .click()
+    const ghostInput = page.getByRole('region', {
+      name: /ゴースト対戦の入力領域/,
+    })
+    await ghostInput.focus()
+    await physicalType(page, reference.slice(0, 5), layout)
+    await expect(ghostInput.locator('.typed-roman')).toHaveText(
+      reference.slice(0, 5),
+    )
+    await page.keyboard.press('Escape')
+    await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+    await expect(
+      page.getByLabel('対戦の入力方式', { exact: true }),
+    ).toHaveValue(layout)
+    await page.getByLabel('CPUプリセット', { exact: true }).selectOption('カメ')
+    await page
+      .getByRole('button', { name: 'CPUと対戦する', exact: true })
+      .click()
+    await page.clock.fastForward(3100)
+    const area = page.getByRole('region', {
+      name: 'CPU対戦の入力領域',
+      exact: true,
+    })
+    await area.focus()
+    await expect(page.locator('.duel-row-player')).toBeVisible()
+    const prompt = await page
+      .locator('.current-paragraph')
+      .getAttribute('data-text')
+    expect(prompt).toBeTruthy()
+    const cpuGuide = (
+      await page.locator('.duel-row-player .duel-cell').allTextContents()
+    ).join('')
+    await physicalType(page, cpuGuide, layout)
+    await expect(page.getByTestId('player-points')).toHaveText('1')
+    expect(errors).toEqual([])
+  })

@@ -8,9 +8,9 @@ export const etypingPassages: Passage[] = data.map((set) => ({
   title: set.title,
   genre: 'e-typing',
   accent: 'E',
-  subtitle: `提供XMLの${set.entries.length}文から、シードでランダムに15問出題。`,
+  subtitle: `${set.entries.length}文から、シードでランダムに15問出題。`,
   source: {
-    label: 'uaaaaaaaa.com のタイピング用XML',
+    label: 'uaaaaaaaa.com',
     url: 'https://uaaaaaaaa.com/typing/word',
     kind: 'provided',
   },

@@ -133,7 +133,7 @@ test('live adjective uses raw misses and matches the saved record, detail and JS
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page
     .getByRole('button', {
-      name: '打鍵トレーナー準拠 · さくさくタイピング',
+      name: '打鍵トレーナー · さくさくタイピング',
       exact: true,
     })
     .click()

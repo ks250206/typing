@@ -39,6 +39,7 @@ export function keyboardCodes(layout: Layout) {
   const jis = layout === 'jis' || layout === 'kana'
   return keyboardRows
     .map((row, index) => [
+      ...(index === 0 ? ['Backquote'] : []),
       ...row,
       ...(index === 0 && jis ? ['IntlYen'] : []),
       ...(index === (jis ? 2 : 1) ? ['Backslash'] : []),
