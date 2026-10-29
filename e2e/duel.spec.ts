@@ -1,6 +1,6 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
-import { seededBattlePrompts } from '../src/battleSets'
+import { seededBattlePrompts } from '../src/domain/content/battleSets'
 import { test, expect } from '@playwright/test'
 const enter = async (page: import('@playwright/test').Page) => {
   await page.goto('/')

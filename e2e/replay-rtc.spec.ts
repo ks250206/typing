@@ -1,8 +1,8 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
-import { rtcDocument, rtcPassages } from '../src/rtcWords'
-import { RomanEngine } from '../src/engine'
+import { rtcDocument, rtcPassages } from '../src/domain/content/rtcWords'
+import { RomanEngine } from '../src/domain/typing/engine'
 
 test('replay steps actual spelling and mistakes, pauses, changes speed and seeks without adding records', async ({
   page,

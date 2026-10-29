@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import data from '../src/data/generated/trainers.json' with { type: 'json' }
-import { createTrainerOrder, sakusakuEntries } from '../src/sakusaku'
-import { RomanEngine } from '../src/engine'
+import { createTrainerOrder, sakusakuEntries } from '../src/domain/content/sakusaku'
+import { RomanEngine } from '../src/domain/typing/engine'
 import { startPractice } from './startPractice'
 
 test('trainer previews only lap one, then plays three separately shuffled full laps and saves v2', async ({

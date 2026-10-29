@@ -1,8 +1,8 @@
 import { startPractice } from './startPractice'
 import { test, expect } from '@playwright/test'
-import { constitution } from '../src/constitution'
-import { sentencesByPassage } from '../src/sentences'
-import { RomanEngine } from '../src/engine'
+import { constitution } from '../src/domain/content/constitution'
+import { sentencesByPassage } from '../src/domain/content/sentences'
+import { RomanEngine } from '../src/domain/typing/engine'
 
 test('the complete official preamble is selectable, readable, typable and saved', async ({
   page,

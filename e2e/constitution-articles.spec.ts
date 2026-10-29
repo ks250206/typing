@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { constitutionArticleDocument } from '../src/constitutionArticles'
-import { RomanEngine } from '../src/engine'
+import { constitutionArticleDocument } from '../src/domain/content/constitutionArticles'
+import { RomanEngine } from '../src/domain/typing/engine'
 import { startPractice } from './startPractice'
 
 test('all 14 full articles are shuffled as intact blocks, previewed, completed, saved and reproduced by seed', async ({

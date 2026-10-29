@@ -1,7 +1,7 @@
 import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
 import { choose } from './select'
-import { typewellDocument } from '../src/typewell'
+import { typewellDocument } from '../src/domain/content/typewell'
 async function setup(page: Page, reduced = true) {
   await page.emulateMedia({
     reducedMotion: reduced ? 'reduce' : 'no-preference',

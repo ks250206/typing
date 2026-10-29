@@ -1,11 +1,11 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
-import { cpuPresets } from '../src/cpuMatch'
-import { createTrainerOrder, sakusaku, sakusakuEntries } from '../src/sakusaku'
-import { typewellDocument } from '../src/typewell'
-import { physicalKey } from '../src/physicalKeyboard'
-import type { Layout } from '../src/engine'
+import { cpuPresets } from '../src/domain/battle/cpuMatch'
+import { createTrainerOrder, sakusaku, sakusakuEntries } from '../src/domain/content/sakusaku'
+import { typewellDocument } from '../src/domain/content/typewell'
+import { physicalKey } from '../src/domain/typing/physicalKeyboard'
+import type { Layout } from '../src/domain/typing/engine'
 
 async function setup(page: Page, layout: Layout = 'jis') {
   await page.emulateMedia({ reducedMotion: 'reduce' })

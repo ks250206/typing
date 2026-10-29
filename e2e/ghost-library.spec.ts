@@ -1,8 +1,8 @@
 import { test, expect, type Page } from '@playwright/test'
-import { TypingTrace } from '../src/telemetry'
-import { RomanEngine } from '../src/engine'
-import type { RecordEntry } from '../src/storage'
-import { passages } from '../src/passages'
+import { TypingTrace } from '../src/domain/records/telemetry'
+import { RomanEngine } from '../src/domain/typing/engine'
+import type { RecordEntry } from '../src/domain/records/types'
+import { passages } from '../src/domain/content/passages'
 
 const fixture = () => {
   const t = new TypingTrace(),

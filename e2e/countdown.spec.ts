@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
-import type { SessionTrace } from '../src/telemetry'
+import type { SessionTrace } from '../src/domain/records/telemetry'
 
 async function setup(page: Page) {
   await page.clock.install()

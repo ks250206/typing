@@ -1,9 +1,9 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
-import { RomanEngine } from '../src/engine'
-import { passages } from '../src/passages'
-import { sentencesByPassage } from '../src/sentences'
+import { RomanEngine } from '../src/domain/typing/engine'
+import { passages } from '../src/domain/content/passages'
+import { sentencesByPassage } from '../src/domain/content/sentences'
 test('complete longform, pause, persist, export and clear records', async ({
   page,
 }) => {

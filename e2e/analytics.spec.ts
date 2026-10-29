@@ -2,7 +2,7 @@ import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
-import { battleSets, seededBattlePrompts } from '../src/battleSets'
+import { battleSets, seededBattlePrompts } from '../src/domain/content/battleSets'
 const input = async (page: Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +
   ((await page.locator('.remaining-roman').textContent()) ?? '')

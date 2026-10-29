@@ -1,9 +1,9 @@
 import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
-import { etypingDocument, etypingPassages } from '../src/etyping'
-import { KanaEngine, RomanEngine } from '../src/engine'
-import { physicalKey } from '../src/physicalKeyboard'
+import { etypingDocument, etypingPassages } from '../src/domain/content/etyping'
+import { KanaEngine, RomanEngine } from '../src/domain/typing/engine'
+import { physicalKey } from '../src/domain/typing/physicalKeyboard'
 
 const choose = async (page: Page, title: string, seed: string) => {
   await page.getByRole('button', { name: title, exact: true }).click()

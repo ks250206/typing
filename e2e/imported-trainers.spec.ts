@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import data from '../src/data/generated/trainers.json' with { type: 'json' }
-import { createTrainerOrder } from '../src/sakusaku'
-import { RomanEngine } from '../src/engine'
+import { createTrainerOrder } from '../src/domain/content/sakusaku'
+import { RomanEngine } from '../src/domain/typing/engine'
 import { choose } from './select'
 import { startPractice } from './startPractice'
 
