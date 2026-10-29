@@ -185,3 +185,29 @@ it('round trips weighted penalties and replay identifiers, and discards malforme
     actualKeys: undefined,
   })
 })
+
+it('rolls back summary deletion if the best-record store is unavailable', async () => {
+  saveHistory([record('keep')])
+  vi.stubGlobal('localStorage', {
+    getItem: (k: string) => data.get(k) ?? null,
+    setItem: (k: string, v: string) => {
+      if (k === 'galactype.bests.v1') throw Error('blocked')
+      data.set(k, v)
+    },
+  })
+  expect(await clearHistory()).toBe(false)
+  expect(readHistory().map((r) => r.id)).toEqual(['keep'])
+})
+
+it('discards corrupted optional comparison metadata before ranking history', () => {
+  const broken = {
+    ...record('broken'),
+    mode: { toString: null },
+    rawMisses: { toString: null },
+  }
+  data.set('yohaku.history.v1', JSON.stringify([broken]))
+  expect(readHistory()[0]).toMatchObject({
+    mode: undefined,
+    rawMisses: undefined,
+  })
+})

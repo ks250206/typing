@@ -1,3 +1,4 @@
+import { seededBattlePrompts } from '../src/battleSets'
 import { test, expect } from '@playwright/test'
 const enter = async (page: import('@playwright/test').Page) => {
   await page.goto('/')
@@ -156,7 +157,7 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   await page.screenshot({ path: 'artifacts/cpu-result.png', fullPage: true })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
-  await expect(page.locator('tbody')).toContainText('CPU対戦 0–4')
+  await expect(page.locator('tbody')).toContainText('RTCオリジナル 0–4')
   await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
   await expect(
     page.getByLabel('CPU反応時間 (ms)', { exact: true }),
@@ -192,7 +193,7 @@ test('human can win four RTC rounds; no next sentence is exposed and only one re
   await page.clock.fastForward(60000)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
-  await expect(page.locator('tbody')).toContainText('CPU対戦 4–0')
+  await expect(page.locator('tbody')).toContainText('RTCオリジナル 4–0')
 })
 
 test('duel roman rows use the same glyph columns, word gaps and shared scrolling with alternate spellings', async ({
@@ -216,6 +217,11 @@ test('duel roman rows use the same glyph columns, word gaps and shared scrolling
   await page.getByLabel('CPU速度 (KPM)', { exact: true }).fill('60')
   await page.getByLabel('CPU反応時間 (ms)', { exact: true }).fill('1500')
   await page.getByLabel('CPUの打ち方', { exact: true }).selectOption('constant')
+  const seed = Array.from({ length: 2000 }, (_, i) => String(i)).find((s) =>
+    seededBattlePrompts('cpu-rtc', s)[0].reading.startsWith('ほし'),
+  )!
+  await page.getByLabel('対戦シードを固定する', { exact: true }).check()
+  await page.getByLabel('対戦シード', { exact: true }).fill(seed)
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
   await page.clock.fastForward(3100)
   const aligned = async () => {

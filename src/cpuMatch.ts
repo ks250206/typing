@@ -1,3 +1,4 @@
+import { TypingTrace } from './telemetry'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
 import type { Sentence } from './sentences'
@@ -90,6 +91,7 @@ export type MatchPhase =
   | 'paused'
   | 'finished'
 export class RtcMatch {
+  trace = new TypingTrace()
   phase: MatchPhase = 'countdown'
   private previousPhase: MatchPhase = 'playing'
   deadline = 3000
@@ -174,6 +176,7 @@ export class RtcMatch {
   }
   startWord(now: number) {
     this.engine = this.makeEngine()
+    this.trace.begin(this.sentence, this.totalElapsed, this.layout)
     this.typed = ''
     this.misses.accept()
     this.firstKeyAt = undefined
@@ -215,7 +218,20 @@ export class RtcMatch {
     this.advance(now, true)
     if (this.wordIndex !== word || this.phase !== 'playing') return false
     this.firstKeyAt ??= now
-    if (!this.engine.feed(key)) {
+    const position = this.engine.position
+    const expected =
+      (this.layout === 'kana'
+        ? this.engine.target[position]
+        : this.engine.hint[0]) ?? ''
+    const accepted = this.engine.feed(key)
+    this.trace.add(
+      key,
+      expected,
+      position,
+      accepted,
+      this.totalElapsed + Math.max(0, now - this.wordStart),
+    )
+    if (!accepted) {
       this.misses.miss()
       return false
     }
@@ -257,6 +273,7 @@ export class RtcMatch {
     )
     this.roundElapsed += elapsed
     this.totalElapsed += elapsed
+    this.trace.close(this.totalElapsed)
     if (this.roundPlayer >= 10 || this.roundCpu >= 10) {
       this.lastRound = roundWinner(winner, this.accuracy)
       this.accuracyReversal = this.lastRound !== winner

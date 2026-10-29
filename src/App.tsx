@@ -37,12 +37,22 @@ import {
   clearHistory,
   mergeHistory,
   readHistory,
+  readBestHistory,
   readSettings,
   saveSettings,
   subscribeHistory,
 } from './storage'
 import { CpuBattle } from './CpuBattle'
-import { animalRank, MissEpisodes, scorePoint } from './scoring'
+import { TypingTrace } from './telemetry'
+import { readTraces } from './traceStore'
+import { recordPoint, recordTitle, recordMissLabel } from './recordStats'
+import { HistoryInsights, RecordDetails } from './HistoryInsights'
+import {
+  typingTitle,
+  formatMissRate,
+  MissEpisodes,
+  scorePoint,
+} from './scoring'
 import { KeyboardGuide } from './KeyboardGuide'
 import { MissionCarousel } from './MissionCarousel'
 import { RubyText } from './RubyText'
@@ -87,6 +97,9 @@ function makeEngine(reading: string, layout: Layout) {
   return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
 }
 export default function App() {
+  const [bestRecords, setBestRecords] = useState(readBestHistory)
+  const [detail, setDetail] = useState<RecordEntry | null>(null)
+  const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const [seedPreferences] = useState(() => {
     try {
       const saved = JSON.parse(
@@ -163,6 +176,7 @@ export default function App() {
     focusRevision = useRef(0),
     missEpisodes = useRef(new MissEpisodes()),
     liveKeys = useRef(0),
+    trace = useRef(new TypingTrace()),
     recorded = useRef(false),
     runRevision = useRef(0),
     finishTimer = useRef<(duration: number) => void>(() => {})
@@ -238,6 +252,7 @@ export default function App() {
     setSelected(id)
     setSentenceIndex(initialIndex)
     liveKeys.current = 0
+    trace.current = new TypingTrace()
     recorded.current = false
     runRevision.current++
     setStatus('ready')
@@ -318,9 +333,11 @@ export default function App() {
   })
   useEffect(
     () =>
-      subscribeHistory((latest) =>
-        setRecords(mergeHistory(latest, unsavedRecords.current)),
-      ),
+      subscribeHistory((latest) => {
+        setRecords(mergeHistory(latest, unsavedRecords.current))
+        setBestRecords(readBestHistory())
+        setDetail(null)
+      }),
     [],
   )
   useEffect(() => () => clearTimeout(missTimer.current), [])
@@ -363,7 +380,8 @@ export default function App() {
   }, [showSettings, confirmClear])
   const persistResult = (result: RecordEntry) => {
     void appendHistory(result, unsavedRecords.current).then(
-      ({ records: latest, saved }) => {
+      ({ records: latest, bests, saved }) => {
+        setBestRecords(bests)
         if (saved)
           unsavedRecords.current = unsavedRecords.current.filter(
             (r) => !latest.some((item) => item.id === r.id),
@@ -407,8 +425,10 @@ export default function App() {
         : missEpisodes.current.misses,
       rawMisses: missEpisodes.current.raw,
       point: scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
-      rank: animalRank(
+      rank: typingTitle(
         scorePoint(scoredKeys, missEpisodes.current.penalty, duration),
+        nextKeys,
+        missEpisodes.current.raw,
       ),
       scoreVersion: 3,
       missPenalty: missEpisodes.current.penalty,
@@ -418,6 +438,7 @@ export default function App() {
           ? { seed, replayVersion: 1 as const }
           : {}),
       mode: durationMs ? 'trainer' : 'practice',
+      trace: trace.current.finish(duration),
       kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
       accuracy: Number(
         (
@@ -466,9 +487,18 @@ export default function App() {
       // This clock is sampled only by the keyboard event handler.
       // oxlint-disable-next-line react/purity
       started.current = performance.now()
+      trace.current.begin(sentences[sentenceIndex], 0, settings.layout)
       setStatus('running')
     }
-    if (!engine.current.feed(key)) {
+    const keyTime = elapsedNow()
+    const position = engine.current.position
+    const expected =
+      (settings.layout === 'kana'
+        ? engine.current.target[position]
+        : engine.current.hint[0]) ?? ''
+    const accepted = engine.current.feed(key)
+    trace.current.add(key, expected, position, accepted, keyTime)
+    if (!accepted) {
       if (missEpisodes.current.miss()) setMisses(missEpisodes.current.misses)
       setRawMisses(missEpisodes.current.raw)
       setMissPenalty(missEpisodes.current.penalty)
@@ -496,6 +526,7 @@ export default function App() {
         const index = randomSentenceIndex(sentences.length, sentenceIndex)
         setSentenceIndex(index)
         engine.current = makeEngine(sentences[index].reading, settings.layout)
+        trace.current.begin(sentences[index], keyTime, settings.layout)
         setSnapshot({
           position: 0,
           target: engine.current.target,
@@ -507,6 +538,7 @@ export default function App() {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
         engine.current = makeEngine(sentences[n].reading, settings.layout)
+        trace.current.begin(sentences[n], keyTime, settings.layout)
         setSnapshot({
           position: engine.current.position,
           target: engine.current.target,
@@ -545,14 +577,46 @@ export default function App() {
       keys + (durationMs ? rawMisses : misses)
         ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
         : 100
-  const best = records
-    .filter((r) => r.passageId === selected && r.layout === settings.layout)
-    .reduce((n, r) => Math.max(n, r.kpm), 0)
-  const exportRecords = () => {
+  const comparableRecords = [...records, ...bestRecords].filter(
+    (r) =>
+      r.passageId === selected &&
+      r.layout === settings.layout &&
+      r.mode !== 'cpu',
+  )
+  const best = comparableRecords.reduce(
+    (n, r) => Math.max(n, recordPoint(r)),
+    0,
+  )
+  const bestKpm = comparableRecords.reduce((n, r) => Math.max(n, r.kpm), 0)
+  const exportRecords = async () => {
+    const all = [
+      ...new Map([...bestRecords, ...records].map((r) => [r.id, r])).values(),
+    ]
+    const traces = await readTraces(all.map((r) => r.id))
+    for (const r of all) if (r.trace) traces[r.id] = r.trace
+    const clean = (rows: RecordEntry[]) =>
+      rows.map(({ trace, ...r }) => {
+        void trace
+        return { ...r, point: recordPoint(r), rank: recordTitle(r) }
+      })
     const url = URL.createObjectURL(
-      new Blob([JSON.stringify({ version: 1, records }, null, 2)], {
-        type: 'application/json',
-      }),
+      new Blob(
+        [
+          JSON.stringify(
+            {
+              version: 2,
+              records: clean(records),
+              bestRecords: clean(bestRecords),
+              traces,
+            },
+            null,
+            2,
+          ),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
     )
     const a = document.createElement('a')
     a.href = url
@@ -716,7 +780,12 @@ export default function App() {
             </div>
           )}
           {tab === 'battle' && (
-            <CpuBattle settings={settings} onRecord={persistResult} />
+            <CpuBattle
+              settings={settings}
+              onRecord={persistResult}
+              replay={cpuReplay}
+              onReplayConsumed={() => setCpuReplay(null)}
+            />
           )}
           {tab === 'practice' && (
             <>
@@ -1083,7 +1152,12 @@ export default function App() {
                         {point}
                         <small> pt</small>
                       </strong>
-                      <span>{animalRank(point)}</span>
+                      <span>{typingTitle(point, keys, rawMisses)}</span>
+                      <small>
+                        {keys + rawMisses
+                          ? `実ミス率 ${formatMissRate(keys, rawMisses)}`
+                          : '入力後に精度称号を判定'}
+                      </small>
                       <small>正打鍵KPM × 補正正確率²</small>
                       <small>
                         連続ミス減点 1 / .75 / .5 / .35 / .25（5回〜）
@@ -1124,7 +1198,10 @@ export default function App() {
                       <span>この文章の自己ベスト</span>
                       <strong>
                         {best || '—'}
-                        <small> KPM</small>
+                        <small> pt</small>
+                        <span className="best-kpm">
+                          KPM最高 {bestKpm || '—'}
+                        </span>
                       </strong>
                     </div>
                   </div>
@@ -1315,6 +1392,20 @@ export default function App() {
                   </button>
                 </div>
               </div>
+              {records.length > 0 && (
+                <HistoryInsights
+                  records={records}
+                  bests={bestRecords}
+                  onSelect={setDetail}
+                />
+              )}
+              {detail && (
+                <RecordDetails
+                  key={detail.id}
+                  record={detail}
+                  onClose={() => setDetail(null)}
+                />
+              )}
               {records.length ? (
                 <div className="history-table">
                   <table>
@@ -1333,7 +1424,25 @@ export default function App() {
                         <tr key={r.id}>
                           <td>
                             {r.title}
+                            <button
+                              className="text-button"
+                              onClick={() => setDetail(r)}
+                            >
+                              詳細を見る
+                            </button>
+                            {r.mode === 'cpu' && r.seed && (
+                              <button
+                                className="text-button"
+                                onClick={() => {
+                                  setCpuReplay(r)
+                                  setTab('battle')
+                                }}
+                              >
+                                対戦シード {r.seed} を再現
+                              </button>
+                            )}
                             {r.seed &&
+                              r.mode !== 'cpu' &&
                               (isTypewell(r.passageId) ||
                                 isEtyping(r.passageId)) && (
                                 <button
@@ -1362,22 +1471,14 @@ export default function App() {
                             </small>
                           </td>
                           <td>{layoutLabels[r.layout]}</td>
-                          <td>
-                            {scorePoint(
-                              r.keys,
-                              r.missPenalty ?? r.misses,
-                              r.elapsed,
-                            )}{' '}
-                            pt
+                          <td className="record-point">
+                            {recordPoint(r)} pt
                             <small>
-                              {animalRank(
-                                scorePoint(
-                                  r.keys,
-                                  r.missPenalty ?? r.misses,
-                                  r.elapsed,
-                                ),
-                              )}
+                              {recordTitle(r)}
                               {r.scoreVersion !== 3 ? ' · 旧ミス方式' : ''}
+                              <span className="record-miss-label">
+                                {recordMissLabel(r)}
+                              </span>
                             </small>
                           </td>
                           <td className="record-kpm">{r.kpm}</td>
@@ -1484,6 +1585,8 @@ export default function App() {
                 onClick={async () => {
                   if (await clearHistory()) {
                     unsavedRecords.current = []
+                    setBestRecords([])
+                    setDetail(null)
                     setRecords([])
                     setConfirmClear(false)
                   } else
