@@ -125,6 +125,7 @@ test('word sets share the library and mission; seeded R run includes spaces, ext
     await expect(
       page.getByRole('heading', {
         name: `タイプウェル · ${title}`,
+        level: 2,
         exact: true,
       }),
     ).toBeVisible()

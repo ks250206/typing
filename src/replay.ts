@@ -12,6 +12,7 @@ interface EngineFrame {
   typed: string
   hint: string
   done: boolean
+  remaining: number
 }
 /** Legacy logs can use an exact existing alignment, or exact space-delimited word pairs. */
 function displaySentence(p: TracePrompt): Sentence {
@@ -51,6 +52,22 @@ function upperBound<T>(rows: T[], value: number, key: (r: T) => number) {
   }
   return low
 }
+export function replayEngine(
+  sentence: Sentence,
+  layout: Layout,
+  strokeLimit?: number,
+) {
+  return strokeLimit
+    ? typewellEngine(planTypewell(sentence, layout))
+    : layout === 'kana'
+      ? new KanaEngine(sentence.reading)
+      : new RomanEngine(sentence.reading)
+}
+export function remaining(engine: RomanEngine | KanaEngine) {
+  return engine instanceof RomanEngine
+    ? engine.naturalRemaining
+    : engine.target.length - engine.position
+}
 /** Immutable event states; playback changes only the cursor, never the saved trace. */
 export class ReplayTimeline {
   readonly sentences: Sentence[]
@@ -74,11 +91,7 @@ export class ReplayTimeline {
     for (const [i, p] of trace.prompts.entries()) {
       if (i && p.start < trace.prompts[i - 1].end)
         throw Error('文章の時刻順序が壊れています。')
-      const engine = strokeLimit
-        ? typewellEngine(planTypewell(this.sentences[i], layout))
-        : layout === 'kana'
-          ? new KanaEngine(p.reading)
-          : new RomanEngine(p.reading)
+      const engine = replayEngine(this.sentences[i], layout, strokeLimit)
       if (strokeLimit && strokeLimit !== (layout === 'kana' ? 280 : 400))
         throw Error('基準打鍵数が一致しません。')
       let typed = ''
@@ -88,6 +101,7 @@ export class ReplayTimeline {
         typed,
         hint: engine.hint,
         done: engine.done,
+        remaining: remaining(engine),
       })
       this.initial.push(snapshot())
       this.starts.push(count)

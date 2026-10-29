@@ -18,6 +18,7 @@ export const recordGroup = (r: RecordEntry) =>
     modeOf(r),
     r.strokeLimit ?? '',
     r.replayVersion ?? '',
+    ...(r.mode === 'ghost' ? [r.ghostSourceId ?? ''] : []),
     ...(r.mode === 'cpu'
       ? [
           r.cpuConfig?.kpm ?? '',

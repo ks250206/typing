@@ -16,7 +16,12 @@ import { readTrace } from './traceStore'
 import { analyzeTrace } from './telemetry'
 import type { SessionTrace } from './telemetry'
 const ReplayPlayer = lazy(() => import('./ReplayPlayer'))
-const modes = { practice: '練習', trainer: '60秒', cpu: 'CPU対戦' }
+const modes = {
+  practice: '練習',
+  trainer: '60秒',
+  cpu: 'CPU対戦',
+  ghost: 'ゴースト対戦',
+}
 const ms = (value: number) => `${(value / 1000).toFixed(2)}秒`
 
 export function HistoryInsights({
@@ -229,9 +234,11 @@ export function RecordDetails({
   record,
   onClose,
   initialView = 'trend',
+  onGhost,
 }: {
   record: RecordEntry
   onClose: () => void
+  onGhost?: (record: RecordEntry) => void
   initialView?: string
 }) {
   const [loaded, setLoaded] = useState<{ trace?: SessionTrace } | null>(
@@ -285,6 +292,11 @@ export function RecordDetails({
         </p>
       ) : (
         <>
+          {onGhost && (
+            <button className="primary-button" onClick={() => onGhost(record)}>
+              この記録のゴーストと対戦
+            </button>
+          )}
           <nav className="detail-tabs" aria-label="記録の詳細表示">
             {[
               ['replay', 'リプレイ'],

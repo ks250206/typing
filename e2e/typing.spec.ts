@@ -69,7 +69,7 @@ test('library, settings persistence, screenshots and responsive layout', async (
     'webgl',
   )
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
-  await page.getByRole('button', { name: '文章ライブラリ' }).click()
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page.getByRole('button', { name: '科学', exact: true }).click()
   await page.getByRole('button', { name: /星の光が届くまで/ }).click()
   await expect(page.locator('.passage-header')).toContainText(
@@ -124,7 +124,7 @@ test('next reading stays visible with guide off, after resize and restart', asyn
   await page.goto('/')
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
-  await page.getByRole('button', { name: '文章ライブラリ' }).click()
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page.getByRole('button', { name: /星の光が届くまで/ }).click()
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page.getByLabel('入力ガイド', { exact: true }).uncheck()
