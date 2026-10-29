@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { cpuPresets } from '../src/cpuMatch'
 import { createTrainerOrder, sakusaku, sakusakuEntries } from '../src/sakusaku'
@@ -143,9 +144,15 @@ test('CPU has 21 rank-based profiles, migrates old defaults and persists the 35K
     page.getByLabel('CPU反応時間 (ms)', { exact: true }),
   ).toHaveValue('205')
   const presets = page.getByLabel('CPUプリセット', { exact: true })
-  await expect(presets.locator('option:not(:disabled)')).toHaveCount(21)
+  await presets.click()
+  await expect(
+    page
+      .getByRole('listbox')
+      .locator('[role=option]:not([aria-disabled=true])'),
+  ).toHaveCount(21)
+  await page.keyboard.press('Escape')
   for (const p of cpuPresets) {
-    await presets.selectOption(p.name)
+    await pick(presets, p.name)
     await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
       String(p.kpm),
     )
@@ -158,7 +165,7 @@ test('CPU has 21 rank-based profiles, migrates old defaults and persists the 35K
         .evaluate((el: HTMLInputElement) => el.validity.valid),
     ).toBe(true)
   }
-  await presets.selectOption('カメ')
+  await pick(presets, 'カメ')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
   await expect
     .poll(() =>
@@ -169,11 +176,11 @@ test('CPU has 21 rank-based profiles, migrates old defaults and persists the 35K
     .toBe(35)
   await page.reload()
   await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
-  await expect(presets).toHaveValue('カメ')
+  await expect(presets).toHaveAttribute('data-value', 'カメ')
   await expect(page.getByLabel('CPU速度 (KPM)', { exact: true })).toHaveValue(
     '35',
   )
-  await presets.selectOption('カメ')
+  await pick(presets, 'カメ')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
   await expect(page.locator('.battle-countdown')).toBeVisible()
 })
@@ -186,7 +193,8 @@ for (const layout of ['colemak', 'workman'] as const)
     page.on('pageerror', (e) => errors.push(e.message))
     await page.clock.install()
     await setup(page, layout)
-    await expect(page.getByLabel('入力方式', { exact: true })).toHaveValue(
+    await expect(page.getByLabel('入力方式', { exact: true })).toHaveAttribute(
+      'data-value',
       layout,
     )
     await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
@@ -273,8 +281,8 @@ for (const layout of ['colemak', 'workman'] as const)
     await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
     await expect(
       page.getByLabel('対戦の入力方式', { exact: true }),
-    ).toHaveValue(layout)
-    await page.getByLabel('CPUプリセット', { exact: true }).selectOption('カメ')
+    ).toHaveAttribute('data-value', layout)
+    await pick(page.getByLabel('CPUプリセット', { exact: true }), 'カメ')
     await page
       .getByRole('button', { name: 'CPUと対戦する', exact: true })
       .click()

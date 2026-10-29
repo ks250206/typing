@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { RomanEngine } from '../src/engine'
 import { sentencesByPassage } from '../src/sentences'
@@ -60,7 +61,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
   await expect(page.locator('.roman-line')).toHaveCount(1)
   await expect(page.locator('.kana-line')).toBeVisible()
-  await page.getByLabel('入力方式', { exact: true }).selectOption('kana')
+  await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await expect(page.locator('.roman-line')).toHaveCount(0)
   await area.focus()
   for (const key of [

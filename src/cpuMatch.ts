@@ -1,3 +1,5 @@
+import type { SessionTrace } from './telemetry'
+import { roundTrace } from './results'
 import { TypingTrace } from './telemetry'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
@@ -87,7 +89,24 @@ export type MatchPhase =
   | 'round-result'
   | 'paused'
   | 'finished'
+export interface CpuRoundResult {
+  winner: 'player' | 'cpu'
+  reversal: boolean
+  player: number
+  cpu: number
+  keys: number
+  misses: number
+  raw: number
+  penalty: number
+  accuracy: number
+  elapsed: number
+  trace: SessionTrace
+}
 export class RtcMatch {
+  startedAt = new Date().toISOString()
+  roundResults: CpuRoundResult[] = []
+  private roundFirstPrompt = 0
+  private roundActiveStart = 0
   trace = new TypingTrace()
   phase: MatchPhase = 'countdown'
   private previousPhase: MatchPhase = 'playing'
@@ -276,6 +295,23 @@ export class RtcMatch {
       this.accuracyReversal = this.lastRound !== winner
       if (this.lastRound === 'player') this.roundsPlayer++
       else this.roundsCpu++
+      this.roundResults.push({
+        winner: this.lastRound,
+        reversal: this.accuracyReversal,
+        player: this.roundPlayer,
+        cpu: this.roundCpu,
+        keys: this.keys,
+        misses: this.misses.misses,
+        raw: this.misses.raw,
+        penalty: this.misses.penalty,
+        accuracy: this.accuracy,
+        elapsed: this.roundElapsed,
+        trace: roundTrace(
+          this.trace.finish(this.totalElapsed),
+          this.roundFirstPrompt,
+          this.roundActiveStart,
+        ),
+      })
       this.phase =
         this.roundsPlayer >= 4 || this.roundsCpu >= 4
           ? 'finished'
@@ -294,12 +330,14 @@ export class RtcMatch {
     this.keys = 0
     this.misses = new MissEpisodes()
     this.roundElapsed = 0
+    this.roundActiveStart = this.totalElapsed
     this.playerTypingMs = 0
     this.cpuTypingMs = 0
     this.cpuKeys = 0
     this.roundPlayer = 0
     this.roundCpu = 0
     this.wordIndex++
+    this.roundFirstPrompt = this.wordIndex
     this.accuracyReversal = false
     this.phase = 'countdown'
     this.deadline = now + 3000

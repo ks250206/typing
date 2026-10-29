@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 import { battleSets, seededBattlePrompts } from '../src/battleSets'
@@ -76,15 +77,17 @@ test('seeded CPU set selection, prominent scores, full RTC trace persistence and
   await page.goto('/')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
-  await expect(
-    page.getByLabel('対戦の文章セット').locator('option'),
-  ).toHaveCount(battleSets.length)
-  await page.getByLabel('対戦の文章セット').selectOption('etyping-face-idioms')
+  await page.getByLabel('対戦の文章セット').click()
+  await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(
+    battleSets.length,
+  )
+  await page.keyboard.press('Escape')
+  await pick(page.getByLabel('対戦の文章セット'), 'etyping-face-idioms')
   await page.getByLabel('対戦シードを固定する', { exact: true }).check()
   await page.getByLabel('対戦シード', { exact: true }).fill('rtc-analytics')
   await page.getByLabel('CPU速度 (KPM)', { exact: true }).fill('60')
   await page.getByLabel('CPU反応時間 (ms)', { exact: true }).fill('1500')
-  await page.getByLabel('CPUの打ち方', { exact: true }).selectOption('constant')
+  await pick(page.getByLabel('CPUの打ち方', { exact: true }), 'constant')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
   let index = 0
   const expected = seededBattlePrompts('etyping-face-idioms', 'rtc-analytics')
@@ -166,7 +169,8 @@ test('seeded CPU set selection, prominent scores, full RTC trace persistence and
       exact: true,
     })
     .click()
-  await expect(page.getByLabel('対戦の文章セット')).toHaveValue(
+  await expect(page.getByLabel('対戦の文章セット')).toHaveAttribute(
+    'data-value',
     'etyping-face-idioms',
   )
   await expect(

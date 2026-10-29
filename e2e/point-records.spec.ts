@@ -1,3 +1,4 @@
+import { choose as pick } from './select'
 import { test, expect } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 
@@ -86,7 +87,10 @@ test('point leads summary, ranking and trends while KPM remains visible; pinky b
   await expect(metrics.nth(2)).toContainText('500.0 KPM')
   await expect(metrics.nth(3).locator('strong')).toHaveText('+250 pt')
   await expect(metrics.nth(3)).toContainText('-200 KPM')
-  await expect(page.getByLabel('記録の主指標')).toHaveValue('point')
+  await expect(page.getByLabel('記録の主指標')).toHaveAttribute(
+    'data-value',
+    'point',
+  )
   await expect(
     page.locator('.top-records li').first().locator('strong'),
   ).toHaveText('400 pt')
@@ -110,7 +114,7 @@ test('point leads summary, ranking and trends while KPM remains visible; pinky b
     fullPage: true,
     animations: 'disabled',
   })
-  await page.getByLabel('記録の主指標').selectOption('kpm')
+  await pick(page.getByLabel('記録の主指標'), 'kpm')
   await expect(
     page.locator('.top-records li').first().locator('strong'),
   ).toHaveText('600 KPM')

@@ -12,6 +12,7 @@ import {
   recordMissLabel,
 } from './recordStats'
 import type { RecordMetric } from './recordStats'
+import { Select } from './Select'
 import { readTrace } from './traceStore'
 import { analyzeTrace } from './telemetry'
 import type { SessionTrace } from './telemetry'
@@ -68,21 +69,15 @@ export function HistoryInsights({
       <h3>文章別の記録分析</h3>
       <label>
         比較する文章・配列・モード
-        <select
-          aria-label="比較する記録"
+        <Select
+          label="比較する記録"
           value={group ?? ''}
-          onChange={(e) => setSelection(e.target.value)}
-        >
-          {groups.map(([key, r]) => (
-            <option value={key} key={key}>
-              {r.title} / {r.layout} / {modes[modeOf(r)]}
-              {r.cpuConfig
-                ? ` / CPU ${r.cpuConfig.kpm}KPM ${r.cpuConfig.reactionMs}ms ${r.cpuConfig.curve}`
-                : ''}
-              {r.replayVersion ? ` / v${r.replayVersion}` : ''}
-            </option>
-          ))}
-        </select>
+          onChange={setSelection}
+          options={groups.map(([key, r]) => ({
+            value: key,
+            label: `${r.title} / ${r.layout} / ${modes[modeOf(r)]}${r.cpuConfig ? ` / CPU ${r.cpuConfig.kpm}KPM ${r.cpuConfig.reactionMs}ms ${r.cpuConfig.curve}` : ''}${r.replayVersion ? ` / v${r.replayVersion}` : ''}`,
+          }))}
+        />
       </label>
       <label className="inline-toggle">
         <input
@@ -140,14 +135,15 @@ export function HistoryInsights({
       </div>
       <label>
         推移・ランキングの指標
-        <select
-          aria-label="記録の主指標"
+        <Select
+          label="記録の主指標"
           value={metric}
-          onChange={(e) => setMetric(e.target.value as RecordMetric)}
-        >
-          <option value="point">point（メイン）</option>
-          <option value="kpm">KPM</option>
-        </select>
+          onChange={(value) => setMetric(value as RecordMetric)}
+          options={[
+            { value: 'point', label: 'point（メイン）' },
+            { value: 'kpm', label: 'KPM' },
+          ]}
+        />
       </label>
       {points.length > 0 && (
         <svg
