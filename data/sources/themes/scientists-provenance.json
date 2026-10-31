@@ -1,0 +1,5348 @@
+{
+  "retrieved": "2026-10-31",
+  "source": "https://www.wikidata.org/",
+  "license": "CC0-1.0",
+  "selection": "Original 110 retained; 890 additional people deduplicated by Wikidata ID and normalized name. Additional unrestricted occupation queries are restricted to names in Japanese Wikipedia scientist lists.",
+  "additions": [
+    {
+      "name": "アンドレ・クネーフェル",
+      "reading": "あんどれ・くねーふぇる",
+      "wikidataId": "Q100739",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヒルデ・マンゴルト",
+      "reading": "ひるで・まんごると",
+      "wikidataId": "Q100742",
+      "field": "biologist"
+    },
+    {
+      "name": "レオナルド・ダ・ヴィンチ",
+      "reading": "れおなるど・だ・ゔぃんち",
+      "wikidataId": "Q762",
+      "field": "botanist"
+    },
+    {
+      "name": "アレッサンドロ・ボルタ",
+      "reading": "あれっさんどろ・ぼるた",
+      "wikidataId": "Q680",
+      "field": "chemist"
+    },
+    {
+      "name": "ウィリアム・ドナルド・ハミルトン",
+      "reading": "うぃりあむ・どなるど・はみるとん",
+      "wikidataId": "Q15451",
+      "field": "geneticist"
+    },
+    {
+      "name": "ライホルト・ウィティヒ",
+      "reading": "らいほると・うぃてぃひ",
+      "wikidataId": "Q101273",
+      "field": "geologist"
+    },
+    {
+      "name": "ルートヴィヒ・ザイデル",
+      "reading": "るーとゔぃひ・ざいでる",
+      "wikidataId": "Q464",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョン・バーディーン",
+      "reading": "じょん・ばーでぃーん",
+      "wikidataId": "Q949",
+      "field": "physicist"
+    },
+    {
+      "name": "フリードリヒ・ヴィルヘルム・リステンパート",
+      "reading": "ふりーどりひ・ゔぃるへるむ・りすてんぱーと",
+      "wikidataId": "Q102546",
+      "field": "astronomer"
+    },
+    {
+      "name": "ゴットヒルフ・ヘンペル",
+      "reading": "ごっとひるふ・へんぺる",
+      "wikidataId": "Q101754",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・フォン・リンネ",
+      "reading": "かーる・ふぉん・りんね",
+      "wikidataId": "Q1043",
+      "field": "botanist"
+    },
+    {
+      "name": "クララ・イマーヴァール",
+      "reading": "くらら・いまーゔぁーる",
+      "wikidataId": "Q7490",
+      "field": "chemist"
+    },
+    {
+      "name": "オイゲン・フィッシャー",
+      "reading": "おいげん・ふぃっしゃー",
+      "wikidataId": "Q61570",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヤコブス・ヘンリクス・ファント・ホッフ",
+      "reading": "やこぶす・へんりくす・ふぁんと・ほっふ",
+      "wikidataId": "Q102822",
+      "field": "geologist"
+    },
+    {
+      "name": "エヴァリスト・ガロア",
+      "reading": "えゔぁりすと・がろあ",
+      "wikidataId": "Q7091",
+      "field": "mathematician"
+    },
+    {
+      "name": "アンドレイ・サハロフ",
+      "reading": "あんどれい・さはろふ",
+      "wikidataId": "Q997",
+      "field": "physicist"
+    },
+    {
+      "name": "ユルバン・ル・ヴェリエ",
+      "reading": "ゆるばん・る・ゔぇりえ",
+      "wikidataId": "Q104154",
+      "field": "astronomer"
+    },
+    {
+      "name": "ウォルター・ハイリゲンベルグ",
+      "reading": "うぉるたー・はいりげんべるぐ",
+      "wikidataId": "Q102173",
+      "field": "biologist"
+    },
+    {
+      "name": "トマス・ヤング",
+      "reading": "とます・やんぐ",
+      "wikidataId": "Q25820",
+      "field": "botanist"
+    },
+    {
+      "name": "ヴィルヘルム・オストヴァルト",
+      "reading": "ゔぃるへるむ・おすとゔぁると",
+      "wikidataId": "Q12658",
+      "field": "chemist"
+    },
+    {
+      "name": "テオドール・ボヴェリ",
+      "reading": "ておどーる・ぼゔぇり",
+      "wikidataId": "Q62092",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジーグフリード・パッサルゲ",
+      "reading": "じーぐふりーど・ぱっさるげ",
+      "wikidataId": "Q105939",
+      "field": "geologist"
+    },
+    {
+      "name": "コリン・マクローリン",
+      "reading": "こりん・まくろーりん",
+      "wikidataId": "Q8755",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルイージ・ガルヴァーニ",
+      "reading": "るいーじ・がるゔぁーに",
+      "wikidataId": "Q1589",
+      "field": "physicist"
+    },
+    {
+      "name": "マティアス・ベルネガー",
+      "reading": "まてぃあす・べるねがー",
+      "wikidataId": "Q104688",
+      "field": "astronomer"
+    },
+    {
+      "name": "ポール・バーグ",
+      "reading": "ぽーる・ばーぐ",
+      "wikidataId": "Q102379",
+      "field": "biologist"
+    },
+    {
+      "name": "ヘンドリック・ローレンツ",
+      "reading": "へんどりっく・ろーれんつ",
+      "wikidataId": "Q41688",
+      "field": "botanist"
+    },
+    {
+      "name": "ジョン・ハーシェル",
+      "reading": "じょん・はーしぇる",
+      "wikidataId": "Q14278",
+      "field": "chemist"
+    },
+    {
+      "name": "カール・エリッヒ・コレンス",
+      "reading": "かーる・えりっひ・これんす",
+      "wikidataId": "Q62096",
+      "field": "geneticist"
+    },
+    {
+      "name": "カール・フリードリヒ・ヴィルヘルム・ブラウン",
+      "reading": "かーる・ふりーどりひ・ゔぃるへるむ・ぶらうん",
+      "wikidataId": "Q107196",
+      "field": "geologist"
+    },
+    {
+      "name": "レオナルド・フィボナッチ",
+      "reading": "れおなるど・ふぃぼなっち",
+      "wikidataId": "Q8763",
+      "field": "mathematician"
+    },
+    {
+      "name": "エドワード・テラー",
+      "reading": "えどわーど・てらー",
+      "wikidataId": "Q6733",
+      "field": "physicist"
+    },
+    {
+      "name": "ハインリッヒ・フォクト",
+      "reading": "はいんりっひ・ふぉくと",
+      "wikidataId": "Q105736",
+      "field": "astronomer"
+    },
+    {
+      "name": "リュック・モンタニエ",
+      "reading": "りゅっく・もんたにえ",
+      "wikidataId": "Q103598",
+      "field": "biologist"
+    },
+    {
+      "name": "エルンスト・ヘッケル",
+      "reading": "えるんすと・へっける",
+      "wikidataId": "Q48246",
+      "field": "botanist"
+    },
+    {
+      "name": "ユストゥス・フォン・リービッヒ",
+      "reading": "ゆすとぅす・ふぉん・りーびっひ",
+      "wikidataId": "Q16571",
+      "field": "chemist"
+    },
+    {
+      "name": "ヨーゼフ・ゴットリーブ・ケールロイター",
+      "reading": "よーぜふ・ごっとりーぶ・けーるろいたー",
+      "wikidataId": "Q64281",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジギムント・アウグスト・ヴォルフガング・ヘルダー",
+      "reading": "じぎむんと・あうぐすと・ゔぉるふがんぐ・へるだー",
+      "wikidataId": "Q107330",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョゼフ・フーリエ",
+      "reading": "じょぜふ・ふーりえ",
+      "wikidataId": "Q8772",
+      "field": "mathematician"
+    },
+    {
+      "name": "オーギュスタン・ルイ・コーシー",
+      "reading": "おーぎゅすたん・るい・こーしー",
+      "wikidataId": "Q8814",
+      "field": "physicist"
+    },
+    {
+      "name": "アダム・リース",
+      "reading": "あだむ・りーす",
+      "wikidataId": "Q106454",
+      "field": "astronomer"
+    },
+    {
+      "name": "フランソワーズ・バレ・シヌシ",
+      "reading": "ふらんそわーず・ばれ・しぬし",
+      "wikidataId": "Q103844",
+      "field": "biologist"
+    },
+    {
+      "name": "エードゥアルト・シュトラースブルガー",
+      "reading": "えーどぅあると・しゅとらーすぶるがー",
+      "wikidataId": "Q58834",
+      "field": "botanist"
+    },
+    {
+      "name": "アルフレッド・ノーベル",
+      "reading": "あるふれっど・のーべる",
+      "wikidataId": "Q23810",
+      "field": "chemist"
+    },
+    {
+      "name": "ハインツ・ブリュヒャー",
+      "reading": "はいんつ・ぶりゅひゃー",
+      "wikidataId": "Q65475",
+      "field": "geneticist"
+    },
+    {
+      "name": "ハリソン・シュミット",
+      "reading": "はりそん・しゅみっと",
+      "wikidataId": "Q108886",
+      "field": "geologist"
+    },
+    {
+      "name": "フワーリズミー",
+      "reading": "ふわーりずみー",
+      "wikidataId": "Q9038",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウィリアム・ローワン・ハミルトン",
+      "reading": "うぃりあむ・ろーわん・はみるとん",
+      "wikidataId": "Q11887",
+      "field": "physicist"
+    },
+    {
+      "name": "アサフ・ホール",
+      "reading": "あさふ・ほーる",
+      "wikidataId": "Q106559",
+      "field": "astronomer"
+    },
+    {
+      "name": "ハインリヒ・シュミット",
+      "reading": "はいんりひ・しゅみっと",
+      "wikidataId": "Q104274",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・フォン・ライヘンバッハ",
+      "reading": "かーる・ふぉん・らいへんばっは",
+      "wikidataId": "Q61147",
+      "field": "botanist"
+    },
+    {
+      "name": "ポール・ランジュバン",
+      "reading": "ぽーる・らんじゅばん",
+      "wikidataId": "Q25320",
+      "field": "chemist"
+    },
+    {
+      "name": "オトマー・フライヘル・フォン・フェアシューアー",
+      "reading": "おとまー・ふらいへる・ふぉん・ふぇあしゅーあー",
+      "wikidataId": "Q66800",
+      "field": "geneticist"
+    },
+    {
+      "name": "ミュラー・フォン・ライヒェンシュタイン",
+      "reading": "みゅらー・ふぉん・らいひぇんしゅたいん",
+      "wikidataId": "Q112012",
+      "field": "geologist"
+    },
+    {
+      "name": "ピタゴラス",
+      "reading": "ぴたごらす",
+      "wikidataId": "Q10261",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウィリアム・ハーシェル",
+      "reading": "うぃりあむ・はーしぇる",
+      "wikidataId": "Q14277",
+      "field": "physicist"
+    },
+    {
+      "name": "ソール・パールマッター",
+      "reading": "そーる・ぱーるまったー",
+      "wikidataId": "Q106949",
+      "field": "astronomer"
+    },
+    {
+      "name": "ラルフ・スタインマン",
+      "reading": "らるふ・すたいんまん",
+      "wikidataId": "Q105494",
+      "field": "biologist"
+    },
+    {
+      "name": "アミ・ブーエ",
+      "reading": "あみ・ぶーえ",
+      "wikidataId": "Q61610",
+      "field": "botanist"
+    },
+    {
+      "name": "アンドレアス・リバヴィウス",
+      "reading": "あんどれあす・りばゔぃうす",
+      "wikidataId": "Q31161",
+      "field": "chemist"
+    },
+    {
+      "name": "リチャード・ゴールドシュミット",
+      "reading": "りちゃーど・ごーるどしゅみっと",
+      "wikidataId": "Q66914",
+      "field": "geneticist"
+    },
+    {
+      "name": "マシュー・フォンテーン・モーリー",
+      "reading": "ましゅー・ふぉんてーん・もーりー",
+      "wikidataId": "Q114385",
+      "field": "geologist"
+    },
+    {
+      "name": "アブド・アル・ラフマン・アル・スーフィー",
+      "reading": "あぶど・ある・らふまん・ある・すーふぃー",
+      "wikidataId": "Q11075",
+      "field": "mathematician"
+    },
+    {
+      "name": "ブライアン・メイ",
+      "reading": "ぶらいあん・めい",
+      "wikidataId": "Q15873",
+      "field": "physicist"
+    },
+    {
+      "name": "クルト・キシャウアー",
+      "reading": "くると・きしゃうあー",
+      "wikidataId": "Q107620",
+      "field": "astronomer"
+    },
+    {
+      "name": "マーティン・チャルフィー",
+      "reading": "まーてぃん・ちゃるふぃー",
+      "wikidataId": "Q106699",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・アルフレート・フォン・ツィッテル",
+      "reading": "かーる・あるふれーと・ふぉん・つぃってる",
+      "wikidataId": "Q61904",
+      "field": "botanist"
+    },
+    {
+      "name": "ロバート・ボイル",
+      "reading": "ろばーと・ぼいる",
+      "wikidataId": "Q43393",
+      "field": "chemist"
+    },
+    {
+      "name": "ベルンハルト・レンシュ",
+      "reading": "べるんはると・れんしゅ",
+      "wikidataId": "Q68731",
+      "field": "geneticist"
+    },
+    {
+      "name": "オラス・ベネディクト・ド・ソシュール",
+      "reading": "おらす・べねでぃくと・ど・そしゅーる",
+      "wikidataId": "Q115525",
+      "field": "geologist"
+    },
+    {
+      "name": "アリヤバータ",
+      "reading": "ありやばーた",
+      "wikidataId": "Q11359",
+      "field": "mathematician"
+    },
+    {
+      "name": "アブダス・サラム",
+      "reading": "あぶだす・さらむ",
+      "wikidataId": "Q28189",
+      "field": "physicist"
+    },
+    {
+      "name": "ヘンリエッタ・スワン・リーヴィット",
+      "reading": "へんりえった・すわん・りーゔぃっと",
+      "wikidataId": "Q110181",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヤン・ファン・アーケン",
+      "reading": "やん・ふぁん・あーけん",
+      "wikidataId": "Q107176",
+      "field": "biologist"
+    },
+    {
+      "name": "フリードリッヒ・アウグスト・クヴェンシュテット",
+      "reading": "ふりーどりっひ・あうぐすと・くゔぇんしゅてっと",
+      "wikidataId": "Q66341",
+      "field": "botanist"
+    },
+    {
+      "name": "エドゥアルト・ブフナー",
+      "reading": "えどぅあると・ぶふなー",
+      "wikidataId": "Q43917",
+      "field": "chemist"
+    },
+    {
+      "name": "ヴィルヘルム・ヴァインベルク",
+      "reading": "ゔぃるへるむ・ゔぁいんべるく",
+      "wikidataId": "Q69594",
+      "field": "geneticist"
+    },
+    {
+      "name": "ニコラス・テオドール・ド・ソシュール",
+      "reading": "にこらす・ておどーる・ど・そしゅーる",
+      "wikidataId": "Q116058",
+      "field": "geologist"
+    },
+    {
+      "name": "ヒュパティア",
+      "reading": "ひゅぱてぃあ",
+      "wikidataId": "Q11903",
+      "field": "mathematician"
+    },
+    {
+      "name": "アレクシス・クレロー",
+      "reading": "あれくしす・くれろー",
+      "wikidataId": "Q28937",
+      "field": "physicist"
+    },
+    {
+      "name": "アンニーバレ・デ・ガスパリス",
+      "reading": "あんにーばれ・で・がすぱりす",
+      "wikidataId": "Q110709",
+      "field": "astronomer"
+    },
+    {
+      "name": "ハー・ゴビンド・コラナ",
+      "reading": "はー・ごびんど・こらな",
+      "wikidataId": "Q107462",
+      "field": "biologist"
+    },
+    {
+      "name": "クリスチャン・ゴットフリート・エーレンベルク",
+      "reading": "くりすちゃん・ごっとふりーと・えーれんべるく",
+      "wikidataId": "Q76549",
+      "field": "botanist"
+    },
+    {
+      "name": "ヨゼフ・フォン・フラウンホーファー",
+      "reading": "よぜふ・ふぉん・ふらうんほーふぁー",
+      "wikidataId": "Q43948",
+      "field": "chemist"
+    },
+    {
+      "name": "エルウイン・バウル",
+      "reading": "えるういん・ばうる",
+      "wikidataId": "Q71186",
+      "field": "geneticist"
+    },
+    {
+      "name": "モーリス・ルジオン",
+      "reading": "もーりす・るじおん",
+      "wikidataId": "Q116170",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョヴァンニ・カッシーニ",
+      "reading": "じょゔぁんに・かっしーに",
+      "wikidataId": "Q14279",
+      "field": "mathematician"
+    },
+    {
+      "name": "フリードリッヒ・モース",
+      "reading": "ふりーどりっひ・もーす",
+      "wikidataId": "Q30572",
+      "field": "physicist"
+    },
+    {
+      "name": "ウィリアム・ラッセル",
+      "reading": "うぃりあむ・らっせる",
+      "wikidataId": "Q110869",
+      "field": "astronomer"
+    },
+    {
+      "name": "フランツ・ルートヴィヒ・シュトゥールマン",
+      "reading": "ふらんつ・るーとゔぃひ・しゅとぅーるまん",
+      "wikidataId": "Q107750",
+      "field": "biologist"
+    },
+    {
+      "name": "テオドール・シュワン",
+      "reading": "ておどーる・しゅわん",
+      "wikidataId": "Q76745",
+      "field": "botanist"
+    },
+    {
+      "name": "ハンス・クリスティアン・エルステッド",
+      "reading": "はんす・くりすてぃあん・えるすてっど",
+      "wikidataId": "Q44412",
+      "field": "chemist"
+    },
+    {
+      "name": "マイケル・デントン",
+      "reading": "まいける・でんとん",
+      "wikidataId": "Q72519",
+      "field": "geneticist"
+    },
+    {
+      "name": "オズヴァルト・ヘール",
+      "reading": "おずゔぁると・へーる",
+      "wikidataId": "Q117021",
+      "field": "geologist"
+    },
+    {
+      "name": "ジュゼッペ・ピアッツィ",
+      "reading": "じゅぜっぺ・ぴあっつぃ",
+      "wikidataId": "Q14280",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルドルフ・クラウジウス",
+      "reading": "るどるふ・くらうじうす",
+      "wikidataId": "Q30693",
+      "field": "physicist"
+    },
+    {
+      "name": "ラインハルト・マイネル",
+      "reading": "らいんはると・まいねる",
+      "wikidataId": "Q111652",
+      "field": "astronomer"
+    },
+    {
+      "name": "フレデリック・フェスター",
+      "reading": "ふれでりっく・ふぇすたー",
+      "wikidataId": "Q107798",
+      "field": "biologist"
+    },
+    {
+      "name": "ハインリッヒ・シュワーベ",
+      "reading": "はいんりっひ・しゅわーべ",
+      "wikidataId": "Q77209",
+      "field": "botanist"
+    },
+    {
+      "name": "アレクサンドル・オパーリン",
+      "reading": "あれくさんどる・おぱーりん",
+      "wikidataId": "Q44483",
+      "field": "chemist"
+    },
+    {
+      "name": "シャーロット・アワーバック",
+      "reading": "しゃーろっと・あわーばっく",
+      "wikidataId": "Q72787",
+      "field": "geneticist"
+    },
+    {
+      "name": "カール・ウィルヘルム・コレンス",
+      "reading": "かーる・うぃるへるむ・これんす",
+      "wikidataId": "Q120929",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョヴァンニ・スキアパレッリ",
+      "reading": "じょゔぁんに・すきあぱれっり",
+      "wikidataId": "Q14281",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウマル・ハイヤーム",
+      "reading": "うまる・はいやーむ",
+      "wikidataId": "Q35900",
+      "field": "physicist"
+    },
+    {
+      "name": "ユリウス・ハインリッヒ・フランツ",
+      "reading": "ゆりうす・はいんりっひ・ふらんつ",
+      "wikidataId": "Q112548",
+      "field": "astronomer"
+    },
+    {
+      "name": "ダニエル・カールトン・ガジュセック",
+      "reading": "だにえる・かーるとん・がじゅせっく",
+      "wikidataId": "Q108576",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・ヨハン・マキシモヴィッチ",
+      "reading": "かーる・よはん・まきしもゔぃっち",
+      "wikidataId": "Q77640",
+      "field": "botanist"
+    },
+    {
+      "name": "マックス・フォン・ペッテンコーファー",
+      "reading": "まっくす・ふぉん・ぺってんこーふぁー",
+      "wikidataId": "Q44993",
+      "field": "chemist"
+    },
+    {
+      "name": "アウグスト・ヴァイスマン",
+      "reading": "あうぐすと・ゔぁいすまん",
+      "wikidataId": "Q76465",
+      "field": "geneticist"
+    },
+    {
+      "name": "エルンスト・カルコウスキー",
+      "reading": "えるんすと・かるこうすきー",
+      "wikidataId": "Q121723",
+      "field": "geologist"
+    },
+    {
+      "name": "ボーヤイ・ヤーノシュ",
+      "reading": "ぼーやい・やーのしゅ",
+      "wikidataId": "Q16924",
+      "field": "mathematician"
+    },
+    {
+      "name": "グリエルモ・マルコーニ",
+      "reading": "ぐりえるも・まるこーに",
+      "wikidataId": "Q36488",
+      "field": "physicist"
+    },
+    {
+      "name": "フリードリヒ・カール・ギンツェル",
+      "reading": "ふりーどりひ・かーる・ぎんつぇる",
+      "wikidataId": "Q113103",
+      "field": "astronomer"
+    },
+    {
+      "name": "ハミルトン・スミス",
+      "reading": "はみるとん・すみす",
+      "wikidataId": "Q108896",
+      "field": "biologist"
+    },
+    {
+      "name": "ハンス・ブルノ・ガイニッツ",
+      "reading": "はんす・ぶるの・がいにっつ",
+      "wikidataId": "Q86176",
+      "field": "botanist"
+    },
+    {
+      "name": "グレン・シーボーグ",
+      "reading": "ぐれん・しーぼーぐ",
+      "wikidataId": "Q48973",
+      "field": "chemist"
+    },
+    {
+      "name": "マックス・デルブリュック",
+      "reading": "まっくす・でるぶりゅっく",
+      "wikidataId": "Q76807",
+      "field": "geneticist"
+    },
+    {
+      "name": "ルイ・アガシー",
+      "reading": "るい・あがしー",
+      "wikidataId": "Q122972",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョン・クーチ・アダムズ",
+      "reading": "じょん・くーち・あだむず",
+      "wikidataId": "Q20015",
+      "field": "mathematician"
+    },
+    {
+      "name": "クルト・ゲーデル",
+      "reading": "くると・げーでる",
+      "wikidataId": "Q41390",
+      "field": "physicist"
+    },
+    {
+      "name": "ヨーゼフ・レーデン",
+      "reading": "よーぜふ・れーでん",
+      "wikidataId": "Q114400",
+      "field": "astronomer"
+    },
+    {
+      "name": "レナート・ドゥルベッコ",
+      "reading": "れなーと・どぅるべっこ",
+      "wikidataId": "Q109553",
+      "field": "biologist"
+    },
+    {
+      "name": "ダニエル・ベルヌーイ",
+      "reading": "だにえる・べるぬーい",
+      "wikidataId": "Q122366",
+      "field": "botanist"
+    },
+    {
+      "name": "ライナス・ポーリング",
+      "reading": "らいなす・ぽーりんぐ",
+      "wikidataId": "Q48983",
+      "field": "chemist"
+    },
+    {
+      "name": "クリスティアーネ・ニュスライン・フォルハルト",
+      "reading": "くりすてぃあーね・にゅすらいん・ふぉるはると",
+      "wikidataId": "Q77174",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジーン・アンドレ・ドリューク",
+      "reading": "じーん・あんどれ・どりゅーく",
+      "wikidataId": "Q123670",
+      "field": "geologist"
+    },
+    {
+      "name": "モーリス・ルネ・フレシェ",
+      "reading": "もーりす・るね・ふれしぇ",
+      "wikidataId": "Q22662",
+      "field": "mathematician"
+    },
+    {
+      "name": "ピエール・シモン・ラプラス",
+      "reading": "ぴえーる・しもん・らぷらす",
+      "wikidataId": "Q44481",
+      "field": "physicist"
+    },
+    {
+      "name": "フリッツ・ツビッキー",
+      "reading": "ふりっつ・つびっきー",
+      "wikidataId": "Q115462",
+      "field": "astronomer"
+    },
+    {
+      "name": "デトレフ・ヴァイゲル",
+      "reading": "でとれふ・ゔぁいげる",
+      "wikidataId": "Q109599",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・ブラウン",
+      "reading": "ろばーと・ぶらうん",
+      "wikidataId": "Q155764",
+      "field": "botanist"
+    },
+    {
+      "name": "ロバート・ロビンソン",
+      "reading": "ろばーと・ろびんそん",
+      "wikidataId": "Q49351",
+      "field": "chemist"
+    },
+    {
+      "name": "レオポルト・アダメッツ",
+      "reading": "れおぽると・あだめっつ",
+      "wikidataId": "Q78821",
+      "field": "geneticist"
+    },
+    {
+      "name": "アンリ・ド・ソシュール",
+      "reading": "あんり・ど・そしゅーる",
+      "wikidataId": "Q123776",
+      "field": "geologist"
+    },
+    {
+      "name": "フェリックス・チスラン",
+      "reading": "ふぇりっくす・ちすらん",
+      "wikidataId": "Q29002",
+      "field": "mathematician"
+    },
+    {
+      "name": "サティエンドラ・ボース",
+      "reading": "さてぃえんどら・ぼーす",
+      "wikidataId": "Q45789",
+      "field": "physicist"
+    },
+    {
+      "name": "アル・カーシー",
+      "reading": "ある・かーしー",
+      "wikidataId": "Q115466",
+      "field": "astronomer"
+    },
+    {
+      "name": "イグナーツ・シファーミュラー",
+      "reading": "いぐなーつ・しふぁーみゅらー",
+      "wikidataId": "Q112142",
+      "field": "biologist"
+    },
+    {
+      "name": "ユーゴー・ド・フリース",
+      "reading": "ゆーごー・ど・ふりーす",
+      "wikidataId": "Q160192",
+      "field": "botanist"
+    },
+    {
+      "name": "オットー・ハーン",
+      "reading": "おっとー・はーん",
+      "wikidataId": "Q57065",
+      "field": "chemist"
+    },
+    {
+      "name": "ジェームズ・ワトソン",
+      "reading": "じぇーむず・わとそん",
+      "wikidataId": "Q83333",
+      "field": "geneticist"
+    },
+    {
+      "name": "エドゥアルド・イムホーフ",
+      "reading": "えどぅあるど・いむほーふ",
+      "wikidataId": "Q123786",
+      "field": "geologist"
+    },
+    {
+      "name": "ペーター・グスタフ・ディリクレ",
+      "reading": "ぺーたー・ぐすたふ・でぃりくれ",
+      "wikidataId": "Q29193",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョゼフ・ジョン・トムソン",
+      "reading": "じょぜふ・じょん・とむそん",
+      "wikidataId": "Q47285",
+      "field": "physicist"
+    },
+    {
+      "name": "マーダヴァ",
+      "reading": "まーだゔぁ",
+      "wikidataId": "Q115590",
+      "field": "astronomer"
+    },
+    {
+      "name": "エルンスト・フォン・グレーザーズフェルド",
+      "reading": "えるんすと・ふぉん・ぐれーざーずふぇるど",
+      "wikidataId": "Q112176",
+      "field": "biologist"
+    },
+    {
+      "name": "アルフレッド・ラッセル・ウォレス",
+      "reading": "あるふれっど・らっせる・うぉれす",
+      "wikidataId": "Q160627",
+      "field": "botanist"
+    },
+    {
+      "name": "ジェイムス・フランク",
+      "reading": "じぇいむす・ふらんく",
+      "wikidataId": "Q57066",
+      "field": "chemist"
+    },
+    {
+      "name": "フリードリヒ・ヴェットシュタイン",
+      "reading": "ふりーどりひ・ゔぇっとしゅたいん",
+      "wikidataId": "Q86471",
+      "field": "geneticist"
+    },
+    {
+      "name": "アーノルド・エッシャー・フォンデアリント",
+      "reading": "あーのるど・えっしゃー・ふぉんでありんと",
+      "wikidataId": "Q123888",
+      "field": "geologist"
+    },
+    {
+      "name": "ソフス・リー",
+      "reading": "そふす・りー",
+      "wikidataId": "Q30769",
+      "field": "mathematician"
+    },
+    {
+      "name": "ハンス・アルヴェーン",
+      "reading": "はんす・あるゔぇーん",
+      "wikidataId": "Q54945",
+      "field": "physicist"
+    },
+    {
+      "name": "ニコラス・フース",
+      "reading": "にこらす・ふーす",
+      "wikidataId": "Q115664",
+      "field": "astronomer"
+    },
+    {
+      "name": "マックス・ハルトマン",
+      "reading": "まっくす・はるとまん",
+      "wikidataId": "Q112507",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョルジュ・キュヴィエ",
+      "reading": "じょるじゅ・きゅゔぃえ",
+      "wikidataId": "Q171969",
+      "field": "botanist"
+    },
+    {
+      "name": "ガブリエル・ファーレンハイト",
+      "reading": "がぶりえる・ふぁーれんはいと",
+      "wikidataId": "Q57073",
+      "field": "chemist"
+    },
+    {
+      "name": "ウィドゥキント・レンツ",
+      "reading": "うぃどぅきんと・れんつ",
+      "wikidataId": "Q89608",
+      "field": "geneticist"
+    },
+    {
+      "name": "アルベルト・ハイム",
+      "reading": "あるべると・はいむ",
+      "wikidataId": "Q123898",
+      "field": "geologist"
+    },
+    {
+      "name": "クレオメデス",
+      "reading": "くれおめです",
+      "wikidataId": "Q31278",
+      "field": "mathematician"
+    },
+    {
+      "name": "フィリップ・レーナルト",
+      "reading": "ふぃりっぷ・れーなると",
+      "wikidataId": "Q57063",
+      "field": "physicist"
+    },
+    {
+      "name": "ルドルフ・ウォルフ",
+      "reading": "るどるふ・うぉるふ",
+      "wikidataId": "Q115675",
+      "field": "astronomer"
+    },
+    {
+      "name": "パウル・カンメラー",
+      "reading": "ぱうる・かんめらー",
+      "wikidataId": "Q113522",
+      "field": "biologist"
+    },
+    {
+      "name": "ニコライ・ヴァヴィロフ",
+      "reading": "にこらい・ゔぁゔぃろふ",
+      "wikidataId": "Q214926",
+      "field": "botanist"
+    },
+    {
+      "name": "フリッツ・ハーバー",
+      "reading": "ふりっつ・はーばー",
+      "wikidataId": "Q57075",
+      "field": "chemist"
+    },
+    {
+      "name": "ルドルフ・イエーニッシュ",
+      "reading": "るどるふ・いえーにっしゅ",
+      "wikidataId": "Q90073",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヨハン・ヤーコブ・ショイヒツァー",
+      "reading": "よはん・やーこぶ・しょいひつぁー",
+      "wikidataId": "Q123900",
+      "field": "geologist"
+    },
+    {
+      "name": "バートランド・ラッセル",
+      "reading": "ばーとらんど・らっせる",
+      "wikidataId": "Q33760",
+      "field": "mathematician"
+    },
+    {
+      "name": "マックス・フォン・ラウエ",
+      "reading": "まっくす・ふぉん・らうえ",
+      "wikidataId": "Q57067",
+      "field": "physicist"
+    },
+    {
+      "name": "ニコラ・ファシオ・ド・デュイリエ",
+      "reading": "にこら・ふぁしお・ど・でゅいりえ",
+      "wikidataId": "Q115774",
+      "field": "astronomer"
+    },
+    {
+      "name": "カール・プリブラム",
+      "reading": "かーる・ぷりぶらむ",
+      "wikidataId": "Q113786",
+      "field": "biologist"
+    },
+    {
+      "name": "アントワーヌ・ローラン・ド・ジュシュー",
+      "reading": "あんとわーぬ・ろーらん・ど・じゅしゅー",
+      "wikidataId": "Q223963",
+      "field": "botanist"
+    },
+    {
+      "name": "アドルフ・フォン・バイヤー",
+      "reading": "あどるふ・ふぉん・ばいやー",
+      "wikidataId": "Q57078",
+      "field": "chemist"
+    },
+    {
+      "name": "エーリヒ・フォン・チェルマク",
+      "reading": "えーりひ・ふぉん・ちぇるまく",
+      "wikidataId": "Q93385",
+      "field": "geneticist"
+    },
+    {
+      "name": "アーノルド・ヘンリー・ギヨー",
+      "reading": "あーのるど・へんりー・ぎよー",
+      "wikidataId": "Q124032",
+      "field": "geologist"
+    },
+    {
+      "name": "クラウディオス・プトレマイオス",
+      "reading": "くらうでぃおす・ぷとれまいおす",
+      "wikidataId": "Q34943",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヴィルヘルム・ヴィーン",
+      "reading": "ゔぃるへるむ・ゔぃーん",
+      "wikidataId": "Q57068",
+      "field": "physicist"
+    },
+    {
+      "name": "ステファノ・スポセッティ",
+      "reading": "すてふぁの・すぽせってぃ",
+      "wikidataId": "Q115789",
+      "field": "astronomer"
+    },
+    {
+      "name": "アンドレア・グリル",
+      "reading": "あんどれあ・ぐりる",
+      "wikidataId": "Q113899",
+      "field": "biologist"
+    },
+    {
+      "name": "リン・マーギュリス",
+      "reading": "りん・まーぎゅりす",
+      "wikidataId": "Q234583",
+      "field": "botanist"
+    },
+    {
+      "name": "ユリウス・ロベルト・フォン・マイヤー",
+      "reading": "ゆりうす・ろべると・ふぉん・まいやー",
+      "wikidataId": "Q57171",
+      "field": "chemist"
+    },
+    {
+      "name": "ブルース・ボイトラー",
+      "reading": "ぶるーす・ぼいとらー",
+      "wikidataId": "Q104592",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヴィルヘルム・フォルツ",
+      "reading": "ゔぃるへるむ・ふぉるつ",
+      "wikidataId": "Q124561",
+      "field": "geologist"
+    },
+    {
+      "name": "キャレン・アーレンベック",
+      "reading": "きゃれん・あーれんべっく",
+      "wikidataId": "Q38636",
+      "field": "mathematician"
+    },
+    {
+      "name": "フェルディナント・ブラウン",
+      "reading": "ふぇるでぃなんと・ぶらうん",
+      "wikidataId": "Q57077",
+      "field": "physicist"
+    },
+    {
+      "name": "コンラード・ダジポデュース",
+      "reading": "こんらーど・だじぽでゅーす",
+      "wikidataId": "Q116017",
+      "field": "astronomer"
+    },
+    {
+      "name": "フィクトル・ヤンカ",
+      "reading": "ふぃくとる・やんか",
+      "wikidataId": "Q114049",
+      "field": "biologist"
+    },
+    {
+      "name": "トロフィム・ルイセンコ",
+      "reading": "とろふぃむ・るいせんこ",
+      "wikidataId": "Q294234",
+      "field": "botanist"
+    },
+    {
+      "name": "フリードリヒ・ヴェーラー",
+      "reading": "ふりーどりひ・ゔぇーらー",
+      "wikidataId": "Q58575",
+      "field": "chemist"
+    },
+    {
+      "name": "バルーク・サミュエル・ブランバーグ",
+      "reading": "ばるーく・さみゅえる・ぶらんばーぐ",
+      "wikidataId": "Q105830",
+      "field": "geneticist"
+    },
+    {
+      "name": "ルドルフ・トランピー",
+      "reading": "るどるふ・とらんぴー",
+      "wikidataId": "Q125099",
+      "field": "geologist"
+    },
+    {
+      "name": "エラトステネス",
+      "reading": "えらとすてねす",
+      "wikidataId": "Q43182",
+      "field": "mathematician"
+    },
+    {
+      "name": "マリア・ゲッパート・メイヤー",
+      "reading": "まりあ・げっぱーと・めいやー",
+      "wikidataId": "Q57100",
+      "field": "physicist"
+    },
+    {
+      "name": "マルク・オーギュスト・ピクテ",
+      "reading": "まるく・おーぎゅすと・ぴくて",
+      "wikidataId": "Q116754",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジーモン・シュヴェンデナー",
+      "reading": "じーもん・しゅゔぇんでなー",
+      "wikidataId": "Q115641",
+      "field": "biologist"
+    },
+    {
+      "name": "エドワード・ドリンカー・コープ",
+      "reading": "えどわーど・どりんかー・こーぷ",
+      "wikidataId": "Q298933",
+      "field": "botanist"
+    },
+    {
+      "name": "ヨハン・ヴィルヘルム・リッター",
+      "reading": "よはん・ゔぃるへるむ・りったー",
+      "wikidataId": "Q58868",
+      "field": "chemist"
+    },
+    {
+      "name": "カート・スターン",
+      "reading": "かーと・すたーん",
+      "wikidataId": "Q106718",
+      "field": "geneticist"
+    },
+    {
+      "name": "ハンフリー・デイヴィー",
+      "reading": "はんふりー・でいゔぃー",
+      "wikidataId": "Q131761",
+      "field": "geologist"
+    },
+    {
+      "name": "カール・ワイエルシュトラス",
+      "reading": "かーる・わいえるしゅとらす",
+      "wikidataId": "Q57103",
+      "field": "mathematician"
+    },
+    {
+      "name": "カール・シュヴァルツシルト",
+      "reading": "かーる・しゅゔぁるつしると",
+      "wikidataId": "Q57145",
+      "field": "physicist"
+    },
+    {
+      "name": "フリードリッヒ・フォン・ハーン",
+      "reading": "ふりーどりっひ・ふぉん・はーん",
+      "wikidataId": "Q118014",
+      "field": "astronomer"
+    },
+    {
+      "name": "デニス・ドゥブール",
+      "reading": "でにす・どぅぶーる",
+      "wikidataId": "Q116932",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィリアム・ヘンリー・フォックス・タルボット",
+      "reading": "うぃりあむ・へんりー・ふぉっくす・たるぼっと",
+      "wikidataId": "Q299565",
+      "field": "botanist"
+    },
+    {
+      "name": "マーティン・ロッドベル",
+      "reading": "まーてぃん・ろっどべる",
+      "wikidataId": "Q60031",
+      "field": "chemist"
+    },
+    {
+      "name": "マーシャル・ニーレンバーグ",
+      "reading": "まーしゃる・にーれんばーぐ",
+      "wikidataId": "Q110060",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・フォックス",
+      "reading": "うぃりあむ・ふぉっくす",
+      "wikidataId": "Q134382",
+      "field": "geologist"
+    },
+    {
+      "name": "エルンスト・クンマー",
+      "reading": "えるんすと・くんまー",
+      "wikidataId": "Q57245",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヘルマン・ミンコフスキー",
+      "reading": "へるまん・みんこふすきー",
+      "wikidataId": "Q57246",
+      "field": "physicist"
+    },
+    {
+      "name": "カール・シュトゥンプフ",
+      "reading": "かーる・しゅとぅんぷふ",
+      "wikidataId": "Q119005",
+      "field": "astronomer"
+    },
+    {
+      "name": "カリーン・ロホテ",
+      "reading": "かりーん・ろほて",
+      "wikidataId": "Q118355",
+      "field": "biologist"
+    },
+    {
+      "name": "エドワード・サビーン",
+      "reading": "えどわーど・さびーん",
+      "wikidataId": "Q311223",
+      "field": "botanist"
+    },
+    {
+      "name": "グスタフ・キルヒホフ",
+      "reading": "ぐすたふ・きるひほふ",
+      "wikidataId": "Q60052",
+      "field": "chemist"
+    },
+    {
+      "name": "フリッツ・レンツ",
+      "reading": "ふりっつ・れんつ",
+      "wikidataId": "Q111712",
+      "field": "geneticist"
+    },
+    {
+      "name": "ローレンス・ラム",
+      "reading": "ろーれんす・らむ",
+      "wikidataId": "Q149798",
+      "field": "geologist"
+    },
+    {
+      "name": "エミール・アルティン",
+      "reading": "えみーる・あるてぃん",
+      "wikidataId": "Q57283",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルベルト・マルト",
+      "reading": "あるべると・まると",
+      "wikidataId": "Q57378",
+      "field": "physicist"
+    },
+    {
+      "name": "ヨハン・ゲオルク・リープクネヒト",
+      "reading": "よはん・げおるく・りーぷくねひと",
+      "wikidataId": "Q119739",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヴァルター・ゲーリング",
+      "reading": "ゔぁるたー・げーりんぐ",
+      "wikidataId": "Q118909",
+      "field": "biologist"
+    },
+    {
+      "name": "イヴァン・ミチューリン",
+      "reading": "いゔぁん・みちゅーりん",
+      "wikidataId": "Q311499",
+      "field": "botanist"
+    },
+    {
+      "name": "ヴァルター・ハイトラー",
+      "reading": "ゔぁるたー・はいとらー",
+      "wikidataId": "Q60287",
+      "field": "chemist"
+    },
+    {
+      "name": "ドミトリ・ベリャーエフ",
+      "reading": "どみとり・べりゃーえふ",
+      "wikidataId": "Q113946",
+      "field": "geneticist"
+    },
+    {
+      "name": "ニコラウス・ステノ",
+      "reading": "にこらうす・すての",
+      "wikidataId": "Q151722",
+      "field": "geologist"
+    },
+    {
+      "name": "ヨハン・フランツ・エンケ",
+      "reading": "よはん・ふらんつ・えんけ",
+      "wikidataId": "Q57294",
+      "field": "mathematician"
+    },
+    {
+      "name": "クリストフ・シャイナー",
+      "reading": "くりすとふ・しゃいなー",
+      "wikidataId": "Q57466",
+      "field": "physicist"
+    },
+    {
+      "name": "ステファヌ・ユドリー",
+      "reading": "すてふぁぬ・ゆどりー",
+      "wikidataId": "Q120389",
+      "field": "astronomer"
+    },
+    {
+      "name": "ニコライ・ダニレフスキー",
+      "reading": "にこらい・だにれふすきー",
+      "wikidataId": "Q120664",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィリアム・バックランド",
+      "reading": "うぃりあむ・ばっくらんど",
+      "wikidataId": "Q312389",
+      "field": "botanist"
+    },
+    {
+      "name": "ヴィルヘルム・ヒットルフ",
+      "reading": "ゔぃるへるむ・ひっとるふ",
+      "wikidataId": "Q60428",
+      "field": "chemist"
+    },
+    {
+      "name": "ヴェルナー・アーバー",
+      "reading": "ゔぇるなー・あーばー",
+      "wikidataId": "Q115495",
+      "field": "geneticist"
+    },
+    {
+      "name": "ドン・アンダーソン",
+      "reading": "どん・あんだーそん",
+      "wikidataId": "Q151861",
+      "field": "geologist"
+    },
+    {
+      "name": "ヨハネス・ヘヴェリウス",
+      "reading": "よはねす・へゔぇりうす",
+      "wikidataId": "Q57963",
+      "field": "mathematician"
+    },
+    {
+      "name": "フリードリッヒ・パッシェン",
+      "reading": "ふりーどりっひ・ぱっしぇん",
+      "wikidataId": "Q57805",
+      "field": "physicist"
+    },
+    {
+      "name": "サミ・ソランキ",
+      "reading": "さみ・そらんき",
+      "wikidataId": "Q120535",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヴィルヘルム・トロール",
+      "reading": "ゔぃるへるむ・とろーる",
+      "wikidataId": "Q121525",
+      "field": "biologist"
+    },
+    {
+      "name": "ヘルマン・ブールハーフェ",
+      "reading": "へるまん・ぶーるはーふぇ",
+      "wikidataId": "Q313093",
+      "field": "botanist"
+    },
+    {
+      "name": "フリードリヒ・バイルシュタイン",
+      "reading": "ふりーどりひ・ばいるしゅたいん",
+      "wikidataId": "Q61313",
+      "field": "chemist"
+    },
+    {
+      "name": "フランシス・クリック",
+      "reading": "ふらんしす・くりっく",
+      "wikidataId": "Q123280",
+      "field": "geneticist"
+    },
+    {
+      "name": "スヴェン・ヘディン",
+      "reading": "すゔぇん・へでぃん",
+      "wikidataId": "Q154759",
+      "field": "geologist"
+    },
+    {
+      "name": "エトムント・ランダウ",
+      "reading": "えとむんと・らんだう",
+      "wikidataId": "Q58750",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヘルマン・カール・フォーゲル",
+      "reading": "へるまん・かーる・ふぉーげる",
+      "wikidataId": "Q58812",
+      "field": "physicist"
+    },
+    {
+      "name": "フロリアン・カジョリ",
+      "reading": "ふろりあん・かじょり",
+      "wikidataId": "Q122323",
+      "field": "astronomer"
+    },
+    {
+      "name": "マティース・ワケナゲル",
+      "reading": "まてぃーす・わけなげる",
+      "wikidataId": "Q122265",
+      "field": "biologist"
+    },
+    {
+      "name": "ジャン・アンリ・ファーブル",
+      "reading": "じゃん・あんり・ふぁーぶる",
+      "wikidataId": "Q313348",
+      "field": "botanist"
+    },
+    {
+      "name": "エルンスト・オットー・ベックマン",
+      "reading": "えるんすと・おっとー・べっくまん",
+      "wikidataId": "Q61316",
+      "field": "chemist"
+    },
+    {
+      "name": "エルンスト・リューディン",
+      "reading": "えるんすと・りゅーでぃん",
+      "wikidataId": "Q124822",
+      "field": "geneticist"
+    },
+    {
+      "name": "ニルス・アドルフ・エリック・ノルデンショルド",
+      "reading": "にるす・あどるふ・えりっく・のるでんしょるど",
+      "wikidataId": "Q156749",
+      "field": "geologist"
+    },
+    {
+      "name": "マックス・ボルン",
+      "reading": "まっくす・ぼるん",
+      "wikidataId": "Q58978",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョージ・ガモフ",
+      "reading": "じょーじ・がもふ",
+      "wikidataId": "Q59478",
+      "field": "physicist"
+    },
+    {
+      "name": "ウィリアム・トムソン",
+      "reading": "うぃりあむ・とむそん",
+      "wikidataId": "Q122701",
+      "field": "astronomer"
+    },
+    {
+      "name": "コーネリアス・ヴァン・ニール",
+      "reading": "こーねりあす・ゔぁん・にーる",
+      "wikidataId": "Q122308",
+      "field": "biologist"
+    },
+    {
+      "name": "ジェームズ・デーナ",
+      "reading": "じぇーむず・でーな",
+      "wikidataId": "Q315366",
+      "field": "botanist"
+    },
+    {
+      "name": "カール・フリードリヒ・モール",
+      "reading": "かーる・ふりーどりひ・もーる",
+      "wikidataId": "Q62540",
+      "field": "chemist"
+    },
+    {
+      "name": "ハンス・シュトゥッベ",
+      "reading": "はんす・しゅとぅっべ",
+      "wikidataId": "Q125488",
+      "field": "geneticist"
+    },
+    {
+      "name": "エドアルト・ジュース",
+      "reading": "えどあると・じゅーす",
+      "wikidataId": "Q156941",
+      "field": "geologist"
+    },
+    {
+      "name": "トビアス・マイヤー",
+      "reading": "とびあす・まいやー",
+      "wikidataId": "Q60406",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヘルマン・フォン・ヘルムホルツ",
+      "reading": "へるまん・ふぉん・へるむほるつ",
+      "wikidataId": "Q60024",
+      "field": "physicist"
+    },
+    {
+      "name": "ヨハン・ハインリッヒ・ランベルト",
+      "reading": "よはん・はいんりっひ・らんべると",
+      "wikidataId": "Q122999",
+      "field": "astronomer"
+    },
+    {
+      "name": "アレグザンダー・アガシー",
+      "reading": "あれぐざんだー・あがしー",
+      "wikidataId": "Q122968",
+      "field": "biologist"
+    },
+    {
+      "name": "ジェームズ・パーキンソン",
+      "reading": "じぇーむず・ぱーきんそん",
+      "wikidataId": "Q336489",
+      "field": "botanist"
+    },
+    {
+      "name": "カール・ノイベルグ",
+      "reading": "かーる・のいべるぐ",
+      "wikidataId": "Q65683",
+      "field": "chemist"
+    },
+    {
+      "name": "ノーマン・ボーローグ",
+      "reading": "のーまん・ぼーろーぐ",
+      "wikidataId": "Q154824",
+      "field": "geneticist"
+    },
+    {
+      "name": "リンチェン・バルスボルド",
+      "reading": "りんちぇん・ばるすぼるど",
+      "wikidataId": "Q170380",
+      "field": "geologist"
+    },
+    {
+      "name": "ペーター・ハンゼン",
+      "reading": "ぺーたー・はんぜん",
+      "wikidataId": "Q61749",
+      "field": "mathematician"
+    },
+    {
+      "name": "チャンドラセカール・ラマン",
+      "reading": "ちゃんどらせかーる・らまん",
+      "wikidataId": "Q60429",
+      "field": "physicist"
+    },
+    {
+      "name": "アンモニオス・ヘルメイウ",
+      "reading": "あんもにおす・へるめいう",
+      "wikidataId": "Q123147",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジャン・ピアジェ",
+      "reading": "じゃん・ぴあじぇ",
+      "wikidataId": "Q123190",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・ホイッタカー",
+      "reading": "ろばーと・ほいったかー",
+      "wikidataId": "Q336893",
+      "field": "botanist"
+    },
+    {
+      "name": "エール・サザランド",
+      "reading": "えーる・さざらんど",
+      "wikidataId": "Q68118",
+      "field": "chemist"
+    },
+    {
+      "name": "スヴァンテ・ペーボ",
+      "reading": "すゔぁんて・ぺーぼ",
+      "wikidataId": "Q170342",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウラジーミル・オヌーフリエヴィチ・コワレフスキー",
+      "reading": "うらじーみる・おぬーふりえゔぃち・こわれふすきー",
+      "wikidataId": "Q181624",
+      "field": "geologist"
+    },
+    {
+      "name": "パスクアル・ヨルダン",
+      "reading": "ぱすくある・よるだん",
+      "wikidataId": "Q61761",
+      "field": "mathematician"
+    },
+    {
+      "name": "マーティン・シュヴァルツシルト",
+      "reading": "まーてぃん・しゅゔぁるつしると",
+      "wikidataId": "Q60891",
+      "field": "physicist"
+    },
+    {
+      "name": "パウル・ヴィルト",
+      "reading": "ぱうる・ゔぃると",
+      "wikidataId": "Q123536",
+      "field": "astronomer"
+    },
+    {
+      "name": "エミール・アブデルハルデン",
+      "reading": "えみーる・あぶでるはるでん",
+      "wikidataId": "Q123557",
+      "field": "biologist"
+    },
+    {
+      "name": "ロデリック・マーチソン",
+      "reading": "ろでりっく・まーちそん",
+      "wikidataId": "Q361900",
+      "field": "botanist"
+    },
+    {
+      "name": "エミール・フィッシャー",
+      "reading": "えみーる・ふぃっしゃー",
+      "wikidataId": "Q70554",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョナサン・ベックウィス",
+      "reading": "じょなさん・べっくうぃす",
+      "wikidataId": "Q176538",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジェームズ・クロール",
+      "reading": "じぇーむず・くろーる",
+      "wikidataId": "Q183189",
+      "field": "geologist"
+    },
+    {
+      "name": "クリスチャン・マイヤー",
+      "reading": "くりすちゃん・まいやー",
+      "wikidataId": "Q64447",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハネス・ハルトマン",
+      "reading": "よはねす・はるとまん",
+      "wikidataId": "Q61206",
+      "field": "physicist"
+    },
+    {
+      "name": "フリッツ・コーン",
+      "reading": "ふりっつ・こーん",
+      "wikidataId": "Q123780",
+      "field": "astronomer"
+    },
+    {
+      "name": "カール・ネーゲリ",
+      "reading": "かーる・ねーげり",
+      "wikidataId": "Q123876",
+      "field": "biologist"
+    },
+    {
+      "name": "チャールズ・ウォルコット",
+      "reading": "ちゃーるず・うぉるこっと",
+      "wikidataId": "Q362124",
+      "field": "botanist"
+    },
+    {
+      "name": "ローベルト・ブンゼン",
+      "reading": "ろーべると・ぶんぜん",
+      "wikidataId": "Q71031",
+      "field": "chemist"
+    },
+    {
+      "name": "トーマス・ハント・モーガン",
+      "reading": "とーます・はんと・もーがん",
+      "wikidataId": "Q177681",
+      "field": "geneticist"
+    },
+    {
+      "name": "チャールズ・リヒター",
+      "reading": "ちゃーるず・りひたー",
+      "wikidataId": "Q184014",
+      "field": "geologist"
+    },
+    {
+      "name": "ルドヴィッヒ・シュトルーベ",
+      "reading": "るどゔぃっひ・しゅとるーべ",
+      "wikidataId": "Q64451",
+      "field": "mathematician"
+    },
+    {
+      "name": "カール・フリードリッヒ・ツェルナー",
+      "reading": "かーる・ふりーどりっひ・つぇるなー",
+      "wikidataId": "Q61357",
+      "field": "physicist"
+    },
+    {
+      "name": "ヨハン・シサット",
+      "reading": "よはん・しさっと",
+      "wikidataId": "Q123842",
+      "field": "astronomer"
+    },
+    {
+      "name": "アレクサンドル・イェルサン",
+      "reading": "あれくさんどる・いぇるさん",
+      "wikidataId": "Q123920",
+      "field": "biologist"
+    },
+    {
+      "name": "アドルフ・ダルシアク",
+      "reading": "あどるふ・だるしあく",
+      "wikidataId": "Q365925",
+      "field": "botanist"
+    },
+    {
+      "name": "オットー・ワールブルク",
+      "reading": "おっとー・わーるぶるく",
+      "wikidataId": "Q76464",
+      "field": "chemist"
+    },
+    {
+      "name": "フランシス・ゴルトン",
+      "reading": "ふらんしす・ごるとん",
+      "wikidataId": "Q191026",
+      "field": "geneticist"
+    },
+    {
+      "name": "ピエール・テイヤール・ド・シャルダン",
+      "reading": "ぴえーる・ていやーる・ど・しゃるだん",
+      "wikidataId": "Q189564",
+      "field": "geologist"
+    },
+    {
+      "name": "テオドール・カルツァ",
+      "reading": "ておどーる・かるつぁ",
+      "wikidataId": "Q65346",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルドルフ・パイエルス",
+      "reading": "るどるふ・ぱいえるす",
+      "wikidataId": "Q61735",
+      "field": "physicist"
+    },
+    {
+      "name": "ジャン・フィリップ・ロワ・ド・シェゾー",
+      "reading": "じゃん・ふぃりっぷ・ろわ・ど・しぇぞー",
+      "wikidataId": "Q123931",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヨシアス・ブラウン・ブランケ",
+      "reading": "よしあす・ぶらうん・ぶらんけ",
+      "wikidataId": "Q124075",
+      "field": "biologist"
+    },
+    {
+      "name": "ヨハン・ティティウス",
+      "reading": "よはん・てぃてぃうす",
+      "wikidataId": "Q375195",
+      "field": "botanist"
+    },
+    {
+      "name": "ゲオルク・アグリコラ",
+      "reading": "げおるく・あぐりこら",
+      "wikidataId": "Q76579",
+      "field": "chemist"
+    },
+    {
+      "name": "アンドリュー・ファイアー",
+      "reading": "あんどりゅー・ふぁいあー",
+      "wikidataId": "Q202152",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジェームズ・ハットン",
+      "reading": "じぇーむず・はっとん",
+      "wikidataId": "Q192927",
+      "field": "geologist"
+    },
+    {
+      "name": "ヘルマヌス・コントラクトゥス",
+      "reading": "へるまぬす・こんとらくとぅす",
+      "wikidataId": "Q68490",
+      "field": "mathematician"
+    },
+    {
+      "name": "エミール・ヴィーヘルト",
+      "reading": "えみーる・ゔぃーへると",
+      "wikidataId": "Q61771",
+      "field": "physicist"
+    },
+    {
+      "name": "ロバート・トランプラー",
+      "reading": "ろばーと・とらんぷらー",
+      "wikidataId": "Q123963",
+      "field": "astronomer"
+    },
+    {
+      "name": "マクシミリアン・ヴァイゲント",
+      "reading": "まくしみりあん・ゔぁいげんと",
+      "wikidataId": "Q126626",
+      "field": "biologist"
+    },
+    {
+      "name": "ヒュー・ミラー",
+      "reading": "ひゅー・みらー",
+      "wikidataId": "Q376090",
+      "field": "botanist"
+    },
+    {
+      "name": "カール・ボッシュ",
+      "reading": "かーる・ぼっしゅ",
+      "wikidataId": "Q76606",
+      "field": "chemist"
+    },
+    {
+      "name": "マーティン・エヴァンズ",
+      "reading": "まーてぃん・えゔぁんず",
+      "wikidataId": "Q207719",
+      "field": "geneticist"
+    },
+    {
+      "name": "サミュエル・ウォーレン・ケアリー",
+      "reading": "さみゅえる・うぉーれん・けありー",
+      "wikidataId": "Q195313",
+      "field": "geologist"
+    },
+    {
+      "name": "エドゥアルト・ハイス",
+      "reading": "えどぅあると・はいす",
+      "wikidataId": "Q74276",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルードヴィッヒ・ビーアマン",
+      "reading": "るーどゔぃっひ・びーあまん",
+      "wikidataId": "Q62131",
+      "field": "physicist"
+    },
+    {
+      "name": "ミシェル・マイヨール",
+      "reading": "みしぇる・まいよーる",
+      "wikidataId": "Q123975",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジェームズ・グレイ",
+      "reading": "じぇーむず・ぐれい",
+      "wikidataId": "Q126962",
+      "field": "biologist"
+    },
+    {
+      "name": "ペール・テオドール・クレーベ",
+      "reading": "ぺーる・ておどーる・くれーべ",
+      "wikidataId": "Q377822",
+      "field": "botanist"
+    },
+    {
+      "name": "ハインリッヒ・ヴィーラント",
+      "reading": "はいんりっひ・ゔぃーらんと",
+      "wikidataId": "Q76610",
+      "field": "chemist"
+    },
+    {
+      "name": "マリオ・カペッキ",
+      "reading": "まりお・かぺっき",
+      "wikidataId": "Q215574",
+      "field": "geneticist"
+    },
+    {
+      "name": "ニコラ・デマレ",
+      "reading": "にこら・でまれ",
+      "wikidataId": "Q203719",
+      "field": "geologist"
+    },
+    {
+      "name": "ミヒャエル・メストリン",
+      "reading": "みひゃえる・めすとりん",
+      "wikidataId": "Q75797",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルブレヒト・ウンゼルト",
+      "reading": "あるぶれひと・うんぜると",
+      "wikidataId": "Q62722",
+      "field": "physicist"
+    },
+    {
+      "name": "ディディエ・ケロー",
+      "reading": "でぃでぃえ・けろー",
+      "wikidataId": "Q124013",
+      "field": "astronomer"
+    },
+    {
+      "name": "ピエール・ジョゼフ・ボナテール",
+      "reading": "ぴえーる・じょぜふ・ぼなてーる",
+      "wikidataId": "Q128989",
+      "field": "biologist"
+    },
+    {
+      "name": "ニコラ・クロード・ファブリ・ド・ペーレスク",
+      "reading": "にこら・くろーど・ふぁぶり・ど・ぺーれすく",
+      "wikidataId": "Q440183",
+      "field": "botanist"
+    },
+    {
+      "name": "ヘルマン・コルベ",
+      "reading": "へるまん・こるべ",
+      "wikidataId": "Q76621",
+      "field": "chemist"
+    },
+    {
+      "name": "オリヴァー・スミティーズ",
+      "reading": "おりゔぁー・すみてぃーず",
+      "wikidataId": "Q216318",
+      "field": "geneticist"
+    },
+    {
+      "name": "ルドルフ・エーリヒ・ラスペ",
+      "reading": "るどるふ・えーりひ・らすぺ",
+      "wikidataId": "Q213543",
+      "field": "geologist"
+    },
+    {
+      "name": "フリードリヒ・ヴィルヘルム・ベッセル",
+      "reading": "ふりーどりひ・ゔぃるへるむ・べっせる",
+      "wikidataId": "Q75845",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョン・コッククロフト",
+      "reading": "じょん・こっくくろふと",
+      "wikidataId": "Q62897",
+      "field": "physicist"
+    },
+    {
+      "name": "ヨスト・ビュルギ",
+      "reading": "よすと・びゅるぎ",
+      "wikidataId": "Q124025",
+      "field": "astronomer"
+    },
+    {
+      "name": "マリア・モンテッソーリ",
+      "reading": "まりあ・もんてっそーり",
+      "wikidataId": "Q131117",
+      "field": "biologist"
+    },
+    {
+      "name": "フレデリック・キュヴィエ",
+      "reading": "ふれでりっく・きゅゔぃえ",
+      "wikidataId": "Q467962",
+      "field": "botanist"
+    },
+    {
+      "name": "リヒャルト・アベッグ",
+      "reading": "りひゃると・あべっぐ",
+      "wikidataId": "Q76771",
+      "field": "chemist"
+    },
+    {
+      "name": "ロナルド・フィッシャー",
+      "reading": "ろなるど・ふぃっしゃー",
+      "wikidataId": "Q216723",
+      "field": "geneticist"
+    },
+    {
+      "name": "エルンスト・クラドニ",
+      "reading": "えるんすと・くらどに",
+      "wikidataId": "Q213579",
+      "field": "geologist"
+    },
+    {
+      "name": "フェリックス・ハウスドルフ",
+      "reading": "ふぇりっくす・はうすどるふ",
+      "wikidataId": "Q75856",
+      "field": "mathematician"
+    },
+    {
+      "name": "ロイ・グラウバー",
+      "reading": "ろい・ぐらうばー",
+      "wikidataId": "Q64188",
+      "field": "physicist"
+    },
+    {
+      "name": "アルフレッド・ギージー",
+      "reading": "あるふれっど・ぎーじー",
+      "wikidataId": "Q125020",
+      "field": "astronomer"
+    },
+    {
+      "name": "リチャード・オーウェン",
+      "reading": "りちゃーど・おーうぇん",
+      "wikidataId": "Q151556",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・シャーリエ",
+      "reading": "かーる・しゃーりえ",
+      "wikidataId": "Q478599",
+      "field": "botanist"
+    },
+    {
+      "name": "リヒャルト・ヴィルシュテッター",
+      "reading": "りひゃると・ゔぃるしゅてったー",
+      "wikidataId": "Q77072",
+      "field": "chemist"
+    },
+    {
+      "name": "フランソワ・ジャコブ",
+      "reading": "ふらんそわ・じゃこぶ",
+      "wikidataId": "Q218311",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヴィクトール・モーリッツ・ゴルトシュミット",
+      "reading": "ゔぃくとーる・もーりっつ・ごるとしゅみっと",
+      "wikidataId": "Q213668",
+      "field": "geologist"
+    },
+    {
+      "name": "レギオモンタヌス",
+      "reading": "れぎおもんたぬす",
+      "wikidataId": "Q76365",
+      "field": "mathematician"
+    },
+    {
+      "name": "マックス・クノール",
+      "reading": "まっくす・くのーる",
+      "wikidataId": "Q64241",
+      "field": "physicist"
+    },
+    {
+      "name": "ヘンリー・ドレイパー",
+      "reading": "へんりー・どれいぱー",
+      "wikidataId": "Q125515",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジェームズ・ジョージ・ニーダム",
+      "reading": "じぇーむず・じょーじ・にーだむ",
+      "wikidataId": "Q153086",
+      "field": "biologist"
+    },
+    {
+      "name": "ヨアヒム・バランデ",
+      "reading": "よあひむ・ばらんで",
+      "wikidataId": "Q547714",
+      "field": "botanist"
+    },
+    {
+      "name": "ロータル・マイヤー",
+      "reading": "ろーたる・まいやー",
+      "wikidataId": "Q77073",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョシュア・レーダーバーグ",
+      "reading": "じょしゅあ・れーだーばーぐ",
+      "wikidataId": "Q218823",
+      "field": "geneticist"
+    },
+    {
+      "name": "ユリウス・フォン・ハースト",
+      "reading": "ゆりうす・ふぉん・はーすと",
+      "wikidataId": "Q213922",
+      "field": "geologist"
+    },
+    {
+      "name": "レオポルト・クロネッカー",
+      "reading": "れおぽると・くろねっかー",
+      "wikidataId": "Q76410",
+      "field": "mathematician"
+    },
+    {
+      "name": "パウル・ペーター・エバルト",
+      "reading": "ぱうる・ぺーたー・えばると",
+      "wikidataId": "Q65204",
+      "field": "physicist"
+    },
+    {
+      "name": "ハンス・キーンレ",
+      "reading": "はんす・きーんれ",
+      "wikidataId": "Q125716",
+      "field": "astronomer"
+    },
+    {
+      "name": "ニコ・ティンバーゲン",
+      "reading": "にこ・てぃんばーげん",
+      "wikidataId": "Q153890",
+      "field": "biologist"
+    },
+    {
+      "name": "ピエール・ジョゼフ・ルドゥーテ",
+      "reading": "ぴえーる・じょぜふ・るどぅーて",
+      "wikidataId": "Q551638",
+      "field": "botanist"
+    },
+    {
+      "name": "アドルフ・ヴィンダウス",
+      "reading": "あどるふ・ゔぃんだうす",
+      "wikidataId": "Q77142",
+      "field": "chemist"
+    },
+    {
+      "name": "ポール・ナース",
+      "reading": "ぽーる・なーす",
+      "wikidataId": "Q219716",
+      "field": "geneticist"
+    },
+    {
+      "name": "ルドルフ・アマンドゥス・フィリッピ",
+      "reading": "るどるふ・あまんどぅす・ふぃりっぴ",
+      "wikidataId": "Q214994",
+      "field": "geologist"
+    },
+    {
+      "name": "ゲオルク・カントール",
+      "reading": "げおるく・かんとーる",
+      "wikidataId": "Q76420",
+      "field": "mathematician"
+    },
+    {
+      "name": "カール・フリードリヒ・フォン・ヴァイツゼッカー",
+      "reading": "かーる・ふりーどりひ・ふぉん・ゔぁいつぜっかー",
+      "wikidataId": "Q65350",
+      "field": "physicist"
+    },
+    {
+      "name": "モーシェ・ベン・マイモーン",
+      "reading": "もーしぇ・べん・まいもーん",
+      "wikidataId": "Q127398",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヤン・エヴァンゲリスタ・プルキニェ",
+      "reading": "やん・えゔぁんげりすた・ぷるきにぇ",
+      "wikidataId": "Q159542",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・クラウス",
+      "reading": "かーる・くらうす",
+      "wikidataId": "Q554178",
+      "field": "botanist"
+    },
+    {
+      "name": "フリッツ・プレーグル",
+      "reading": "ふりっつ・ぷれーぐる",
+      "wikidataId": "Q78482",
+      "field": "chemist"
+    },
+    {
+      "name": "シューアル・ライト",
+      "reading": "しゅーある・らいと",
+      "wikidataId": "Q221061",
+      "field": "geneticist"
+    },
+    {
+      "name": "エルンスト・フリードリヒ・フォン・シュロトハイム",
+      "reading": "えるんすと・ふりーどりひ・ふぉん・しゅろとはいむ",
+      "wikidataId": "Q215728",
+      "field": "geologist"
+    },
+    {
+      "name": "リヒャルト・デーデキント",
+      "reading": "りひゃると・でーできんと",
+      "wikidataId": "Q76556",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハン・フォン・ラモント",
+      "reading": "よはん・ふぉん・らもんと",
+      "wikidataId": "Q69521",
+      "field": "physicist"
+    },
+    {
+      "name": "ノーマン・ロッキャー",
+      "reading": "のーまん・ろっきゃー",
+      "wikidataId": "Q127959",
+      "field": "astronomer"
+    },
+    {
+      "name": "カルロ・アリオーニ",
+      "reading": "かるろ・ありおーに",
+      "wikidataId": "Q161420",
+      "field": "biologist"
+    },
+    {
+      "name": "アンセルム・ペイアン",
+      "reading": "あんせるむ・ぺいあん",
+      "wikidataId": "Q560917",
+      "field": "botanist"
+    },
+    {
+      "name": "リヒャルト・クーン",
+      "reading": "りひゃると・くーん",
+      "wikidataId": "Q78483",
+      "field": "chemist"
+    },
+    {
+      "name": "ジャック・モノー",
+      "reading": "じゃっく・ものー",
+      "wikidataId": "Q231402",
+      "field": "geneticist"
+    },
+    {
+      "name": "フランツ・ヴィルヘルム・ユングフーン",
+      "reading": "ふらんつ・ゔぃるへるむ・ゆんぐふーん",
+      "wikidataId": "Q215842",
+      "field": "geologist"
+    },
+    {
+      "name": "カール・グスタフ・ヤコブ・ヤコビ",
+      "reading": "かーる・ぐすたふ・やこぶ・やこび",
+      "wikidataId": "Q76564",
+      "field": "mathematician"
+    },
+    {
+      "name": "テオドール・ヘンシュ",
+      "reading": "ておどーる・へんしゅ",
+      "wikidataId": "Q71013",
+      "field": "physicist"
+    },
+    {
+      "name": "アンドリュー・エリコット",
+      "reading": "あんどりゅー・えりこっと",
+      "wikidataId": "Q129901",
+      "field": "astronomer"
+    },
+    {
+      "name": "ロジャー・コーンバーグ",
+      "reading": "ろじゃー・こーんばーぐ",
+      "wikidataId": "Q170676",
+      "field": "biologist"
+    },
+    {
+      "name": "フランツ・ザーフェル・フォン・ヴュルフェン",
+      "reading": "ふらんつ・ざーふぇる・ふぉん・ゔゅるふぇん",
+      "wikidataId": "Q698014",
+      "field": "botanist"
+    },
+    {
+      "name": "スヴァンテ・アレニウス",
+      "reading": "すゔぁんて・あれにうす",
+      "wikidataId": "Q80956",
+      "field": "chemist"
+    },
+    {
+      "name": "シドニー・ブレナー",
+      "reading": "しどにー・ぶれなー",
+      "wikidataId": "Q234463",
+      "field": "geneticist"
+    },
+    {
+      "name": "ユージン・シューメーカー",
+      "reading": "ゆーじん・しゅーめーかー",
+      "wikidataId": "Q216874",
+      "field": "geologist"
+    },
+    {
+      "name": "フェリックス・クライン",
+      "reading": "ふぇりっくす・くらいん",
+      "wikidataId": "Q76641",
+      "field": "mathematician"
+    },
+    {
+      "name": "エルンスト・ルスカ",
+      "reading": "えるんすと・るすか",
+      "wikidataId": "Q71022",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョン・グリビン",
+      "reading": "じょん・ぐりびん",
+      "wikidataId": "Q130780",
+      "field": "astronomer"
+    },
+    {
+      "name": "イリヤ・メチニコフ",
+      "reading": "いりや・めちにこふ",
+      "wikidataId": "Q172254",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・スティーブンス・ヘンズロー",
+      "reading": "じょん・すてぃーぶんす・へんずろー",
+      "wikidataId": "Q703925",
+      "field": "botanist"
+    },
+    {
+      "name": "ジョン・ウィリアム・ストラット",
+      "reading": "じょん・うぃりあむ・すとらっと",
+      "wikidataId": "Q83297",
+      "field": "chemist"
+    },
+    {
+      "name": "デビッド・ボルティモア",
+      "reading": "でびっど・ぼるてぃもあ",
+      "wikidataId": "Q234949",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヒュー・ファルコナー",
+      "reading": "ひゅー・ふぁるこなー",
+      "wikidataId": "Q223013",
+      "field": "geologist"
+    },
+    {
+      "name": "クリストファー・クラヴィウス",
+      "reading": "くりすとふぁー・くらゔぃうす",
+      "wikidataId": "Q76728",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハン・ベンツェンベルク",
+      "reading": "よはん・べんつぇんべるく",
+      "wikidataId": "Q75088",
+      "field": "physicist"
+    },
+    {
+      "name": "イムホテプ",
+      "reading": "いむほてぷ",
+      "wikidataId": "Q131171",
+      "field": "astronomer"
+    },
+    {
+      "name": "デイビッド・アッテンボロー",
+      "reading": "でいびっど・あってんぼろー",
+      "wikidataId": "Q183337",
+      "field": "biologist"
+    },
+    {
+      "name": "アレクサンドル・カルピンスキ",
+      "reading": "あれくさんどる・かるぴんすき",
+      "wikidataId": "Q729563",
+      "field": "botanist"
+    },
+    {
+      "name": "パラケルスス",
+      "reading": "ぱらけるすす",
+      "wikidataId": "Q83428",
+      "field": "chemist"
+    },
+    {
+      "name": "エドワード・ローリー・タータム",
+      "reading": "えどわーど・ろーりー・たーたむ",
+      "wikidataId": "Q237499",
+      "field": "geneticist"
+    },
+    {
+      "name": "ルー・フーヴァー",
+      "reading": "るー・ふーゔぁー",
+      "wikidataId": "Q233669",
+      "field": "geologist"
+    },
+    {
+      "name": "カロライン・ハーシェル",
+      "reading": "かろらいん・はーしぇる",
+      "wikidataId": "Q76948",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヴィルヘルム・オルバース",
+      "reading": "ゔぃるへるむ・おるばーす",
+      "wikidataId": "Q75828",
+      "field": "physicist"
+    },
+    {
+      "name": "カーライル・ビールズ",
+      "reading": "かーらいる・びーるず",
+      "wikidataId": "Q134880",
+      "field": "astronomer"
+    },
+    {
+      "name": "アレクシス・カレル",
+      "reading": "あれくしす・かれる",
+      "wikidataId": "Q185777",
+      "field": "biologist"
+    },
+    {
+      "name": "アンリ・ブラコノー",
+      "reading": "あんり・ぶらこのー",
+      "wikidataId": "Q908581",
+      "field": "botanist"
+    },
+    {
+      "name": "フリッツ・ラーベス",
+      "reading": "ふりっつ・らーべす",
+      "wikidataId": "Q84907",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョージ・ウェルズ・ビードル",
+      "reading": "じょーじ・うぇるず・びーどる",
+      "wikidataId": "Q238739",
+      "field": "geneticist"
+    },
+    {
+      "name": "レオナード・ウイルス",
+      "reading": "れおなーど・ういるす",
+      "wikidataId": "Q239780",
+      "field": "geologist"
+    },
+    {
+      "name": "ゲルト・ファルティングス",
+      "reading": "げると・ふぁるてぃんぐす",
+      "wikidataId": "Q77137",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルフレート・ヴェーゲナー",
+      "reading": "あるふれーと・ゔぇーげなー",
+      "wikidataId": "Q76323",
+      "field": "physicist"
+    },
+    {
+      "name": "アリスタルコス",
+      "reading": "ありすたるこす",
+      "wikidataId": "Q140188",
+      "field": "astronomer"
+    },
+    {
+      "name": "ムツィオ・トマシーニ",
+      "reading": "むつぃお・とましーに",
+      "wikidataId": "Q202106",
+      "field": "biologist"
+    },
+    {
+      "name": "アルバート・スワード",
+      "reading": "あるばーと・すわーど",
+      "wikidataId": "Q951610",
+      "field": "botanist"
+    },
+    {
+      "name": "オットー・ウンフェルドルベン",
+      "reading": "おっとー・うんふぇるどるべん",
+      "wikidataId": "Q90077",
+      "field": "chemist"
+    },
+    {
+      "name": "ハワード・マーティン・テミン",
+      "reading": "はわーど・まーてぃん・てみん",
+      "wikidataId": "Q243536",
+      "field": "geneticist"
+    },
+    {
+      "name": "アンドリア・モホロビチッチ",
+      "reading": "あんどりあ・もほろびちっち",
+      "wikidataId": "Q243445",
+      "field": "geologist"
+    },
+    {
+      "name": "アレクサンドル・グロタンディーク",
+      "reading": "あれくさんどる・ぐろたんでぃーく",
+      "wikidataId": "Q77141",
+      "field": "mathematician"
+    },
+    {
+      "name": "エルンスト・アッベ",
+      "reading": "えるんすと・あっべ",
+      "wikidataId": "Q76359",
+      "field": "physicist"
+    },
+    {
+      "name": "ラルフ・アルファー",
+      "reading": "らるふ・あるふぁー",
+      "wikidataId": "Q142049",
+      "field": "astronomer"
+    },
+    {
+      "name": "タルコット・パーソンズ",
+      "reading": "たるこっと・ぱーそんず",
+      "wikidataId": "Q203913",
+      "field": "biologist"
+    },
+    {
+      "name": "チャールズ・アボット",
+      "reading": "ちゃーるず・あぼっと",
+      "wikidataId": "Q1063507",
+      "field": "botanist"
+    },
+    {
+      "name": "ヨハン・ロシュミット",
+      "reading": "よはん・ろしゅみっと",
+      "wikidataId": "Q93496",
+      "field": "chemist"
+    },
+    {
+      "name": "テオドシウス・ドブジャンスキー",
+      "reading": "ておどしうす・どぶじゃんすきー",
+      "wikidataId": "Q246731",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウルバン・ヤーネ",
+      "reading": "うるばん・やーね",
+      "wikidataId": "Q246091",
+      "field": "geologist"
+    },
+    {
+      "name": "フェルディナント・フォン・リンデマン",
+      "reading": "ふぇるでぃなんと・ふぉん・りんでまん",
+      "wikidataId": "Q77203",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルートヴィヒ・プラントル",
+      "reading": "るーとゔぃひ・ぷらんとる",
+      "wikidataId": "Q76683",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョージ・オグデン・エイベル",
+      "reading": "じょーじ・おぐでん・えいべる",
+      "wikidataId": "Q142922",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョージ・フォレスト",
+      "reading": "じょーじ・ふぉれすと",
+      "wikidataId": "Q204566",
+      "field": "biologist"
+    },
+    {
+      "name": "フランコ・ラゼッティ",
+      "reading": "ふらんこ・らぜってぃ",
+      "wikidataId": "Q1249138",
+      "field": "botanist"
+    },
+    {
+      "name": "ピーター・デバイ",
+      "reading": "ぴーたー・でばい",
+      "wikidataId": "Q103835",
+      "field": "chemist"
+    },
+    {
+      "name": "ウェス・ジャクソン",
+      "reading": "うぇす・じゃくそん",
+      "wikidataId": "Q248469",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジャック・ホーナー",
+      "reading": "じゃっく・ほーなー",
+      "wikidataId": "Q247264",
+      "field": "geologist"
+    },
+    {
+      "name": "ヘルマン・グラスマン",
+      "reading": "へるまん・ぐらすまん",
+      "wikidataId": "Q77219",
+      "field": "mathematician"
+    },
+    {
+      "name": "ベノー・グーテンベルグ",
+      "reading": "べのー・ぐーてんべるぐ",
+      "wikidataId": "Q76770",
+      "field": "physicist"
+    },
+    {
+      "name": "スブラマニアン・チャンドラセカール",
+      "reading": "すぶらまにあん・ちゃんどらせかーる",
+      "wikidataId": "Q148109",
+      "field": "astronomer"
+    },
+    {
+      "name": "エドワード・オズボーン・ウィルソン",
+      "reading": "えどわーど・おずぼーん・うぃるそん",
+      "wikidataId": "Q211029",
+      "field": "biologist"
+    },
+    {
+      "name": "アレクサンダー・デュ・トワ",
+      "reading": "あれくさんだー・でゅ・とわ",
+      "wikidataId": "Q1363518",
+      "field": "botanist"
+    },
+    {
+      "name": "ウェンデル・スタンリー",
+      "reading": "うぇんでる・すたんりー",
+      "wikidataId": "Q105937",
+      "field": "chemist"
+    },
+    {
+      "name": "マーサ・チェイス",
+      "reading": "まーさ・ちぇいす",
+      "wikidataId": "Q257008",
+      "field": "geneticist"
+    },
+    {
+      "name": "フィリップ・ヘンリー・キューネン",
+      "reading": "ふぃりっぷ・へんりー・きゅーねん",
+      "wikidataId": "Q249131",
+      "field": "geologist"
+    },
+    {
+      "name": "テオドール・オッポルツァー",
+      "reading": "ておどーる・おっぽるつぁー",
+      "wikidataId": "Q78972",
+      "field": "mathematician"
+    },
+    {
+      "name": "パーヴェル・チェレンコフ",
+      "reading": "ぱーゔぇる・ちぇれんこふ",
+      "wikidataId": "Q76970",
+      "field": "physicist"
+    },
+    {
+      "name": "エドワード・アップルトン",
+      "reading": "えどわーど・あっぷるとん",
+      "wikidataId": "Q153194",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヨハン・フリードリッヒ・ヴィルヘルム・ヘルプスト",
+      "reading": "よはん・ふりーどりっひ・ゔぃるへるむ・へるぷすと",
+      "wikidataId": "Q213695",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・ウォーカー",
+      "reading": "じょん・うぉーかー",
+      "wikidataId": "Q1588306",
+      "field": "botanist"
+    },
+    {
+      "name": "ジョン・ノースロップ",
+      "reading": "じょん・のーすろっぷ",
+      "wikidataId": "Q106399",
+      "field": "chemist"
+    },
+    {
+      "name": "マシュー・メセルソン",
+      "reading": "ましゅー・めせるそん",
+      "wikidataId": "Q261276",
+      "field": "geneticist"
+    },
+    {
+      "name": "エベレット・ブラッドリー",
+      "reading": "えべれっと・ぶらっどりー",
+      "wikidataId": "Q254324",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョゼフ・ルイ・ラグランジュ",
+      "reading": "じょぜふ・るい・らぐらんじゅ",
+      "wikidataId": "Q80222",
+      "field": "mathematician"
+    },
+    {
+      "name": "ピーター・ゼーマン",
+      "reading": "ぴーたー・ぜーまん",
+      "wikidataId": "Q79000",
+      "field": "physicist"
+    },
+    {
+      "name": "ジャン・ル・ロン・ダランベール",
+      "reading": "じゃん・る・ろん・だらんべーる",
+      "wikidataId": "Q153232",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヴィルヘルム・ホフマイスター",
+      "reading": "ゔぃるへるむ・ほふまいすたー",
+      "wikidataId": "Q215935",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・ビグスビー",
+      "reading": "じょん・びぐすびー",
+      "wikidataId": "Q4086441",
+      "field": "botanist"
+    },
+    {
+      "name": "ラルス・オンサーガー",
+      "reading": "らるす・おんさーがー",
+      "wikidataId": "Q107405",
+      "field": "chemist"
+    },
+    {
+      "name": "ベアトリス・ミンツ",
+      "reading": "べあとりす・みんつ",
+      "wikidataId": "Q265353",
+      "field": "geneticist"
+    },
+    {
+      "name": "インゲ・レーマン",
+      "reading": "いんげ・れーまん",
+      "wikidataId": "Q256839",
+      "field": "geologist"
+    },
+    {
+      "name": "シュリニヴァーサ・ラマヌジャン",
+      "reading": "しゅりにゔぁーさ・らまぬじゃん",
+      "wikidataId": "Q83163",
+      "field": "mathematician"
+    },
+    {
+      "name": "レオン・クーパー",
+      "reading": "れおん・くーぱー",
+      "wikidataId": "Q82563",
+      "field": "physicist"
+    },
+    {
+      "name": "フランソワ・アラゴ",
+      "reading": "ふらんそわ・あらご",
+      "wikidataId": "Q154353",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヨハン・ベックマン",
+      "reading": "よはん・べっくまん",
+      "wikidataId": "Q215979",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・ファーチゴット",
+      "reading": "ろばーと・ふぁーちごっと",
+      "wikidataId": "Q108880",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョーゼフ・ゴールドスタイン",
+      "reading": "じょーぜふ・ごーるどすたいん",
+      "wikidataId": "Q271424",
+      "field": "geneticist"
+    },
+    {
+      "name": "ドゥーガル・ディクソン",
+      "reading": "どぅーがる・でぃくそん",
+      "wikidataId": "Q257054",
+      "field": "geologist"
+    },
+    {
+      "name": "ポール・エーレンフェスト",
+      "reading": "ぽーる・えーれんふぇすと",
+      "wikidataId": "Q84227",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルイ・ド・ブロイ",
+      "reading": "るい・ど・ぶろい",
+      "wikidataId": "Q83331",
+      "field": "physicist"
+    },
+    {
+      "name": "ニコラウス・クザーヌス",
+      "reading": "にこらうす・くざーぬす",
+      "wikidataId": "Q154751",
+      "field": "astronomer"
+    },
+    {
+      "name": "オイゲン・フォン・カイザーリンク",
+      "reading": "おいげん・ふぉん・かいざーりんく",
+      "wikidataId": "Q221785",
+      "field": "biologist"
+    },
+    {
+      "name": "エドモンド・フィッシャー",
+      "reading": "えどもんど・ふぃっしゃー",
+      "wikidataId": "Q109726",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョン・サルストン",
+      "reading": "じょん・さるすとん",
+      "wikidataId": "Q271532",
+      "field": "geneticist"
+    },
+    {
+      "name": "エドワード・ブラード",
+      "reading": "えどわーど・ぶらーど",
+      "wikidataId": "Q261269",
+      "field": "geologist"
+    },
+    {
+      "name": "クリスチャン・ドップラー",
+      "reading": "くりすちゃん・どっぷらー",
+      "wikidataId": "Q84284",
+      "field": "mathematician"
+    },
+    {
+      "name": "アレクサンドル・プロホロフ",
+      "reading": "あれくさんどる・ぷろほろふ",
+      "wikidataId": "Q83552",
+      "field": "physicist"
+    },
+    {
+      "name": "ハインリヒ・ダレスト",
+      "reading": "はいんりひ・だれすと",
+      "wikidataId": "Q155013",
+      "field": "astronomer"
+    },
+    {
+      "name": "アンドレ・ルヴォフ",
+      "reading": "あんどれ・るゔぉふ",
+      "wikidataId": "Q223309",
+      "field": "biologist"
+    },
+    {
+      "name": "ジュリアス・アクセルロッド",
+      "reading": "じゅりあす・あくせるろっど",
+      "wikidataId": "Q110106",
+      "field": "chemist"
+    },
+    {
+      "name": "アルフレッド・ハーシー",
+      "reading": "あるふれっど・はーしー",
+      "wikidataId": "Q271703",
+      "field": "geneticist"
+    },
+    {
+      "name": "ナサニエル・シェーラー",
+      "reading": "なさにえる・しぇーらー",
+      "wikidataId": "Q263541",
+      "field": "geologist"
+    },
+    {
+      "name": "ゲオルク・プールバッハ",
+      "reading": "げおるく・ぷーるばっは",
+      "wikidataId": "Q84289",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハン・ビュルグ",
+      "reading": "よはん・びゅるぐ",
+      "wikidataId": "Q84597",
+      "field": "physicist"
+    },
+    {
+      "name": "ラッセル・ハルス",
+      "reading": "らっせる・はるす",
+      "wikidataId": "Q156286",
+      "field": "astronomer"
+    },
+    {
+      "name": "アルベルト・クラウデ",
+      "reading": "あるべると・くらうで",
+      "wikidataId": "Q233943",
+      "field": "biologist"
+    },
+    {
+      "name": "ジェームス・ブラック",
+      "reading": "じぇーむす・ぶらっく",
+      "wikidataId": "Q110974",
+      "field": "chemist"
+    },
+    {
+      "name": "エドワード・ルイス",
+      "reading": "えどわーど・るいす",
+      "wikidataId": "Q274123",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・ラディマン",
+      "reading": "うぃりあむ・らでぃまん",
+      "wikidataId": "Q265986",
+      "field": "geologist"
+    },
+    {
+      "name": "ヨハン・ドッペルマイヤー",
+      "reading": "よはん・どっぺるまいやー",
+      "wikidataId": "Q85153",
+      "field": "mathematician"
+    },
+    {
+      "name": "ユリウス・バーテルス",
+      "reading": "ゆりうす・ばーてるす",
+      "wikidataId": "Q84913",
+      "field": "physicist"
+    },
+    {
+      "name": "ヤコブス・カプタイン",
+      "reading": "やこぶす・かぷたいん",
+      "wikidataId": "Q156892",
+      "field": "astronomer"
+    },
+    {
+      "name": "バルフ・ベナセラフ",
+      "reading": "ばるふ・べなせらふ",
+      "wikidataId": "Q234701",
+      "field": "biologist"
+    },
+    {
+      "name": "スタニズラオ・カニッツァーロ",
+      "reading": "すたにずらお・かにっつぁーろ",
+      "wikidataId": "Q128759",
+      "field": "chemist"
+    },
+    {
+      "name": "ロバート・ホロビッツ",
+      "reading": "ろばーと・ほろびっつ",
+      "wikidataId": "Q295659",
+      "field": "geneticist"
+    },
+    {
+      "name": "メアリー・サマヴィル",
+      "reading": "めありー・さまゔぃる",
+      "wikidataId": "Q268702",
+      "field": "geologist"
+    },
+    {
+      "name": "オットー・ブレンデル",
+      "reading": "おっとー・ぶれんでる",
+      "wikidataId": "Q86178",
+      "field": "mathematician"
+    },
+    {
+      "name": "ミルティン・ミランコビッチ",
+      "reading": "みるてぃん・みらんこびっち",
+      "wikidataId": "Q89054",
+      "field": "physicist"
+    },
+    {
+      "name": "エドワード・ピッカリング",
+      "reading": "えどわーど・ぴっかりんぐ",
+      "wikidataId": "Q156896",
+      "field": "astronomer"
+    },
+    {
+      "name": "バーナード・ウッセイ",
+      "reading": "ばーなーど・うっせい",
+      "wikidataId": "Q237160",
+      "field": "biologist"
+    },
+    {
+      "name": "ヨハネス・ファン・デル・ワールス",
+      "reading": "よはねす・ふぁん・でる・わーるす",
+      "wikidataId": "Q131721",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョージ・スネル",
+      "reading": "じょーじ・すねる",
+      "wikidataId": "Q295666",
+      "field": "geneticist"
+    },
+    {
+      "name": "エドゥアール・アルフレッド・マルテル",
+      "reading": "えどぅあーる・あるふれっど・まるてる",
+      "wikidataId": "Q274217",
+      "field": "geologist"
+    },
+    {
+      "name": "ルカ・パチョーリ",
+      "reading": "るか・ぱちょーり",
+      "wikidataId": "Q87620",
+      "field": "mathematician"
+    },
+    {
+      "name": "パウル・ギュルダン",
+      "reading": "ぱうる・ぎゅるだん",
+      "wikidataId": "Q93538",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョン・ネイピア",
+      "reading": "じょん・ねいぴあ",
+      "wikidataId": "Q159592",
+      "field": "astronomer"
+    },
+    {
+      "name": "エブリン・フォックス・ケラー",
+      "reading": "えぶりん・ふぉっくす・けらー",
+      "wikidataId": "Q239131",
+      "field": "biologist"
+    },
+    {
+      "name": "ヘンリー・キャヴェンディッシュ",
+      "reading": "へんりー・きゃゔぇんでぃっしゅ",
+      "wikidataId": "Q131733",
+      "field": "chemist"
+    },
+    {
+      "name": "マイケル・ブラウン",
+      "reading": "まいける・ぶらうん",
+      "wikidataId": "Q295684",
+      "field": "geneticist"
+    },
+    {
+      "name": "エデゥアルド・ヴェルヌイユ",
+      "reading": "えでぅあるど・ゔぇるぬいゆ",
+      "wikidataId": "Q274483",
+      "field": "geologist"
+    },
+    {
+      "name": "マルティン・ハイラー",
+      "reading": "まるてぃん・はいらー",
+      "wikidataId": "Q89332",
+      "field": "mathematician"
+    },
+    {
+      "name": "エルンスト・マッハ",
+      "reading": "えるんすと・まっは",
+      "wikidataId": "Q93996",
+      "field": "physicist"
+    },
+    {
+      "name": "ヒッパルコス",
+      "reading": "ひっぱるこす",
+      "wikidataId": "Q159905",
+      "field": "astronomer"
+    },
+    {
+      "name": "ポール・ザカリー・マイヤーズ",
+      "reading": "ぽーる・ざかりー・まいやーず",
+      "wikidataId": "Q241802",
+      "field": "biologist"
+    },
+    {
+      "name": "ジャン・ペラン",
+      "reading": "じゃん・ぺらん",
+      "wikidataId": "Q134085",
+      "field": "chemist"
+    },
+    {
+      "name": "リーランド・ハートウェル",
+      "reading": "りーらんど・はーとうぇる",
+      "wikidataId": "Q295869",
+      "field": "geneticist"
+    },
+    {
+      "name": "サンジャースレンギーン・オユーン",
+      "reading": "さんじゃーすれんぎーん・おゆーん",
+      "wikidataId": "Q276238",
+      "field": "geologist"
+    },
+    {
+      "name": "アヴィ・ヴィグダーソン",
+      "reading": "あゔぃ・ゔぃぐだーそん",
+      "wikidataId": "Q92957",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハン・フォン・ゾルトナー",
+      "reading": "よはん・ふぉん・ぞるとなー",
+      "wikidataId": "Q95792",
+      "field": "physicist"
+    },
+    {
+      "name": "オーレ・レーマー",
+      "reading": "おーれ・れーまー",
+      "wikidataId": "Q160187",
+      "field": "astronomer"
+    },
+    {
+      "name": "シドニー・リプリー",
+      "reading": "しどにー・りぷりー",
+      "wikidataId": "Q249244",
+      "field": "biologist"
+    },
+    {
+      "name": "トーマス・チェック",
+      "reading": "とーます・ちぇっく",
+      "wikidataId": "Q135180",
+      "field": "chemist"
+    },
+    {
+      "name": "ウィリアム・ベイトソン",
+      "reading": "うぃりあむ・べいとそん",
+      "wikidataId": "Q297302",
+      "field": "geneticist"
+    },
+    {
+      "name": "ギヴィ・ジャヴァヒシヴィリ",
+      "reading": "ぎゔぃ・じゃゔぁひしゔぃり",
+      "wikidataId": "Q280787",
+      "field": "geologist"
+    },
+    {
+      "name": "ゲオルク・レティクス",
+      "reading": "げおるく・れてぃくす",
+      "wikidataId": "Q93588",
+      "field": "mathematician"
+    },
+    {
+      "name": "エヴァンジェリスタ・トリチェリ",
+      "reading": "えゔぁんじぇりすた・とりちぇり",
+      "wikidataId": "Q102490",
+      "field": "physicist"
+    },
+    {
+      "name": "フランツ・アントン・メスメル",
+      "reading": "ふらんつ・あんとん・めすめる",
+      "wikidataId": "Q160202",
+      "field": "astronomer"
+    },
+    {
+      "name": "ニコロ・アンマニーティ",
+      "reading": "にころ・あんまにーてぃ",
+      "wikidataId": "Q251286",
+      "field": "biologist"
+    },
+    {
+      "name": "フレデリック・サンガー",
+      "reading": "ふれでりっく・さんがー",
+      "wikidataId": "Q151564",
+      "field": "chemist"
+    },
+    {
+      "name": "エリック・ヴィーシャウス",
+      "reading": "えりっく・ゔぃーしゃうす",
+      "wikidataId": "Q301438",
+      "field": "geneticist"
+    },
+    {
+      "name": "フリードリッヒ・カール・シュミット",
+      "reading": "ふりーどりっひ・かーる・しゅみっと",
+      "wikidataId": "Q283881",
+      "field": "geologist"
+    },
+    {
+      "name": "ピーター・ショルツ",
+      "reading": "ぴーたー・しょるつ",
+      "wikidataId": "Q98034",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヴィタリー・ギンツブルク",
+      "reading": "ゔぃたりー・ぎんつぶるく",
+      "wikidataId": "Q104668",
+      "field": "physicist"
+    },
+    {
+      "name": "ファーラービー",
+      "reading": "ふぁーらーびー",
+      "wikidataId": "Q160460",
+      "field": "astronomer"
+    },
+    {
+      "name": "ダナ・ハラウェイ",
+      "reading": "だな・はらうぇい",
+      "wikidataId": "Q253407",
+      "field": "biologist"
+    },
+    {
+      "name": "イェンス・ベルセリウス",
+      "reading": "いぇんす・べるせりうす",
+      "wikidataId": "Q151911",
+      "field": "chemist"
+    },
+    {
+      "name": "クレイグ・ヴェンター",
+      "reading": "くれいぐ・ゔぇんたー",
+      "wikidataId": "Q311003",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョン・ジョリー",
+      "reading": "じょん・じょりー",
+      "wikidataId": "Q285566",
+      "field": "geologist"
+    },
+    {
+      "name": "ドニ・パパン",
+      "reading": "どに・ぱぱん",
+      "wikidataId": "Q106208",
+      "field": "mathematician"
+    },
+    {
+      "name": "ベン・ロイ・モッテルソン",
+      "reading": "べん・ろい・もってるそん",
+      "wikidataId": "Q107423",
+      "field": "physicist"
+    },
+    {
+      "name": "ウィリアム・ハギンズ",
+      "reading": "うぃりあむ・はぎんず",
+      "wikidataId": "Q160681",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョン・パーキンソン",
+      "reading": "じょん・ぱーきんそん",
+      "wikidataId": "Q256288",
+      "field": "biologist"
+    },
+    {
+      "name": "ジャン・ドーセ",
+      "reading": "じゃん・どーせ",
+      "wikidataId": "Q152760",
+      "field": "chemist"
+    },
+    {
+      "name": "フィリップ・シャープ",
+      "reading": "ふぃりっぷ・しゃーぷ",
+      "wikidataId": "Q312977",
+      "field": "geneticist"
+    },
+    {
+      "name": "エミール・ハウグ",
+      "reading": "えみーる・はうぐ",
+      "wikidataId": "Q285973",
+      "field": "geologist"
+    },
+    {
+      "name": "エルンスト・シュテュッケルベルク",
+      "reading": "えるんすと・しゅてゅっけるべるく",
+      "wikidataId": "Q116176",
+      "field": "mathematician"
+    },
+    {
+      "name": "フランク・ウィルチェック",
+      "reading": "ふらんく・うぃるちぇっく",
+      "wikidataId": "Q107450",
+      "field": "physicist"
+    },
+    {
+      "name": "ピエール・ルイ・モーペルテュイ",
+      "reading": "ぴえーる・るい・もーぺるてゅい",
+      "wikidataId": "Q164374",
+      "field": "astronomer"
+    },
+    {
+      "name": "ロベルタ・ボンダー",
+      "reading": "ろべるた・ぼんだー",
+      "wikidataId": "Q258385",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィラード・ギブズ",
+      "reading": "うぃらーど・ぎぶず",
+      "wikidataId": "Q153243",
+      "field": "chemist"
+    },
+    {
+      "name": "オズワルド・アベリー",
+      "reading": "おずわるど・あべりー",
+      "wikidataId": "Q315129",
+      "field": "geneticist"
+    },
+    {
+      "name": "サイモン・コンウェイ・モリス",
+      "reading": "さいもん・こんうぇい・もりす",
+      "wikidataId": "Q286098",
+      "field": "geologist"
+    },
+    {
+      "name": "グリゴリー・ペレルマン",
+      "reading": "ぐりごりー・ぺれるまん",
+      "wikidataId": "Q117346",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウォルター・ムンク",
+      "reading": "うぉるたー・むんく",
+      "wikidataId": "Q113081",
+      "field": "physicist"
+    },
+    {
+      "name": "セオドア・フォン・カルマン",
+      "reading": "せおどあ・ふぉん・かるまん",
+      "wikidataId": "Q164384",
+      "field": "astronomer"
+    },
+    {
+      "name": "ザラ・キルシュ",
+      "reading": "ざら・きるしゅ",
+      "wikidataId": "Q263398",
+      "field": "biologist"
+    },
+    {
+      "name": "オッド・ハッセル",
+      "reading": "おっど・はっせる",
+      "wikidataId": "Q157212",
+      "field": "chemist"
+    },
+    {
+      "name": "ルイジ・ルーカ・カヴァッリ・スフォルツァ",
+      "reading": "るいじ・るーか・かゔぁっり・すふぉるつぁ",
+      "wikidataId": "Q315454",
+      "field": "geneticist"
+    },
+    {
+      "name": "フランク・ホームズ",
+      "reading": "ふらんく・ほーむず",
+      "wikidataId": "Q286938",
+      "field": "geologist"
+    },
+    {
+      "name": "マラン・メルセンヌ",
+      "reading": "まらん・めるせんぬ",
+      "wikidataId": "Q188663",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヤコブ・ベルヌーイ",
+      "reading": "やこぶ・べるぬーい",
+      "wikidataId": "Q122392",
+      "field": "physicist"
+    },
+    {
+      "name": "ヴィクトル・アンバルツミャン",
+      "reading": "ゔぃくとる・あんばるつみゃん",
+      "wikidataId": "Q164396",
+      "field": "astronomer"
+    },
+    {
+      "name": "エルウッド・ジェンセン",
+      "reading": "えるうっど・じぇんせん",
+      "wikidataId": "Q264842",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョゼフ・プリーストリー",
+      "reading": "じょぜふ・ぷりーすとりー",
+      "wikidataId": "Q159636",
+      "field": "chemist"
+    },
+    {
+      "name": "ジョン・メイナード・スミス",
+      "reading": "じょん・めいなーど・すみす",
+      "wikidataId": "Q323207",
+      "field": "geneticist"
+    },
+    {
+      "name": "クレア・パターソン",
+      "reading": "くれあ・ぱたーそん",
+      "wikidataId": "Q289502",
+      "field": "geologist"
+    },
+    {
+      "name": "シメオン・ドニ・ポアソン",
+      "reading": "しめおん・どに・ぽあそん",
+      "wikidataId": "Q190772",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルバート・マイケルソン",
+      "reading": "あるばーと・まいけるそん",
+      "wikidataId": "Q127234",
+      "field": "physicist"
+    },
+    {
+      "name": "サイモン・ニューカム",
+      "reading": "さいもん・にゅーかむ",
+      "wikidataId": "Q164401",
+      "field": "astronomer"
+    },
+    {
+      "name": "リュドミラ・ウリツカヤ",
+      "reading": "りゅどみら・うりつかや",
+      "wikidataId": "Q266661",
+      "field": "biologist"
+    },
+    {
+      "name": "マイケル・ポランニー",
+      "reading": "まいける・ぽらんにー",
+      "wikidataId": "Q163087",
+      "field": "chemist"
+    },
+    {
+      "name": "アクセル・カーン",
+      "reading": "あくせる・かーん",
+      "wikidataId": "Q325495",
+      "field": "geneticist"
+    },
+    {
+      "name": "ピエール・ジャンサン",
+      "reading": "ぴえーる・じゃんさん",
+      "wikidataId": "Q298581",
+      "field": "geologist"
+    },
+    {
+      "name": "アドリアン・マリ・ルジャンドル",
+      "reading": "あどりあん・まり・るじゃんどる",
+      "wikidataId": "Q191021",
+      "field": "mathematician"
+    },
+    {
+      "name": "ロバート・ミリカン",
+      "reading": "ろばーと・みりかん",
+      "wikidataId": "Q130975",
+      "field": "physicist"
+    },
+    {
+      "name": "エウクテモン",
+      "reading": "えうくてもん",
+      "wikidataId": "Q167157",
+      "field": "astronomer"
+    },
+    {
+      "name": "ミハウ・ボイム",
+      "reading": "みはう・ぼいむ",
+      "wikidataId": "Q267350",
+      "field": "biologist"
+    },
+    {
+      "name": "ハロルド・ユーリー",
+      "reading": "はろるど・ゆーりー",
+      "wikidataId": "Q179777",
+      "field": "chemist"
+    },
+    {
+      "name": "ルーサー・バーバンク",
+      "reading": "るーさー・ばーばんく",
+      "wikidataId": "Q333419",
+      "field": "geneticist"
+    },
+    {
+      "name": "エミル・コンスタンティネスク",
+      "reading": "えみる・こんすたんてぃねすく",
+      "wikidataId": "Q299152",
+      "field": "geologist"
+    },
+    {
+      "name": "ジュゼッペ・ペアノ",
+      "reading": "じゅぜっぺ・ぺあの",
+      "wikidataId": "Q191029",
+      "field": "mathematician"
+    },
+    {
+      "name": "ロバート・オッペンハイマー",
+      "reading": "ろばーと・おっぺんはいまー",
+      "wikidataId": "Q132537",
+      "field": "physicist"
+    },
+    {
+      "name": "ジャービル・ブン・ハイヤーン",
+      "reading": "じゃーびる・ぶん・はいやーん",
+      "wikidataId": "Q167852",
+      "field": "astronomer"
+    },
+    {
+      "name": "アナ・アスラン",
+      "reading": "あな・あすらん",
+      "wikidataId": "Q270262",
+      "field": "biologist"
+    },
+    {
+      "name": "イリヤ・プリゴジン",
+      "reading": "いりや・ぷりごじん",
+      "wikidataId": "Q183509",
+      "field": "chemist"
+    },
+    {
+      "name": "フランシス・コリンズ",
+      "reading": "ふらんしす・こりんず",
+      "wikidataId": "Q336658",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヘンリー・デ・ラ・ビーチ",
+      "reading": "へんりー・で・ら・びーち",
+      "wikidataId": "Q302176",
+      "field": "geologist"
+    },
+    {
+      "name": "アブラーム・ド・モアブル",
+      "reading": "あぶらーむ・ど・もあぶる",
+      "wikidataId": "Q200397",
+      "field": "mathematician"
+    },
+    {
+      "name": "クリントン・デイヴィソン",
+      "reading": "くりんとん・でいゔぃそん",
+      "wikidataId": "Q133222",
+      "field": "physicist"
+    },
+    {
+      "name": "オットー・シュミット",
+      "reading": "おっとー・しゅみっと",
+      "wikidataId": "Q167997",
+      "field": "astronomer"
+    },
+    {
+      "name": "マリアンヌ・ノース",
+      "reading": "まりあんぬ・のーす",
+      "wikidataId": "Q271648",
+      "field": "biologist"
+    },
+    {
+      "name": "アーヴィング・ラングミュア",
+      "reading": "あーゔぃんぐ・らんぐみゅあ",
+      "wikidataId": "Q184286",
+      "field": "chemist"
+    },
+    {
+      "name": "レジナルド・パネット",
+      "reading": "れじなるど・ぱねっと",
+      "wikidataId": "Q339842",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヘンリー・フェアフィールド・オズボーン",
+      "reading": "へんりー・ふぇあふぃーるど・おずぼーん",
+      "wikidataId": "Q312069",
+      "field": "geologist"
+    },
+    {
+      "name": "ニコラ・ルイ・ド・ラカーユ",
+      "reading": "にこら・るい・ど・らかーゆ",
+      "wikidataId": "Q202703",
+      "field": "mathematician"
+    },
+    {
+      "name": "ガブリエル・リップマン",
+      "reading": "がぶりえる・りっぷまん",
+      "wikidataId": "Q133232",
+      "field": "physicist"
+    },
+    {
+      "name": "ジェローム・ラランド",
+      "reading": "じぇろーむ・ららんど",
+      "wikidataId": "Q168419",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヌツ・モヘレ",
+      "reading": "ぬつ・もへれ",
+      "wikidataId": "Q278544",
+      "field": "biologist"
+    },
+    {
+      "name": "テオドール・スヴェドベリ",
+      "reading": "ておどーる・すゔぇどべり",
+      "wikidataId": "Q186391",
+      "field": "chemist"
+    },
+    {
+      "name": "ペトルス・ヨハネス・ワーデンブルフ",
+      "reading": "ぺとるす・よはねす・わーでんぶるふ",
+      "wikidataId": "Q344522",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヨハン・ガドリン",
+      "reading": "よはん・がどりん",
+      "wikidataId": "Q312571",
+      "field": "geologist"
+    },
+    {
+      "name": "ガスパール・ギュスターヴ・コリオリ",
+      "reading": "がすぱーる・ぎゅすたーゔ・こりおり",
+      "wikidataId": "Q202827",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョージ・パジェット・トムソン",
+      "reading": "じょーじ・ぱじぇっと・とむそん",
+      "wikidataId": "Q133846",
+      "field": "physicist"
+    },
+    {
+      "name": "デイヴィッド・ブルースター",
+      "reading": "でいゔぃっど・ぶるーすたー",
+      "wikidataId": "Q168468",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヨハン・ジモン・フォン・ケルナー",
+      "reading": "よはん・じもん・ふぉん・けるなー",
+      "wikidataId": "Q283001",
+      "field": "biologist"
+    },
+    {
+      "name": "フリッツ・ゼルニケ",
+      "reading": "ふりっつ・ぜるにけ",
+      "wikidataId": "Q188293",
+      "field": "chemist"
+    },
+    {
+      "name": "ウィルヘルム・ヨハンセン",
+      "reading": "うぃるへるむ・よはんせん",
+      "wikidataId": "Q347272",
+      "field": "geneticist"
+    },
+    {
+      "name": "ロバート・バラード",
+      "reading": "ろばーと・ばらーど",
+      "wikidataId": "Q312867",
+      "field": "geologist"
+    },
+    {
+      "name": "ブラーマグプタ",
+      "reading": "ぶらーまぐぷた",
+      "wikidataId": "Q202943",
+      "field": "mathematician"
+    },
+    {
+      "name": "アンドレイ・コルモゴロフ",
+      "reading": "あんどれい・こるもごろふ",
+      "wikidataId": "Q153224",
+      "field": "physicist"
+    },
+    {
+      "name": "エリック・ワイスタイン",
+      "reading": "えりっく・わいすたいん",
+      "wikidataId": "Q168550",
+      "field": "astronomer"
+    },
+    {
+      "name": "マウリツィオ・セラチーニ",
+      "reading": "まうりつぃお・せらちーに",
+      "wikidataId": "Q283470",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィリアム・クルックス",
+      "reading": "うぃりあむ・くるっくす",
+      "wikidataId": "Q189552",
+      "field": "chemist"
+    },
+    {
+      "name": "フレデリック・グリフィス",
+      "reading": "ふれでりっく・ぐりふぃす",
+      "wikidataId": "Q348191",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・スミス",
+      "reading": "うぃりあむ・すみす",
+      "wikidataId": "Q313533",
+      "field": "geologist"
+    },
+    {
+      "name": "アレクサンドル・フリードマン",
+      "reading": "あれくさんどる・ふりーどまん",
+      "wikidataId": "Q205981",
+      "field": "mathematician"
+    },
+    {
+      "name": "レオ・シラード",
+      "reading": "れお・しらーど",
+      "wikidataId": "Q153238",
+      "field": "physicist"
+    },
+    {
+      "name": "ズデネク・コパル",
+      "reading": "ずでねく・こぱる",
+      "wikidataId": "Q168999",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジャン・ロスタン",
+      "reading": "じゃん・ろすたん",
+      "wikidataId": "Q287953",
+      "field": "biologist"
+    },
+    {
+      "name": "アーサー・ハーデン",
+      "reading": "あーさー・はーでん",
+      "wikidataId": "Q189803",
+      "field": "chemist"
+    },
+    {
+      "name": "エイドリアン・バード",
+      "reading": "えいどりあん・ばーど",
+      "wikidataId": "Q373925",
+      "field": "geneticist"
+    },
+    {
+      "name": "ツヴェタン・トドロフ",
+      "reading": "つゔぇたん・とどろふ",
+      "wikidataId": "Q313852",
+      "field": "geologist"
+    },
+    {
+      "name": "アンリ・ルベーグ",
+      "reading": "あんり・るべーぐ",
+      "wikidataId": "Q206005",
+      "field": "mathematician"
+    },
+    {
+      "name": "ユージン・ウィグナー",
+      "reading": "ゆーじん・うぃぐなー",
+      "wikidataId": "Q155790",
+      "field": "physicist"
+    },
+    {
+      "name": "ズデニェク・モラヴェツ",
+      "reading": "ずでにぇく・もらゔぇつ",
+      "wikidataId": "Q169024",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョージ・レデイ",
+      "reading": "じょーじ・れでい",
+      "wikidataId": "Q289454",
+      "field": "biologist"
+    },
+    {
+      "name": "アーロン・クルーグ",
+      "reading": "あーろん・くるーぐ",
+      "wikidataId": "Q190626",
+      "field": "chemist"
+    },
+    {
+      "name": "アグネス・アーバー",
+      "reading": "あぐねす・あーばー",
+      "wikidataId": "Q394451",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・モーリス・ディヴィス",
+      "reading": "うぃりあむ・もーりす・でぃゔぃす",
+      "wikidataId": "Q315967",
+      "field": "geologist"
+    },
+    {
+      "name": "ガスパール・モンジュ",
+      "reading": "がすぱーる・もんじゅ",
+      "wikidataId": "Q206832",
+      "field": "mathematician"
+    },
+    {
+      "name": "ハンス・ベーテ",
+      "reading": "はんす・べーて",
+      "wikidataId": "Q155794",
+      "field": "physicist"
+    },
+    {
+      "name": "ズデニカ・ヴァーヴロヴァー",
+      "reading": "ずでにか・ゔぁーゔろゔぁー",
+      "wikidataId": "Q169131",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジャーヒズ",
+      "reading": "じゃーひず",
+      "wikidataId": "Q293497",
+      "field": "biologist"
+    },
+    {
+      "name": "チャド・マーキン",
+      "reading": "ちゃど・まーきん",
+      "wikidataId": "Q194539",
+      "field": "chemist"
+    },
+    {
+      "name": "フィリップ・レダー",
+      "reading": "ふぃりっぷ・れだー",
+      "wikidataId": "Q415934",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウラジミール・ベルナドスキー",
+      "reading": "うらじみーる・べるなどすきー",
+      "wikidataId": "Q316371",
+      "field": "geologist"
+    },
+    {
+      "name": "アルフレト・タルスキ",
+      "reading": "あるふれと・たるすき",
+      "wikidataId": "Q207534",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョージ・ガブリエル・ストークス",
+      "reading": "じょーじ・がぶりえる・すとーくす",
+      "wikidataId": "Q155907",
+      "field": "physicist"
+    },
+    {
+      "name": "クリストファー・レン",
+      "reading": "くりすとふぁー・れん",
+      "wikidataId": "Q170373",
+      "field": "astronomer"
+    },
+    {
+      "name": "フェリド・ムラド",
+      "reading": "ふぇりど・むらど",
+      "wikidataId": "Q295999",
+      "field": "biologist"
+    },
+    {
+      "name": "ポール・アリヴィサトス",
+      "reading": "ぽーる・ありゔぃさとす",
+      "wikidataId": "Q194559",
+      "field": "chemist"
+    },
+    {
+      "name": "ネッティー・マリア・スティーブンズ",
+      "reading": "ねってぃー・まりあ・すてぃーぶんず",
+      "wikidataId": "Q433487",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウジェーヌ・デュボワ",
+      "reading": "うじぇーぬ・でゅぼわ",
+      "wikidataId": "Q317176",
+      "field": "geologist"
+    },
+    {
+      "name": "マイケル・アティヤ",
+      "reading": "まいける・あてぃや",
+      "wikidataId": "Q208356",
+      "field": "mathematician"
+    },
+    {
+      "name": "チャールズ・バークラ",
+      "reading": "ちゃーるず・ばーくら",
+      "wikidataId": "Q160522",
+      "field": "physicist"
+    },
+    {
+      "name": "ロバート・ウッドロウ・ウィルソン",
+      "reading": "ろばーと・うっどろう・うぃるそん",
+      "wikidataId": "Q171034",
+      "field": "astronomer"
+    },
+    {
+      "name": "カール・シューカー",
+      "reading": "かーる・しゅーかー",
+      "wikidataId": "Q296112",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・グラブス",
+      "reading": "ろばーと・ぐらぶす",
+      "wikidataId": "Q202140",
+      "field": "chemist"
+    },
+    {
+      "name": "ジェローム・ルジューヌ",
+      "reading": "じぇろーむ・るじゅーぬ",
+      "wikidataId": "Q435686",
+      "field": "geneticist"
+    },
+    {
+      "name": "ヴァシーリー・ドクチャエフ",
+      "reading": "ゔぁしーりー・どくちゃえふ",
+      "wikidataId": "Q319386",
+      "field": "geologist"
+    },
+    {
+      "name": "オーガスタス・ド・モルガン",
+      "reading": "おーがすたす・ど・もるがん",
+      "wikidataId": "Q208448",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウィリアム・ショックレー",
+      "reading": "うぃりあむ・しょっくれー",
+      "wikidataId": "Q163415",
+      "field": "physicist"
+    },
+    {
+      "name": "アーノ・ペンジアス",
+      "reading": "あーの・ぺんじあす",
+      "wikidataId": "Q172877",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョージ・ワシントン・カーヴァー",
+      "reading": "じょーじ・わしんとん・かーゔぁー",
+      "wikidataId": "Q296898",
+      "field": "biologist"
+    },
+    {
+      "name": "ギルバート・ルイス",
+      "reading": "ぎるばーと・るいす",
+      "wikidataId": "Q208858",
+      "field": "chemist"
+    },
+    {
+      "name": "ジャネット・ラウリー",
+      "reading": "じゃねっと・らうりー",
+      "wikidataId": "Q436109",
+      "field": "geneticist"
+    },
+    {
+      "name": "フランツ・クサーヴァー・ツィッペ",
+      "reading": "ふらんつ・くさーゔぁー・つぃっぺ",
+      "wikidataId": "Q320001",
+      "field": "geologist"
+    },
+    {
+      "name": "ジャン・ピエール・セール",
+      "reading": "じゃん・ぴえーる・せーる",
+      "wikidataId": "Q212063",
+      "field": "mathematician"
+    },
+    {
+      "name": "ベングト・エドレン",
+      "reading": "べんぐと・えどれん",
+      "wikidataId": "Q209283",
+      "field": "physicist"
+    },
+    {
+      "name": "ルイス・ラザファード",
+      "reading": "るいす・らざふぁーど",
+      "wikidataId": "Q172885",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョン・アボット",
+      "reading": "じょん・あぼっと",
+      "wikidataId": "Q303380",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・バーンズ・ウッドワード",
+      "reading": "ろばーと・ばーんず・うっどわーど",
+      "wikidataId": "Q232316",
+      "field": "chemist"
+    },
+    {
+      "name": "シンシア・ケニヨン",
+      "reading": "しんしあ・けによん",
+      "wikidataId": "Q437333",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウリッセ・アルドロヴァンディ",
+      "reading": "うりっせ・あるどろゔぁんでぃ",
+      "wikidataId": "Q321358",
+      "field": "geologist"
+    },
+    {
+      "name": "ブルック・テイラー",
+      "reading": "ぶるっく・ていらー",
+      "wikidataId": "Q212085",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルドルフ・ミンコフスキー",
+      "reading": "るどるふ・みんこふすきー",
+      "wikidataId": "Q213664",
+      "field": "physicist"
+    },
+    {
+      "name": "ピーテル・ファン・ミュッセンブルーク",
+      "reading": "ぴーてる・ふぁん・みゅっせんぶるーく",
+      "wikidataId": "Q176206",
+      "field": "astronomer"
+    },
+    {
+      "name": "ハルダン・ケファー・ハートライン",
+      "reading": "はるだん・けふぁー・はーとらいん",
+      "wikidataId": "Q309879",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィルヘルム・ティセリウス",
+      "reading": "うぃるへるむ・てぃせりうす",
+      "wikidataId": "Q233026",
+      "field": "chemist"
+    },
+    {
+      "name": "メアリー・クレア・キング",
+      "reading": "めありー・くれあ・きんぐ",
+      "wikidataId": "Q437741",
+      "field": "geneticist"
+    },
+    {
+      "name": "エドワード・ヒッチコック",
+      "reading": "えどわーど・ひっちこっく",
+      "wikidataId": "Q322185",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョゼフ・リウヴィル",
+      "reading": "じょぜふ・りうゔぃる",
+      "wikidataId": "Q214549",
+      "field": "mathematician"
+    },
+    {
+      "name": "ゲリー・ノイゲバウアー",
+      "reading": "げりー・のいげばうあー",
+      "wikidataId": "Q214345",
+      "field": "physicist"
+    },
+    {
+      "name": "エドワード・マウンダー",
+      "reading": "えどわーど・まうんだー",
+      "wikidataId": "Q177186",
+      "field": "astronomer"
+    },
+    {
+      "name": "トーマス・ハックル・ウェーラー",
+      "reading": "とーます・はっくる・うぇーらー",
+      "wikidataId": "Q310131",
+      "field": "biologist"
+    },
+    {
+      "name": "マルグリット・ペレー",
+      "reading": "まるぐりっと・ぺれー",
+      "wikidataId": "Q241822",
+      "field": "chemist"
+    },
+    {
+      "name": "ワーウィック・エステヴァン・ケール",
+      "reading": "わーうぃっく・えすてゔぁん・けーる",
+      "wikidataId": "Q443428",
+      "field": "geneticist"
+    },
+    {
+      "name": "スキピオーネ・ブライスラーク",
+      "reading": "すきぴおーね・ぶらいすらーく",
+      "wikidataId": "Q324343",
+      "field": "geologist"
+    },
+    {
+      "name": "アーサー・エディントン",
+      "reading": "あーさー・えでぃんとん",
+      "wikidataId": "Q215022",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルマン・フィゾー",
+      "reading": "あるまん・ふぃぞー",
+      "wikidataId": "Q216814",
+      "field": "physicist"
+    },
+    {
+      "name": "ボリス・ヌメロフ",
+      "reading": "ぼりす・ぬめろふ",
+      "wikidataId": "Q177995",
+      "field": "astronomer"
+    },
+    {
+      "name": "ルネ・レオミュール",
+      "reading": "るね・れおみゅーる",
+      "wikidataId": "Q310779",
+      "field": "biologist"
+    },
+    {
+      "name": "ロアルド・ホフマン",
+      "reading": "ろあるど・ほふまん",
+      "wikidataId": "Q273279",
+      "field": "chemist"
+    },
+    {
+      "name": "トルビョルン・カスペルソン",
+      "reading": "とるびょるん・かすぺるそん",
+      "wikidataId": "Q457472",
+      "field": "geneticist"
+    },
+    {
+      "name": "ハロルド・マサースキー",
+      "reading": "はろるど・まさーすきー",
+      "wikidataId": "Q325201",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョン・ウィラード・ミルナー",
+      "reading": "じょん・うぃらーど・みるなー",
+      "wikidataId": "Q215765",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヨハン・ベルヌーイ",
+      "reading": "よはん・べるぬーい",
+      "wikidataId": "Q227897",
+      "field": "physicist"
+    },
+    {
+      "name": "ルイス・ウォルター・アルヴァレズ",
+      "reading": "るいす・うぉるたー・あるゔぁれず",
+      "wikidataId": "Q178344",
+      "field": "astronomer"
+    },
+    {
+      "name": "ピエール・ポール・ブローカ",
+      "reading": "ぴえーる・ぽーる・ぶろーか",
+      "wikidataId": "Q311276",
+      "field": "biologist"
+    },
+    {
+      "name": "ジェイムズ・デュワー",
+      "reading": "じぇいむず・でゅわー",
+      "wikidataId": "Q277579",
+      "field": "chemist"
+    },
+    {
+      "name": "メアリー・ライオン",
+      "reading": "めありー・らいおん",
+      "wikidataId": "Q460847",
+      "field": "geneticist"
+    },
+    {
+      "name": "ロバート・スミッソン",
+      "reading": "ろばーと・すみっそん",
+      "wikidataId": "Q328341",
+      "field": "geologist"
+    },
+    {
+      "name": "ゴ・バオ・チャウ",
+      "reading": "ご・ばお・ちゃう",
+      "wikidataId": "Q216350",
+      "field": "mathematician"
+    },
+    {
+      "name": "アニー・ジャンプ・キャノン",
+      "reading": "あにー・じゃんぷ・きゃのん",
+      "wikidataId": "Q230650",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョバンニ・バッティスタ・アミーチ",
+      "reading": "じょばんに・ばってぃすた・あみーち",
+      "wikidataId": "Q178412",
+      "field": "astronomer"
+    },
+    {
+      "name": "ズラブ・ジワニア",
+      "reading": "ずらぶ・じわにあ",
+      "wikidataId": "Q312493",
+      "field": "biologist"
+    },
+    {
+      "name": "スネ・ベリストローム",
+      "reading": "すね・べりすとろーむ",
+      "wikidataId": "Q295696",
+      "field": "chemist"
+    },
+    {
+      "name": "ゲイリー・ラヴカン",
+      "reading": "げいりー・らゔかん",
+      "wikidataId": "Q504021",
+      "field": "geneticist"
+    },
+    {
+      "name": "ハンス・ディーター・ダーメン",
+      "reading": "はんす・でぃーたー・だーめん",
+      "wikidataId": "Q329237",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョン・ベン",
+      "reading": "じょん・べん",
+      "wikidataId": "Q216811",
+      "field": "mathematician"
+    },
+    {
+      "name": "ピーター・マンスフィールド",
+      "reading": "ぴーたー・まんすふぃーるど",
+      "wikidataId": "Q243601",
+      "field": "physicist"
+    },
+    {
+      "name": "ジャヤント・ナーリカー",
+      "reading": "じゃやんと・なーりかー",
+      "wikidataId": "Q179201",
+      "field": "astronomer"
+    },
+    {
+      "name": "カール・アケリー",
+      "reading": "かーる・あけりー",
+      "wikidataId": "Q1037711",
+      "field": "biologist"
+    },
+    {
+      "name": "ベンクト・サミュエルソン",
+      "reading": "べんくと・さみゅえるそん",
+      "wikidataId": "Q295768",
+      "field": "chemist"
+    },
+    {
+      "name": "ジェフリー・フリードマン",
+      "reading": "じぇふりー・ふりーどまん",
+      "wikidataId": "Q505055",
+      "field": "geneticist"
+    },
+    {
+      "name": "エイブラハム・ゲスナー",
+      "reading": "えいぶらはむ・げすなー",
+      "wikidataId": "Q330006",
+      "field": "geologist"
+    },
+    {
+      "name": "ヴィレブロルト・スネル",
+      "reading": "ゔぃれぶろると・すねる",
+      "wikidataId": "Q244152",
+      "field": "mathematician"
+    },
+    {
+      "name": "オスカル・クライン",
+      "reading": "おすかる・くらいん",
+      "wikidataId": "Q251524",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョージ・スムート",
+      "reading": "じょーじ・すむーと",
+      "wikidataId": "Q179572",
+      "field": "astronomer"
+    },
+    {
+      "name": "チャンシー・ジュデイ",
+      "reading": "ちゃんしー・じゅでい",
+      "wikidataId": "Q1061664",
+      "field": "biologist"
+    },
+    {
+      "name": "ペイトン・ラウス",
+      "reading": "ぺいとん・らうす",
+      "wikidataId": "Q298707",
+      "field": "chemist"
+    },
+    {
+      "name": "フランシスコ・アヤラ",
+      "reading": "ふらんしすこ・あやら",
+      "wikidataId": "Q505876",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・ヒューウェル",
+      "reading": "うぃりあむ・ひゅーうぇる",
+      "wikidataId": "Q333922",
+      "field": "geologist"
+    },
+    {
+      "name": "ヨハン・ギルデン",
+      "reading": "よはん・ぎるでん",
+      "wikidataId": "Q250560",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジェームズ・ヴァン・アレン",
+      "reading": "じぇーむず・ゔぁん・あれん",
+      "wikidataId": "Q271963",
+      "field": "physicist"
+    },
+    {
+      "name": "キンディー",
+      "reading": "きんでぃー",
+      "wikidataId": "Q179759",
+      "field": "astronomer"
+    },
+    {
+      "name": "シャルル・シャンベラン",
+      "reading": "しゃるる・しゃんべらん",
+      "wikidataId": "Q1063929",
+      "field": "biologist"
+    },
+    {
+      "name": "ティモシー・ハント",
+      "reading": "てぃもしー・はんと",
+      "wikidataId": "Q309977",
+      "field": "chemist"
+    },
+    {
+      "name": "アレック・ジェフェリーズ",
+      "reading": "あれっく・じぇふぇりーず",
+      "wikidataId": "Q511916",
+      "field": "geneticist"
+    },
+    {
+      "name": "チャールズ・キャスカート",
+      "reading": "ちゃーるず・きゃすかーと",
+      "wikidataId": "Q336227",
+      "field": "geologist"
+    },
+    {
+      "name": "サービト・イブン・クッラ",
+      "reading": "さーびと・いぶん・くっら",
+      "wikidataId": "Q250568",
+      "field": "mathematician"
+    },
+    {
+      "name": "エリ・カルタン",
+      "reading": "えり・かるたん",
+      "wikidataId": "Q274639",
+      "field": "physicist"
+    },
+    {
+      "name": "アラトス",
+      "reading": "あらとす",
+      "wikidataId": "Q180671",
+      "field": "astronomer"
+    },
+    {
+      "name": "チャールズ・デビッド・アリス",
+      "reading": "ちゃーるず・でびっど・ありす",
+      "wikidataId": "Q1064064",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョージ・ヒッチングス",
+      "reading": "じょーじ・ひっちんぐす",
+      "wikidataId": "Q310487",
+      "field": "chemist"
+    },
+    {
+      "name": "ハワード・シダー",
+      "reading": "はわーど・しだー",
+      "wikidataId": "Q512309",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウラジーミル・ベロウソフ",
+      "reading": "うらじーみる・べろうそふ",
+      "wikidataId": "Q338228",
+      "field": "geologist"
+    },
+    {
+      "name": "ボーヤイ・ファルカシュ",
+      "reading": "ぼーやい・ふぁるかしゅ",
+      "wikidataId": "Q252311",
+      "field": "mathematician"
+    },
+    {
+      "name": "カルロ・マテウッチ",
+      "reading": "かるろ・まてうっち",
+      "wikidataId": "Q280250",
+      "field": "physicist"
+    },
+    {
+      "name": "ロバート・ゴダード",
+      "reading": "ろばーと・ごだーど",
+      "wikidataId": "Q182546",
+      "field": "astronomer"
+    },
+    {
+      "name": "チャールズ・ペック",
+      "reading": "ちゃーるず・ぺっく",
+      "wikidataId": "Q1064899",
+      "field": "biologist"
+    },
+    {
+      "name": "ヘンリー・モーズリー",
+      "reading": "へんりー・もーずりー",
+      "wikidataId": "Q310759",
+      "field": "chemist"
+    },
+    {
+      "name": "シリル・バート",
+      "reading": "しりる・ばーと",
+      "wikidataId": "Q513197",
+      "field": "geneticist"
+    },
+    {
+      "name": "アルシド・ドルビニ",
+      "reading": "あるしど・どるびに",
+      "wikidataId": "Q344661",
+      "field": "geologist"
+    },
+    {
+      "name": "メトン",
+      "reading": "めとん",
+      "wikidataId": "Q261909",
+      "field": "mathematician"
+    },
+    {
+      "name": "アンドレ・ダンジョン",
+      "reading": "あんどれ・だんじょん",
+      "wikidataId": "Q305958",
+      "field": "physicist"
+    },
+    {
+      "name": "フレッド・ホイル",
+      "reading": "ふれっど・ほいる",
+      "wikidataId": "Q183397",
+      "field": "astronomer"
+    },
+    {
+      "name": "クラレンス・バーズアイ",
+      "reading": "くられんす・ばーずあい",
+      "wikidataId": "Q1095376",
+      "field": "biologist"
+    },
+    {
+      "name": "アンリ・ヴィクトル・ルニョー",
+      "reading": "あんり・ゔぃくとる・るにょー",
+      "wikidataId": "Q311115",
+      "field": "chemist"
+    },
+    {
+      "name": "アンジェイ・タルコフスキー",
+      "reading": "あんじぇい・たるこふすきー",
+      "wikidataId": "Q515695",
+      "field": "geneticist"
+    },
+    {
+      "name": "フレデリック・マッコイ",
+      "reading": "ふれでりっく・まっこい",
+      "wikidataId": "Q347883",
+      "field": "geologist"
+    },
+    {
+      "name": "ジャコーモ・フィリッポ・マラルディ",
+      "reading": "じゃこーも・ふぃりっぽ・まらるでぃ",
+      "wikidataId": "Q264900",
+      "field": "mathematician"
+    },
+    {
+      "name": "ヤン・オールト",
+      "reading": "やん・おーると",
+      "wikidataId": "Q309861",
+      "field": "physicist"
+    },
+    {
+      "name": "ジェロラモ・カルダーノ",
+      "reading": "じぇろらも・かるだーの",
+      "wikidataId": "Q184530",
+      "field": "astronomer"
+    },
+    {
+      "name": "リチャード・エヴァンズ・シュルテス",
+      "reading": "りちゃーど・えゔぁんず・しゅるてす",
+      "wikidataId": "Q1124975",
+      "field": "biologist"
+    },
+    {
+      "name": "エルネスト・ソルベー",
+      "reading": "えるねすと・そるべー",
+      "wikidataId": "Q311665",
+      "field": "chemist"
+    },
+    {
+      "name": "スーザン・リンドキスト",
+      "reading": "すーざん・りんどきすと",
+      "wikidataId": "Q520992",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョン・ウェズリー・パウエル",
+      "reading": "じょん・うぇずりー・ぱうえる",
+      "wikidataId": "Q348325",
+      "field": "geologist"
+    },
+    {
+      "name": "エドゥアール・ロシュ",
+      "reading": "えどぅあーる・ろしゅ",
+      "wikidataId": "Q274223",
+      "field": "mathematician"
+    },
+    {
+      "name": "エドワード・ドナル・トーマス",
+      "reading": "えどわーど・どなる・とーます",
+      "wikidataId": "Q310485",
+      "field": "physicist"
+    },
+    {
+      "name": "エウドクソス",
+      "reading": "えうどくそす",
+      "wikidataId": "Q185150",
+      "field": "astronomer"
+    },
+    {
+      "name": "コルネリス・クリスティアーン・ベルフ",
+      "reading": "こるねりす・くりすてぃあーん・べるふ",
+      "wikidataId": "Q1133511",
+      "field": "biologist"
+    },
+    {
+      "name": "アントワーヌ・バラール",
+      "reading": "あんとわーぬ・ばらーる",
+      "wikidataId": "Q314306",
+      "field": "chemist"
+    },
+    {
+      "name": "チャールズ・ヤノフスキー",
+      "reading": "ちゃーるず・やのふすきー",
+      "wikidataId": "Q532199",
+      "field": "geneticist"
+    },
+    {
+      "name": "ギデオン・マンテル",
+      "reading": "ぎでおん・まんてる",
+      "wikidataId": "Q348455",
+      "field": "geologist"
+    },
+    {
+      "name": "チャールズ・フェファーマン",
+      "reading": "ちゃーるず・ふぇふぁーまん",
+      "wikidataId": "Q284129",
+      "field": "mathematician"
+    },
+    {
+      "name": "ルジェル・ヨシプ・ボスコヴィッチ",
+      "reading": "るじぇる・よしぷ・ぼすこゔぃっち",
+      "wikidataId": "Q310757",
+      "field": "physicist"
+    },
+    {
+      "name": "ポセイドニオス",
+      "reading": "ぽせいどにおす",
+      "wikidataId": "Q185770",
+      "field": "astronomer"
+    },
+    {
+      "name": "カート・リヒター",
+      "reading": "かーと・りひたー",
+      "wikidataId": "Q1145264",
+      "field": "biologist"
+    },
+    {
+      "name": "ルネ・ジュスト・アユイ",
+      "reading": "るね・じゅすと・あゆい",
+      "wikidataId": "Q316515",
+      "field": "chemist"
+    },
+    {
+      "name": "エドモンド・ブリスコ・フォード",
+      "reading": "えどもんど・ぶりすこ・ふぉーど",
+      "wikidataId": "Q533632",
+      "field": "geneticist"
+    },
+    {
+      "name": "アダム・ジウォンスキー",
+      "reading": "あだむ・じうぉんすきー",
+      "wikidataId": "Q349221",
+      "field": "geologist"
+    },
+    {
+      "name": "ジャビール・イブン・アフラ",
+      "reading": "じゃびーる・いぶん・あふら",
+      "wikidataId": "Q288111",
+      "field": "mathematician"
+    },
+    {
+      "name": "ニコル・オレーム",
+      "reading": "にこる・おれーむ",
+      "wikidataId": "Q310777",
+      "field": "physicist"
+    },
+    {
+      "name": "ミシェル・セルヴェ",
+      "reading": "みしぇる・せるゔぇ",
+      "wikidataId": "Q185914",
+      "field": "astronomer"
+    },
+    {
+      "name": "シリル・ディーン・ダーリントン",
+      "reading": "しりる・でぃーん・だーりんとん",
+      "wikidataId": "Q1148597",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・ニューランズ",
+      "reading": "じょん・にゅーらんず",
+      "wikidataId": "Q318214",
+      "field": "chemist"
+    },
+    {
+      "name": "アルフレッド・ヘンリー・スターティヴァント",
+      "reading": "あるふれっど・へんりー・すたーてぃゔぁんと",
+      "wikidataId": "Q535384",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウィリアム・マクルール",
+      "reading": "うぃりあむ・まくるーる",
+      "wikidataId": "Q349865",
+      "field": "geologist"
+    },
+    {
+      "name": "テレンス・タオ",
+      "reading": "てれんす・たお",
+      "wikidataId": "Q295981",
+      "field": "mathematician"
+    },
+    {
+      "name": "ピエール・メシャン",
+      "reading": "ぴえーる・めしゃん",
+      "wikidataId": "Q311022",
+      "field": "physicist"
+    },
+    {
+      "name": "リカルド・ジャコーニ",
+      "reading": "りかるど・じゃこーに",
+      "wikidataId": "Q186481",
+      "field": "astronomer"
+    },
+    {
+      "name": "ダニエル・ハント・ジャンゼン",
+      "reading": "だにえる・はんと・じゃんぜん",
+      "wikidataId": "Q1161184",
+      "field": "biologist"
+    },
+    {
+      "name": "エドワード・モーリー",
+      "reading": "えどわーど・もーりー",
+      "wikidataId": "Q320889",
+      "field": "chemist"
+    },
+    {
+      "name": "アン・マクラーレン",
+      "reading": "あん・まくらーれん",
+      "wikidataId": "Q542428",
+      "field": "geneticist"
+    },
+    {
+      "name": "アダム・セジウィック",
+      "reading": "あだむ・せじうぃっく",
+      "wikidataId": "Q350891",
+      "field": "geologist"
+    },
+    {
+      "name": "ナスィールッディーン・トゥースィー",
+      "reading": "なすぃーるっでぃーん・とぅーすぃー",
+      "wikidataId": "Q302835",
+      "field": "mathematician"
+    },
+    {
+      "name": "アンジェロ・セッキ",
+      "reading": "あんじぇろ・せっき",
+      "wikidataId": "Q312416",
+      "field": "physicist"
+    },
+    {
+      "name": "アンデルス・オングストローム",
+      "reading": "あんでるす・おんぐすとろーむ",
+      "wikidataId": "Q187258",
+      "field": "astronomer"
+    },
+    {
+      "name": "ジョン・グラハム・カー",
+      "reading": "じょん・ぐらはむ・かー",
+      "wikidataId": "Q1170763",
+      "field": "biologist"
+    },
+    {
+      "name": "ルイ・テナール",
+      "reading": "るい・てなーる",
+      "wikidataId": "Q327722",
+      "field": "chemist"
+    },
+    {
+      "name": "ルイ・ブラランゲム",
+      "reading": "るい・ぶららんげむ",
+      "wikidataId": "Q550783",
+      "field": "geneticist"
+    },
+    {
+      "name": "アディソン・エメリー・ヴェリル",
+      "reading": "あでぃそん・えめりー・ゔぇりる",
+      "wikidataId": "Q353120",
+      "field": "geologist"
+    },
+    {
+      "name": "ルドヴィコ・フェラーリ",
+      "reading": "るどゔぃこ・ふぇらーり",
+      "wikidataId": "Q310783",
+      "field": "mathematician"
+    },
+    {
+      "name": "ウィレム・ド・ジッター",
+      "reading": "うぃれむ・ど・じったー",
+      "wikidataId": "Q313059",
+      "field": "physicist"
+    },
+    {
+      "name": "レオン・フーコー",
+      "reading": "れおん・ふーこー",
+      "wikidataId": "Q187966",
+      "field": "astronomer"
+    },
+    {
+      "name": "デーヴィッド・ケイリン",
+      "reading": "でーゔぃっど・けいりん",
+      "wikidataId": "Q1174949",
+      "field": "biologist"
+    },
+    {
+      "name": "トーマス・グレアム",
+      "reading": "とーます・ぐれあむ",
+      "wikidataId": "Q333762",
+      "field": "chemist"
+    },
+    {
+      "name": "ハーバート・エバンス",
+      "reading": "はーばーと・えばんす",
+      "wikidataId": "Q554341",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョン・ファレイ",
+      "reading": "じょん・ふぁれい",
+      "wikidataId": "Q355803",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョヴァンニ・ボレリ",
+      "reading": "じょゔぁんに・ぼれり",
+      "wikidataId": "Q311814",
+      "field": "mathematician"
+    },
+    {
+      "name": "アンリ・ナビエ",
+      "reading": "あんり・なびえ",
+      "wikidataId": "Q313512",
+      "field": "physicist"
+    },
+    {
+      "name": "ピュテアス",
+      "reading": "ぴゅてあす",
+      "wikidataId": "Q189971",
+      "field": "astronomer"
+    },
+    {
+      "name": "アンリ・デュトロシェ",
+      "reading": "あんり・でゅとろしぇ",
+      "wikidataId": "Q1191107",
+      "field": "biologist"
+    },
+    {
+      "name": "アスカニオ・ソブレロ",
+      "reading": "あすかにお・そぶれろ",
+      "wikidataId": "Q351377",
+      "field": "chemist"
+    },
+    {
+      "name": "ピオトル・スウォニムスキ",
+      "reading": "ぴおとる・すうぉにむすき",
+      "wikidataId": "Q558234",
+      "field": "geneticist"
+    },
+    {
+      "name": "ロベルト・マントヴァーニ",
+      "reading": "ろべると・まんとゔぁーに",
+      "wikidataId": "Q355928",
+      "field": "geologist"
+    },
+    {
+      "name": "ジェミニアーノ・モンタナリ",
+      "reading": "じぇみにあーの・もんたなり",
+      "wikidataId": "Q311823",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジャン・ピカール",
+      "reading": "じゃん・ぴかーる",
+      "wikidataId": "Q314854",
+      "field": "physicist"
+    },
+    {
+      "name": "アントニー・ヒューイッシュ",
+      "reading": "あんとにー・ひゅーいっしゅ",
+      "wikidataId": "Q189990",
+      "field": "astronomer"
+    },
+    {
+      "name": "エドウィン・スティーブン・グッドリッチ",
+      "reading": "えどうぃん・すてぃーぶん・ぐっどりっち",
+      "wikidataId": "Q1230505",
+      "field": "biologist"
+    },
+    {
+      "name": "アレクサンドル・フェルスマン",
+      "reading": "あれくさんどる・ふぇるすまん",
+      "wikidataId": "Q365645",
+      "field": "chemist"
+    },
+    {
+      "name": "ランスロット・ホグベン",
+      "reading": "らんすろっと・ほぐべん",
+      "wikidataId": "Q562117",
+      "field": "geneticist"
+    },
+    {
+      "name": "ウラジミール・オーブルチェフ",
+      "reading": "うらじみーる・おーぶるちぇふ",
+      "wikidataId": "Q359568",
+      "field": "geologist"
+    },
+    {
+      "name": "アラン・コンヌ",
+      "reading": "あらん・こんぬ",
+      "wikidataId": "Q313590",
+      "field": "mathematician"
+    },
+    {
+      "name": "エティエンヌ・ルイ・マリュス",
+      "reading": "えてぃえんぬ・るい・まりゅす",
+      "wikidataId": "Q315391",
+      "field": "physicist"
+    },
+    {
+      "name": "クライド・トンボー",
+      "reading": "くらいど・とんぼー",
+      "wikidataId": "Q190232",
+      "field": "astronomer"
+    },
+    {
+      "name": "ポール・アンリ・ルコント",
+      "reading": "ぽーる・あんり・るこんと",
+      "wikidataId": "Q1230990",
+      "field": "biologist"
+    },
+    {
+      "name": "ヤーコフ・ゼルドビッチ",
+      "reading": "やーこふ・ぜるどびっち",
+      "wikidataId": "Q366471",
+      "field": "chemist"
+    },
+    {
+      "name": "エスター・レーダーバーグ",
+      "reading": "えすたー・れーだーばーぐ",
+      "wikidataId": "Q586884",
+      "field": "geneticist"
+    },
+    {
+      "name": "ロバート・ブルーム",
+      "reading": "ろばーと・ぶるーむ",
+      "wikidataId": "Q359576",
+      "field": "geologist"
+    },
+    {
+      "name": "スティーヴン・スメイル",
+      "reading": "すてぃーゔん・すめいる",
+      "wikidataId": "Q315394",
+      "field": "mathematician"
+    },
+    {
+      "name": "フランチェスコ・マリア・グリマルディ",
+      "reading": "ふらんちぇすこ・まりあ・ぐりまるでぃ",
+      "wikidataId": "Q315411",
+      "field": "physicist"
+    },
+    {
+      "name": "マーティン・ライル",
+      "reading": "まーてぃん・らいる",
+      "wikidataId": "Q190766",
+      "field": "astronomer"
+    },
+    {
+      "name": "ウィリアム・ベンジャミン・カーペンター",
+      "reading": "うぃりあむ・べんじゃみん・かーぺんたー",
+      "wikidataId": "Q1235238",
+      "field": "biologist"
+    },
+    {
+      "name": "フィリップ・アベルソン",
+      "reading": "ふぃりっぷ・あべるそん",
+      "wikidataId": "Q377815",
+      "field": "chemist"
+    },
+    {
+      "name": "リチャード・レウォンティン",
+      "reading": "りちゃーど・れうぉんてぃん",
+      "wikidataId": "Q659265",
+      "field": "geneticist"
+    },
+    {
+      "name": "アルーン・タジェフ",
+      "reading": "あるーん・たじぇふ",
+      "wikidataId": "Q363379",
+      "field": "geologist"
+    },
+    {
+      "name": "ローラン・ラフォルグ",
+      "reading": "ろーらん・らふぉるぐ",
+      "wikidataId": "Q315396",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョージ・ウーレンベック",
+      "reading": "じょーじ・うーれんべっく",
+      "wikidataId": "Q315439",
+      "field": "physicist"
+    },
+    {
+      "name": "ピエール・ガッサンディ",
+      "reading": "ぴえーる・がっさんでぃ",
+      "wikidataId": "Q192315",
+      "field": "astronomer"
+    },
+    {
+      "name": "ウィリアム・シャープ・マクリー",
+      "reading": "うぃりあむ・しゃーぷ・まくりー",
+      "wikidataId": "Q1237875",
+      "field": "biologist"
+    },
+    {
+      "name": "カール・グスタフ・モサンデル",
+      "reading": "かーる・ぐすたふ・もさんでる",
+      "wikidataId": "Q468316",
+      "field": "chemist"
+    },
+    {
+      "name": "ブライアン・サイクス",
+      "reading": "ぶらいあん・さいくす",
+      "wikidataId": "Q659747",
+      "field": "geneticist"
+    },
+    {
+      "name": "パトリック・マニング",
+      "reading": "ぱとりっく・まにんぐ",
+      "wikidataId": "Q365206",
+      "field": "geologist"
+    },
+    {
+      "name": "トーマス・ハリオット",
+      "reading": "とーます・はりおっと",
+      "wikidataId": "Q315402",
+      "field": "mathematician"
+    },
+    {
+      "name": "カール・ジャンスキー",
+      "reading": "かーる・じゃんすきー",
+      "wikidataId": "Q319212",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョゼフ・テイラー",
+      "reading": "じょぜふ・ていらー",
+      "wikidataId": "Q192685",
+      "field": "astronomer"
+    },
+    {
+      "name": "ドナルド・ケネディ",
+      "reading": "どなるど・けねでぃ",
+      "wikidataId": "Q1240022",
+      "field": "biologist"
+    },
+    {
+      "name": "ウォーレン・デラルー",
+      "reading": "うぉーれん・でらるー",
+      "wikidataId": "Q472095",
+      "field": "chemist"
+    },
+    {
+      "name": "サミュエル・カーリン",
+      "reading": "さみゅえる・かーりん",
+      "wikidataId": "Q667074",
+      "field": "geneticist"
+    },
+    {
+      "name": "ハリー・シーリー",
+      "reading": "はりー・しーりー",
+      "wikidataId": "Q369630",
+      "field": "geologist"
+    },
+    {
+      "name": "アンドレイ・オクンコフ",
+      "reading": "あんどれい・おくんこふ",
+      "wikidataId": "Q315425",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルフレッド・ラヴェル",
+      "reading": "あるふれっど・らゔぇる",
+      "wikidataId": "Q319234",
+      "field": "physicist"
+    },
+    {
+      "name": "ウィリアム・ギルバート",
+      "reading": "うぃりあむ・ぎるばーと",
+      "wikidataId": "Q192706",
+      "field": "astronomer"
+    },
+    {
+      "name": "ピエトロ・アルディーノ",
+      "reading": "ぴえとろ・あるでぃーの",
+      "wikidataId": "Q1244985",
+      "field": "biologist"
+    },
+    {
+      "name": "ポール・ヴィラール",
+      "reading": "ぽーる・ゔぃらーる",
+      "wikidataId": "Q531898",
+      "field": "chemist"
+    },
+    {
+      "name": "アレクサンダー・ヴィナー",
+      "reading": "あれくさんだー・ゔぃなー",
+      "wikidataId": "Q706543",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョン・ミッチェル",
+      "reading": "じょん・みっちぇる",
+      "wikidataId": "Q373097",
+      "field": "geologist"
+    },
+    {
+      "name": "ジョン・チャールズ・フィールズ",
+      "reading": "じょん・ちゃーるず・ふぃーるず",
+      "wikidataId": "Q315431",
+      "field": "mathematician"
+    },
+    {
+      "name": "シャルル・ファブリ",
+      "reading": "しゃるる・ふぁぶり",
+      "wikidataId": "Q319289",
+      "field": "physicist"
+    },
+    {
+      "name": "ジェラルド・カイパー",
+      "reading": "じぇらるど・かいぱー",
+      "wikidataId": "Q192948",
+      "field": "astronomer"
+    },
+    {
+      "name": "ヘンリー・ビーチェル",
+      "reading": "へんりー・びーちぇる",
+      "wikidataId": "Q1246299",
+      "field": "biologist"
+    },
+    {
+      "name": "ロバート・ワインバーグ",
+      "reading": "ろばーと・わいんばーぐ",
+      "wikidataId": "Q701506",
+      "field": "chemist"
+    },
+    {
+      "name": "レジナルド・ラグルス・ゲイツ",
+      "reading": "れじなるど・らぐるす・げいつ",
+      "wikidataId": "Q710418",
+      "field": "geneticist"
+    },
+    {
+      "name": "ラファエル・パンペリー",
+      "reading": "らふぁえる・ぱんぺりー",
+      "wikidataId": "Q377078",
+      "field": "geologist"
+    },
+    {
+      "name": "ポール・パンルヴェ",
+      "reading": "ぽーる・ぱんるゔぇ",
+      "wikidataId": "Q315434",
+      "field": "mathematician"
+    },
+    {
+      "name": "エトヴェシュ・ロラーンド",
+      "reading": "えとゔぇしゅ・ろらーんど",
+      "wikidataId": "Q323260",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョヴァンニ・バッティスタ・リッチョーリ",
+      "reading": "じょゔぁんに・ばってぃすた・りっちょーり",
+      "wikidataId": "Q196472",
+      "field": "astronomer"
+    },
+    {
+      "name": "ゲオルク・ナーゲル",
+      "reading": "げおるく・なーげる",
+      "wikidataId": "Q1247068",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・クラーク・スレイター",
+      "reading": "じょん・くらーく・すれいたー",
+      "wikidataId": "Q711519",
+      "field": "chemist"
+    },
+    {
+      "name": "アーサー・ピーコック",
+      "reading": "あーさー・ぴーこっく",
+      "wikidataId": "Q710934",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョン・ミューア",
+      "reading": "じょん・みゅーあ",
+      "wikidataId": "Q379580",
+      "field": "geologist"
+    },
+    {
+      "name": "ソシゲネス",
+      "reading": "そしげねす",
+      "wikidataId": "Q316867",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョージ・グリーン",
+      "reading": "じょーじ・ぐりーん",
+      "wikidataId": "Q323294",
+      "field": "physicist"
+    },
+    {
+      "name": "ジェーン・ルー",
+      "reading": "じぇーん・るー",
+      "wikidataId": "Q197941",
+      "field": "astronomer"
+    },
+    {
+      "name": "ダグラス・ウォレス",
+      "reading": "だぐらす・うぉれす",
+      "wikidataId": "Q1252080",
+      "field": "biologist"
+    },
+    {
+      "name": "ジョン・キッド",
+      "reading": "じょん・きっど",
+      "wikidataId": "Q723419",
+      "field": "chemist"
+    },
+    {
+      "name": "デイビッド・スローン・ウィルソン",
+      "reading": "でいびっど・すろーん・うぃるそん",
+      "wikidataId": "Q715615",
+      "field": "geneticist"
+    },
+    {
+      "name": "アナンダ・クーマラスワミ",
+      "reading": "あなんだ・くーまらすわみ",
+      "wikidataId": "Q379589",
+      "field": "geologist"
+    },
+    {
+      "name": "ジローラモ・フラカストロ",
+      "reading": "じろーらも・ふらかすとろ",
+      "wikidataId": "Q318593",
+      "field": "mathematician"
+    },
+    {
+      "name": "トーマス・ゼーベック",
+      "reading": "とーます・ぜーべっく",
+      "wikidataId": "Q327185",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョン・ディー",
+      "reading": "じょん・でぃー",
+      "wikidataId": "Q201484",
+      "field": "astronomer"
+    },
+    {
+      "name": "カナタジャン・アリベコフ",
+      "reading": "かなたじゃん・ありべこふ",
+      "wikidataId": "Q1260208",
+      "field": "biologist"
+    },
+    {
+      "name": "ウィリアム・アブニー",
+      "reading": "うぃりあむ・あぶにー",
+      "wikidataId": "Q727555",
+      "field": "chemist"
+    },
+    {
+      "name": "イリヤ・イワノフ",
+      "reading": "いりや・いわのふ",
+      "wikidataId": "Q723071",
+      "field": "geneticist"
+    },
+    {
+      "name": "ジョゼ・ボニファチオ・デ・アンドラダ",
+      "reading": "じょぜ・ぼにふぁちお・で・あんどらだ",
+      "wikidataId": "Q379631",
+      "field": "geologist"
+    },
+    {
+      "name": "ルートヴィヒ・シロー",
+      "reading": "るーとゔぃひ・しろー",
+      "wikidataId": "Q320298",
+      "field": "mathematician"
+    },
+    {
+      "name": "アルベルト・デファント",
+      "reading": "あるべると・でふぁんと",
+      "wikidataId": "Q328439",
+      "field": "physicist"
+    },
+    {
+      "name": "エドワード・エマーソン・バーナード",
+      "reading": "えどわーど・えまーそん・ばーなーど",
+      "wikidataId": "Q204999",
+      "field": "astronomer"
+    },
+    {
+      "name": "イェンス・グンター・ローヴァー",
+      "reading": "いぇんす・ぐんたー・ろーゔぁー",
+      "wikidataId": "Q1282469",
+      "field": "biologist"
+    },
+    {
+      "name": "ジェームズ・スミソン",
+      "reading": "じぇーむず・すみそん",
+      "wikidataId": "Q900947",
+      "field": "chemist"
+    },
+    {
+      "name": "スタンリー・ノーマン・コーエン",
+      "reading": "すたんりー・のーまん・こーえん",
+      "wikidataId": "Q741299",
+      "field": "geneticist"
+    },
+    {
+      "name": "デオダ・ドゥ・ドロミュー",
+      "reading": "でおだ・どぅ・どろみゅー",
+      "wikidataId": "Q380520",
+      "field": "geologist"
+    },
+    {
+      "name": "アンドレ・ヴェイユ",
+      "reading": "あんどれ・ゔぇいゆ",
+      "wikidataId": "Q323232",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジョン・ティンダル",
+      "reading": "じょん・てぃんだる",
+      "wikidataId": "Q360808",
+      "field": "physicist"
+    },
+    {
+      "name": "ジャン・フレデリック・フルネ",
+      "reading": "じゃん・ふれでりっく・ふるね",
+      "wikidataId": "Q205331",
+      "field": "astronomer"
+    },
+    {
+      "name": "エドワード・アサエル・バージ",
+      "reading": "えどわーど・あさえる・ばーじ",
+      "wikidataId": "Q1291586",
+      "field": "biologist"
+    },
+    {
+      "name": "ヨハンネス・ムルデル",
+      "reading": "よはんねす・むるでる",
+      "wikidataId": "Q901512",
+      "field": "chemist"
+    },
+    {
+      "name": "ジャン・フランソワ・マッテイ",
+      "reading": "じゃん・ふらんそわ・まってい",
+      "wikidataId": "Q761795",
+      "field": "geneticist"
+    },
+    {
+      "name": "イヴァン・チェルスキー",
+      "reading": "いゔぁん・ちぇるすきー",
+      "wikidataId": "Q381755",
+      "field": "geologist"
+    },
+    {
+      "name": "ピーター・ラックス",
+      "reading": "ぴーたー・らっくす",
+      "wikidataId": "Q323331",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジェフリー・バービッジ",
+      "reading": "じぇふりー・ばーびっじ",
+      "wikidataId": "Q363930",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョン・ハクラ",
+      "reading": "じょん・はくら",
+      "wikidataId": "Q205440",
+      "field": "astronomer"
+    },
+    {
+      "name": "エドワード・ハーロウ",
+      "reading": "えどわーど・はーろう",
+      "wikidataId": "Q1292102",
+      "field": "biologist"
+    },
+    {
+      "name": "ベギエ・ド・シャンクルトワ",
+      "reading": "べぎえ・ど・しゃんくるとわ",
+      "wikidataId": "Q901872",
+      "field": "chemist"
+    },
+    {
+      "name": "レオ・サックス",
+      "reading": "れお・さっくす",
+      "wikidataId": "Q776882",
+      "field": "geneticist"
+    },
+    {
+      "name": "マーシャル・キー",
+      "reading": "まーしゃる・きー",
+      "wikidataId": "Q381894",
+      "field": "geologist"
+    },
+    {
+      "name": "グレゴリー・マルグリス",
+      "reading": "ぐれごりー・まるぐりす",
+      "wikidataId": "Q325705",
+      "field": "mathematician"
+    },
+    {
+      "name": "ジェームズ・エドワード・キーラー",
+      "reading": "じぇーむず・えどわーど・きーらー",
+      "wikidataId": "Q364403",
+      "field": "physicist"
+    },
+    {
+      "name": "ジョージ・サール",
+      "reading": "じょーじ・さーる",
+      "wikidataId": "Q205490",
+      "field": "astronomer"
+    },
+    {
+      "name": "ウラジーミル・レオンテヴィッチ・コマロフ",
+      "reading": "うらじーみる・れおんてゔぃっち・こまろふ",
+      "wikidataId": "Q1319463",
+      "field": "biologist"
+    },
+    {
+      "name": "ガボール・ソモライ",
+      "reading": "がぼーる・そもらい",
+      "wikidataId": "Q904664",
+      "field": "chemist"
+    },
+    {
+      "name": "ヘルマン・ニルソン・エーレ",
+      "reading": "へるまん・にるそん・えーれ",
+      "wikidataId": "Q872093",
+      "field": "geneticist"
+    },
+    {
+      "name": "アーサー・デイ",
+      "reading": "あーさー・でい",
+      "wikidataId": "Q382346",
+      "field": "geologist"
+    },
+    {
+      "name": "ペーダー・ニールセン・ホレボー",
+      "reading": "ぺーだー・にーるせん・ほれぼー",
+      "wikidataId": "Q332450",
+      "field": "mathematician"
+    },
+    {
+      "name": "エットーレ・マヨラナ",
+      "reading": "えっとーれ・まよらな",
+      "wikidataId": "Q367196",
+      "field": "physicist"
+    }
+  ]
+}

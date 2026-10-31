@@ -1,3 +1,4 @@
+import scientistSources from '../../../data/sources/themes/scientists-provenance.json' with { type: 'json' }
 import { expect, it } from 'vitest'
 import data from '../../data/generated/themes.json' with { type: 'json' }
 import { themePassages, themeTrainers } from './themes'
@@ -107,4 +108,26 @@ it('provides 100 unique aligned and typable phrases in each AI RTC half', () => 
       ),
     ).size,
   ).toBe(10000)
+})
+
+it('contains 1000 distinct scientist names with sourced additions and typable readings', () => {
+  const scientists = data.words.scientists
+  expect(scientists).toHaveLength(1000)
+  expect(new Set(scientists.map(([name]) => name)).size).toBe(1000)
+  expect(scientistSources.additions).toHaveLength(890)
+  expect(
+    new Set(scientistSources.additions.map((p) => p.wikidataId)).size,
+  ).toBe(890)
+  expect(scientists.slice(110)).toEqual(
+    scientistSources.additions.map((p) => [p.name, p.reading]),
+  )
+  for (const [name, reading] of scientists) {
+    expect(reading, name).toMatch(/^[ぁ-ゖー・]+$/u)
+    for (const engine of [new RomanEngine(reading), new KanaEngine(reading)]) {
+      const keys = engine instanceof RomanEngine ? engine.hint : engine.target
+      for (const key of keys)
+        expect(engine.feed(key), `${name}: ${key}`).toBe(true)
+      expect(engine.done, name).toBe(true)
+    }
+  }
 })

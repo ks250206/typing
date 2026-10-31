@@ -16,3 +16,9 @@
 - キーツ原詩: https://www.poetryfoundation.org/poems/53210/on-the-grasshopper-and-cricket
 - シェイクスピア作品: https://www.folger.edu/explore/shakespeares-works/
 - ノーベル記念経済学賞の位置づけ: https://www.nobelprize.org/uploads/2018/07/NobelPrizeLessons_2017_Economics_Text-for-pupils.pdf
+
+## 科学者1,000人
+
+既存110人に890人を追加しました。追加分の日本語カタカナ名と人物IDはWikidataの職業データから取得し、カタカナをひらがなへ変換して読みを固定しています。物理・化学・数学・生物・天文学・地学などを含みます。新規分は人物IDと正規化した名前で重複を除き、既存の略称・姓との重複候補も除外しています。漢字の人名に機械的な読み推測は追加していません。
+
+追加890人の名前・読み・人物ID・抽出分野は `scientists-provenance.json` に保存しています。参照先は `https://www.wikidata.org/wiki/` に人物IDを付けたURLです。Wikidata構造化データは[CC0](https://www.wikidata.org/wiki/Wikidata:Licensing)。一部の候補確認には日本語Wikipediaの[物理学者](https://ja.wikipedia.org/wiki/物理学者の一覧)・[化学者](https://ja.wikipedia.org/wiki/化学者の一覧)・[数学者](https://ja.wikipedia.org/wiki/数学者の一覧)等の人物一覧を使いました。説明文・伝記本文は収録していません。取得日は2026-10-31です。アプリ実行・JSON再生成で外部アクセスは行いません。
