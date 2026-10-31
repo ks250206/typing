@@ -191,7 +191,11 @@ export function SessionResult({
         </>
       )}
       {details && (
-        <RecordDetails history={history} record={record} onClose={() => setDetails(false)} />
+        <RecordDetails
+          history={history}
+          record={record}
+          onClose={() => setDetails(false)}
+        />
       )}
     </section>
   )

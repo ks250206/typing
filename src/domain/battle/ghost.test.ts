@@ -129,9 +129,9 @@ it('supports voicing in kana and all five roman layouts, preserving source layou
     'dvorak',
     'colemak',
     'workman',
-  'onishi',
-  'azerty',
-  'norman',
+    'onishi',
+    'azerty',
+    'norman',
     'kana',
   ] as const) {
     const input = layout === 'kana' ? 'か\u3099' : 'ga'

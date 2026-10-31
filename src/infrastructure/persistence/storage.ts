@@ -43,7 +43,8 @@ function readRecords(key: string, limit: number): RecordEntry[] {
               record.mode === 'practice' ||
               record.mode === 'cpu' ||
               record.mode === 'trainer' ||
-              record.mode === 'ghost' || record.mode === 'weak'
+              record.mode === 'ghost' ||
+              record.mode === 'weak'
                 ? record.mode
                 : undefined,
             ghostSourceId:

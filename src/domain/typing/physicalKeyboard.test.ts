@@ -17,9 +17,9 @@ it('finds physical keys for all canonical passage input in all six layouts', () 
     'dvorak',
     'colemak',
     'workman',
-  'onishi',
-  'azerty',
-  'norman',
+    'onishi',
+    'azerty',
+    'norman',
     'kana',
   ] as Layout[]) {
     const characters = new Set<string>()
@@ -34,7 +34,9 @@ it('finds physical keys for all canonical passage input in all six layouts', () 
     for (const char of characters) {
       const key = physicalKey(char, layout)
       expect(key).toBeDefined()
-      expect(keyOutput(key!.code, key!.shift, layout, char, key!.altGraph)).toBe(char)
+      expect(
+        keyOutput(key!.code, key!.shift, layout, char, key!.altGraph),
+      ).toBe(char)
     }
   }
 })
@@ -65,9 +67,9 @@ it('keeps all rows at a fixed physical pitch and includes staggered special keys
     'dvorak',
     'colemak',
     'workman',
-  'onishi',
-  'azerty',
-  'norman',
+    'onishi',
+    'azerty',
+    'norman',
     'kana',
   ] as Layout[]) {
     const slots = keyboardGeometry(layout)
@@ -78,7 +80,9 @@ it('keeps all rows at a fixed physical pitch and includes staggered special keys
     expect(slots.find((slot) => slot.code === 'KeyA')?.column).toBe(8)
     expect(slots.find((slot) => slot.code === 'KeyZ')?.column).toBe(10)
     expect(slots.some((slot) => /^(Escape|F\d+)$/.test(slot.code))).toBe(false)
-    expect(new Set(slots.map((slot) => slot.row))).toEqual(new Set([1, 2, 3, 4, 5]))
+    expect(new Set(slots.map((slot) => slot.row))).toEqual(
+      new Set([1, 2, 3, 4, 5]),
+    )
     expect(
       new Set(
         slots

@@ -160,7 +160,13 @@ export class RtcMatch {
       : Math.max(0, this.wordEnd - this.wordStart)
   }
   activeElapsed(now: number) {
-    return this.totalElapsed + (this.phase === 'playing' || (this.phase === 'paused' && this.previousPhase === 'playing') ? this.elapsedInWord(now) : 0)
+    return (
+      this.totalElapsed +
+      (this.phase === 'playing' ||
+      (this.phase === 'paused' && this.previousPhase === 'playing')
+        ? this.elapsedInWord(now)
+        : 0)
+    )
   }
   get awaitingStart() {
     return (
