@@ -748,7 +748,7 @@ td small {
   padding: 25px;
 }
 .modal {
-  max-height: calc(100dvh - 50px);
+  max-height: calc(100dvh / var(--display-zoom, 1) - 50px);
   overflow-y: auto;
   max-width: 450px;
   width: 100%;
@@ -1271,8 +1271,8 @@ main {
   position: fixed;
   inset: 0;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: calc(100vh / var(--display-zoom, 1));
+  height: calc(100dvh / var(--display-zoom, 1));
   pointer-events: none;
   z-index: 0;
   background: radial-gradient(ellipse at 77% 18%, #7444a525, transparent 48%);
@@ -4212,4 +4212,20 @@ rt {
 }
 .next-sentence[data-empty='true'] {
   visibility: hidden;
+}
+
+/* Keep zoomed narrow screens usable without reducing the chosen text size. */
+@media (max-width: 600px) {
+  html[data-display-enlarged] .sidebar {
+    flex-wrap: wrap;
+  }
+  html[data-display-enlarged] .session-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  html[data-display-enlarged] .practice-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  html[data-display-enlarged] .library-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

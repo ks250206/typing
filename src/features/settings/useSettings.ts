@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import {
   readSettings,
   saveSettings,
@@ -6,6 +6,21 @@ import {
 
 export function useSettings(setNotice: (message: string) => void) {
   const [settings, setSettings] = useState(readSettings)
+  useLayoutEffect(() => {
+    const root = document.documentElement
+    root.toggleAttribute('data-display-enlarged', settings.displayScale > 100)
+    root.style.zoom = String(settings.displayScale / 100)
+    root.style.setProperty(
+      '--display-zoom',
+      String(settings.displayScale / 100),
+    )
+    window.dispatchEvent(new Event('resize'))
+    return () => {
+      root.removeAttribute('data-display-enlarged')
+      root.style.removeProperty('zoom')
+      root.style.removeProperty('--display-zoom')
+    }
+  }, [settings.displayScale])
   useEffect(() => {
     // Report a failure from the external storage system, once per settings change.
     if (!saveSettings(settings))

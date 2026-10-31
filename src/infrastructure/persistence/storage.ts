@@ -1,9 +1,11 @@
+import { validDisplayScale } from '../../domain/records/displayScale'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { archiveBests } from '../../domain/records/recordStats'
 import { writeTraces } from './traceStore'
 import { layoutLabels } from '../../domain/typing/engine'
 import { summarizePace, validPace } from '../../domain/records/pace'
 export const defaultSettings: Settings = {
+  displayScale: 100,
   layout: 'jis',
   background: true,
   wordColors: true,
@@ -118,6 +120,7 @@ export function readSettings(): Settings {
   try {
     const s = JSON.parse(localStorage.getItem(SETTINGS) ?? '{}')
     return {
+      displayScale: validDisplayScale(s?.displayScale),
       navigationMotion: ['on', 'system', 'off'].includes(s?.navigationMotion)
         ? s.navigationMotion
         : 'on',

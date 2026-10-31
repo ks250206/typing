@@ -1,3 +1,4 @@
+import { displayScales } from '../../domain/records/displayScale'
 import { Check, Settings2, Trash2, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -41,6 +42,29 @@ export function SettingsDialog({
         <p>
           入力方式は練習画面で選べます。配列を切り替えると、練習は最初からになります。
         </p>
+        <div className="navigation-motion-setting">
+          <label htmlFor="display-scale">画面の表示倍率</label>
+          <Select
+            id="display-scale"
+            label="画面の表示倍率"
+            value={String(settings.displayScale)}
+            options={displayScales.map((scale) => ({
+              value: String(scale),
+              label: `${scale}%${scale === 100 ? '（標準）' : ''}`,
+            }))}
+            onChange={(value) =>
+              setSettings((s) => ({ ...s, displayScale: Number(value) }))
+            }
+          />
+          <p>画面全体の大きさを変更します。設定は自動保存されます。</p>
+          <button
+            className="text-button"
+            disabled={settings.displayScale === 100}
+            onClick={() => setSettings((s) => ({ ...s, displayScale: 100 }))}
+          >
+            100%に戻す
+          </button>
+        </div>
         <label className="toggle-row">
           3D 背景
           <input

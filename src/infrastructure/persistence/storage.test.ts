@@ -22,6 +22,7 @@ it('round trips settings and rejects unknown layouts', () => {
       wordColors: true,
       consumeTyped: true,
       navigationMotion: 'system',
+      displayScale: 125,
     }),
   ).toBe(true)
   expect(readSettings()).toEqual({
@@ -30,6 +31,7 @@ it('round trips settings and rejects unknown layouts', () => {
     wordColors: true,
     consumeTyped: true,
     navigationMotion: 'system',
+    displayScale: 125,
   })
   data.set('yohaku.settings.v1', '{"layout":"bad"}')
   expect(readSettings().layout).toBe('jis')
@@ -255,4 +257,15 @@ it('preserves all completed records beyond the former 200-entry limit on read, s
   expect(result.saved).toBe(true)
   expect(readHistory()).toHaveLength(226)
   expect(readHistory().some((r) => r.id === 'past-224')).toBe(true)
+})
+
+it('restores supported display scales and defaults invalid or legacy values to 100%', () => {
+  for (const scale of [75, 80, 90, 100, 110, 125, 150]) {
+    data.set('yohaku.settings.v1', JSON.stringify({ displayScale: scale }))
+    expect(readSettings().displayScale).toBe(scale)
+  }
+  for (const scale of [undefined, null, '125', 0, -1, 999, 101]) {
+    data.set('yohaku.settings.v1', JSON.stringify({ displayScale: scale }))
+    expect(readSettings().displayScale).toBe(100)
+  }
 })

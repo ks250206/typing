@@ -31,6 +31,7 @@ export interface RecordEntry {
   mode?: 'practice' | 'cpu' | 'trainer' | 'ghost' | 'weak'
 }
 export interface Settings {
+  displayScale: number
   layout: Layout
   background: boolean
   wordColors: boolean
