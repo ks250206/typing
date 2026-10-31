@@ -117,3 +117,25 @@ it('rejects corrupted optional traces instead of crashing the record viewer', ()
   ])
     expect(validTrace(value)).toBe(false)
 })
+
+it('snapshots reviewed word boundaries and rejects malformed optional boundaries in old or new logs', () => {
+  const wordStarts = [2]
+  const recorder = new TypingTrace()
+  recorder.begin({ ...sentence, wordStarts }, 0, 'jis')
+  wordStarts[0] = 1
+  const trace = recorder.finish(200)
+  expect(trace.prompts[0].wordStarts).toEqual([2])
+  expect(validTrace(trace)).toBe(true)
+  trace.prompts[0].wordStarts![0] = 3
+  expect(recorder.finish(200).prompts[0].wordStarts).toEqual([2])
+  for (const boundaries of [null, '2', [0], [4], [1.5], [2, 1], [2, 2]]) {
+    expect(
+      validTrace({
+        ...trace,
+        prompts: [{ ...trace.prompts[0], wordStarts: boundaries }],
+      }),
+    ).toBe(false)
+  }
+  delete trace.prompts[0].wordStarts
+  expect(validTrace(trace)).toBe(true)
+})

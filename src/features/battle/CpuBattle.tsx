@@ -1,3 +1,5 @@
+import { Pause, Play } from 'lucide-react'
+import { PauseOverlay } from '../../shared/typing/PauseOverlay'
 import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -33,6 +35,9 @@ import {
 import type { RecordEntry, Settings } from '../../domain/records/types'
 
 import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
+import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
+import type { Favorite } from '../../domain/records/favorites'
+import { FavoriteButton } from '../favorites/FavoriteButton'
 
 function loadCpu(): CpuConfig {
   try {
@@ -60,6 +65,9 @@ export function CpuBattle({
   onRecord,
   replay,
   onReplayConsumed,
+  favorite,
+  isFavorite,
+  onToggleFavorite,
 }: {
   settings: Settings
   historyRecords?: RecordEntry[]
@@ -67,13 +75,16 @@ export function CpuBattle({
   replay?: RecordEntry | null
   onReplayConsumed?: () => void
   onRecord: (record: RecordEntry) => void
+  favorite?: Extract<Favorite, { kind: 'cpu' }> | null
+  isFavorite: (favorite: Favorite) => boolean
+  onToggleFavorite: (favorite: Favorite) => void
 }) {
   const keyFeedback = useKeyFeedback()
   const [config, setConfig] = useState<CpuConfig>(
-    () => replay?.cpuConfig ?? loadCpu(),
+    () => favorite?.cpuConfig ?? replay?.cpuConfig ?? loadCpu(),
   )
   const [layout, setLayout] = useState<Layout>(
-    replay?.layout ?? settings.layout,
+    favorite?.layout ?? replay?.layout ?? settings.layout,
   )
   const [selection] = useState(() => {
     try {
@@ -93,9 +104,16 @@ export function CpuBattle({
     }
     return { id: 'cpu-rtc', seed: freshSeed(), fixed: false }
   })
-  const [setId, setSetId] = useState(replay?.passageId ?? selection.id)
-  const [seed, setSeed] = useState(replay?.seed ?? selection.seed)
-  const [fixed, setFixed] = useState(!!replay || !!selection.fixed)
+  const [setId, setSetId] = useState(
+    favorite?.passageId ?? replay?.passageId ?? selection.id,
+  )
+  const [seed, setSeed] = useState(() =>
+    favorite ? freshSeed() : (replay?.seed ?? selection.seed),
+  )
+  const [fixed, setFixed] = useState(
+    !favorite && (!!replay || !!selection.fixed),
+  )
+  const promptVersion = useRef<1 | 2>(replay?.replayVersion ?? (replay ? 1 : 2))
   const matchSource = useRef({
     id: setId,
     seed,
@@ -148,7 +166,8 @@ export function CpuBattle({
       missPenalty: penalty,
       mode: 'cpu',
       seed: matchSource.current.seed,
-      replayVersion: 1,
+      replayVersion:
+        matchSource.current.id === 'cpu-rtc' ? promptVersion.current : 1,
       cpuConfig: { ...value.config },
       trace: value.trace.finish(value.totalElapsed),
     }
@@ -190,9 +209,13 @@ export function CpuBattle({
       seed: nextSeed,
       title: battleSets.find((s) => s.id === setId)!.title,
     }
-    const value = new RtcMatch(seededBattlePrompts(setId, nextSeed), layout, {
-      ...config,
-    })
+    const value = new RtcMatch(
+      seededBattlePrompts(setId, nextSeed, promptVersion.current),
+      layout,
+      {
+        ...config,
+      },
+    )
     model.current = value
     clock.current = { now: 0, last: performance.now() }
     recorded.current = false
@@ -252,6 +275,31 @@ export function CpuBattle({
     render((v) => v + 1)
   }
   const phase = match?.phase
+  const favoriteEntry: Favorite = {
+    kind: 'cpu',
+    passageId: setId,
+    layout,
+    cpuConfig: config,
+  }
+  const nextRound = () => {
+    model.current?.nextRound(synchronize())
+    render((v) => v + 1)
+    requestAnimationFrame(() => area.current?.focus())
+  }
+  useGameShortcuts((event) => {
+    const key = event.key.toLowerCase()
+    const currentPhase = model.current?.phase
+    if (
+      currentPhase === 'round-result' &&
+      ['n', 's', ' ', 'enter'].includes(key)
+    )
+      return nextRound
+    if (currentPhase === 'finished' && key === 'r') return start
+    if (currentPhase === 'paused') {
+      if ([' ', 'escape', 'enter'].includes(key)) return resume
+      if (key === 'r') return start
+    }
+  })
   const preset =
     cpuPresets.find(
       (p) =>
@@ -299,11 +347,19 @@ export function CpuBattle({
   )
   return (
     <div className="practice-grid battle-grid">
-      <section className="cpu-battle practice-main">
+      <section className="cpu-battle practice-main" data-match-active={!!match}>
         <PageHeading
           className="battle-brief"
           eyebrow="CPU DUEL / BO7"
           title="CPU対戦"
+          actions={
+            !match ? (
+              <FavoriteButton
+                active={isFavorite(favoriteEntry)}
+                onClick={() => onToggleFavorite(favoriteEntry)}
+              />
+            ) : undefined
+          }
         >
           <p>
             先に打ち切ると1点。10点先取でラウンド獲得、4ラウンドで勝利。正確率95%未満は逆転判定。
@@ -512,7 +568,8 @@ export function CpuBattle({
             </div>
             <p className="battle-seed-info">
               {matchSource.current.title} · シード {matchSource.current.seed} ·
-              RTC v1
+              RTC v
+              {matchSource.current.id === 'cpu-rtc' ? promptVersion.current : 1}
             </p>
             <div className="word-score">
               <span>
@@ -525,11 +582,7 @@ export function CpuBattle({
                 history={historyRecords}
                 match={match}
                 result={result}
-                onNext={() => {
-                  match.nextRound(synchronize())
-                  render((v) => v + 1)
-                  requestAnimationFrame(() => area.current?.focus())
-                }}
+                onNext={nextRound}
                 onRematch={start}
               />
             ) : (
@@ -541,7 +594,10 @@ export function CpuBattle({
                   role="region"
                   aria-label="CPU対戦の入力領域"
                   onKeyDown={accept}
-                  onBlur={pause}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget))
+                      pause()
+                  }}
                 >
                   {mistake && (
                     <div className="damage-overlay" aria-hidden="true" />
@@ -581,6 +637,7 @@ export function CpuBattle({
                       />
                     </>
                   )}
+                  {phase === 'paused' && <PauseOverlay onResume={resume} />}
                 </div>
                 <div className="battle-status" role="status">
                   {phase === 'word-result' && (
@@ -589,31 +646,35 @@ export function CpuBattle({
                       次の問題へ
                     </span>
                   )}
-                  {phase === 'paused' && (
-                    <button className="primary-button" onClick={resume}>
-                      対戦を再開する
-                    </button>
-                  )}
                 </div>
               </>
             )}
-            <div className="battle-actions">
+            <div
+              className="battle-actions"
+              onMouseDown={(event) => event.preventDefault()}
+            >
               <span>
                 {point} pt · {title} · 実ミス率{' '}
                 {formatMissRate(titleKeys, titleMisses)}
               </span>
               <button
-                onClick={pause}
+                className="battle-pause-button"
+                onClick={phase === 'paused' ? resume : pause}
+                aria-keyshortcuts="Escape"
                 disabled={
-                  !['playing', 'countdown', 'word-result'].includes(phase ?? '')
+                  !['playing', 'countdown', 'word-result', 'paused'].includes(
+                    phase ?? '',
+                  )
                 }
               >
-                対戦を一時停止
+                {phase === 'paused' ? <Play size={14} /> : <Pause size={14} />}
+                {phase === 'paused' ? '再開' : '一時停止'}
               </button>
               <button
                 onClick={() => {
                   keyFeedback.clearKeyFeedback()
                   model.current = null
+                  promptVersion.current = 2
                   setMatch(null)
                   clearTimeout(missTimer.current)
                   setMistake(false)

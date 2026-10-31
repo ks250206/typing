@@ -4,10 +4,13 @@ import { freshSeed } from '../../domain/content/typewell'
 import type { Settings } from '../../domain/records/types'
 import { PassageLibrary } from '../library/PassageLibrary'
 import type { PracticeSession } from './usePracticeSession'
+import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 
 export function PracticeSelection({
   session,
   settings,
+  isFavorite,
+  onToggleFavorite,
 }: {
   session: Pick<
     PracticeSession,
@@ -32,6 +35,8 @@ export function PracticeSelection({
     | 'setFixedSeed'
   >
   settings: Settings
+  isFavorite: (passageId: string) => boolean
+  onToggleFavorite: (passageId: string) => void
 }) {
   const {
     selected,
@@ -60,6 +65,8 @@ export function PracticeSelection({
         passages={passages}
         selected={selected}
         onSelect={(id) => reset(id, settings.layout, 0)}
+        isFavorite={isFavorite}
+        onToggleFavorite={onToggleFavorite}
       />
       <div className="passage-header">
         <div>
@@ -147,7 +154,11 @@ export function PracticeSelection({
                 `全${sentences.length}文を1周するごとに再シャッフルします。全文確認は1周目のみ。同じシードで2周目以降も再現します。`
               )
             ) : rtc ? (
-              '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
+              isRtcOriginal(selected) ? (
+                '独自短文から重複なしで15問を選びます。同じシードで同じ15問・同じ順番を再現します。'
+              ) : (
+                '各パートから1フレーズを選んで連結します。同じシードで同じ15問・同じ順番を再現します。'
+              )
             ) : etyping ? (
               '同じシードで同じ15問・同じ順番を再現します。重複なしのランダム出題です。'
             ) : (

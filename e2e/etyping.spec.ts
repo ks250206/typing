@@ -3,6 +3,7 @@ import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { etypingDocument, etypingPassages } from '../src/domain/content/etyping'
 import { KanaEngine, RomanEngine } from '../src/domain/typing/engine'
+import { seededBattlePrompts } from '../src/domain/content/battleSets'
 import { physicalKey } from '../src/domain/typing/physicalKeyboard'
 
 const choose = async (page: Page, title: string, seed: string) => {
@@ -24,11 +25,11 @@ const preview = async (page: Page) => {
       ),
     )
 }
-const enter = async (page: Page) => {
+const enter = async (page: Page, advanceClock = false) => {
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
-  await startPractice(page)
+  await startPractice(page, advanceClock)
 }
 
 test('all six clean titles provide seeded 15-question previews; completing 15 saves the seed and replays the same order', async ({
@@ -39,7 +40,7 @@ test('all six clean titles provide seeded 15-question previews; completing 15 sa
   await page.goto('/')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const seed = 'xml-replay-test'
-  for (const passage of etypingPassages) {
+  for (const passage of etypingPassages.slice(0, 6)) {
     await choose(page, passage.title, seed)
     const expected = etypingDocument(passage.id, seed)
     expect(await preview(page)).toEqual(expected.sentences.map((s) => s.text))
@@ -147,3 +148,112 @@ test('JIS kana accepts literal numeric positions and continues into kana; changi
   await expect(page.locator('.miss-stat')).toContainText(`打鍵${accepted}`)
   await expect(page.locator('.miss-stat')).toContainText('ミス0')
 })
+
+for (const width of [1440, 390]) {
+  test(`annual 26-title library is playable in practice and CPU with intact kana words at ${width}px`, async ({
+    page,
+  }) => {
+    const errors: string[] = []
+    page.on('pageerror', (error) => errors.push(error.message))
+    await page.clock.install()
+    await page.addInitScript(() =>
+      localStorage.setItem(
+        'yohaku.settings.v1',
+        JSON.stringify({ background: false, navigationMotion: 'off' }),
+      ),
+    )
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/')
+    for (const set of etypingPassages) {
+      await expect(
+        page.getByRole('button', { name: set.title, exact: true }),
+      ).toHaveCount(1)
+      await choose(page, set.title, 'annual-coverage')
+      expect(await preview(page)).toEqual(
+        etypingDocument(set.id, 'annual-coverage').sentences.map((s) => s.text),
+      )
+      await page
+        .getByRole('button', { name: '文章選択へ', exact: true })
+        .click()
+    }
+    let seed = ''
+    for (let i = 0; i < 2000; i++) {
+      if (
+        etypingDocument(
+          'etyping-favorite-snacks',
+          String(i),
+        ).sentences[0].text.includes('みたらしだんご')
+      ) {
+        seed = String(i)
+        break
+      }
+    }
+    expect(seed).not.toBe('')
+    await choose(page, '大好きなおやつ', seed)
+    const doc = etypingDocument('etyping-favorite-snacks', seed)
+    await enter(page, true)
+    const renderedStarts = async () =>
+      page
+        .locator('.current-paragraph .sentence-stream > span')
+        .evaluateAll((nodes) => {
+          let position = 0
+          const starts: number[] = []
+          for (const node of nodes) {
+            if (node.classList.contains('word-start')) starts.push(position)
+            position += node.querySelector('.token-text')!.textContent!.length
+          }
+          return starts
+        })
+    expect(await renderedStarts()).toEqual(doc.sentences[0].wordStarts)
+    expect(await page.locator('.kana-line .word-start').count()).toBe(
+      doc.sentences[0].wordStarts!.length,
+    )
+    await page.keyboard.type(
+      new RomanEngine(doc.sentences[0].reading).hint.slice(0, 3),
+    )
+    await page.screenshot({
+      path: `artifacts/etyping-year-${width}.png`,
+      fullPage: true,
+      animations: 'disabled',
+    })
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+    for (const set of etypingPassages) {
+      await pick(page.getByLabel('対戦の文章セット', { exact: true }), set.id)
+      await expect(
+        page.getByLabel('対戦の文章セット', { exact: true }),
+      ).toHaveAttribute('data-value', set.id)
+    }
+    await pick(
+      page.getByLabel('対戦の文章セット', { exact: true }),
+      'etyping-textures',
+    )
+    await page.getByLabel('対戦シードを固定する', { exact: true }).check()
+    await page.getByLabel('対戦シード', { exact: true }).fill('annual-cpu')
+    const first = seededBattlePrompts('etyping-textures', 'annual-cpu')[0]
+    await page
+      .getByRole('button', { name: 'CPUと対戦する', exact: true })
+      .click()
+    await page.clock.runFor(3100)
+    await expect(page.locator('.current-paragraph')).toHaveAttribute(
+      'data-text',
+      first.text,
+    )
+    expect(await renderedStarts()).toEqual(first.wordStarts)
+    await page
+      .getByRole('region', { name: 'CPU対戦の入力領域', exact: true })
+      .focus()
+    await page.keyboard.type(new RomanEngine(first.reading).hint.slice(0, 3))
+    await expect(page.locator('.typed-roman')).not.toHaveText('')
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    expect(errors).toEqual([])
+  })
+}

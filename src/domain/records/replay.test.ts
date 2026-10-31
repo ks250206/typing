@@ -97,3 +97,22 @@ it('rejects inconsistent accepted keys and positions instead of inventing playba
   r.add('z', 's', 0, true, 100)
   expect(() => new ReplayTimeline(r.finish(100), 'jis')).toThrow('入力判定')
 })
+
+it('replays saved kana word boundaries independently of the platform tokenizer', () => {
+  const recorder = new TypingTrace()
+  recorder.begin(
+    {
+      text: 'ぷるぷるの',
+      reading: 'ぷるぷるの',
+      segments: [...'ぷるぷるの'].map((text) => ({ text, reading: text })),
+      wordStarts: [4],
+    },
+    0,
+    'jis',
+  )
+  const trace = recorder.finish(100)
+  const timeline = new ReplayTimeline(trace, 'jis')
+  expect(timeline.sentences[0].wordStarts).toEqual([4])
+  timeline.sentences[0].wordStarts![0] = 1
+  expect(trace.prompts[0].wordStarts).toEqual([4])
+})

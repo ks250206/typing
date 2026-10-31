@@ -20,6 +20,7 @@ export interface Passage {
     text: string
     reading: string
     segments?: { text: string; reading: string }[]
+    wordStarts?: number[]
   }[]
 }
 export const passages: Passage[] = [

@@ -11,7 +11,7 @@ const input = async (page: import('@playwright/test').Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +
   ((await page.locator('.remaining-roman').textContent()) ?? '')
 
-test('mission frame stays fixed across faces, and every typing line scrolls horizontally', async ({
+test('selection and preview share a frame, typing fits its content, and every line scrolls horizontally', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1100 })
@@ -32,7 +32,17 @@ test('mission frame stays fixed across faces, and every typing line scrolls hori
           .evaluate((el) => el.getBoundingClientRect().height),
       )
     }
-    expect(new Set(heights).size).toBe(1)
+    expect(heights[0]).toBe(heights[1])
+    expect(heights[2]).toBeLessThan(heights[0])
+    const footerGap = await page.locator('.typing-area').evaluate((area) => {
+      const keyboard = area
+        .querySelector('.keyboard-guide')!
+        .getBoundingClientRect()
+      const footer = area.nextElementSibling!.getBoundingClientRect()
+      return footer.top - keyboard.bottom
+    })
+    expect(footerGap).toBeGreaterThanOrEqual(0)
+    expect(footerGap).toBeLessThanOrEqual(28)
     for (const selector of [
       '.current-paragraph',
       '.kana-line',
@@ -136,7 +146,7 @@ test('CPU presets include reaction; paused time never advances the opponent; CPU
   ).toBe(true)
   await page.screenshot({ path: 'artifacts/cpu-mobile.png', fullPage: true })
   await page.setViewportSize({ width: 1280, height: 1000 })
-  await page.getByRole('button', { name: '対戦を再開する' }).click()
+  await page.getByRole('button', { name: '再開する' }).click()
   for (let round = 0; round < 4; round++) {
     await page.clock.fastForward(180000)
     if (round < 3) {
@@ -281,6 +291,12 @@ test('duel roman rows use the same glyph columns, word gaps and shared scrolling
   }
   await aligned()
   await expect(page.getByLabel('入力の先行状況')).toHaveText('同じ位置')
+  await expect(page.getByLabel('入力の先行状況')).toBeHidden()
+  expect(
+    await page
+      .getByLabel('入力の先行状況')
+      .evaluate((el) => el.getBoundingClientRect().height),
+  ).toBeGreaterThan(0)
   const area = page.getByRole('region')
   await area.focus()
   await page.keyboard.type('hosi')
@@ -312,7 +328,7 @@ test('duel roman rows use the same glyph columns, word gaps and shared scrolling
     fullPage: true,
     animations: 'disabled',
   })
-  await page.getByRole('button', { name: '対戦を再開する' }).click()
+  await page.getByRole('button', { name: '再開する' }).click()
   await page.clock.runFor(50)
   await area.focus()
   await page.keyboard.type(await input(page))

@@ -15,6 +15,7 @@ import {
 import { isConstitutionArticles } from '../../domain/content/constitutionArticles'
 import { isEtyping } from '../../domain/content/etyping'
 import { isRtc } from '../../domain/content/rtcWords'
+import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { isTrainer } from '../../domain/content/sakusaku'
 import { isTypewell } from '../../domain/content/typewell'
 import {
@@ -273,7 +274,8 @@ export function HistoryPage({
                                     isEtyping(r.passageId) ||
                                     isTrainer(r.passageId) ||
                                     isConstitutionArticles(r.passageId) ||
-                                    isRtc(r.passageId)) && (
+                                    isRtc(r.passageId) ||
+                                    isRtcOriginal(r.passageId)) && (
                                     <button
                                       className="text-button"
                                       onClick={() => {

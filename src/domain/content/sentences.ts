@@ -13,6 +13,8 @@ export interface Sentence {
   text: string
   reading: string
   segments: ReadingSegment[]
+  /** Reviewed word boundaries when the platform tokenizer fragments kana. */
+  wordStarts?: number[]
 }
 
 /** Explicit alignments also support historical written kana with modern readings. */
@@ -51,6 +53,9 @@ export const sentencesByPassage: Record<string, Sentence[]> =
           sentences.push({
             ...(passage.continuous ? { continuous: true } : {}),
             ...(paragraph.label ? { label: paragraph.label } : {}),
+            ...(paragraph.wordStarts
+              ? { wordStarts: paragraph.wordStarts }
+              : {}),
             text: segments.map((s) => s.text).join(''),
             reading: segments.map((s) => s.reading).join(''),
             segments,

@@ -66,17 +66,6 @@ export const KeyboardGuide = memo(function KeyboardGuide({
   )
   return (
     <figure className="keyboard-guide" aria-label="指別キーボードガイド">
-      <figcaption>
-        <span>KEYBOARD / 指のガイド</span>
-        <span className="next-key-label">
-          次のキー{' '}
-          <strong>
-            {next
-              ? `${next.altGraph ? 'AltGr + ' : ''}${next.shift ? 'Shift + ' : ''}${display(nextCharacter)}`
-              : '—'}
-          </strong>
-        </span>
-      </figcaption>
       <div
         className={`physical-keyboard ${usesJisGeometry(layout) ? 'is-jis' : ''}`}
         aria-hidden="true"
@@ -133,7 +122,6 @@ export const KeyboardGuide = memo(function KeyboardGuide({
             {finger}
           </span>
         ))}
-        <span className="keyboard-state-legend">光るキーが次の一打</span>
       </div>
     </figure>
   )

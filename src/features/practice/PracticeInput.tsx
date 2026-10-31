@@ -2,6 +2,7 @@ import { Check, Pause, Play, RotateCcw } from 'lucide-react'
 import type { Settings } from '../../domain/records/types'
 import { layoutLabels } from '../../domain/typing/engine'
 import { KeyboardGuide } from '../../shared/typing/KeyboardGuide'
+import { PauseOverlay } from '../../shared/typing/PauseOverlay'
 import { SentenceView } from '../../shared/typing/SentenceView'
 import type { PracticeSession } from './usePracticeSession'
 
@@ -127,19 +128,10 @@ export function PracticeInput({
           </div>
         )}
         {status === 'paused' && (
-          <div
-            className="practice-overlay"
-            data-phase="paused"
-            role="group"
-            aria-label="一時停止中"
-          >
-            <span className="practice-pause-label">PAUSED</span>
-            <button className="practice-start-button" onClick={resume}>
-              <Play size={24} />
-              再開する
-            </button>
-            <p>計測を止めています</p>
-          </div>
+          <PauseOverlay
+            onResume={resume}
+            description={session.weak ? '計測を止めています' : undefined}
+          />
         )}
         {status === 'countdown' && (
           <div

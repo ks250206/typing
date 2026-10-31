@@ -1,2 +1,4 @@
 # Preserve supplied XML snapshots byte-for-byte, including their original CRLF.
-src/data/etyping/*.xml -text whitespace=trailing-space,space-before-tab,cr-at-eol
+data/sources/etyping/*.xml -text whitespace=trailing-space,space-before-tab,cr-at-eol
+# This acquisition receipt retains the published HTML's whitespace and CRLF.
+data/sources/etyping/weekly-index.html -text -whitespace

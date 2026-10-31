@@ -7,6 +7,7 @@ import {
 } from '../../domain/content/practiceDocument'
 import { practicePreview } from '../../domain/content/practicePreview'
 import { isRtc } from '../../domain/content/rtcWords'
+import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { createTrainerOrder, isTrainer } from '../../domain/content/sakusaku'
 import {
   sentencesByPassage,
@@ -93,7 +94,7 @@ export function usePracticeSession(
   const sentences: Sentence[] = practice.sentences
   const typewell = isTypewell(selected)
   const etyping = isEtyping(selected)
-  const rtc = isRtc(selected)
+  const rtc = isRtc(selected) || isRtcOriginal(selected)
   const trainer = isTrainer(selected)
   const articles = isConstitutionArticles(selected)
   const seeded = typewell || etyping || rtc || trainer || articles
@@ -140,6 +141,7 @@ export function usePracticeSession(
       isTypewell(id) ||
       isEtyping(id) ||
       isRtc(id) ||
+      isRtcOriginal(id) ||
       isTrainer(id) ||
       isConstitutionArticles(id)
     ) {
@@ -433,6 +435,10 @@ export function usePracticeSession(
     handleStageChange,
     setSeedDraft,
     setFixedSeed,
+    openRandomDocument: (id: string, layout: Layout) => {
+      setFixedSeed(false)
+      reset(id, layout, 1, freshSeed(), 2)
+    },
     startPreview: () => {
       setPracticeStage(2)
       if (status === 'paused') resume()

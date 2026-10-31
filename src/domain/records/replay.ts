@@ -39,6 +39,7 @@ function displaySentence(p: TracePrompt): Sentence {
   return {
     ...(p.continuous === true ? { continuous: true } : {}),
     ...(typeof p.label === 'string' ? { label: p.label } : {}),
+    ...(p.wordStarts ? { wordStarts: [...p.wordStarts] } : {}),
     text: p.text,
     reading: p.reading,
     segments: segments ?? [{ text: p.text, reading: p.reading }],

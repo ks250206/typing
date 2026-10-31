@@ -1,4 +1,6 @@
 import type { Sentence } from './sentences'
+import { rtcOriginalPrompts } from './rtcOriginal'
+export { rtcOriginalPrompts as battlePrompts } from './rtcOriginal'
 // Original short prompts; no tournament question assets are copied.
 const source = [
   [
@@ -166,13 +168,13 @@ const source = [
     ['集中', 'しゅうちゅう'],
   ],
 ] as const
-export const battlePrompts: Sentence[] = source.map((parts) => ({
+export const legacyBattlePrompts: Sentence[] = source.map((parts) => ({
   text: parts.map((p) => p[0]).join(''),
   reading: parts.map((p) => p[1]).join(''),
   segments: parts.map(([text, reading]) => ({ text, reading })),
 }))
 export function shuffledPrompts(random = Math.random) {
-  const prompts = [...battlePrompts]
+  const prompts = [...rtcOriginalPrompts]
   for (let index = prompts.length - 1; index > 0; index--) {
     const other = Math.floor(random() * (index + 1))
     ;[prompts[index], prompts[other]] = [prompts[other], prompts[index]]

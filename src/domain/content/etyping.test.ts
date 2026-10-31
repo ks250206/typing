@@ -4,10 +4,10 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import data from '../../data/generated/etyping.json' with { type: 'json' }
 import { etypingDocument, etypingPassages } from './etyping'
-import { mapKey } from '../typing/engine'
+import { KanaEngine, RomanEngine, mapKey } from '../typing/engine'
 import { sentenceWordStarts } from '../typing/wordSpacing'
 
-it('imports all supplied XML words and readings in order; only identical Valentine files merge', () => {
+it('imports 26 unique titles from 52 weeks, preserving XML words and readings in order', () => {
   expect(
     Object.fromEntries(
       etypingPassages.map((p) => [p.title, p.paragraphs.length]),
@@ -19,13 +19,36 @@ it('imports all supplied XML words and readings in order; only identical Valenti
     思い出の言葉: 380,
     春の言葉: 113,
     バレンタイン: 167,
+    秋の言葉: 284,
+    体の慣用句: 161,
+    初夏の言葉: 360,
+    エコライフ: 147,
+    大好きなおやつ: 331,
+    魚のことわざ: 172,
+    おふくろの味: 119,
+    慣用句: 310,
+    いろはかるた: 47,
+    数のある言葉: 216,
+    ことわざ: 211,
+    梅雨の言葉: 215,
+    給食のおかず: 213,
+    学校にあるもの: 201,
+    短いことわざ: 113,
+    夏のおやつ: 82,
+    夏の言葉: 380,
+    食感ことば: 119,
+    冬の言葉: 233,
+    大掃除の言葉: 196,
   })
-  expect(data.flatMap((s) => s.sources)).toHaveLength(7)
+  expect(data.flatMap((s) => s.sources)).toHaveLength(27)
   for (const set of data) {
     expect(set.title).not.toMatch(/[0-9]/)
     for (const source of set.sources) {
       const raw = readFileSync(
-        new URL(`../../../data/sources/etyping/${source.file}`, import.meta.url),
+        new URL(
+          `../../../data/sources/etyping/${source.file}`,
+          import.meta.url,
+        ),
       )
       expect(createHash('sha256').update(raw).digest('hex')).toBe(source.sha256)
       // These snapshots have no XML entities in the word data.
@@ -112,4 +135,91 @@ it('does not split contracted kana when a tokenizer places a word boundary insid
       segments: sentence.segments!,
     }).reading.has(7),
   ).toBe(false)
+})
+
+it.each(etypingPassages)(
+  '$id: every boundary maps to exact text and reading offsets, and both engines finish',
+  (passage) => {
+    for (const paragraph of passage.paragraphs) {
+      expect(paragraph.segments!.map((s) => s.text).join('')).toBe(
+        paragraph.text,
+      )
+      expect(paragraph.segments!.map((s) => s.reading).join('')).toBe(
+        paragraph.reading,
+      )
+      const offsets = new Set<number>()
+      let position = 0
+      for (const segment of paragraph.segments!) {
+        offsets.add(position)
+        position += segment.text.length
+      }
+      const starts = paragraph.wordStarts!
+      expect(starts).toEqual([...new Set(starts)].sort((a, b) => a - b))
+      for (const start of starts) {
+        expect(start).toBeGreaterThan(0)
+        expect(start).toBeLessThan(paragraph.text.length)
+        expect(offsets.has(start)).toBe(true)
+        expect(paragraph.text[start]).not.toMatch(
+          /[ぁぃぅぇぉゃゅょゎっァィゥェォャュョヮッー々]/u,
+        )
+      }
+      const boundaries = sentenceWordStarts({
+        ...paragraph,
+        segments: paragraph.segments!,
+      })
+      expect(boundaries.segments.size).toBe(starts.length)
+      for (const Engine of [RomanEngine, KanaEngine]) {
+        const engine = new Engine(paragraph.reading)
+        const keys = engine instanceof RomanEngine ? engine.hint : engine.target
+        for (const key of keys) {
+          if (!engine.feed(key))
+            throw new Error(`Unreachable reading: ${paragraph.text} / ${key}`)
+        }
+        expect(engine.done).toBe(true)
+      }
+    }
+  },
+)
+
+it.each([
+  'みたらしだんご',
+  'ぴよりん',
+  'ねるねるねるね',
+  'ぷるぷる',
+  'さっくり',
+  'ふわっふわ',
+  'さつまりこ',
+  'たこせん',
+  'なげわ',
+  'まけんグミ',
+  'わらびーもち',
+])(
+  'keeps reviewed kana word %s whole even where browser tokenizers fragment it',
+  (word) => {
+    const examples = etypingPassages
+      .flatMap((p) => p.paragraphs)
+      .filter((p) => p.text.includes(word))
+    expect(examples.length).toBeGreaterThan(0)
+    for (const paragraph of examples) {
+      const start = paragraph.text.indexOf(word)
+      expect(
+        paragraph.wordStarts!.some(
+          (offset) => start < offset && offset < start + word.length,
+        ),
+      ).toBe(false)
+    }
+  },
+)
+
+it.each([
+  ['三拍子揃った選手', '三拍子', 'さんびょうし'],
+  ['三拍子揃った選手', '揃', 'そろ'],
+  ['予想は百発百中だ', '百発百中', 'ひゃっぱつひゃくちゅう'],
+  ['部屋中洗濯物だらけ', '中', 'じゅう'],
+  ['部屋中洗濯物だらけ', '洗濯物', 'せんたくもの'],
+])('%s retains the reviewed %s → %s reading', (text, surface, reading) => {
+  const paragraph = etypingPassages
+    .flatMap((p) => p.paragraphs)
+    .find((p) => p.text === text)!
+  expect(paragraph.segments).toContainEqual({ text: surface, reading })
 })

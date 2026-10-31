@@ -30,6 +30,23 @@ test('pages share CPU typography and translucent surfaces at desktop and mobile 
   expect(reference.background).toContain('0.91')
   for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 900 })
+    await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+    await page.evaluate(() => window.scrollTo(0, 0))
+    const geometry = await page.locator('.cpu-battle').evaluate((root) => {
+      const box = root.getBoundingClientRect()
+      const heading = root
+        .querySelector('.page-heading h2')!
+        .getBoundingClientRect()
+      const topbar = document.querySelector('.topbar')!.getBoundingClientRect()
+      return {
+        x: box.x,
+        y: box.y,
+        titleX: heading.x,
+        titleY: heading.y,
+        gap: box.y - topbar.bottom,
+      }
+    })
+    expect(geometry.gap).toBe(24)
     for (const [label, selector] of [
       ['タイピング', '.practice-main'],
       ['練習の記録', '.history-workspace'],
@@ -37,6 +54,20 @@ test('pages share CPU typography and translucent surfaces at desktop and mobile 
     ] as const) {
       await page.getByRole('button', { name: label, exact: true }).click()
       const root = page.locator(selector).first()
+      await page.evaluate(() => window.scrollTo(0, 0))
+      const position = await root.evaluate((element) => {
+        const box = element.getBoundingClientRect()
+        const heading = element
+          .querySelector('.page-heading h2')!
+          .getBoundingClientRect()
+        return { x: box.x, y: box.y, titleX: heading.x, titleY: heading.y }
+      })
+      expect(position).toEqual({
+        x: geometry.x,
+        y: geometry.y,
+        titleX: geometry.titleX,
+        titleY: geometry.titleY,
+      })
       await expect(root.locator('.page-heading .eyebrow')).toBeVisible()
       const appearance = await root.evaluate((root) => {
         const title = getComputedStyle(root.querySelector('.page-heading h2')!),

@@ -171,6 +171,11 @@ test('countdown is cancelled by Escape, focus loss, face/page changes, reset and
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await page.clock.runFor(5000)
   await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await expect(page.locator('.mission-carousel')).toHaveAttribute(
+    'data-stage',
+    '0',
+  )
+  await enter(page)
   await cancelled()
   await start()
   await page.getByRole('button', { name: 'やり直す', exact: true }).click()

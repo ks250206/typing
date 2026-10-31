@@ -17,21 +17,25 @@ const SpaceScene = lazy(() =>
 export function AppShell({
   settings,
   tab,
+  favoriteActive,
   onNavigate,
   onSettings,
   mistake,
   misses,
   children,
   dialogs,
+  favorites,
 }: {
   settings: Settings
   tab: AppTab
+  favoriteActive: boolean
   onNavigate: (tab: AppTab) => void
   onSettings: () => void
   mistake: boolean
   misses: number
   children: ReactNode
   dialogs: ReactNode
+  favorites: ReactNode
 }) {
   return (
     <div
@@ -68,7 +72,7 @@ export function AppShell({
           </span>
         </a>
         <div className="nav-label">WORKSPACE</div>
-        <nav>
+        <nav aria-label="WORKSPACE">
           {[
             ['practice', Keyboard, 'タイピング'],
             ['battle', Target, 'CPU対戦'],
@@ -79,28 +83,23 @@ export function AppShell({
             return (
               <button
                 key={String(id)}
-                className={`nav-item ${tab === id ? 'active' : ''}`}
+                className={`nav-item ${tab === id && !favoriteActive ? 'active' : ''}`}
+                aria-current={
+                  tab === id && !favoriteActive ? 'page' : undefined
+                }
                 onClick={() => {
                   onNavigate(String(id) as AppTab)
                 }}
               >
                 <I size={18} />
                 {String(label)}
-                {tab === id && <span className="nav-dot" />}
+                {tab === id && !favoriteActive && <span className="nav-dot" />}
               </button>
             )
           })}
         </nav>
-        <div className="sidebar-note">
-          <span className="tiny-label">YOUR OWN PACE</span>
-          <p>速さの、その先へ。</p>
-          <span>
-            一文字ずつ、深く潜る。
-            <br />
-            自分のリズムで、長文を。
-          </span>
-          <div className="note-orbit">✧</div>
-        </div>
+        <hr className="sidebar-separator" />
+        {favorites}
         <button className="nav-item settings-link" onClick={() => onSettings()}>
           <Settings2 size={18} />
           環境設定

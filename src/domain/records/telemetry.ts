@@ -15,6 +15,7 @@ export interface TracePrompt {
   continuous?: boolean
   label?: string
   segments?: ReadingSegment[]
+  wordStarts?: number[]
   text: string
   reading: string
   start: number
@@ -42,6 +43,7 @@ export class TypingTrace {
     this.data.prompts.push({
       ...(sentence.continuous ? { continuous: true } : {}),
       segments: sentence.segments.map((s) => ({ ...s })),
+      ...(sentence.wordStarts ? { wordStarts: [...sentence.wordStarts] } : {}),
       ...(sentence.label ? { label: sentence.label } : {}),
       text: sentence.text,
       reading: sentence.reading,
@@ -91,6 +93,7 @@ export class TypingTrace {
       prompts: this.data.prompts.map((p) => ({
         ...p,
         segments: p.segments?.map((s) => ({ ...s })),
+        ...(p.wordStarts ? { wordStarts: [...p.wordStarts] } : {}),
       })),
       strokes: this.data.strokes.map((s) => ({ ...s })),
     }
@@ -174,6 +177,15 @@ export function validTrace(value: unknown): value is SessionTrace {
         p &&
         typeof p.text === 'string' &&
         typeof p.reading === 'string' &&
+        (p.wordStarts === undefined ||
+          (Array.isArray(p.wordStarts) &&
+            p.wordStarts.every(
+              (offset, index, offsets) =>
+                Number.isInteger(offset) &&
+                offset > 0 &&
+                offset < p.text.length &&
+                (index === 0 || offset > offsets[index - 1]),
+            ))) &&
         nonnegative(p.start) &&
         nonnegative(p.end) &&
         p.start <= p.end &&

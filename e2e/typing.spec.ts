@@ -76,7 +76,9 @@ test('library, settings persistence, screenshots and responsive layout', async (
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
   await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page.getByRole('button', { name: 'オリジナル', exact: true }).click()
-  await page.getByRole('button', { name: /星の光が届くまで/ }).click()
+  await page
+    .getByRole('button', { name: '星の光が届くまで', exact: true })
+    .click()
   await expect(page.locator('.passage-header')).toContainText(
     '星の光が届くまで',
   )
@@ -138,7 +140,9 @@ test('guides stay visible with a legacy opt-out, after resize and restart', asyn
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
-  await page.getByRole('button', { name: /星の光が届くまで/ }).click()
+  await page
+    .getByRole('button', { name: '星の光が届くまで', exact: true })
+    .click()
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
@@ -211,7 +215,10 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await page.getByRole('button', { name: '削除する', exact: true }).click()
   await expect(other.getByText('最初の一篇から、はじめよう。')).toBeVisible()
   await other.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await other.getByRole('button', { name: 'もう一度', exact: true }).click()
+  await expect(other.locator('.mission-carousel')).toHaveAttribute(
+    'data-stage',
+    '0',
+  )
   await complete(other)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録' }).click()

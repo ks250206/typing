@@ -1,0 +1,631 @@
+{
+  "source_url": "https://uaaaaaaaa.com/typing/word",
+  "retrieved_at": "2026-10-31T16:08:12.676831+00:00",
+  "index_file": "weekly-index.html",
+  "index_sha256": "9f92b0c0e4d1cefb107951db6a191a1fc363c9c64b0e71614d6a204951e85875",
+  "policy": "Latest 52 published rounds; same title means one set. Existing XML takes precedence.",
+  "weeks": [
+    {
+      "round": 1332,
+      "title": "秋の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1332_wt.zip",
+      "set_id": "etyping-autumn",
+      "canonical_file": "annual-autumn.xml"
+    },
+    {
+      "round": 1331,
+      "title": "数のある言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1331_wt.zip",
+      "set_id": "etyping-numbers",
+      "canonical_file": "annual-numbers.xml"
+    },
+    {
+      "round": 1330,
+      "title": "食感ことば",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1330_wt.zip",
+      "set_id": "etyping-textures",
+      "canonical_file": "annual-textures.xml"
+    },
+    {
+      "round": 1329,
+      "title": "大好きなおやつ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1329_wt.zip",
+      "set_id": "etyping-favorite-snacks",
+      "canonical_file": "annual-favorite-snacks.xml"
+    },
+    {
+      "round": 1328,
+      "title": "学校にあるもの",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1328_wt.zip",
+      "set_id": "etyping-school",
+      "canonical_file": "annual-school.xml"
+    },
+    {
+      "round": 1327,
+      "title": "慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1327_wt.zip",
+      "set_id": "etyping-idioms",
+      "canonical_file": "annual-idioms.xml"
+    },
+    {
+      "round": 1326,
+      "title": "給食のおかず",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1326_wt.zip",
+      "set_id": "etyping-school-lunch",
+      "canonical_file": "annual-school-lunch.xml"
+    },
+    {
+      "round": 1325,
+      "title": "擬音・擬態語",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1325_wt.zip",
+      "set_id": "etyping-onomatopoeia",
+      "canonical_file": "onomatopoeia.xml"
+    },
+    {
+      "round": 1324,
+      "title": "元気が出る言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1324_wt.zip",
+      "set_id": "etyping-encouragement",
+      "canonical_file": "encouragement.xml"
+    },
+    {
+      "round": 1323,
+      "title": "ことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1323_wt.zip",
+      "set_id": "etyping-proverbs",
+      "canonical_file": "annual-proverbs.xml"
+    },
+    {
+      "round": 1322,
+      "title": "数のある言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1322_wt.zip",
+      "set_id": "etyping-numbers",
+      "canonical_file": "annual-numbers.xml"
+    },
+    {
+      "round": 1321,
+      "title": "夏のおやつ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1321_wt.zip",
+      "set_id": "etyping-summer-snacks",
+      "canonical_file": "annual-summer-snacks.xml"
+    },
+    {
+      "round": 1320,
+      "title": "顔の慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1320_wt.zip",
+      "set_id": "etyping-face-idioms",
+      "canonical_file": "face-idioms.xml"
+    },
+    {
+      "round": 1319,
+      "title": "夏の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1319_wt.zip",
+      "set_id": "etyping-summer",
+      "canonical_file": "annual-summer.xml"
+    },
+    {
+      "round": 1318,
+      "title": "エコライフ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1318_wt.zip",
+      "set_id": "etyping-eco-life",
+      "canonical_file": "annual-eco-life.xml"
+    },
+    {
+      "round": 1317,
+      "title": "短いことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1317_wt.zip",
+      "set_id": "etyping-short-proverbs",
+      "canonical_file": "annual-short-proverbs.xml"
+    },
+    {
+      "round": 1316,
+      "title": "大好きなおやつ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1316_wt.zip",
+      "set_id": "etyping-favorite-snacks",
+      "canonical_file": "annual-favorite-snacks.xml"
+    },
+    {
+      "round": 1315,
+      "title": "初夏の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1315_wt.zip",
+      "set_id": "etyping-early-summer",
+      "canonical_file": "annual-early-summer.xml"
+    },
+    {
+      "round": 1314,
+      "title": "擬音・擬態語",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1314_wt.zip",
+      "set_id": "etyping-onomatopoeia",
+      "canonical_file": "onomatopoeia.xml"
+    },
+    {
+      "round": 1313,
+      "title": "食感ことば",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1313_wt.zip",
+      "set_id": "etyping-textures",
+      "canonical_file": "annual-textures.xml"
+    },
+    {
+      "round": 1312,
+      "title": "梅雨の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1312_wt.zip",
+      "set_id": "etyping-rainy-season",
+      "canonical_file": "annual-rainy-season.xml"
+    },
+    {
+      "round": 1311,
+      "title": "学校にあるもの",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1311_wt.zip",
+      "set_id": "etyping-school",
+      "canonical_file": "annual-school.xml"
+    },
+    {
+      "round": 1310,
+      "title": "慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1310_wt.zip",
+      "set_id": "etyping-idioms",
+      "canonical_file": "annual-idioms.xml"
+    },
+    {
+      "round": 1309,
+      "title": "数のある言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1309_wt.zip",
+      "set_id": "etyping-numbers",
+      "canonical_file": "annual-numbers.xml"
+    },
+    {
+      "round": 1308,
+      "title": "ことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1308_wt.zip",
+      "set_id": "etyping-proverbs",
+      "canonical_file": "annual-proverbs.xml"
+    },
+    {
+      "round": 1307,
+      "title": "給食のおかず",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1307_wt.zip",
+      "set_id": "etyping-school-lunch",
+      "canonical_file": "annual-school-lunch.xml"
+    },
+    {
+      "round": 1306,
+      "title": "顔の慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1306_wt.zip",
+      "set_id": "etyping-face-idioms",
+      "canonical_file": "face-idioms.xml"
+    },
+    {
+      "round": 1305,
+      "title": "春の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1305_wt.zip",
+      "set_id": "etyping-spring",
+      "canonical_file": "spring.xml"
+    },
+    {
+      "round": 1304,
+      "title": "擬音・擬態語",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1304_wt.zip",
+      "set_id": "etyping-onomatopoeia",
+      "canonical_file": "onomatopoeia.xml"
+    },
+    {
+      "round": 1303,
+      "title": "魚のことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1303_wt.zip",
+      "set_id": "etyping-fish-proverbs",
+      "canonical_file": "annual-fish-proverbs.xml"
+    },
+    {
+      "round": 1302,
+      "title": "元気が出る言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1302_wt.zip",
+      "set_id": "etyping-encouragement",
+      "canonical_file": "encouragement.xml"
+    },
+    {
+      "round": 1301,
+      "title": "春の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1301_wt.zip",
+      "set_id": "etyping-spring",
+      "canonical_file": "spring.xml"
+    },
+    {
+      "round": 1300,
+      "title": "食感ことば",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1300_wt.zip",
+      "set_id": "etyping-textures",
+      "canonical_file": "annual-textures.xml"
+    },
+    {
+      "round": 1299,
+      "title": "数のある言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1299_wt.zip",
+      "set_id": "etyping-numbers",
+      "canonical_file": "annual-numbers.xml"
+    },
+    {
+      "round": 1298,
+      "title": "思い出の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1298_wt.zip",
+      "set_id": "etyping-memories",
+      "canonical_file": "memories.xml"
+    },
+    {
+      "round": 1297,
+      "title": "慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1297_wt.zip",
+      "set_id": "etyping-idioms",
+      "canonical_file": "annual-idioms.xml"
+    },
+    {
+      "round": 1296,
+      "title": "おふくろの味",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1296_wt.zip",
+      "set_id": "etyping-home-cooking",
+      "canonical_file": "annual-home-cooking.xml"
+    },
+    {
+      "round": 1295,
+      "title": "ことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1295_wt.zip",
+      "set_id": "etyping-proverbs",
+      "canonical_file": "annual-proverbs.xml"
+    },
+    {
+      "round": 1294,
+      "title": "バレンタイン",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1294_wt.zip",
+      "set_id": "etyping-valentine",
+      "canonical_file": "valentine-duplicate.xml"
+    },
+    {
+      "round": 1293,
+      "title": "冬の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1293_wt.zip",
+      "set_id": "etyping-winter",
+      "canonical_file": "annual-winter.xml"
+    },
+    {
+      "round": 1292,
+      "title": "擬音・擬態語",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1292_wt.zip",
+      "set_id": "etyping-onomatopoeia",
+      "canonical_file": "onomatopoeia.xml"
+    },
+    {
+      "round": 1291,
+      "title": "体の慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1291_wt.zip",
+      "set_id": "etyping-body-idioms",
+      "canonical_file": "annual-body-idioms.xml"
+    },
+    {
+      "round": 1290,
+      "title": "元気が出る言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1290_wt.zip",
+      "set_id": "etyping-encouragement",
+      "canonical_file": "encouragement.xml"
+    },
+    {
+      "round": 1289,
+      "title": "いろはかるた",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1289_wt.zip",
+      "set_id": "etyping-iroha-karuta",
+      "canonical_file": "annual-iroha-karuta.xml"
+    },
+    {
+      "round": 1288,
+      "title": "大掃除の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1288_wt.zip",
+      "set_id": "etyping-year-end-cleaning",
+      "canonical_file": "annual-year-end-cleaning.xml"
+    },
+    {
+      "round": 1287,
+      "title": "冬の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1287_wt.zip",
+      "set_id": "etyping-winter",
+      "canonical_file": "annual-winter.xml"
+    },
+    {
+      "round": 1286,
+      "title": "擬音・擬態語",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1286_wt.zip",
+      "set_id": "etyping-onomatopoeia",
+      "canonical_file": "onomatopoeia.xml"
+    },
+    {
+      "round": 1285,
+      "title": "エコライフ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1285_wt.zip",
+      "set_id": "etyping-eco-life",
+      "canonical_file": "annual-eco-life.xml"
+    },
+    {
+      "round": 1284,
+      "title": "冬の言葉",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1284_wt.zip",
+      "set_id": "etyping-winter",
+      "canonical_file": "annual-winter.xml"
+    },
+    {
+      "round": 1283,
+      "title": "短いことわざ",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1283_wt.zip",
+      "set_id": "etyping-short-proverbs",
+      "canonical_file": "annual-short-proverbs.xml"
+    },
+    {
+      "round": 1282,
+      "title": "慣用句",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1282_wt.zip",
+      "set_id": "etyping-idioms",
+      "canonical_file": "annual-idioms.xml"
+    },
+    {
+      "round": 1281,
+      "title": "給食のおかず",
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1281_wt.zip",
+      "set_id": "etyping-school-lunch",
+      "canonical_file": "annual-school-lunch.xml"
+    }
+  ],
+  "sets": [
+    {
+      "id": "etyping-autumn",
+      "title": "秋の言葉",
+      "file": "annual-autumn.xml",
+      "existing": false,
+      "round": 1332,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1332_wt.zip",
+      "archive_sha256": "6cc964424d398ce4c3e1e7f5c46c2d9c8c45f7c2f99f09f638b244ad29dbf096",
+      "member": "1332_秋の言葉.xml",
+      "xml_sha256": "6404b3cf93adf5eba5093bc6e9fb03f7c4a87dc1ea36f3ee743a6a03c4f3f25a"
+    },
+    {
+      "id": "etyping-numbers",
+      "title": "数のある言葉",
+      "file": "annual-numbers.xml",
+      "existing": false,
+      "round": 1331,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1331_wt.zip",
+      "archive_sha256": "4bbd343781edcad036b58f0a6f4537f3c859bd144ba73228b31a6ed90922d782",
+      "member": "1331_数のある言葉.xml",
+      "xml_sha256": "4da91dc370e53d59eb1bf63ce51af260940e198b36a26e3d1d99f6046d93bcfc"
+    },
+    {
+      "id": "etyping-textures",
+      "title": "食感ことば",
+      "file": "annual-textures.xml",
+      "existing": false,
+      "round": 1330,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1330_wt.zip",
+      "archive_sha256": "7e80d7b88764254df2e9b873b89511e23ef245d598798c941d2f2e4cad29c8d5",
+      "member": "1330_食感ことば.xml",
+      "xml_sha256": "ff51a5380a8ddd1dfd63ba82ba6171235bc911e06b8cc3e7fcaafee90bb9b4df"
+    },
+    {
+      "id": "etyping-favorite-snacks",
+      "title": "大好きなおやつ",
+      "file": "annual-favorite-snacks.xml",
+      "existing": false,
+      "round": 1329,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1329_wt.zip",
+      "archive_sha256": "43cf778e10a147dcf6047e5e0bab214069d920cdc62a17ba0cc2bf6ce85289b6",
+      "member": "1329_大好きなおやつ.xml",
+      "xml_sha256": "c364cb36c0c11626f335c4b184962f98d1e0b55a9f2fc9b573005816c24a8a7d"
+    },
+    {
+      "id": "etyping-school",
+      "title": "学校にあるもの",
+      "file": "annual-school.xml",
+      "existing": false,
+      "round": 1328,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1328_wt.zip",
+      "archive_sha256": "0c25e6d468975b8d732dc442467ee3743c40dc2647384569dee38d7e054a855c",
+      "member": "1328_学校にあるもの.xml",
+      "xml_sha256": "119cf7874f6acc69f56d120a285fc3413721f8fb851b392b6bc1c3b29a401e97"
+    },
+    {
+      "id": "etyping-idioms",
+      "title": "慣用句",
+      "file": "annual-idioms.xml",
+      "existing": false,
+      "round": 1327,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1327_wt.zip",
+      "archive_sha256": "3f1a5945449b0f9d8104731dc498b8d4dc44e28ac9d05888e3fe5291fe3bd769",
+      "member": "1327_慣用句.xml",
+      "xml_sha256": "18b7e55cb7acb4abcda696f5f7a5c76b5dc5a9c5f25248a03cf5da91d2df82f9"
+    },
+    {
+      "id": "etyping-school-lunch",
+      "title": "給食のおかず",
+      "file": "annual-school-lunch.xml",
+      "existing": false,
+      "round": 1326,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1326_wt.zip",
+      "archive_sha256": "b64569d0f4bf2ab1f74d9ab7d902c593ad9328337d20eacd1fd2a4d49d94856d",
+      "member": "1326_給食のおかず.xml",
+      "xml_sha256": "6bc4a81000b66c009cdb64ad949969baefaf65e80eb3e86055e54ec5a3e8fe30"
+    },
+    {
+      "id": "etyping-onomatopoeia",
+      "title": "擬音・擬態語",
+      "file": "onomatopoeia.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-encouragement",
+      "title": "元気が出る言葉",
+      "file": "encouragement.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-proverbs",
+      "title": "ことわざ",
+      "file": "annual-proverbs.xml",
+      "existing": false,
+      "round": 1323,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1323_wt.zip",
+      "archive_sha256": "a271a61ac9dd33acd428120709f418bf7a3bac7497390c3d1ec2c51efca09df1",
+      "member": "1323_ことわざ.xml",
+      "xml_sha256": "aba310c4bd76a11d8a26ed7c20f887eea36bb98b701bd6c29a8d1b0b63d3d705"
+    },
+    {
+      "id": "etyping-summer-snacks",
+      "title": "夏のおやつ",
+      "file": "annual-summer-snacks.xml",
+      "existing": false,
+      "round": 1321,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1321_wt.zip",
+      "archive_sha256": "56393b02882ac4610f01e594e8a93b48130c9f4aa13d7163db52c755e102c086",
+      "member": "1321_夏のおやつ.xml",
+      "xml_sha256": "c1b3ceb170a1fc311e076020a2a3fc1990d5062e46401c2148a0f8d03dd58788"
+    },
+    {
+      "id": "etyping-face-idioms",
+      "title": "顔の慣用句",
+      "file": "face-idioms.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-summer",
+      "title": "夏の言葉",
+      "file": "annual-summer.xml",
+      "existing": false,
+      "round": 1319,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1319_wt.zip",
+      "archive_sha256": "7bd085355abecc2d07f65b9c3a72327426f7cfbf96c0fd01edfee5fdbd044c15",
+      "member": "1319_夏の言葉.xml",
+      "xml_sha256": "53c919039f1c622a27f6ffa45c3eb9e63e3fbaae5dcd51ade689533ce9c58e68"
+    },
+    {
+      "id": "etyping-eco-life",
+      "title": "エコライフ",
+      "file": "annual-eco-life.xml",
+      "existing": false,
+      "round": 1318,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1318_wt.zip",
+      "archive_sha256": "76abf298e40a46adf172cbf7280d3a9327fd8b746372bba068aed47ff0e5178d",
+      "member": "1318_エコライフ.xml",
+      "xml_sha256": "07d7d40ac3294bfb450aca54ff59bdf005ceb633715a8790654951d59e3dedfe"
+    },
+    {
+      "id": "etyping-short-proverbs",
+      "title": "短いことわざ",
+      "file": "annual-short-proverbs.xml",
+      "existing": false,
+      "round": 1317,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1317_wt.zip",
+      "archive_sha256": "9f32658c5bc4b81cf6513ea0df6fe44dbfd4832e72cbbcec9bd174c9d2133122",
+      "member": "1317_短いことわざ.xml",
+      "xml_sha256": "1ba5b5b42cf655cde1a77cea05827f15eea76e65e4f036e48b98d67806907bcd"
+    },
+    {
+      "id": "etyping-early-summer",
+      "title": "初夏の言葉",
+      "file": "annual-early-summer.xml",
+      "existing": false,
+      "round": 1315,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1315_wt.zip",
+      "archive_sha256": "d0e8451c7763da565673ee26a1b7ceb2178d32951b26c827b5e9098e0fc17a71",
+      "member": "1315_初夏の言葉.xml",
+      "xml_sha256": "912c927c22c9ffcebf85f63690f5a9d7c40fdf16ffaf1ad6673fa8e5d3049d61"
+    },
+    {
+      "id": "etyping-rainy-season",
+      "title": "梅雨の言葉",
+      "file": "annual-rainy-season.xml",
+      "existing": false,
+      "round": 1312,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1312_wt.zip",
+      "archive_sha256": "697af932c6a0328007364850edae2fe1e24fbde024fad9ddc3a03136e0ab2b78",
+      "member": "1312_梅雨の言葉.xml",
+      "xml_sha256": "ddb93814ed412c6d254613fe98c184f59b98bed1b9c910c4ae4ca8154eac8e4a"
+    },
+    {
+      "id": "etyping-spring",
+      "title": "春の言葉",
+      "file": "spring.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-fish-proverbs",
+      "title": "魚のことわざ",
+      "file": "annual-fish-proverbs.xml",
+      "existing": false,
+      "round": 1303,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1303_wt.zip",
+      "archive_sha256": "c5f15e55d43e2e2e065e020ade754ed95df0ca4422dcdc41dff51e05b93704c6",
+      "member": "1303_魚のことわざ.xml",
+      "xml_sha256": "2aeaea91eaaff77b6da278131e74e7ce0132f1d43a3e56b328c871086f316adb"
+    },
+    {
+      "id": "etyping-memories",
+      "title": "思い出の言葉",
+      "file": "memories.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-home-cooking",
+      "title": "おふくろの味",
+      "file": "annual-home-cooking.xml",
+      "existing": false,
+      "round": 1296,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1296_wt.zip",
+      "archive_sha256": "b93770e1401ecc6ca5733d913febe24c0f8d8878cdde303ec2b75385717b969b",
+      "member": "1296_おふくろの味.xml",
+      "xml_sha256": "19f6c278e828b773ffe698a12826c63e30ddcd322e59f6a992f6ec3b7da0744e"
+    },
+    {
+      "id": "etyping-valentine",
+      "title": "バレンタイン",
+      "file": "valentine-duplicate.xml",
+      "existing": true
+    },
+    {
+      "id": "etyping-winter",
+      "title": "冬の言葉",
+      "file": "annual-winter.xml",
+      "existing": false,
+      "round": 1293,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1293_wt.zip",
+      "archive_sha256": "e8775efa0dc9918c48363fc36174cfb6fa191f08f82f0699301d9123aa00f713",
+      "member": "1293_冬の言葉.xml",
+      "xml_sha256": "a0d0647007114de473d91e443d09894aa92dbb9c5057a0be89373bc6ad19cf2d"
+    },
+    {
+      "id": "etyping-body-idioms",
+      "title": "体の慣用句",
+      "file": "annual-body-idioms.xml",
+      "existing": false,
+      "round": 1291,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1291_wt.zip",
+      "archive_sha256": "b5632131eda9efac076d0a18d1bf077531168e7ad0435a8fcdc6e3e8336b6c7b",
+      "member": "1291_体の慣用句.xml",
+      "xml_sha256": "9872e129ea0eb1e18019dae16363635dec6d46d6f46be48b7f2465a8e3403815"
+    },
+    {
+      "id": "etyping-iroha-karuta",
+      "title": "いろはかるた",
+      "file": "annual-iroha-karuta.xml",
+      "existing": false,
+      "round": 1289,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1289_wt.zip",
+      "archive_sha256": "60965ac36a1ff6982613e25b2996fb9836a088a601d541d1ec028e4bccc7cecc",
+      "member": "1289_いろはかるた.xml",
+      "xml_sha256": "257d3afdb47012755733ea4d02e294431c7c94198a61d592807b4b8547c0b30b"
+    },
+    {
+      "id": "etyping-year-end-cleaning",
+      "title": "大掃除の言葉",
+      "file": "annual-year-end-cleaning.xml",
+      "existing": false,
+      "round": 1288,
+      "url": "https://uaaaaaaaa.com/typing/wordDownload?fileName=1288_wt.zip",
+      "archive_sha256": "7a61dc6c64e5d0b8725c8a2d8f27887a74f0df2a8efe37cd9a7236dbc6445ac4",
+      "member": "1288_大掃除の言葉.xml",
+      "xml_sha256": "4c79f87c2381d262bce605a76aa4e0592fd2fa0aca6bb48a83f94d6ae76527ed"
+    }
+  ]
+}

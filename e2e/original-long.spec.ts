@@ -19,7 +19,10 @@ async function selectLong(page: Page, index: number) {
   await expect(page.locator('.story-card')).toHaveCount(3)
   await page.getByPlaceholder('タイトル・ジャンルで検索').fill('')
   await page
-    .getByRole('button', { name: new RegExp(originalLongEntries[index].title) })
+    .getByRole('button', {
+      name: originalLongEntries[index].title,
+      exact: true,
+    })
     .click()
   await expect(page.locator('#passage-full-text li')).toHaveCount(1)
   expect(
