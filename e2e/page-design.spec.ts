@@ -57,6 +57,13 @@ test('pages share CPU typography and translucent surfaces at desktop and mobile 
         }
       })
       expect(appearance).toEqual(reference)
+      if (label === 'タイピング') {
+        const heading = await root.locator('.page-heading h2').boundingBox()
+        const step = await page
+          .getByRole('button', { name: '文章選択へ', exact: true })
+          .boundingBox()
+        expect(step!.y - heading!.y - heading!.height).toBeLessThanOrEqual(28)
+      }
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

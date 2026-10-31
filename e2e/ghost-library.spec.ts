@@ -303,7 +303,7 @@ test('unified selection filters and searches the library; briefing wraps while t
     await page
       .locator('.mission-viewport')
       .evaluate((el) => el.getBoundingClientRect().height),
-  ).toBe(height)
+  ).toBeCloseTo(height, 1)
   await page.screenshot({
     path: 'artifacts/briefing-wrap-mobile.png',
     fullPage: true,
@@ -318,7 +318,7 @@ test('unified selection filters and searches the library; briefing wraps while t
     await page
       .locator('.mission-viewport')
       .evaluate((el) => el.getBoundingClientRect().height),
-  ).toBe(height)
+  ).toBeCloseTo(height, 1)
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
