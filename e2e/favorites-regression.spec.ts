@@ -160,6 +160,45 @@ for (const width of [1440, 390]) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true)
+    await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
+    if (width === 390) await toggle.click()
+    await menu
+      .getByRole('button', { name: /お気に入りを開く：タイピング · 春の言葉/ })
+      .click()
+    await expect(page.locator('.mission-carousel')).toHaveAttribute(
+      'data-stage',
+      '1',
+    )
+    await expect(
+      page.getByRole('button', { name: '全文確認へ', exact: true }),
+    ).toHaveAttribute('aria-current', 'step')
+    await expect(page.locator('#passage-full-text li')).toHaveCount(15)
+    await expect(page.locator('.favorite-open.active')).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    await expect(page.locator('.favorite-open.active')).toContainText(
+      '春の言葉',
+    )
+    await expect(
+      page.getByRole('button', { name: 'タイピング', exact: true }),
+    ).not.toHaveClass(/active/)
+    if (width === 390) await toggle.click()
+    await page.screenshot({
+      path: `artifacts/favorites-preview-${width}.png`,
+      fullPage: true,
+      animations: 'disabled',
+    })
+    if (width === 390) await page.keyboard.press('Escape')
+    await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
+    await expect(
+      page.getByRole('button', { name: '春の言葉', exact: true }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+    await expect(
+      page.getByRole('button', { name: 'タイピング', exact: true }),
+    ).toHaveClass(/active/)
+    await expect(page.locator('.favorite-open.active')).toHaveCount(0)
     expect(errors).toEqual([])
   })
 }

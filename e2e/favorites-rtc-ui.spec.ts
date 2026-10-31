@@ -98,7 +98,7 @@ for (const width of [1440, 390]) {
       .click()
     await expect(page.locator('.mission-carousel')).toHaveAttribute(
       'data-stage',
-      '0',
+      '1',
     )
     await expect(
       page.getByLabel('シードを固定する', { exact: true }),
@@ -106,6 +106,10 @@ for (const width of [1440, 390]) {
     await expect(
       page.getByRole('combobox', { name: '入力方式', exact: true }),
     ).toHaveAttribute('data-value', 'colemak')
+    await expect(
+      page.getByRole('button', { name: '全文確認へ', exact: true }),
+    ).toHaveAttribute('aria-current', 'step')
+    await expect(page.locator('#passage-full-text li')).toHaveCount(15)
     const firstSeed = await page
       .getByLabel('出題シード', { exact: true })
       .inputValue()
@@ -261,7 +265,7 @@ test('favorites keyboard activation takes priority over paused game shortcuts; s
   await page.keyboard.press('Enter')
   await expect(page.locator('.mission-carousel')).toHaveAttribute(
     'data-stage',
-    '0',
+    '1',
   )
   await page
     .getByRole('button', { name: 'お気に入りを解除', exact: true })

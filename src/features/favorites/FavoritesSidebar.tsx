@@ -7,10 +7,12 @@ import { layoutLabels } from '../../domain/typing/engine'
 
 export function FavoritesSidebar({
   items,
+  activeKey,
   onSelect,
   onRemove,
 }: {
   items: Favorite[]
+  activeKey: string | null
   onSelect: (favorite: Favorite) => void
   onRemove: (favorite: Favorite) => void
 }) {
@@ -72,7 +74,10 @@ export function FavoritesSidebar({
               return (
                 <li key={favoriteKey(favorite)}>
                   <button
-                    className="favorite-open"
+                    className={`favorite-open ${favoriteKey(favorite) === activeKey ? 'active' : ''}`}
+                    aria-current={
+                      favoriteKey(favorite) === activeKey ? 'page' : undefined
+                    }
                     aria-label={`お気に入りを開く：${label}`}
                     onClick={() => {
                       onSelect(favorite)

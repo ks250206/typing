@@ -17,6 +17,7 @@ const SpaceScene = lazy(() =>
 export function AppShell({
   settings,
   tab,
+  favoriteActive,
   onNavigate,
   onSettings,
   mistake,
@@ -27,6 +28,7 @@ export function AppShell({
 }: {
   settings: Settings
   tab: AppTab
+  favoriteActive: boolean
   onNavigate: (tab: AppTab) => void
   onSettings: () => void
   mistake: boolean
@@ -81,14 +83,17 @@ export function AppShell({
             return (
               <button
                 key={String(id)}
-                className={`nav-item ${tab === id ? 'active' : ''}`}
+                className={`nav-item ${tab === id && !favoriteActive ? 'active' : ''}`}
+                aria-current={
+                  tab === id && !favoriteActive ? 'page' : undefined
+                }
                 onClick={() => {
                   onNavigate(String(id) as AppTab)
                 }}
               >
                 <I size={18} />
                 {String(label)}
-                {tab === id && <span className="nav-dot" />}
+                {tab === id && !favoriteActive && <span className="nav-dot" />}
               </button>
             )
           })}

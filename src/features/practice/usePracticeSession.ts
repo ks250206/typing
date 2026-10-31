@@ -437,7 +437,7 @@ export function usePracticeSession(
     setFixedSeed,
     openRandomDocument: (id: string, layout: Layout) => {
       setFixedSeed(false)
-      reset(id, layout, 0, freshSeed(), 2)
+      reset(id, layout, 1, freshSeed(), 2)
     },
     startPreview: () => {
       setPracticeStage(2)

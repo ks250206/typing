@@ -1,6 +1,6 @@
 import { libraryCategory } from './libraryCategories'
 import { useMemo, useState } from 'react'
-import { BookOpen, ArrowRight } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import type { Passage } from '../../domain/content/passages'
 import { isTypewell } from '../../domain/content/typewell'
 import { isRtc } from '../../domain/content/rtcWords'
@@ -111,7 +111,6 @@ export function PassageLibrary({
                                 ? '15問 · シードでシャッフル'
                                 : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
                 </span>
-                <ArrowRight size={15} />
               </div>
             </button>
             <FavoriteButton

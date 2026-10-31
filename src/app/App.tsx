@@ -12,7 +12,7 @@ import { useSettings } from '../features/settings/useSettings'
 import { AppShell } from './AppShell'
 import type { AppTab } from './AppShell'
 import './App.css'
-import type { Favorite } from '../domain/records/favorites'
+import { favoriteKey, type Favorite } from '../domain/records/favorites'
 import { useFavorites } from '../features/favorites/useFavorites'
 import { FavoritesSidebar } from '../features/favorites/FavoritesSidebar'
 
@@ -37,12 +37,27 @@ export default function App() {
   const history = useHistory(setNotice)
   const session = usePracticeSession(settings, history.persistResult, setNotice)
   const favorites = useFavorites(setNotice)
+  const [favoriteNavigation, setFavoriteNavigation] = useState<string | null>(
+    null,
+  )
+  const activeFavoriteKey = favorites.items.some(
+    (favorite) =>
+      favoriteKey(favorite) === favoriteNavigation &&
+      (favorite.kind === 'practice'
+        ? tab === 'practice' &&
+          session.selected === favorite.passageId &&
+          settings.layout === favorite.layout
+        : tab === 'battle'),
+  )
+    ? favoriteNavigation
+    : null
   const practiceFavorite = (passageId: string): Favorite => ({
     kind: 'practice',
     passageId,
     layout: settings.layout,
   })
   const navigate = (next: AppTab) => {
+    setFavoriteNavigation(null)
     if (tab === 'practice' && next !== 'practice')
       session.reset(session.selected, settings.layout, 0)
     if (next !== 'battle') setCpuFavorite(null)
@@ -60,12 +75,14 @@ export default function App() {
       setCpuRequest((value) => value + 1)
       navigate('battle')
     }
+    setFavoriteNavigation(favoriteKey(favorite))
   }
 
   return (
     <AppShell
       settings={settings}
       tab={tab}
+      favoriteActive={activeFavoriteKey !== null}
       onNavigate={navigate}
       onSettings={() => setSettingsDialog('open')}
       mistake={
@@ -75,6 +92,7 @@ export default function App() {
       favorites={
         <FavoritesSidebar
           items={favorites.items}
+          activeKey={activeFavoriteKey}
           onSelect={openFavorite}
           onRemove={favorites.remove}
         />
