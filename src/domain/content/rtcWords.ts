@@ -1,7 +1,23 @@
-import data from '../../data/generated/rtc.json' with { type: 'json' }
+import themes from '../../data/generated/themes.json' with { type: 'json' }
+import importedData from '../../data/generated/rtc.json' with { type: 'json' }
 import type { Passage } from './passages'
 import type { Sentence } from './sentences'
 import { seededRandom } from './typewell'
+const data = [
+  ...importedData,
+  {
+    id: 'rtc-ai-ml-llm',
+    title: 'RTC風 · AI・機械学習・LLM',
+    author: 'GALACTYPE独自原稿',
+    parts: themes.rtcParts.map((part) =>
+      part.map((p) => [
+        p.text,
+        p.reading,
+        p.segments.map((s) => [s.text, s.reading]),
+      ]),
+    ),
+  },
+]
 export const rtcPassages: Passage[] = data.map((set) => ({
   id: set.id,
   title: set.title
@@ -10,7 +26,11 @@ export const rtcPassages: Passage[] = data.map((set) => ({
   genre: 'RTC準拠',
   accent: 'RTC',
   subtitle: `${set.parts.map((p) => p.length).join(' × ')}通りのフレーズを連結。シードでランダムに15問出題。`,
-  source: { label: `提供ZIPのXML · ${set.author}`, kind: 'provided' },
+  source: {
+    label:
+      set.id === 'rtc-ai-ml-llm' ? set.author : `提供ZIPのXML · ${set.author}`,
+    kind: 'provided',
+  },
   paragraphs: [],
 }))
 export const isRtc = (id: string) => rtcPassages.some((p) => p.id === id)

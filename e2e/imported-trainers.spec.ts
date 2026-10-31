@@ -20,7 +20,7 @@ for (const set of data) {
     await page
       .getByRole('button', { name: '60秒トレーナー', exact: true })
       .click()
-    await expect(page.locator('.story-card')).toHaveCount(3)
+    await expect(page.locator('.story-card')).toHaveCount(5)
     const title = `打鍵トレーナー · ${set.title}`
     const card = page.getByRole('button', { name: title, exact: true })
     await expect(card).toContainText(

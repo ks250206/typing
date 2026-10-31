@@ -253,7 +253,7 @@ test('unified selection filters and searches the library; briefing wraps while t
     .locator('.mission-viewport')
     .evaluate((el) => el.getBoundingClientRect().height)
   await library.getByRole('button', { name: 'オリジナル', exact: true }).click()
-  await expect(library.locator('.story-card')).toHaveCount(6)
+  await expect(library.locator('.story-card')).toHaveCount(8)
   await library
     .getByRole('button', { name: '星の光が届くまで', exact: true })
     .click()

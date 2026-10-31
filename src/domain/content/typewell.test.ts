@@ -1,5 +1,6 @@
+import themes from '../../data/generated/themes.json' with { type: 'json' }
 import { expect, it } from 'vitest'
-import data from '../../data/generated/typewell.json' with { type: 'json' }
+import classicData from '../../data/generated/typewell.json' with { type: 'json' }
 import { KanaEngine, RomanEngine } from '../typing/engine'
 import {
   strokeLimit,
@@ -10,10 +11,16 @@ import {
   typewellEngine,
 } from './typewell'
 
+const data = { ...classicData, ...themes.words }
 it('aggregates all 17 pages into exactly four complete datasets', () => {
   expect(
     typewellSets
-      .filter((s) => s.category !== 'space')
+      .filter(
+        (s) =>
+          s.category !== 'space' &&
+          s.category !== 'scientists' &&
+          s.category !== 'sf',
+      )
       .map((s) => [s.pages, data[s.category].length]),
   ).toEqual([
     [3, 2154],

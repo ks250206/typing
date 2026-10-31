@@ -14,7 +14,7 @@ async function selectLong(page: Page, index: number) {
   await page
     .getByRole('button', { name: 'オリジナル長文', exact: true })
     .click()
-  await expect(page.locator('.story-card')).toHaveCount(21)
+  await expect(page.locator('.story-card')).toHaveCount(26)
   await page.getByPlaceholder('タイトル・ジャンルで検索').fill('博士課程')
   await expect(page.locator('.story-card')).toHaveCount(3)
   await page.getByPlaceholder('タイトル・ジャンルで検索').fill('')
