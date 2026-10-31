@@ -308,6 +308,14 @@ test('compact CPU scores and guide fit standard desktop viewports and retain key
       fullPage: false,
     })
     const keyboard = await page.locator('.keyboard-guide').boundingBox()
+    const spacing = await page
+      .locator('.cpu-battle')
+      .evaluate(
+        (root) =>
+          root.querySelector('.sentence-label')!.getBoundingClientRect().top -
+          root.querySelector('.word-score')!.getBoundingClientRect().bottom,
+      )
+    expect(spacing).toBeGreaterThanOrEqual(16)
     expect(keyboard!.y).toBeGreaterThanOrEqual(0)
     expect(keyboard!.y + keyboard!.height).toBeLessThanOrEqual(size.height)
   }

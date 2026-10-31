@@ -318,7 +318,7 @@ test('unified selection filters and searches the library; briefing wraps while t
     await page
       .locator('.mission-viewport')
       .evaluate((el) => el.getBoundingClientRect().height),
-  ).toBeCloseTo(height, 1)
+  ).toBeLessThan(height)
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

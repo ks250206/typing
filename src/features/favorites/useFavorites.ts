@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { favoriteKey, type Favorite } from '../../domain/records/favorites'
+import {
+  favoriteKey,
+  reorderFavorites,
+  type Favorite,
+} from '../../domain/records/favorites'
 import {
   FAVORITES_STORAGE_KEY,
   readFavorites,
@@ -28,6 +32,10 @@ export function useFavorites(onNotice: (message: string) => void) {
     items,
     has: (favorite: Favorite) => keys.has(favoriteKey(favorite)),
     remove,
+    reorder: (order: string[]) => {
+      const next = reorderFavorites(items, order)
+      if (next !== items) update(next)
+    },
     toggle: (favorite: Favorite) =>
       keys.has(favoriteKey(favorite))
         ? remove(favorite)

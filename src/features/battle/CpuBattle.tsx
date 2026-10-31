@@ -1,3 +1,5 @@
+import { Pause, Play } from 'lucide-react'
+import { PauseOverlay } from '../../shared/typing/PauseOverlay'
 import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -592,7 +594,10 @@ export function CpuBattle({
                   role="region"
                   aria-label="CPU対戦の入力領域"
                   onKeyDown={accept}
-                  onBlur={pause}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget))
+                      pause()
+                  }}
                 >
                   {mistake && (
                     <div className="damage-overlay" aria-hidden="true" />
@@ -632,6 +637,7 @@ export function CpuBattle({
                       />
                     </>
                   )}
+                  {phase === 'paused' && <PauseOverlay onResume={resume} />}
                 </div>
                 <div className="battle-status" role="status">
                   {phase === 'word-result' && (
@@ -639,14 +645,6 @@ export function CpuBattle({
                       {match.lastWord === 'player' ? 'YOU +1' : 'CPU +1'} ·
                       次の問題へ
                     </span>
-                  )}
-                  {phase === 'paused' && (
-                    <>
-                      <button className="primary-button" onClick={resume}>
-                        対戦を再開する
-                      </button>
-                      <small>Space / Esc / Enter で再開 · R でリスタート</small>
-                    </>
                   )}
                 </div>
               </>
@@ -660,12 +658,17 @@ export function CpuBattle({
                 {formatMissRate(titleKeys, titleMisses)}
               </span>
               <button
-                onClick={pause}
+                className="battle-pause-button"
+                onClick={phase === 'paused' ? resume : pause}
+                aria-keyshortcuts="Escape"
                 disabled={
-                  !['playing', 'countdown', 'word-result'].includes(phase ?? '')
+                  !['playing', 'countdown', 'word-result', 'paused'].includes(
+                    phase ?? '',
+                  )
                 }
               >
-                対戦を一時停止
+                {phase === 'paused' ? <Play size={14} /> : <Pause size={14} />}
+                {phase === 'paused' ? '再開' : '一時停止'}
               </button>
               <button
                 onClick={() => {

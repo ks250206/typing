@@ -357,7 +357,7 @@ test('CPU paused resume keys preserve progress, R restarts the match, and hints 
   for (const key of ['Escape', 'Space', 'Enter']) {
     await page.keyboard.press('Escape')
     const resume = page.getByRole('button', {
-      name: '対戦を再開する',
+      name: '再開する',
       exact: true,
     })
     await expect(resume).toBeVisible()

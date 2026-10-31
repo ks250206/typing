@@ -19,3 +19,20 @@ export const favoriteKey = (favorite: Favorite) =>
         ]
       : []),
   ])
+
+/** Accept only a permutation of the complete current list, never a stale subset. */
+export function reorderFavorites(
+  items: Favorite[],
+  order: string[],
+): Favorite[] {
+  const byKey = new Map(items.map((item) => [favoriteKey(item), item]))
+  if (
+    order.length !== items.length ||
+    new Set(order).size !== items.length ||
+    order.some((key) => !byKey.has(key))
+  )
+    return items
+  if (order.every((key, index) => key === favoriteKey(items[index])))
+    return items
+  return order.map((key) => byKey.get(key)!)
+}

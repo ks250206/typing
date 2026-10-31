@@ -95,6 +95,7 @@ export default function App() {
           activeKey={activeFavoriteKey}
           onSelect={openFavorite}
           onRemove={favorites.remove}
+          onReorder={favorites.reorder}
         />
       }
       dialogs={

@@ -68,3 +68,16 @@ it('ignores malformed entries individually and survives blocked storage', () => 
   expect(readFavorites()).toEqual([])
   expect(saveFavorites([practice])).toBe(false)
 })
+
+it('preserves a user-defined mixed favorite order across saving and reading', () => {
+  let saved = ''
+  vi.stubGlobal('localStorage', {
+    setItem: (_key: string, value: string) => {
+      saved = value
+    },
+    getItem: () => saved,
+  })
+  const order = [cpu, practice]
+  expect(saveFavorites(order)).toBe(true)
+  expect(readFavorites()).toEqual(order)
+})
