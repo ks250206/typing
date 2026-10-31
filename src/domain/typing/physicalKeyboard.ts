@@ -1,6 +1,9 @@
 import { mapKey } from './engine'
 import type { Layout } from './engine'
 
+export const usesJisGeometry = (layout: Layout) =>
+  layout === 'jis' || layout === 'kana' || layout === 'nova-f5-pair'
+
 const letters = (text: string) => [...text].map((c) => `Key${c}`)
 export const keyboardRows = [
   [
@@ -36,7 +39,7 @@ const jisSymbols: Record<string, string[]> = {
   IntlRo: ['\\', '_'],
 }
 export function keyboardCodes(layout: Layout) {
-  const jis = layout === 'jis' || layout === 'kana'
+  const jis = usesJisGeometry(layout)
   return keyboardRows
     .map((row, index) => [
       ...(index === 0 ? ['Backquote'] : []),
@@ -61,7 +64,7 @@ export function keyOutput(
   altGraph = false,
 ) {
   if (code.startsWith('Shift')) return null
-  const jis = layout === 'jis' || layout === 'kana'
+  const jis = usesJisGeometry(layout)
   let key = ''
   if (code.startsWith('Key')) key = code.slice(3).toLowerCase()
   else if (code.startsWith('Digit')) {
@@ -119,7 +122,7 @@ export interface KeySlot {
 }
 /** Quarter-key units keep the same pitch across rows (15 standard key units). */
 export function keyboardGeometry(layout: Layout): KeySlot[] {
-  const jis = layout === 'jis' || layout === 'kana'
+  const jis = usesJisGeometry(layout)
   const slots: KeySlot[] = []
   const iso = layout === 'azerty'
   const add = (row: number, keys: [string, number][]) => {

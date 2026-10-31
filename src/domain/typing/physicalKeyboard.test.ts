@@ -10,7 +10,7 @@ import {
   keyboardGeometry,
 } from './physicalKeyboard'
 
-it('finds physical keys for all canonical passage input in all six layouts', () => {
+it('finds physical keys for all canonical passage input in all supported layouts', () => {
   for (const layout of [
     'jis',
     'us',
@@ -20,6 +20,7 @@ it('finds physical keys for all canonical passage input in all six layouts', () 
     'onishi',
     'azerty',
     'norman',
+    'nova-f5-pair',
     'kana',
   ] as Layout[]) {
     const characters = new Set<string>()
@@ -70,6 +71,7 @@ it('keeps all rows at a fixed physical pitch and includes staggered special keys
     'onishi',
     'azerty',
     'norman',
+    'nova-f5-pair',
     'kana',
   ] as Layout[]) {
     const slots = keyboardGeometry(layout)
@@ -91,7 +93,7 @@ it('keeps all rows at a fixed physical pitch and includes staggered special keys
       ),
     ).toEqual(new Set([4]))
     expect(slots.find((slot) => slot.code === 'Enter')?.tall ?? false).toBe(
-      layout === 'jis' || layout === 'kana' || layout === 'azerty',
+      ['jis', 'kana', 'azerty', 'nova-f5-pair'].includes(layout),
     )
   }
 })

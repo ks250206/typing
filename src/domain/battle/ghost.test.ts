@@ -122,7 +122,7 @@ it('uses recorded prompt order and partial endpoints, skipping words with no mea
     'しか',
   ])
 })
-it('supports voicing in kana and all five roman layouts, preserving source layout', () => {
+it('supports voicing in kana and all supported roman layouts, preserving source layout', () => {
   for (const layout of [
     'jis',
     'us',
@@ -132,6 +132,7 @@ it('supports voicing in kana and all five roman layouts, preserving source layou
     'onishi',
     'azerty',
     'norman',
+    'nova-f5-pair',
     'kana',
   ] as const) {
     const input = layout === 'kana' ? 'か\u3099' : 'ga'

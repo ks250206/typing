@@ -8,7 +8,7 @@ import {
   sakusakuEntries,
 } from '../src/domain/content/sakusaku'
 import { typewellDocument } from '../src/domain/content/typewell'
-import { physicalKey } from '../src/domain/typing/physicalKeyboard'
+import { physicalType } from './physicalType'
 import type { Layout } from '../src/domain/typing/engine'
 
 async function setup(page: Page, layout: Layout = 'jis') {
@@ -28,15 +28,6 @@ async function enter(page: Page) {
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await startPractice(page, true)
-}
-async function physicalType(page: Page, text: string, layout: Layout) {
-  for (const char of text) {
-    const key = physicalKey(char, layout)
-    expect(key, `${layout}/${char}`).toBeDefined()
-    await page.keyboard.press(
-      `${key!.altGraph ? 'AltGraph+' : ''}${key!.shift ? 'Shift+' : ''}${key!.code}`,
-    )
-  }
 }
 const guide = (page: Page) =>
   page
@@ -203,6 +194,7 @@ for (const layout of [
   'onishi',
   'azerty',
   'norman',
+  'nova-f5-pair',
 ] as const)
   test(`${layout} supports physical typing, records, replay, ghosts, CPU and always-on guides`, async ({
     page,
@@ -236,19 +228,34 @@ for (const layout of [
     await enter(page)
     await expect(page.locator('.roman-line')).toBeVisible()
     await expect(page.locator('[data-code="KeyE"] > span')).toHaveText(
-      { colemak: 'F', workman: 'R', onishi: 'U', azerty: 'E', norman: 'D' }[
-        layout
-      ],
+      {
+        colemak: 'F',
+        workman: 'R',
+        onishi: 'U',
+        azerty: 'E',
+        norman: 'D',
+        'nova-f5-pair': 'U',
+      }[layout],
     )
     await expect(page.locator('[data-code="KeyJ"] > span')).toHaveText(
-      { colemak: 'N', workman: 'N', onishi: 'T', azerty: 'J', norman: 'N' }[
-        layout
-      ],
+      {
+        colemak: 'N',
+        workman: 'N',
+        onishi: 'T',
+        azerty: 'J',
+        norman: 'N',
+        'nova-f5-pair': 'T',
+      }[layout],
     )
     await expect(page.locator('[data-code="Semicolon"] > span')).toHaveText(
-      { colemak: 'O', workman: 'I', onishi: 'H', azerty: 'M', norman: 'H' }[
-        layout
-      ],
+      {
+        colemak: 'O',
+        workman: 'I',
+        onishi: 'H',
+        azerty: 'M',
+        norman: 'H',
+        'nova-f5-pair': 'S',
+      }[layout],
     )
     await physicalType(page, reference.slice(0, 5), layout)
     await expect(page.locator('.typed-roman')).toHaveText(reference.slice(0, 5))
