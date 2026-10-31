@@ -1,3 +1,4 @@
+import { sentenceWordStarts, romanWordStarts } from '../typing/wordSpacing'
 import sportsSources from '../../../data/sources/themes/sports-provenance.json' with { type: 'json' }
 import scientistSources from '../../../data/sources/themes/scientists-provenance.json' with { type: 'json' }
 import { expect, it } from 'vitest'
@@ -156,4 +157,34 @@ it('presents Silenus as a poem with one sentence per paragraph', () => {
   expect(practiceDocument(poem.id, 'test', 'jis', 2).sentences).toHaveLength(20)
   for (const paragraph of poem.paragraphs)
     expect(paragraph.text.match(/。/g)).toHaveLength(1)
+})
+
+it('preserves every Japanese word boundary in theme text and RTC phrases', () => {
+  const tokenizer = new Intl.Segmenter('ja', { granularity: 'word' })
+  const paragraphs = [
+    ...data.passages.flatMap((p) => p.paragraphs),
+    ...data.rtcParts.flat(),
+  ]
+  for (const paragraph of paragraphs) {
+    let offset = 0
+    const offsets = new Set(
+      paragraph.segments.map((segment) => {
+        const start = offset
+        offset += segment.text.length
+        return start
+      }),
+    )
+    for (const word of tokenizer.segment(paragraph.text)) {
+      if (word.isWordLike)
+        expect(
+          offsets.has(word.index),
+          `${paragraph.text}: ${word.segment}`,
+        ).toBe(true)
+    }
+    const words = sentenceWordStarts(paragraph)
+    const roman = new RomanEngine(paragraph.reading).hint
+    expect(romanWordStarts(paragraph.reading, roman, words.reading).size).toBe(
+      words.reading.size,
+    )
+  }
 })
