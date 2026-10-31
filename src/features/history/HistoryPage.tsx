@@ -1,3 +1,4 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useScrollTransition } from '../../shared/ui/useScrollTransition'
 import { Pagination } from '../../shared/ui/Pagination'
@@ -90,28 +91,28 @@ export function HistoryPage({
     </div>
   )
   return (
-    <>
-      <div className="section-heading history-heading">
-        <div>
-          <h2>練習の記録</h2>
-          <span className="muted history-count">
-            完了した挑戦 {all.length} 回
-          </span>
-        </div>
-        <div>
-          <button className="text-button" onClick={exportRecords}>
-            <ArrowDownToLine size={14} />
-            JSON 書出し
-          </button>
-          <button
-            className="icon-button"
-            aria-label="全記録を削除"
-            onClick={history.requestClear}
-          >
-            <Trash2 size={15} />
-          </button>
-        </div>
-      </div>
+    <section className="history-workspace">
+      <PageHeading
+        eyebrow="PRACTICE RECORDS"
+        title="練習の記録"
+        actions={
+          <>
+            <button className="text-button" onClick={exportRecords}>
+              <ArrowDownToLine size={14} />
+              JSON 書出し
+            </button>
+            <button
+              className="icon-button"
+              aria-label="全記録を削除"
+              onClick={history.requestClear}
+            >
+              <Trash2 size={15} />
+            </button>
+          </>
+        }
+      >
+        <p className="history-count">完了した挑戦 {all.length} 回</p>
+      </PageHeading>
       {all.length > 0 ? (
         <div className="history-carousel">
           <div className="history-views" role="tablist" aria-label="記録の表示">
@@ -328,6 +329,6 @@ export function HistoryPage({
           </button>
         </div>
       )}
-    </>
+    </section>
   )
 }

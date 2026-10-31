@@ -1,3 +1,4 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { BattleSidebar } from './BattleSidebar'
@@ -299,13 +300,15 @@ export function CpuBattle({
   return (
     <div className="practice-grid battle-grid">
       <section className="cpu-battle practice-main">
-        <div className="battle-brief">
-          <span className="eyebrow">CPU DUEL / BO7</span>
-          <h2>CPU対戦</h2>
+        <PageHeading
+          className="battle-brief"
+          eyebrow="CPU DUEL / BO7"
+          title="CPU対戦"
+        >
           <p>
             先に打ち切ると1点。10点先取でラウンド獲得、4ラウンドで勝利。正確率95%未満は逆転判定。
           </p>
-        </div>
+        </PageHeading>
         {!match && (
           <>
             <fieldset

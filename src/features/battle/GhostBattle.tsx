@@ -1,3 +1,4 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import type { RecordEntry, Settings } from '../../domain/records/types'
@@ -41,24 +42,25 @@ export default function GhostBattle({
   }, [record.id, record.trace])
   return (
     <section className="ghost-battle" aria-label="ゴースト対戦">
-      <div className="detail-heading">
-        <div>
-          <span className="eyebrow">RACE YOUR PAST</span>
-          <h2>ゴースト対戦</h2>
+      <PageHeading
+        eyebrow="RACE YOUR PAST"
+        title="ゴースト対戦"
+        actions={
+          <button className="text-button" onClick={onClose}>
+            記録へ戻る
+          </button>
+        }
+      >
+        <p>
+          {record.title} · {record.layout} ·{' '}
+          {new Date(record.date).toLocaleString('ja-JP')}
+        </p>
+        {record.seed && (
           <p>
-            {record.title} · {record.layout} ·{' '}
-            {new Date(record.date).toLocaleString('ja-JP')}
+            固定シード: {record.seed} / v{record.replayVersion ?? 1}
           </p>
-          {record.seed && (
-            <p>
-              固定シード: {record.seed} / v{record.replayVersion ?? 1}
-            </p>
-          )}
-        </div>
-        <button className="text-button" onClick={onClose}>
-          記録へ戻る
-        </button>
-      </div>
+        )}
+      </PageHeading>
       {!loaded ? (
         <p role="status">ゴーストの打鍵ログを読み込み中…</p>
       ) : !loaded.trace ? (

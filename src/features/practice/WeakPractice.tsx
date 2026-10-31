@@ -1,3 +1,4 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { RecordEntry, Settings } from '../../domain/records/types'
@@ -85,9 +86,7 @@ export default function WeakPractice(props: Props) {
       className="weak-practice weak-workspace"
       aria-label="苦手ワード練習"
     >
-      <div className="section-heading">
-        <h2>苦手ワード練習</h2>
-      </div>
+      <PageHeading eyebrow="WORD TRAINING" title="苦手ワード練習" />
       <p>
         直近200件の打鍵ログから、ミスや待ち時間の多い単語を抽出します。1文字の語や主な助詞・記号を除き、読みが確認できる単語だけを使います。
       </p>
@@ -211,10 +210,13 @@ function WeakRun({
           aria-hidden="true"
         />
       )}
-      <div className="section-heading">
-        <h2>{document.passage.title}</h2>
-        <button onClick={onBack}>単語を選び直す</button>
-      </div>
+      <PageHeading
+        eyebrow="WORD TRAINING"
+        title="苦手ワード練習"
+        actions={<button onClick={onBack}>単語を選び直す</button>}
+      >
+        <p>{document.passage.title}</p>
+      </PageHeading>
       <div className="practice-grid">
         <div className="practice-main weak-run">
           {session.finishedResult ? (

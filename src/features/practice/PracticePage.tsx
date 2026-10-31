@@ -1,3 +1,4 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { ArrowRight } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { RecordEntry, Settings } from '../../domain/records/types'
@@ -34,25 +35,24 @@ export function PracticePage({
   } = session
   return (
     <>
-      <div className="section-heading">
-        <div>
-          <span className="section-number">01 /</span>
-          <h2>今日の一篇</h2>
-          <span className="muted">言葉の流れに、身をまかせる。</span>
-        </div>
-        <button
-          className="text-button"
-          onClick={() => {
-            pause()
-            handleStageChange(0)
-          }}
-        >
-          文章を選ぶ
-          <ArrowRight size={14} />
-        </button>
-      </div>
       <div className="practice-grid">
         <div className="practice-main">
+          <PageHeading
+            eyebrow="SOLO PRACTICE"
+            title="タイピング"
+            actions={
+              <button
+                className="text-button"
+                onClick={() => {
+                  pause()
+                  handleStageChange(0)
+                }}
+              >
+                文章を選ぶ
+                <ArrowRight size={14} />
+              </button>
+            }
+          />
           <MissionCarousel
             stage={practiceStage}
             onStage={handleStageChange}
