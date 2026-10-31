@@ -1,0 +1,3008 @@
+{
+  "retrieved": "2026-10-31",
+  "source": "https://www.wikidata.org/",
+  "license": "CC0-1.0",
+  "scope": "Current and historical sports team names, one entry per Wikidata entity; no claim of current league membership.",
+  "teams": [
+    {
+      "name": "阪神タイガース",
+      "wikidataId": "Q127635",
+      "sport": "baseball",
+      "reading": "はんしんたいがーす"
+    },
+    {
+      "name": "福岡ソフトバンクホークス",
+      "wikidataId": "Q129164",
+      "sport": "baseball",
+      "reading": "ふくおかそふとばんくほーくす"
+    },
+    {
+      "name": "中日ドラゴンズ",
+      "wikidataId": "Q209961",
+      "sport": "baseball",
+      "reading": "ちゅうにちどらごんず"
+    },
+    {
+      "name": "北海道日本ハムファイターズ",
+      "wikidataId": "Q974277",
+      "sport": "baseball",
+      "reading": "ほっかいどうにっぽんはむふぁいたーず"
+    },
+    {
+      "name": "横浜DeNAベイスターズ",
+      "wikidataId": "Q1194023",
+      "sport": "baseball",
+      "reading": "よこはまでぃーえぬえーべいすたーず"
+    },
+    {
+      "name": "読売ジャイアンツ",
+      "wikidataId": "Q1197407",
+      "sport": "baseball",
+      "reading": "よみうりじゃいあんつ"
+    },
+    {
+      "name": "広島東洋カープ",
+      "wikidataId": "Q247577",
+      "sport": "baseball",
+      "reading": "ひろしまとうようかーぷ"
+    },
+    {
+      "name": "埼玉西武ライオンズ",
+      "wikidataId": "Q325819",
+      "sport": "baseball",
+      "reading": "さいたませいぶらいおんず"
+    },
+    {
+      "name": "東京ヤクルトスワローズ",
+      "wikidataId": "Q1324392",
+      "sport": "baseball",
+      "reading": "とうきょうやくるとすわろーず"
+    },
+    {
+      "name": "オリックス・バファローズ",
+      "wikidataId": "Q1328038",
+      "sport": "baseball",
+      "reading": "おりっくす・ばふぁろーず"
+    },
+    {
+      "name": "東北楽天ゴールデンイーグルス",
+      "wikidataId": "Q1375077",
+      "sport": "baseball",
+      "reading": "とうほくらくてんごーるでんいーぐるす"
+    },
+    {
+      "name": "千葉ロッテマリーンズ",
+      "wikidataId": "Q484151",
+      "sport": "baseball",
+      "reading": "ちばろってまりーんず"
+    },
+    {
+      "name": "鹿島アントラーズ",
+      "wikidataId": "Q16932",
+      "sport": "football",
+      "reading": "かしまあんとらーず"
+    },
+    {
+      "name": "アルビレックス新潟",
+      "wikidataId": "Q383358",
+      "sport": "football",
+      "reading": "あるびれっくすにいがた"
+    },
+    {
+      "name": "川崎フロンターレ",
+      "wikidataId": "Q874016",
+      "sport": "football",
+      "reading": "かわさきふろんたーれ"
+    },
+    {
+      "name": "大分トリニータ",
+      "wikidataId": "Q385074",
+      "sport": "football",
+      "reading": "おおいたとりにーた"
+    },
+    {
+      "name": "湘南ベルマーレ",
+      "wikidataId": "Q692856",
+      "sport": "football",
+      "reading": "しょうなんべるまーれ"
+    },
+    {
+      "name": "ガンバ大阪",
+      "wikidataId": "Q738423",
+      "sport": "football",
+      "reading": "がんばおおさか"
+    },
+    {
+      "name": "ベガルタ仙台",
+      "wikidataId": "Q1044651",
+      "sport": "football",
+      "reading": "べがるたせんだい"
+    },
+    {
+      "name": "浦和レッドダイヤモンズ",
+      "wikidataId": "Q218883",
+      "sport": "football",
+      "reading": "うらわれっどだいやもんず"
+    },
+    {
+      "name": "サガン鳥栖",
+      "wikidataId": "Q1051238",
+      "sport": "football",
+      "reading": "さがんとす"
+    },
+    {
+      "name": "アビスパ福岡",
+      "wikidataId": "Q791164",
+      "sport": "football",
+      "reading": "あびすぱふくおか"
+    },
+    {
+      "name": "清水エスパルス",
+      "wikidataId": "Q823384",
+      "sport": "football",
+      "reading": "しみずえすぱるす"
+    },
+    {
+      "name": "ヴィッセル神戸",
+      "wikidataId": "Q844271",
+      "sport": "football",
+      "reading": "ゔぃっせるこうべ"
+    },
+    {
+      "name": "ニューオーリンズ・セインツ",
+      "wikidataId": "Q172435",
+      "sport": "american-football",
+      "reading": "にゅーおーりんず・せいんつ"
+    },
+    {
+      "name": "エリー・シーウルブズ",
+      "wikidataId": "Q127549",
+      "sport": "baseball",
+      "reading": "えりー・しーうるぶず"
+    },
+    {
+      "name": "バンビット・バスケットボールクラブ",
+      "wikidataId": "Q3702",
+      "sport": "basketball",
+      "reading": "ばんびっと・ばすけっとぼーるくらぶ"
+    },
+    {
+      "name": "インテルナツィオナーレ・ミラノ",
+      "wikidataId": "Q631",
+      "sport": "football",
+      "reading": "いんてるなつぃおなーれ・みらの"
+    },
+    {
+      "name": "サンアントニオ・ランページ",
+      "wikidataId": "Q27580",
+      "sport": "ice-hockey",
+      "reading": "さんあんとにお・らんぺーじ"
+    },
+    {
+      "name": "ニューヨーク・ジャイアンツ",
+      "wikidataId": "Q190618",
+      "sport": "american-football",
+      "reading": "にゅーよーく・じゃいあんつ"
+    },
+    {
+      "name": "ニューオーリンズ・ゼファーズ",
+      "wikidataId": "Q195849",
+      "sport": "baseball",
+      "reading": "にゅーおーりんず・ぜふぁーず"
+    },
+    {
+      "name": "アスヴェル・バスケット",
+      "wikidataId": "Q4089",
+      "sport": "basketball",
+      "reading": "あすゔぇる・ばすけっと"
+    },
+    {
+      "name": "オリンピック・リヨン",
+      "wikidataId": "Q704",
+      "sport": "football",
+      "reading": "おりんぴっく・りよん"
+    },
+    {
+      "name": "ユノスト・ミンスク",
+      "wikidataId": "Q36982",
+      "sport": "ice-hockey",
+      "reading": "ゆのすと・みんすく"
+    },
+    {
+      "name": "ピッツバーグ・スティーラーズ",
+      "wikidataId": "Q191477",
+      "sport": "american-football",
+      "reading": "ぴっつばーぐ・すてぃーらーず"
+    },
+    {
+      "name": "マンハイム・トルネードス",
+      "wikidataId": "Q212484",
+      "sport": "baseball",
+      "reading": "まんはいむ・とるねーどす"
+    },
+    {
+      "name": "サンタクルーズ・ウォリアーズ",
+      "wikidataId": "Q24665",
+      "sport": "basketball",
+      "reading": "さんたくるーず・うぉりあーず"
+    },
+    {
+      "name": "カリアリ・カルチョ",
+      "wikidataId": "Q1900",
+      "sport": "football",
+      "reading": "かりあり・かるちょ"
+    },
+    {
+      "name": "バッファロー・セイバーズ",
+      "wikidataId": "Q131206",
+      "sport": "ice-hockey",
+      "reading": "ばっふぁろー・せいばーず"
+    },
+    {
+      "name": "ニューイングランド・ペイトリオッツ",
+      "wikidataId": "Q193390",
+      "sport": "american-football",
+      "reading": "にゅーいんぐらんど・ぺいとりおっつ"
+    },
+    {
+      "name": "ニューヨーク・ヤンキース",
+      "wikidataId": "Q213417",
+      "sport": "baseball",
+      "reading": "にゅーよーく・やんきーす"
+    },
+    {
+      "name": "ディナモ・サンクトペテルブルク",
+      "wikidataId": "Q25753",
+      "sport": "basketball",
+      "reading": "でぃなも・さんくとぺてるぶるく"
+    },
+    {
+      "name": "カルチョ・カターニア",
+      "wikidataId": "Q2018",
+      "sport": "football",
+      "reading": "かるちょ・かたーにあ"
+    },
+    {
+      "name": "アイントラハト・ブラウンシュヴァイク",
+      "wikidataId": "Q154053",
+      "sport": "ice-hockey",
+      "reading": "あいんとらはと・ぶらうんしゅゔぁいく"
+    },
+    {
+      "name": "インディアナポリス・コルツ",
+      "wikidataId": "Q193753",
+      "sport": "american-football",
+      "reading": "いんでぃあなぽりす・こるつ"
+    },
+    {
+      "name": "ボストン・レッドソックス",
+      "wikidataId": "Q213959",
+      "sport": "baseball",
+      "reading": "ぼすとん・れっどそっくす"
+    },
+    {
+      "name": "アンジェリコ・ビエラ",
+      "wikidataId": "Q36251",
+      "sport": "basketball",
+      "reading": "あんじぇりこ・びえら"
+    },
+    {
+      "name": "ウディネーゼ・カルチョ",
+      "wikidataId": "Q2798",
+      "sport": "football",
+      "reading": "うでぃねーぜ・かるちょ"
+    },
+    {
+      "name": "ドゥク・ト・ディジョン",
+      "wikidataId": "Q162047",
+      "sport": "ice-hockey",
+      "reading": "どぅく・と・でぃじょん"
+    },
+    {
+      "name": "ダラス・カウボーイズ",
+      "wikidataId": "Q204862",
+      "sport": "american-football",
+      "reading": "だらす・かうぼーいず"
+    },
+    {
+      "name": "マジョス・デ・ナボホア",
+      "wikidataId": "Q233784",
+      "sport": "baseball",
+      "reading": "まじょす・で・なぼほあ"
+    },
+    {
+      "name": "ヴィルトゥス・ボローニャ",
+      "wikidataId": "Q36264",
+      "sport": "basketball",
+      "reading": "ゔぃるとぅす・ぼろーにゃ"
+    },
+    {
+      "name": "アスコリ・カルチョ",
+      "wikidataId": "Q6630",
+      "sport": "football",
+      "reading": "あすこり・かるちょ"
+    },
+    {
+      "name": "トライシティ・アメリカンズ",
+      "wikidataId": "Q179905",
+      "sport": "ice-hockey",
+      "reading": "とらいしてぃ・あめりかんず"
+    },
+    {
+      "name": "シカゴ・ベアーズ",
+      "wikidataId": "Q205033",
+      "sport": "american-football",
+      "reading": "しかご・べあーず"
+    },
+    {
+      "name": "シカゴ・カブス",
+      "wikidataId": "Q246782",
+      "sport": "baseball",
+      "reading": "しかご・かぶす"
+    },
+    {
+      "name": "パラカネストロ・カントゥ",
+      "wikidataId": "Q36311",
+      "sport": "basketball",
+      "reading": "ぱらかねすとろ・かんとぅ"
+    },
+    {
+      "name": "ブレシア・カルチョ",
+      "wikidataId": "Q6651",
+      "sport": "football",
+      "reading": "ぶれしあ・かるちょ"
+    },
+    {
+      "name": "モントリオール・カナディアンズ",
+      "wikidataId": "Q188143",
+      "sport": "ice-hockey",
+      "reading": "もんとりおーる・かなでぃあんず"
+    },
+    {
+      "name": "ワシントン・コマンダーズ",
+      "wikidataId": "Q212654",
+      "sport": "american-football",
+      "reading": "わしんとん・こまんだーず"
+    },
+    {
+      "name": "パルマ・ベースボールクラブ",
+      "wikidataId": "Q255985",
+      "sport": "baseball",
+      "reading": "ぱるま・べーすぼーるくらぶ"
+    },
+    {
+      "name": "ユヴェカゼルタ・バスケット",
+      "wikidataId": "Q36326",
+      "sport": "basketball",
+      "reading": "ゆゔぇかぜるた・ばすけっと"
+    },
+    {
+      "name": "カルチョ・パドヴァ",
+      "wikidataId": "Q8428",
+      "sport": "football",
+      "reading": "かるちょ・ぱどゔぁ"
+    },
+    {
+      "name": "ニューヨーク・レンジャース",
+      "wikidataId": "Q188984",
+      "sport": "ice-hockey",
+      "reading": "にゅーよーく・れんじゃーす"
+    },
+    {
+      "name": "グリーンベイ・パッカーズ",
+      "wikidataId": "Q213837",
+      "sport": "american-football",
+      "reading": "ぐりーんべい・ぱっかーず"
+    },
+    {
+      "name": "アギラス・シバエーニャス",
+      "wikidataId": "Q258171",
+      "sport": "baseball",
+      "reading": "あぎらす・しばえーにゃす"
+    },
+    {
+      "name": "ヴァノリ・クレモナ",
+      "wikidataId": "Q36345",
+      "sport": "basketball",
+      "reading": "ゔぁのり・くれもな"
+    },
+    {
+      "name": "スペツィア・カルチョ",
+      "wikidataId": "Q8615",
+      "sport": "football",
+      "reading": "すぺつぃあ・かるちょ"
+    },
+    {
+      "name": "ニュージャージー・デビルス",
+      "wikidataId": "Q192081",
+      "sport": "ice-hockey",
+      "reading": "にゅーじゃーじー・でびるす"
+    },
+    {
+      "name": "ニューヨーク・ジェッツ",
+      "wikidataId": "Q219602",
+      "sport": "american-football",
+      "reading": "にゅーよーく・じぇっつ"
+    },
+    {
+      "name": "カイマネス・デ・バランキージャ",
+      "wikidataId": "Q279531",
+      "sport": "baseball",
+      "reading": "かいまねす・で・ばらんきーじゃ"
+    },
+    {
+      "name": "オリンピア・ミラノ",
+      "wikidataId": "Q36362",
+      "sport": "basketball",
+      "reading": "おりんぴあ・みらの"
+    },
+    {
+      "name": "テルナーナ・カルチョ",
+      "wikidataId": "Q8623",
+      "sport": "football",
+      "reading": "てるなーな・かるちょ"
+    },
+    {
+      "name": "フィラデルフィア・フライヤーズ",
+      "wikidataId": "Q192083",
+      "sport": "ice-hockey",
+      "reading": "ふぃらでるふぃあ・ふらいやーず"
+    },
+    {
+      "name": "フィラデルフィア・イーグルス",
+      "wikidataId": "Q219714",
+      "sport": "american-football",
+      "reading": "ふぃらでるふぃあ・いーぐるす"
+    },
+    {
+      "name": "サンフランシスコ・ジャイアンツ",
+      "wikidataId": "Q308966",
+      "sport": "baseball",
+      "reading": "さんふらんしすこ・じゃいあんつ"
+    },
+    {
+      "name": "スーター・モンテネグロ",
+      "wikidataId": "Q36391",
+      "sport": "basketball",
+      "reading": "すーたー・もんてねぐろ"
+    },
+    {
+      "name": "ヴァレーゼ・カルチョ",
+      "wikidataId": "Q8633",
+      "sport": "football",
+      "reading": "ゔぁれーぜ・かるちょ"
+    },
+    {
+      "name": "アナハイム・ダックス",
+      "wikidataId": "Q192751",
+      "sport": "ice-hockey",
+      "reading": "あなはいむ・だっくす"
+    },
+    {
+      "name": "ミネソタ・バイキングス",
+      "wikidataId": "Q221150",
+      "sport": "american-football",
+      "reading": "みねそた・ばいきんぐす"
+    },
+    {
+      "name": "レーゲンスブルク・レギオネーレ",
+      "wikidataId": "Q323010",
+      "sport": "baseball",
+      "reading": "れーげんすぶるく・れぎおねーれ"
+    },
+    {
+      "name": "ディナモ・バスケット・サッサリ",
+      "wikidataId": "Q36482",
+      "sport": "basketball",
+      "reading": "でぃなも・ばすけっと・さっさり"
+    },
+    {
+      "name": "ヴィチェンツァ・カルチョ",
+      "wikidataId": "Q8643",
+      "sport": "football",
+      "reading": "ゔぃちぇんつぁ・かるちょ"
+    },
+    {
+      "name": "バンクーバー・カナックス",
+      "wikidataId": "Q192890",
+      "sport": "ice-hockey",
+      "reading": "ばんくーばー・かなっくす"
+    },
+    {
+      "name": "バッファロー・ビルズ",
+      "wikidataId": "Q221626",
+      "sport": "american-football",
+      "reading": "ばっふぁろー・びるず"
+    },
+    {
+      "name": "テキサス・レンジャーズ",
+      "wikidataId": "Q329816",
+      "sport": "baseball",
+      "reading": "てきさす・れんじゃーず"
+    },
+    {
+      "name": "メンズ・サーナ・バスケット",
+      "wikidataId": "Q36500",
+      "sport": "basketball",
+      "reading": "めんず・さーな・ばすけっと"
+    },
+    {
+      "name": "レアル・マドリード",
+      "wikidataId": "Q8682",
+      "sport": "football",
+      "reading": "れある・まどりーど"
+    },
+    {
+      "name": "ピッツバーグ・ペンギンズ",
+      "wikidataId": "Q193643",
+      "sport": "ice-hockey",
+      "reading": "ぴっつばーぐ・ぺんぎんず"
+    },
+    {
+      "name": "シアトル・シーホークス",
+      "wikidataId": "Q221878",
+      "sport": "american-football",
+      "reading": "しあとる・しーほーくす"
+    },
+    {
+      "name": "ロサンゼルス・ドジャース",
+      "wikidataId": "Q334634",
+      "sport": "baseball",
+      "reading": "ろさんぜるす・どじゃーす"
+    },
+    {
+      "name": "パラカネストロ・ヴァレーゼ",
+      "wikidataId": "Q36551",
+      "sport": "basketball",
+      "reading": "ぱらかねすとろ・ゔぁれーぜ"
+    },
+    {
+      "name": "アスレティック・ビルバオ",
+      "wikidataId": "Q8687",
+      "sport": "football",
+      "reading": "あすれてぃっく・びるばお"
+    },
+    {
+      "name": "デトロイト・レッドウィングス",
+      "wikidataId": "Q194116",
+      "sport": "ice-hockey",
+      "reading": "でとろいと・れっどうぃんぐす"
+    },
+    {
+      "name": "マイアミ・ドルフィンズ",
+      "wikidataId": "Q223243",
+      "sport": "american-football",
+      "reading": "まいあみ・どるふぃんず"
+    },
+    {
+      "name": "シカゴ・ホワイトソックス",
+      "wikidataId": "Q335169",
+      "sport": "baseball",
+      "reading": "しかご・ほわいとそっくす"
+    },
+    {
+      "name": "ヴェネツィア",
+      "wikidataId": "Q36572",
+      "sport": "basketball",
+      "reading": "ゔぇねつぃあ"
+    },
+    {
+      "name": "アトレティコ・マドリード",
+      "wikidataId": "Q8701",
+      "sport": "football",
+      "reading": "あとれてぃこ・まどりーど"
+    },
+    {
+      "name": "ボストン・ブルーインズ",
+      "wikidataId": "Q194121",
+      "sport": "ice-hockey",
+      "reading": "ぼすとん・ぶるーいんず"
+    },
+    {
+      "name": "デンバー・ブロンコス",
+      "wikidataId": "Q223507",
+      "sport": "american-football",
+      "reading": "でんばー・ぶろんこす"
+    },
+    {
+      "name": "キンタナロー・タイガース",
+      "wikidataId": "Q387496",
+      "sport": "baseball",
+      "reading": "きんたなろー・たいがーす"
+    },
+    {
+      "name": "ル・マン・サルト・バスケット",
+      "wikidataId": "Q40063",
+      "sport": "basketball",
+      "reading": "る・まん・さると・ばすけっと"
+    },
+    {
+      "name": "レアル・ベティス",
+      "wikidataId": "Q8723",
+      "sport": "football",
+      "reading": "れある・べてぃす"
+    },
+    {
+      "name": "カルガリー・フレームス",
+      "wikidataId": "Q194126",
+      "sport": "ice-hockey",
+      "reading": "かるがりー・ふれーむす"
+    },
+    {
+      "name": "シンシナティ・ベンガルズ",
+      "wikidataId": "Q223511",
+      "sport": "american-football",
+      "reading": "しんしなてぃ・べんがるず"
+    },
+    {
+      "name": "コロラド・ロッキーズ",
+      "wikidataId": "Q388858",
+      "sport": "baseball",
+      "reading": "ころらど・ろっきーず"
+    },
+    {
+      "name": "スカファーティ・バスケット",
+      "wikidataId": "Q42454",
+      "sport": "basketball",
+      "reading": "すかふぁーてぃ・ばすけっと"
+    },
+    {
+      "name": "セルタ・デ・ビーゴ",
+      "wikidataId": "Q8749",
+      "sport": "football",
+      "reading": "せるた・で・びーご"
+    },
+    {
+      "name": "ニューヨーク・アイランダース",
+      "wikidataId": "Q194369",
+      "sport": "ice-hockey",
+      "reading": "にゅーよーく・あいらんだーす"
+    },
+    {
+      "name": "ヒューストン・テキサンズ",
+      "wikidataId": "Q223514",
+      "sport": "american-football",
+      "reading": "ひゅーすとん・てきさんず"
+    },
+    {
+      "name": "アルトゥーナ・カーブ",
+      "wikidataId": "Q444205",
+      "sport": "baseball",
+      "reading": "あるとぅーな・かーぶ"
+    },
+    {
+      "name": "スカリジェラ・バスケット・ヴェローナ",
+      "wikidataId": "Q48969",
+      "sport": "basketball",
+      "reading": "すかりじぇら・ばすけっと・ゔぇろーな"
+    },
+    {
+      "name": "デポルティーボ・ラ・コルーニャ",
+      "wikidataId": "Q8760",
+      "sport": "football",
+      "reading": "でぽるてぃーぼ・ら・こるーにゃ"
+    },
+    {
+      "name": "ニューオーリンズ・ブラス",
+      "wikidataId": "Q195070",
+      "sport": "ice-hockey",
+      "reading": "にゅーおーりんず・ぶらす"
+    },
+    {
+      "name": "カンザスシティ・チーフス",
+      "wikidataId": "Q223522",
+      "sport": "american-football",
+      "reading": "かんざすしてぃ・ちーふす"
+    },
+    {
+      "name": "アトランタ・ブレーブス",
+      "wikidataId": "Q461595",
+      "sport": "baseball",
+      "reading": "あとらんた・ぶれーぶす"
+    },
+    {
+      "name": "アウロラ・バスケット・イェージ",
+      "wikidataId": "Q48976",
+      "sport": "basketball",
+      "reading": "あうろら・ばすけっと・いぇーじ"
+    },
+    {
+      "name": "ラーヨ・バジェカーノ",
+      "wikidataId": "Q10300",
+      "sport": "football",
+      "reading": "らーよ・ばじぇかーの"
+    },
+    {
+      "name": "カロライナ・ハリケーンズ",
+      "wikidataId": "Q201857",
+      "sport": "ice-hockey",
+      "reading": "かろらいな・はりけーんず"
+    },
+    {
+      "name": "クリーブランド・ブラウンズ",
+      "wikidataId": "Q223527",
+      "sport": "american-football",
+      "reading": "くりーぶらんど・ぶらうんず"
+    },
+    {
+      "name": "シアトル・マリナーズ",
+      "wikidataId": "Q466586",
+      "sport": "baseball",
+      "reading": "しあとる・まりなーず"
+    },
+    {
+      "name": "パラカネストロ・トリエステ",
+      "wikidataId": "Q50884",
+      "sport": "basketball",
+      "reading": "ぱらかねすとろ・とりえすて"
+    },
+    {
+      "name": "レアル・サラゴサ",
+      "wikidataId": "Q10308",
+      "sport": "football",
+      "reading": "れある・さらごさ"
+    },
+    {
+      "name": "タンパベイ・ライトニング",
+      "wikidataId": "Q201864",
+      "sport": "ice-hockey",
+      "reading": "たんぱべい・らいとにんぐ"
+    },
+    {
+      "name": "アリゾナ・カージナルス",
+      "wikidataId": "Q224164",
+      "sport": "american-football",
+      "reading": "ありぞな・かーじなるす"
+    },
+    {
+      "name": "ハンファ・イーグルス",
+      "wikidataId": "Q490046",
+      "sport": "baseball",
+      "reading": "はんふぁ・いーぐるす"
+    },
+    {
+      "name": "フルゴー・リベルタス・フォルリ",
+      "wikidataId": "Q51142",
+      "sport": "basketball",
+      "reading": "ふるごー・りべるたす・ふぉるり"
+    },
+    {
+      "name": "レアル・ソシエダ",
+      "wikidataId": "Q10315",
+      "sport": "football",
+      "reading": "れある・そしえだ"
+    },
+    {
+      "name": "リジャイナ・パッツ",
+      "wikidataId": "Q201886",
+      "sport": "ice-hockey",
+      "reading": "りじゃいな・ぱっつ"
+    },
+    {
+      "name": "デトロイト・ライオンズ",
+      "wikidataId": "Q271880",
+      "sport": "american-football",
+      "reading": "でとろいと・らいおんず"
+    },
+    {
+      "name": "キウム・ヒーローズ",
+      "wikidataId": "Q490137",
+      "sport": "baseball",
+      "reading": "きうむ・ひーろーず"
+    },
+    {
+      "name": "バロンセスト・フエンラブラダ",
+      "wikidataId": "Q54904",
+      "sport": "basketball",
+      "reading": "ばろんせすと・ふえんらぶらだ"
+    },
+    {
+      "name": "レアル・バリャドリード",
+      "wikidataId": "Q10319",
+      "sport": "football",
+      "reading": "れある・ばりゃどりーど"
+    },
+    {
+      "name": "ロサンゼルス・キングス",
+      "wikidataId": "Q203008",
+      "sport": "ice-hockey",
+      "reading": "ろさんぜるす・きんぐす"
+    },
+    {
+      "name": "アトランタ・ファルコンズ",
+      "wikidataId": "Q272059",
+      "sport": "american-football",
+      "reading": "あとらんた・ふぁるこんず"
+    },
+    {
+      "name": "サムスン・ライオンズ",
+      "wikidataId": "Q490418",
+      "sport": "baseball",
+      "reading": "さむすん・らいおんず"
+    },
+    {
+      "name": "ホベントゥート・バダローナ",
+      "wikidataId": "Q54908",
+      "sport": "basketball",
+      "reading": "ほべんとぅーと・ばだろーな"
+    },
+    {
+      "name": "ヘラクレス・アルメロ",
+      "wikidataId": "Q11961",
+      "sport": "football",
+      "reading": "へらくれす・あるめろ"
+    },
+    {
+      "name": "オタワ・セネターズ",
+      "wikidataId": "Q203013",
+      "sport": "ice-hockey",
+      "reading": "おたわ・せねたーず"
+    },
+    {
+      "name": "ロサンゼルス・チャージャーズ",
+      "wikidataId": "Q272220",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・ちゃーじゃーず"
+    },
+    {
+      "name": "ロッテ・ジャイアンツ",
+      "wikidataId": "Q495346",
+      "sport": "baseball",
+      "reading": "ろって・じゃいあんつ"
+    },
+    {
+      "name": "バスケット・マンレサ",
+      "wikidataId": "Q54912",
+      "sport": "basketball",
+      "reading": "ばすけっと・まんれさ"
+    },
+    {
+      "name": "レアル・ムルシア",
+      "wikidataId": "Q12230",
+      "sport": "football",
+      "reading": "れある・むるしあ"
+    },
+    {
+      "name": "トロント・メープルリーフス",
+      "wikidataId": "Q203384",
+      "sport": "ice-hockey",
+      "reading": "とろんと・めーぷるりーふす"
+    },
+    {
+      "name": "ジャクソンビル・ジャガーズ",
+      "wikidataId": "Q272223",
+      "sport": "american-football",
+      "reading": "じゃくそんびる・じゃがーず"
+    },
+    {
+      "name": "セントルイス・カージナルス",
+      "wikidataId": "Q504309",
+      "sport": "baseball",
+      "reading": "せんとるいす・かーじなるす"
+    },
+    {
+      "name": "レアル・マドリード・バロンセスト",
+      "wikidataId": "Q54922",
+      "sport": "basketball",
+      "reading": "れある・まどりーど・ばろんせすと"
+    },
+    {
+      "name": "ラシン・サンタンデール",
+      "wikidataId": "Q12236",
+      "sport": "football",
+      "reading": "らしん・さんたんでーる"
+    },
+    {
+      "name": "フロリダ・パンサーズ",
+      "wikidataId": "Q204623",
+      "sport": "ice-hockey",
+      "reading": "ふろりだ・ぱんさーず"
+    },
+    {
+      "name": "ボルチモア・レイブンズ",
+      "wikidataId": "Q276539",
+      "sport": "american-football",
+      "reading": "ぼるちもあ・れいぶんず"
+    },
+    {
+      "name": "アスレチックス",
+      "wikidataId": "Q504339",
+      "sport": "baseball",
+      "reading": "あすれちっくす"
+    },
+    {
+      "name": "ギプスコア・バスケットクラブ",
+      "wikidataId": "Q54924",
+      "sport": "basketball",
+      "reading": "ぎぷすこあ・ばすけっとくらぶ"
+    },
+    {
+      "name": "レクレアティーボ・ウェルバ",
+      "wikidataId": "Q12249",
+      "sport": "football",
+      "reading": "れくれあてぃーぼ・うぇるば"
+    },
+    {
+      "name": "ワシントン・キャピタルズ",
+      "wikidataId": "Q204627",
+      "sport": "ice-hockey",
+      "reading": "わしんとん・きゃぴたるず"
+    },
+    {
+      "name": "デュッセルドルフ・パンサー",
+      "wikidataId": "Q314030",
+      "sport": "american-football",
+      "reading": "でゅっせるどるふ・ぱんさー"
+    },
+    {
+      "name": "ラスベガス・アビエイターズ",
+      "wikidataId": "Q583259",
+      "sport": "baseball",
+      "reading": "らすべがす・あびえいたーず"
+    },
+    {
+      "name": "サスキ・バスコニア",
+      "wikidataId": "Q54927",
+      "sport": "basketball",
+      "reading": "さすき・ばすこにあ"
+    },
+    {
+      "name": "スポルティング・デ・ヒホン",
+      "wikidataId": "Q12278",
+      "sport": "football",
+      "reading": "すぽるてぃんぐ・で・ひほん"
+    },
+    {
+      "name": "エドモントン・オイラーズ",
+      "wikidataId": "Q205973",
+      "sport": "ice-hockey",
+      "reading": "えどもんとん・おいらーず"
+    },
+    {
+      "name": "シュヴェービッシュ・ハル・ユニコーンズ",
+      "wikidataId": "Q314833",
+      "sport": "american-football",
+      "reading": "しゅゔぇーびっしゅ・はる・ゆにこーんず"
+    },
+    {
+      "name": "ティグレス・デ・アラグア",
+      "wikidataId": "Q587761",
+      "sport": "baseball",
+      "reading": "てぃぐれす・で・あらぐあ"
+    },
+    {
+      "name": "レアル・ベティス・バロンセスト",
+      "wikidataId": "Q54930",
+      "sport": "basketball",
+      "reading": "れある・べてぃす・ばろんせすと"
+    },
+    {
+      "name": "カザーレ・カルチョ",
+      "wikidataId": "Q16334",
+      "sport": "football",
+      "reading": "かざーれ・かるちょ"
+    },
+    {
+      "name": "コロラド・アバランチ",
+      "wikidataId": "Q206297",
+      "sport": "ice-hockey",
+      "reading": "ころらど・あばらんち"
+    },
+    {
+      "name": "タンパベイ・バッカニアーズ",
+      "wikidataId": "Q320476",
+      "sport": "american-football",
+      "reading": "たんぱべい・ばっかにあーず"
+    },
+    {
+      "name": "ポータケット・レッドソックス",
+      "wikidataId": "Q603099",
+      "sport": "baseball",
+      "reading": "ぽーたけっと・れっどそっくす"
+    },
+    {
+      "name": "ロゼート・バスケット",
+      "wikidataId": "Q94444",
+      "sport": "basketball",
+      "reading": "ろぜーと・ばすけっと"
+    },
+    {
+      "name": "ペルージャ・カルチョ",
+      "wikidataId": "Q16344",
+      "sport": "football",
+      "reading": "ぺるーじゃ・かるちょ"
+    },
+    {
+      "name": "アリゾナ・コヨーテズ",
+      "wikidataId": "Q206312",
+      "sport": "ice-hockey",
+      "reading": "ありぞな・こよーてず"
+    },
+    {
+      "name": "テネシー・タイタンズ",
+      "wikidataId": "Q320484",
+      "sport": "american-football",
+      "reading": "てねしー・たいたんず"
+    },
+    {
+      "name": "ミネソタ・ツインズ",
+      "wikidataId": "Q604879",
+      "sport": "baseball",
+      "reading": "みねそた・ついんず"
+    },
+    {
+      "name": "ユタ・スターズ",
+      "wikidataId": "Q116726",
+      "sport": "basketball",
+      "reading": "ゆた・すたーず"
+    },
+    {
+      "name": "クラブ・デ・ヒムナシア・イ・エスグリマ・ラ・プラタ",
+      "wikidataId": "Q18640",
+      "sport": "football",
+      "reading": "くらぶ・で・ひむなしあ・い・えすぐりま・ら・ぷらた"
+    },
+    {
+      "name": "ミネソタ・ワイルド",
+      "wikidataId": "Q206357",
+      "sport": "ice-hockey",
+      "reading": "みねそた・わいるど"
+    },
+    {
+      "name": "ラスベガス・レイダース",
+      "wikidataId": "Q324523",
+      "sport": "american-football",
+      "reading": "らすべがす・れいだーす"
+    },
+    {
+      "name": "サンバンウル・レイダース",
+      "wikidataId": "Q626391",
+      "sport": "baseball",
+      "reading": "さんばんうる・れいだーす"
+    },
+    {
+      "name": "ロサンゼルス・レイカーズ",
+      "wikidataId": "Q121783",
+      "sport": "basketball",
+      "reading": "ろさんぜるす・れいかーず"
+    },
+    {
+      "name": "ウニベルシタリオ・デポルテス",
+      "wikidataId": "Q19066",
+      "sport": "football",
+      "reading": "うにべるしたりお・でぽるてす"
+    },
+    {
+      "name": "サンノゼ・シャークス",
+      "wikidataId": "Q206381",
+      "sport": "ice-hockey",
+      "reading": "さんのぜ・しゃーくす"
+    },
+    {
+      "name": "カロライナ・パンサーズ",
+      "wikidataId": "Q330120",
+      "sport": "american-football",
+      "reading": "かろらいな・ぱんさーず"
+    },
+    {
+      "name": "シャーロット・ナイツ",
+      "wikidataId": "Q630991",
+      "sport": "baseball",
+      "reading": "しゃーろっと・ないつ"
+    },
+    {
+      "name": "レイクランド・マジック",
+      "wikidataId": "Q126436",
+      "sport": "basketball",
+      "reading": "れいくらんど・まじっく"
+    },
+    {
+      "name": "スタッド・レンヌ",
+      "wikidataId": "Q19509",
+      "sport": "football",
+      "reading": "すたっど・れんぬ"
+    },
+    {
+      "name": "コロンバス・ブルージャケッツ",
+      "wikidataId": "Q207507",
+      "sport": "ice-hockey",
+      "reading": "ころんばす・ぶるーじゃけっつ"
+    },
+    {
+      "name": "ロサンゼルス・ラムズ",
+      "wikidataId": "Q337377",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・らむず"
+    },
+    {
+      "name": "クリーブランド・ガーディアンズ",
+      "wikidataId": "Q642553",
+      "sport": "baseball",
+      "reading": "くりーぶらんど・がーでぃあんず"
+    },
+    {
+      "name": "シカゴ・ブルズ",
+      "wikidataId": "Q128109",
+      "sport": "basketball",
+      "reading": "しかご・ぶるず"
+    },
+    {
+      "name": "ケイル・テタンジュ",
+      "wikidataId": "Q28606",
+      "sport": "football",
+      "reading": "けいる・てたんじゅ"
+    },
+    {
+      "name": "セントルイス・ブルース",
+      "wikidataId": "Q207735",
+      "sport": "ice-hockey",
+      "reading": "せんとるいす・ぶるーす"
+    },
+    {
+      "name": "サンフランシスコ・フォーティナイナーズ",
+      "wikidataId": "Q337758",
+      "sport": "american-football",
+      "reading": "さんふらんしすこ・ふぉーてぃないなーず"
+    },
+    {
+      "name": "レッジョ・ベースボール",
+      "wikidataId": "Q647735",
+      "sport": "baseball",
+      "reading": "れっじょ・べーすぼーる"
+    },
+    {
+      "name": "ニューヨーク・ニックス",
+      "wikidataId": "Q131364",
+      "sport": "basketball",
+      "reading": "にゅーよーく・にっくす"
+    },
+    {
+      "name": "フェラルピサロ",
+      "wikidataId": "Q31821",
+      "sport": "football",
+      "reading": "ふぇらるぴさろ"
+    },
+    {
+      "name": "ナッシュビル・プレデターズ",
+      "wikidataId": "Q207980",
+      "sport": "ice-hockey",
+      "reading": "なっしゅびる・ぷれでたーず"
+    },
+    {
+      "name": "ダラス・デザイア",
+      "wikidataId": "Q373268",
+      "sport": "american-football",
+      "reading": "だらす・でざいあ"
+    },
+    {
+      "name": "テレマーケット・リミニ",
+      "wikidataId": "Q650803",
+      "sport": "baseball",
+      "reading": "てれまーけっと・りみに"
+    },
+    {
+      "name": "ボストン・セルティックス",
+      "wikidataId": "Q131371",
+      "sport": "basketball",
+      "reading": "ぼすとん・せるてぃっくす"
+    },
+    {
+      "name": "アイントラハト・フランクフルト",
+      "wikidataId": "Q38245",
+      "sport": "football",
+      "reading": "あいんとらはと・ふらんくふると"
+    },
+    {
+      "name": "ダラス・スターズ",
+      "wikidataId": "Q208652",
+      "sport": "ice-hockey",
+      "reading": "だらす・すたーず"
+    },
+    {
+      "name": "シカゴ・ブリス",
+      "wikidataId": "Q386124",
+      "sport": "american-football",
+      "reading": "しかご・ぶりす"
+    },
+    {
+      "name": "ボルチモア・オリオールズ",
+      "wikidataId": "Q650816",
+      "sport": "baseball",
+      "reading": "ぼるちもあ・おりおーるず"
+    },
+    {
+      "name": "トロント・ラプターズ",
+      "wikidataId": "Q132880",
+      "sport": "basketball",
+      "reading": "とろんと・らぷたーず"
+    },
+    {
+      "name": "ボルシア・ドルトムント",
+      "wikidataId": "Q41420",
+      "sport": "football",
+      "reading": "ぼるしあ・どるとむんと"
+    },
+    {
+      "name": "シカゴ・ブラックホークス",
+      "wikidataId": "Q209636",
+      "sport": "ice-hockey",
+      "reading": "しかご・ぶらっくほーくす"
+    },
+    {
+      "name": "ニューヨーカー・ライオンズ",
+      "wikidataId": "Q448419",
+      "sport": "american-football",
+      "reading": "にゅーよーかー・らいおんず"
+    },
+    {
+      "name": "トロント・ブルージェイズ",
+      "wikidataId": "Q650829",
+      "sport": "baseball",
+      "reading": "とろんと・ぶるーじぇいず"
+    },
+    {
+      "name": "ダラス・マーベリックス",
+      "wikidataId": "Q132893",
+      "sport": "basketball",
+      "reading": "だらす・まーべりっくす"
+    },
+    {
+      "name": "アンタルヤスポル",
+      "wikidataId": "Q43710",
+      "sport": "football",
+      "reading": "あんたるやすぽる"
+    },
+    {
+      "name": "ルイジアナ・アイスゲイターズ",
+      "wikidataId": "Q225526",
+      "sport": "ice-hockey",
+      "reading": "るいじあな・あいすげいたーず"
+    },
+    {
+      "name": "ロサンゼルス・エクスプレス",
+      "wikidataId": "Q640756",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・えくすぷれす"
+    },
+    {
+      "name": "フィラデルフィア・フィリーズ",
+      "wikidataId": "Q650840",
+      "sport": "baseball",
+      "reading": "ふぃらでるふぃあ・ふぃりーず"
+    },
+    {
+      "name": "フィラデルフィア・セブンティシクサーズ",
+      "wikidataId": "Q138089",
+      "sport": "basketball",
+      "reading": "ふぃらでるふぃあ・せぶんてぃしくさーず"
+    },
+    {
+      "name": "セレンゲ・プレス",
+      "wikidataId": "Q44879",
+      "sport": "football",
+      "reading": "せれんげ・ぷれす"
+    },
+    {
+      "name": "アトランタ・スラッシャーズ",
+      "wikidataId": "Q244039",
+      "sport": "ice-hockey",
+      "reading": "あとらんた・すらっしゃーず"
+    },
+    {
+      "name": "スヴァルコ・レイダーズ・チロル",
+      "wikidataId": "Q684739",
+      "sport": "american-football",
+      "reading": "すゔぁるこ・れいだーず・ちろる"
+    },
+    {
+      "name": "デトロイト・タイガース",
+      "wikidataId": "Q650855",
+      "sport": "baseball",
+      "reading": "でとろいと・たいがーす"
+    },
+    {
+      "name": "ゴールデンステート・ウォリアーズ",
+      "wikidataId": "Q157376",
+      "sport": "basketball",
+      "reading": "ごーるでんすてーと・うぉりあーず"
+    },
+    {
+      "name": "エスペランス・スポルティーブ・ドゥ・チュニス",
+      "wikidataId": "Q44897",
+      "sport": "football",
+      "reading": "えすぺらんす・すぽるてぃーぶ・どぅ・ちゅにす"
+    },
+    {
+      "name": "ハル・オタワ・カナディアンズ",
+      "wikidataId": "Q257190",
+      "sport": "ice-hockey",
+      "reading": "はる・おたわ・かなでぃあんず"
+    },
+    {
+      "name": "バダロナ・ドラックス",
+      "wikidataId": "Q768745",
+      "sport": "american-football",
+      "reading": "ばだろな・どらっくす"
+    },
+    {
+      "name": "タンパベイ・レイズ",
+      "wikidataId": "Q650865",
+      "sport": "baseball",
+      "reading": "たんぱべい・れいず"
+    },
+    {
+      "name": "サンアントニオ・スパーズ",
+      "wikidataId": "Q159729",
+      "sport": "basketball",
+      "reading": "さんあんとにお・すぱーず"
+    },
+    {
+      "name": "オンセ・カルダス",
+      "wikidataId": "Q47533",
+      "sport": "football",
+      "reading": "おんせ・かるだす"
+    },
+    {
+      "name": "ディナモ・リガ",
+      "wikidataId": "Q261142",
+      "sport": "ice-hockey",
+      "reading": "でぃなも・りが"
+    },
+    {
+      "name": "ベルガモ・ライオンズ",
+      "wikidataId": "Q819341",
+      "sport": "american-football",
+      "reading": "べるがも・らいおんず"
+    },
+    {
+      "name": "マイアミ・マーリンズ",
+      "wikidataId": "Q652879",
+      "sport": "baseball",
+      "reading": "まいあみ・まーりんず"
+    },
+    {
+      "name": "アトランタ・ホークス",
+      "wikidataId": "Q159893",
+      "sport": "basketball",
+      "reading": "あとらんた・ほーくす"
+    },
+    {
+      "name": "ヴィラ・テレサ",
+      "wikidataId": "Q48664",
+      "sport": "football",
+      "reading": "ゔぃら・てれさ"
+    },
+    {
+      "name": "トロント・マーリーズ",
+      "wikidataId": "Q278957",
+      "sport": "ice-hockey",
+      "reading": "とろんと・まーりーず"
+    },
+    {
+      "name": "ベルリン・レベルズ",
+      "wikidataId": "Q821319",
+      "sport": "american-football",
+      "reading": "べるりん・れべるず"
+    },
+    {
+      "name": "ピッツバーグ・パイレーツ",
+      "wikidataId": "Q653772",
+      "sport": "baseball",
+      "reading": "ぴっつばーぐ・ぱいれーつ"
+    },
+    {
+      "name": "オーランド・マジック",
+      "wikidataId": "Q161337",
+      "sport": "basketball",
+      "reading": "おーらんど・まじっく"
+    },
+    {
+      "name": "ヴェルダー・ブレーメン",
+      "wikidataId": "Q51976",
+      "sport": "football",
+      "reading": "ゔぇるだー・ぶれーめん"
+    },
+    {
+      "name": "オーウェンサウンド・アタック",
+      "wikidataId": "Q301621",
+      "sport": "ice-hockey",
+      "reading": "おーうぇんさうんど・あたっく"
+    },
+    {
+      "name": "ブルックリン・ドジャース",
+      "wikidataId": "Q929497",
+      "sport": "american-football",
+      "reading": "ぶるっくりん・どじゃーす"
+    },
+    {
+      "name": "マホーニングバレー・スクラッパーズ",
+      "wikidataId": "Q658517",
+      "sport": "baseball",
+      "reading": "まほーにんぐばれー・すくらっぱーず"
+    },
+    {
+      "name": "ヒューストン・ロケッツ",
+      "wikidataId": "Q161345",
+      "sport": "basketball",
+      "reading": "ひゅーすとん・ろけっつ"
+    },
+    {
+      "name": "レフ・ポズナン",
+      "wikidataId": "Q52942",
+      "sport": "football",
+      "reading": "れふ・ぽずなん"
+    },
+    {
+      "name": "アボッツフォード・ヒート",
+      "wikidataId": "Q306730",
+      "sport": "ice-hockey",
+      "reading": "あぼっつふぉーど・ひーと"
+    },
+    {
+      "name": "ウエストバージニア・マウンテニアーズ・フットボール",
+      "wikidataId": "Q937935",
+      "sport": "american-football",
+      "reading": "うえすとばーじにあ・まうんてにあーず・ふっとぼーる"
+    },
+    {
+      "name": "アリゾナ・ダイヤモンドバックス",
+      "wikidataId": "Q670376",
+      "sport": "baseball",
+      "reading": "ありぞな・だいやもんどばっくす"
+    },
+    {
+      "name": "デンバー・ナゲッツ",
+      "wikidataId": "Q162954",
+      "sport": "basketball",
+      "reading": "でんばー・なげっつ"
+    },
+    {
+      "name": "ペルシバ・バントゥル",
+      "wikidataId": "Q69505",
+      "sport": "football",
+      "reading": "ぺるしば・ばんとぅる"
+    },
+    {
+      "name": "フィッシュタウン・ペンギンズ",
+      "wikidataId": "Q315438",
+      "sport": "ice-hockey",
+      "reading": "ふぃっしゅたうん・ぺんぎんず"
+    },
+    {
+      "name": "シカゴ・ロケッツ",
+      "wikidataId": "Q1071977",
+      "sport": "american-football",
+      "reading": "しかご・ろけっつ"
+    },
+    {
+      "name": "サザンメリーランド・ブルークラブス",
+      "wikidataId": "Q671648",
+      "sport": "baseball",
+      "reading": "さざんめりーらんど・ぶるーくらぶす"
+    },
+    {
+      "name": "クリーブランド・キャバリアーズ",
+      "wikidataId": "Q162990",
+      "sport": "basketball",
+      "reading": "くりーぶらんど・きゃばりあーず"
+    },
+    {
+      "name": "アル・イテファク",
+      "wikidataId": "Q72844",
+      "sport": "football",
+      "reading": "ある・いてふぁく"
+    },
+    {
+      "name": "スターブルス・ローゼンハイム",
+      "wikidataId": "Q315491",
+      "sport": "ice-hockey",
+      "reading": "すたーぶるす・ろーぜんはいむ"
+    },
+    {
+      "name": "フランクフルト・ユニバース",
+      "wikidataId": "Q1444903",
+      "sport": "american-football",
+      "reading": "ふらんくふると・ゆにばーす"
+    },
+    {
+      "name": "ニューヨーク・メッツ",
+      "wikidataId": "Q692417",
+      "sport": "baseball",
+      "reading": "にゅーよーく・めっつ"
+    },
+    {
+      "name": "シャーロット・ホーネッツ",
+      "wikidataId": "Q163480",
+      "sport": "basketball",
+      "reading": "しゃーろっと・ほーねっつ"
+    },
+    {
+      "name": "アル・ヒラル",
+      "wikidataId": "Q73965",
+      "sport": "football",
+      "reading": "ある・ひらる"
+    },
+    {
+      "name": "ハノーファー・インディアンス",
+      "wikidataId": "Q325596",
+      "sport": "ice-hockey",
+      "reading": "はのーふぁー・いんでぃあんす"
+    },
+    {
+      "name": "ロサンゼルス・ドンズ",
+      "wikidataId": "Q1589616",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・どんず"
+    },
+    {
+      "name": "サンディエゴ・パドレス",
+      "wikidataId": "Q721134",
+      "sport": "baseball",
+      "reading": "さんでぃえご・ぱどれす"
+    },
+    {
+      "name": "フェニックス・サンズ",
+      "wikidataId": "Q164177",
+      "sport": "basketball",
+      "reading": "ふぇにっくす・さんず"
+    },
+    {
+      "name": "クルーベ・ナウチコ・カピバリベ",
+      "wikidataId": "Q73971",
+      "sport": "football",
+      "reading": "くるーべ・なうちこ・かぴばりべ"
+    },
+    {
+      "name": "アデレード・アドレナリン",
+      "wikidataId": "Q353957",
+      "sport": "ice-hockey",
+      "reading": "あでれーど・あどれなりん"
+    },
+    {
+      "name": "バレンシア・ファイアーバッツ",
+      "wikidataId": "Q2094880",
+      "sport": "american-football",
+      "reading": "ばれんしあ・ふぁいあーばっつ"
+    },
+    {
+      "name": "カンザスシティ・モナークス",
+      "wikidataId": "Q731544",
+      "sport": "baseball",
+      "reading": "かんざすしてぃ・もなーくす"
+    },
+    {
+      "name": "メンフィス・グリズリーズ",
+      "wikidataId": "Q165529",
+      "sport": "basketball",
+      "reading": "めんふぃす・ぐりずりーず"
+    },
+    {
+      "name": "スポルティング・クルーベ・デ・ポルトゥガル",
+      "wikidataId": "Q75729",
+      "sport": "football",
+      "reading": "すぽるてぃんぐ・くるーべ・で・ぽるとぅがる"
+    },
+    {
+      "name": "アドラー・マンハイム",
+      "wikidataId": "Q358191",
+      "sport": "ice-hockey",
+      "reading": "あどらー・まんはいむ"
+    },
+    {
+      "name": "ルスピタレート・パイオニアーズ",
+      "wikidataId": "Q2699555",
+      "sport": "american-football",
+      "reading": "るすぴたれーと・ぱいおにあーず"
+    },
+    {
+      "name": "バッファロー・バイソンズ",
+      "wikidataId": "Q733939",
+      "sport": "baseball",
+      "reading": "ばっふぁろー・ばいそんず"
+    },
+    {
+      "name": "サクラメント・キングス",
+      "wikidataId": "Q166105",
+      "sport": "basketball",
+      "reading": "さくらめんと・きんぐす"
+    },
+    {
+      "name": "アヤックス・アムステルダム",
+      "wikidataId": "Q81888",
+      "sport": "football",
+      "reading": "あやっくす・あむすてるだむ"
+    },
+    {
+      "name": "マルメ・レッドホークス",
+      "wikidataId": "Q377374",
+      "sport": "ice-hockey",
+      "reading": "まるめ・れっどほーくす"
+    },
+    {
+      "name": "オービックシーガルズ",
+      "wikidataId": "Q2837503",
+      "sport": "american-football",
+      "reading": "おーびっくしーがるず"
+    },
+    {
+      "name": "グロッセート・オリオールズ",
+      "wikidataId": "Q743063",
+      "sport": "baseball",
+      "reading": "ぐろっせーと・おりおーるず"
+    },
+    {
+      "name": "ポートランド・トレイルブレイザーズ",
+      "wikidataId": "Q167253",
+      "sport": "basketball",
+      "reading": "ぽーとらんど・とれいるぶれいざーず"
+    },
+    {
+      "name": "グールニク・コニン",
+      "wikidataId": "Q93585",
+      "sport": "football",
+      "reading": "ぐーるにく・こにん"
+    },
+    {
+      "name": "ダンビル・ダッシャーズ",
+      "wikidataId": "Q382716",
+      "sport": "ice-hockey",
+      "reading": "だんびる・だっしゃーず"
+    },
+    {
+      "name": "オリエンタルバイオシルバースター",
+      "wikidataId": "Q2866285",
+      "sport": "american-football",
+      "reading": "おりえんたるばいおしるばーすたー"
+    },
+    {
+      "name": "ロサンゼルス・エンゼルス",
+      "wikidataId": "Q743309",
+      "sport": "baseball",
+      "reading": "ろさんぜるす・えんぜるす"
+    },
+    {
+      "name": "テキサス・レジェンズ",
+      "wikidataId": "Q168506",
+      "sport": "basketball",
+      "reading": "てきさす・れじぇんず"
+    },
+    {
+      "name": "クラブ・ブルーミング",
+      "wikidataId": "Q94571",
+      "sport": "football",
+      "reading": "くらぶ・ぶるーみんぐ"
+    },
+    {
+      "name": "ホイーリング・ネイラーズ",
+      "wikidataId": "Q383047",
+      "sport": "ice-hockey",
+      "reading": "ほいーりんぐ・ねいらーず"
+    },
+    {
+      "name": "タンパベイ・バンディッツ",
+      "wikidataId": "Q2882353",
+      "sport": "american-football",
+      "reading": "たんぱべい・ばんでぃっつ"
+    },
+    {
+      "name": "カンザスシティ・ロイヤルズ",
+      "wikidataId": "Q744530",
+      "sport": "baseball",
+      "reading": "かんざすしてぃ・ろいやるず"
+    },
+    {
+      "name": "マイアミ・ヒート",
+      "wikidataId": "Q169138",
+      "sport": "basketball",
+      "reading": "まいあみ・ひーと"
+    },
+    {
+      "name": "ボルシア・メンヒェングラートバッハ",
+      "wikidataId": "Q101959",
+      "sport": "football",
+      "reading": "ぼるしあ・めんひぇんぐらーとばっは"
+    },
+    {
+      "name": "アク・バルス・カザン",
+      "wikidataId": "Q413568",
+      "sport": "ice-hockey",
+      "reading": "あく・ばるす・かざん"
+    },
+    {
+      "name": "サンアントニオ・ガンスリンガーズ",
+      "wikidataId": "Q3120894",
+      "sport": "american-football",
+      "reading": "さんあんとにお・がんすりんがーず"
+    },
+    {
+      "name": "ビンガムトン・メッツ",
+      "wikidataId": "Q748193",
+      "sport": "baseball",
+      "reading": "びんがむとん・めっつ"
+    },
+    {
+      "name": "ワシントン・ウィザーズ",
+      "wikidataId": "Q169165",
+      "sport": "basketball",
+      "reading": "わしんとん・うぃざーず"
+    },
+    {
+      "name": "ヘルタ・ベルリン",
+      "wikidataId": "Q102720",
+      "sport": "football",
+      "reading": "へるた・べるりん"
+    },
+    {
+      "name": "ベルリナー・シュリットシュークルプ",
+      "wikidataId": "Q451431",
+      "sport": "ice-hockey",
+      "reading": "べるりなー・しゅりっとしゅーくるぷ"
+    },
+    {
+      "name": "ナッシュビル・キャッツ",
+      "wikidataId": "Q3194211",
+      "sport": "american-football",
+      "reading": "なっしゅびる・きゃっつ"
+    },
+    {
+      "name": "アラサネス・デ・グランマ",
+      "wikidataId": "Q785886",
+      "sport": "baseball",
+      "reading": "あらさねす・で・ぐらんま"
+    },
+    {
+      "name": "ミルウォーキー・バックス",
+      "wikidataId": "Q169637",
+      "sport": "basketball",
+      "reading": "みるうぉーきー・ばっくす"
+    },
+    {
+      "name": "バイエル・レバークーゼン",
+      "wikidataId": "Q104761",
+      "sport": "football",
+      "reading": "ばいえる・ればーくーぜん"
+    },
+    {
+      "name": "モントリオール・ワンダラーズ",
+      "wikidataId": "Q459647",
+      "sport": "ice-hockey",
+      "reading": "もんとりおーる・わんだらーず"
+    },
+    {
+      "name": "リバス・オソス",
+      "wikidataId": "Q3323851",
+      "sport": "american-football",
+      "reading": "りばす・おそす"
+    },
+    {
+      "name": "トレド・マッドヘンズ",
+      "wikidataId": "Q787652",
+      "sport": "baseball",
+      "reading": "とれど・まっどへんず"
+    },
+    {
+      "name": "デトロイト・ピストンズ",
+      "wikidataId": "Q169661",
+      "sport": "basketball",
+      "reading": "でとろいと・ぴすとんず"
+    },
+    {
+      "name": "アルミニア・ビーレフェルト",
+      "wikidataId": "Q105844",
+      "sport": "football",
+      "reading": "あるみにあ・びーれふぇると"
+    },
+    {
+      "name": "ウィニペグ・ジェッツ",
+      "wikidataId": "Q472741",
+      "sport": "ice-hockey",
+      "reading": "うぃにぺぐ・じぇっつ"
+    },
+    {
+      "name": "ウォーリアーズ・ボローニャ",
+      "wikidataId": "Q3566437",
+      "sport": "american-football",
+      "reading": "うぉーりあーず・ぼろーにゃ"
+    },
+    {
+      "name": "ワシントン・ナショナルズ",
+      "wikidataId": "Q825838",
+      "sport": "baseball",
+      "reading": "わしんとん・なしょなるず"
+    },
+    {
+      "name": "インディアナ・ペイサーズ",
+      "wikidataId": "Q170329",
+      "sport": "basketball",
+      "reading": "いんでぃあな・ぺいさーず"
+    },
+    {
+      "name": "エネルギー・コットブス",
+      "wikidataId": "Q107818",
+      "sport": "football",
+      "reading": "えねるぎー・こっとぶす"
+    },
+    {
+      "name": "アラスカ・エーシズ",
+      "wikidataId": "Q478447",
+      "sport": "ice-hockey",
+      "reading": "あらすか・えーしず"
+    },
+    {
+      "name": "ボルチモア・チャーム",
+      "wikidataId": "Q3633561",
+      "sport": "american-football",
+      "reading": "ぼるちもあ・ちゃーむ"
+    },
+    {
+      "name": "シンシナティ・レッズ",
+      "wikidataId": "Q826751",
+      "sport": "baseball",
+      "reading": "しんしなてぃ・れっず"
+    },
+    {
+      "name": "ミネソタ・ティンバーウルブズ",
+      "wikidataId": "Q170558",
+      "sport": "basketball",
+      "reading": "みねそた・てぃんばーうるぶず"
+    },
+    {
+      "name": "エユプスポル",
+      "wikidataId": "Q118919",
+      "sport": "football",
+      "reading": "えゆぷすぽる"
+    },
+    {
+      "name": "アムール・ハバロフスク",
+      "wikidataId": "Q481725",
+      "sport": "ice-hockey",
+      "reading": "あむーる・はばろふすく"
+    },
+    {
+      "name": "ロサンゼルス・テンプテイション",
+      "wikidataId": "Q3837393",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・てんぷていしょん"
+    },
+    {
+      "name": "ハイデンハイム・ハイデケッフェ",
+      "wikidataId": "Q834100",
+      "sport": "baseball",
+      "reading": "はいでんはいむ・はいでけっふぇ"
+    },
+    {
+      "name": "ユタ・ジャズ",
+      "wikidataId": "Q170649",
+      "sport": "basketball",
+      "reading": "ゆた・じゃず"
+    },
+    {
+      "name": "クラブ・ホルヘ・ウィルステルマン",
+      "wikidataId": "Q127921",
+      "sport": "football",
+      "reading": "くらぶ・ほるへ・うぃるすてるまん"
+    },
+    {
+      "name": "チャイナドラゴン",
+      "wikidataId": "Q488637",
+      "sport": "ice-hockey",
+      "reading": "ちゃいなどらごん"
+    },
+    {
+      "name": "マイアミ・カリエンテ",
+      "wikidataId": "Q3856007",
+      "sport": "american-football",
+      "reading": "まいあみ・かりえんて"
+    },
+    {
+      "name": "ミルウォーキー・ブルワーズ",
+      "wikidataId": "Q848103",
+      "sport": "baseball",
+      "reading": "みるうぉーきー・ぶるわーず"
+    },
+    {
+      "name": "ニューオーリンズ・ペリカンズ",
+      "wikidataId": "Q172339",
+      "sport": "basketball",
+      "reading": "にゅーおーりんず・ぺりかんず"
+    },
+    {
+      "name": "オリエンテ・ペトロレロ",
+      "wikidataId": "Q127923",
+      "sport": "football",
+      "reading": "おりえんて・ぺとろれろ"
+    },
+    {
+      "name": "イーザーローン・ルースターズ",
+      "wikidataId": "Q498084",
+      "sport": "ice-hockey",
+      "reading": "いーざーろーん・るーすたーず"
+    },
+    {
+      "name": "ニューヨーク・マジェスティ",
+      "wikidataId": "Q3875578",
+      "sport": "american-football",
+      "reading": "にゅーよーく・まじぇすてぃ"
+    },
+    {
+      "name": "ヒューストン・アストロズ",
+      "wikidataId": "Q848117",
+      "sport": "baseball",
+      "reading": "ひゅーすとん・あすとろず"
+    },
+    {
+      "name": "オクラホマシティ・サンダー",
+      "wikidataId": "Q180950",
+      "sport": "basketball",
+      "reading": "おくらほましてぃ・さんだー"
+    },
+    {
+      "name": "クラブ・アウロラ",
+      "wikidataId": "Q127925",
+      "sport": "football",
+      "reading": "くらぶ・あうろら"
+    },
+    {
+      "name": "インディアナポリス・レイサーズ",
+      "wikidataId": "Q503739",
+      "sport": "ice-hockey",
+      "reading": "いんでぃあなぽりす・れいさーず"
+    },
+    {
+      "name": "オーランド・ファンタジー",
+      "wikidataId": "Q3885951",
+      "sport": "american-football",
+      "reading": "おーらんど・ふぁんたじー"
+    },
+    {
+      "name": "パース・ヒート",
+      "wikidataId": "Q860864",
+      "sport": "baseball",
+      "reading": "ぱーす・ひーと"
+    },
+    {
+      "name": "ヤカマ・サンキングス",
+      "wikidataId": "Q204993",
+      "sport": "basketball",
+      "reading": "やかま・さんきんぐす"
+    },
+    {
+      "name": "ザ・ストロンゲスト",
+      "wikidataId": "Q128020",
+      "sport": "football",
+      "reading": "ざ・すとろんげすと"
+    },
+    {
+      "name": "レディング・ロイヤルズ",
+      "wikidataId": "Q506807",
+      "sport": "ice-hockey",
+      "reading": "れでぃんぐ・ろいやるず"
+    },
+    {
+      "name": "フィラデルフィア・パッション",
+      "wikidataId": "Q3901415",
+      "sport": "american-football",
+      "reading": "ふぃらでるふぃあ・ぱっしょん"
+    },
+    {
+      "name": "ブリスベン・バンディッツ",
+      "wikidataId": "Q861688",
+      "sport": "baseball",
+      "reading": "ぶりすべん・ばんでぃっつ"
+    },
+    {
+      "name": "オルレアンズ・ロワレ・バスケット",
+      "wikidataId": "Q206768",
+      "sport": "basketball",
+      "reading": "おるれあんず・ろわれ・ばすけっと"
+    },
+    {
+      "name": "レアル・ポトシ",
+      "wikidataId": "Q128022",
+      "sport": "football",
+      "reading": "れある・ぽとし"
+    },
+    {
+      "name": "シュヴェニンガーワイルド・ウィングス",
+      "wikidataId": "Q514676",
+      "sport": "ice-hockey",
+      "reading": "しゅゔぇにんがーわいるど・うぃんぐす"
+    },
+    {
+      "name": "タンパ・ブリーズ",
+      "wikidataId": "Q3980651",
+      "sport": "american-football",
+      "reading": "たんぱ・ぶりーず"
+    },
+    {
+      "name": "ボストン・レッズ",
+      "wikidataId": "Q863826",
+      "sport": "baseball",
+      "reading": "ぼすとん・れっず"
+    },
+    {
+      "name": "シアトル・スーパーソニックス",
+      "wikidataId": "Q235326",
+      "sport": "basketball",
+      "reading": "しあとる・すーぱーそにっくす"
+    },
+    {
+      "name": "クラブ・ボリバル",
+      "wikidataId": "Q128024",
+      "sport": "football",
+      "reading": "くらぶ・ぼりばる"
+    },
+    {
+      "name": "ケベック・ノルディクス",
+      "wikidataId": "Q530764",
+      "sport": "ice-hockey",
+      "reading": "けべっく・のるでぃくす"
+    },
+    {
+      "name": "アビリーン・クリスチャン・ワイルドキャッツ・フットボール",
+      "wikidataId": "Q4667762",
+      "sport": "american-football",
+      "reading": "あびりーん・くりすちゃん・わいるどきゃっつ・ふっとぼーる"
+    },
+    {
+      "name": "ルイビル・カーネルズ",
+      "wikidataId": "Q863881",
+      "sport": "baseball",
+      "reading": "るいびる・かーねるず"
+    },
+    {
+      "name": "フェネルバフチェ・ユルケル",
+      "wikidataId": "Q239447",
+      "sport": "basketball",
+      "reading": "ふぇねるばふちぇ・ゆるける"
+    },
+    {
+      "name": "ウニベルシタリオ・デ・スクレ",
+      "wikidataId": "Q128045",
+      "sport": "football",
+      "reading": "うにべるしたりお・で・すくれ"
+    },
+    {
+      "name": "シドニー・ベアーズ",
+      "wikidataId": "Q536331",
+      "sport": "ice-hockey",
+      "reading": "しどにー・べあーず"
+    },
+    {
+      "name": "アラバマ・クリムゾンタイド・フットボール",
+      "wikidataId": "Q4705216",
+      "sport": "american-football",
+      "reading": "あらばま・くりむぞんたいど・ふっとぼーる"
+    },
+    {
+      "name": "ユカタン・ライオンズ",
+      "wikidataId": "Q867822",
+      "sport": "baseball",
+      "reading": "ゆかたん・らいおんず"
+    },
+    {
+      "name": "サイエンスシティ・イェーナ",
+      "wikidataId": "Q265244",
+      "sport": "basketball",
+      "reading": "さいえんすしてぃ・いぇーな"
+    },
+    {
+      "name": "デポルティーボ・グアビラ",
+      "wikidataId": "Q128049",
+      "sport": "football",
+      "reading": "でぽるてぃーぼ・ぐあびら"
+    },
+    {
+      "name": "イルベスホッケーオイ",
+      "wikidataId": "Q537238",
+      "sport": "ice-hockey",
+      "reading": "いるべすほっけーおい"
+    },
+    {
+      "name": "アリゾナ・ワイルドキャッツ",
+      "wikidataId": "Q4791461",
+      "sport": "american-football",
+      "reading": "ありぞな・わいるどきゃっつ"
+    },
+    {
+      "name": "エル・アギラ・デ・ベラクルス",
+      "wikidataId": "Q867828",
+      "sport": "baseball",
+      "reading": "える・あぎら・で・べらくるす"
+    },
+    {
+      "name": "レシオファーム・ウルム",
+      "wikidataId": "Q266588",
+      "sport": "basketball",
+      "reading": "れしおふぁーむ・うるむ"
+    },
+    {
+      "name": "マニサスポル",
+      "wikidataId": "Q128148",
+      "sport": "football",
+      "reading": "まにさすぽる"
+    },
+    {
+      "name": "モントリオール・マルーンズ",
+      "wikidataId": "Q546280",
+      "sport": "ice-hockey",
+      "reading": "もんとりおーる・まるーんず"
+    },
+    {
+      "name": "アーカンソー・レイザーバックス・フットボール",
+      "wikidataId": "Q4791842",
+      "sport": "american-football",
+      "reading": "あーかんそー・れいざーばっくす・ふっとぼーる"
+    },
+    {
+      "name": "サルティーヨ・サラペメーカーズ",
+      "wikidataId": "Q868067",
+      "sport": "baseball",
+      "reading": "さるてぃーよ・さらぺめーかーず"
+    },
+    {
+      "name": "サリー・スコーチャーズ",
+      "wikidataId": "Q269597",
+      "sport": "basketball",
+      "reading": "さりー・すこーちゃーず"
+    },
+    {
+      "name": "オリンピック・マルセイユ",
+      "wikidataId": "Q132885",
+      "sport": "football",
+      "reading": "おりんぴっく・まるせいゆ"
+    },
+    {
+      "name": "トルペド・ニジニ・ノヴゴロド",
+      "wikidataId": "Q568805",
+      "sport": "ice-hockey",
+      "reading": "とるぺど・にじに・のゔごろど"
+    },
+    {
+      "name": "シンシナティ・ベアキャッツ・フットボール",
+      "wikidataId": "Q5120214",
+      "sport": "american-football",
+      "reading": "しんしなてぃ・べあきゃっつ・ふっとぼーる"
+    },
+    {
+      "name": "ミナティトラン・オイラーズ",
+      "wikidataId": "Q868073",
+      "sport": "baseball",
+      "reading": "みなてぃとらん・おいらーず"
+    },
+    {
+      "name": "アソシエイション・ディポーティバ・アテナ",
+      "wikidataId": "Q290787",
+      "sport": "basketball",
+      "reading": "あそしえいしょん・でぃぽーてぃば・あてな"
+    },
+    {
+      "name": "グレミオ・バルエリ",
+      "wikidataId": "Q133520",
+      "sport": "football",
+      "reading": "ぐれみお・ばるえり"
+    },
+    {
+      "name": "ハーシー・ベアーズ",
+      "wikidataId": "Q569225",
+      "sport": "ice-hockey",
+      "reading": "はーしー・べあーず"
+    },
+    {
+      "name": "クレムゾン・タイガーズ・フットボール",
+      "wikidataId": "Q5131553",
+      "sport": "american-football",
+      "reading": "くれむぞん・たいがーず・ふっとぼーる"
+    },
+    {
+      "name": "オアハカ・ウォーリアーズ",
+      "wikidataId": "Q868082",
+      "sport": "baseball",
+      "reading": "おあはか・うぉーりあーず"
+    },
+    {
+      "name": "マンチェスター・ジャイアンツ",
+      "wikidataId": "Q323462",
+      "sport": "basketball",
+      "reading": "まんちぇすたー・じゃいあんつ"
+    },
+    {
+      "name": "フェイエノールト",
+      "wikidataId": "Q134241",
+      "sport": "football",
+      "reading": "ふぇいえのーると"
+    },
+    {
+      "name": "ベーカーズフィールド・コンドルズ",
+      "wikidataId": "Q606290",
+      "sport": "ice-hockey",
+      "reading": "べーかーずふぃーるど・こんどるず"
+    },
+    {
+      "name": "カレッジフットボール・オールアメリカンチーム",
+      "wikidataId": "Q5146372",
+      "sport": "american-football",
+      "reading": "かれっじふっとぼーる・おーるあめりかんちーむ"
+    },
+    {
+      "name": "アルゴドネロス・デ・ウニオン・ラグーナ",
+      "wikidataId": "Q868087",
+      "sport": "baseball",
+      "reading": "あるごどねろす・で・うにおん・らぐーな"
+    },
+    {
+      "name": "ニュルンベルク・ファルコンズ",
+      "wikidataId": "Q325847",
+      "sport": "basketball",
+      "reading": "にゅるんべるく・ふぁるこんず"
+    },
+    {
+      "name": "グールニク・ザブジェ",
+      "wikidataId": "Q134255",
+      "sport": "football",
+      "reading": "ぐーるにく・ざぶじぇ"
+    },
+    {
+      "name": "ローウェル・ロック・モンスターズ",
+      "wikidataId": "Q607135",
+      "sport": "ice-hockey",
+      "reading": "ろーうぇる・ろっく・もんすたーず"
+    },
+    {
+      "name": "コロラド・バッファローズ・フットボール",
+      "wikidataId": "Q5148746",
+      "sport": "american-football",
+      "reading": "ころらど・ばっふぁろーず・ふっとぼーる"
+    },
+    {
+      "name": "タバスコ・オルメクス",
+      "wikidataId": "Q868093",
+      "sport": "baseball",
+      "reading": "たばすこ・おるめくす"
+    },
+    {
+      "name": "バスケットボール・ニンブルク",
+      "wikidataId": "Q336793",
+      "sport": "basketball",
+      "reading": "ばすけっとぼーる・にんぶるく"
+    },
+    {
+      "name": "フォッジャ・カルチョ",
+      "wikidataId": "Q139399",
+      "sport": "football",
+      "reading": "ふぉっじゃ・かるちょ"
+    },
+    {
+      "name": "アフトモビリスト・エカテリンブルグ",
+      "wikidataId": "Q639095",
+      "sport": "ice-hockey",
+      "reading": "あふともびりすと・えかてりんぶるぐ"
+    },
+    {
+      "name": "ダートマス・ビッグ・グリーン・フットボール",
+      "wikidataId": "Q5225674",
+      "sport": "american-football",
+      "reading": "だーとます・びっぐ・ぐりーん・ふっとぼーる"
+    },
+    {
+      "name": "ピラータス・デ・カンペチェ",
+      "wikidataId": "Q868095",
+      "sport": "baseball",
+      "reading": "ぴらーたす・で・かんぺちぇ"
+    },
+    {
+      "name": "シャンパーニュ・シャロン・ランス・バスケット",
+      "wikidataId": "Q371741",
+      "sport": "basketball",
+      "reading": "しゃんぱーにゅ・しゃろん・らんす・ばすけっと"
+    },
+    {
+      "name": "ザグウェンビェ・ソスノヴィエツ",
+      "wikidataId": "Q140487",
+      "sport": "football",
+      "reading": "ざぐうぇんびぇ・そすのゔぃえつ"
+    },
+    {
+      "name": "ビンガムトン・ホエーラーズ",
+      "wikidataId": "Q639316",
+      "sport": "ice-hockey",
+      "reading": "びんがむとん・ほえーらーず"
+    },
+    {
+      "name": "デラウェア・ステイト・ホーネッツ・フットボール",
+      "wikidataId": "Q5253360",
+      "sport": "american-football",
+      "reading": "でらうぇあ・すていと・ほーねっつ・ふっとぼーる"
+    },
+    {
+      "name": "レイノサ・ブロンコス",
+      "wikidataId": "Q868098",
+      "sport": "baseball",
+      "reading": "れいのさ・ぶろんこす"
+    },
+    {
+      "name": "オールバニ・パトルーンズ",
+      "wikidataId": "Q385469",
+      "sport": "basketball",
+      "reading": "おーるばに・ぱとるーんず"
+    },
+    {
+      "name": "ザグウェンビェ・ルビン",
+      "wikidataId": "Q140497",
+      "sport": "football",
+      "reading": "ざぐうぇんびぇ・るびん"
+    },
+    {
+      "name": "ドゥルモンヴィル・ヴォルティギュール",
+      "wikidataId": "Q639885",
+      "sport": "ice-hockey",
+      "reading": "どぅるもんゔぃる・ゔぉるてぃぎゅーる"
+    },
+    {
+      "name": "イーストカロライナ・パイレーツ・フットボール",
+      "wikidataId": "Q5328013",
+      "sport": "american-football",
+      "reading": "いーすとかろらいな・ぱいれーつ・ふっとぼーる"
+    },
+    {
+      "name": "モンクローバ・スティーラーズ",
+      "wikidataId": "Q868101",
+      "sport": "baseball",
+      "reading": "もんくろーば・すてぃーらーず"
+    },
+    {
+      "name": "タイガース・テュービンゲン",
+      "wikidataId": "Q461647",
+      "sport": "basketball",
+      "reading": "たいがーす・てゅーびんげん"
+    },
+    {
+      "name": "アノルトシス・ファマグスタ",
+      "wikidataId": "Q141688",
+      "sport": "football",
+      "reading": "あのるとしす・ふぁまぐすた"
+    },
+    {
+      "name": "ホッケー・クラブ・エッパン・アッピアーノ",
+      "wikidataId": "Q641366",
+      "sport": "ice-hockey",
+      "reading": "ほっけー・くらぶ・えっぱん・あっぴあーの"
+    },
+    {
+      "name": "イースタンケンタッキー・コロネルス・フットボール",
+      "wikidataId": "Q5330244",
+      "sport": "american-football",
+      "reading": "いーすたんけんたっきー・ころねるす・ふっとぼーる"
+    },
+    {
+      "name": "ホーフトドルプ・ピオニールス",
+      "wikidataId": "Q868128",
+      "sport": "baseball",
+      "reading": "ほーふとどるぷ・ぴおにーるす"
+    },
+    {
+      "name": "フェニックス・ハーゲン",
+      "wikidataId": "Q463349",
+      "sport": "basketball",
+      "reading": "ふぇにっくす・はーげん"
+    },
+    {
+      "name": "ハンザ・ロストック",
+      "wikidataId": "Q142005",
+      "sport": "football",
+      "reading": "はんざ・ろすとっく"
+    },
+    {
+      "name": "コロラド・イーグルス",
+      "wikidataId": "Q661115",
+      "sport": "ice-hockey",
+      "reading": "ころらど・いーぐるす"
+    },
+    {
+      "name": "イースタン・ミシガン・イーグルスフットボールチーム",
+      "wikidataId": "Q5330296",
+      "sport": "american-football",
+      "reading": "いーすたん・みしがん・いーぐるすふっとぼーるちーむ"
+    },
+    {
+      "name": "スパルタ・フェイエノールト",
+      "wikidataId": "Q868133",
+      "sport": "baseball",
+      "reading": "すぱるた・ふぇいえのーると"
+    },
+    {
+      "name": "パーダーボルン・バスケッツ",
+      "wikidataId": "Q466084",
+      "sport": "basketball",
+      "reading": "ぱーだーぼるん・ばすけっつ"
+    },
+    {
+      "name": "デルトラス・シドアルジョ",
+      "wikidataId": "Q148594",
+      "sport": "football",
+      "reading": "でるとらす・しどあるじょ"
+    },
+    {
+      "name": "パース・サンダー",
+      "wikidataId": "Q664893",
+      "sport": "ice-hockey",
+      "reading": "ぱーす・さんだー"
+    },
+    {
+      "name": "ムルシア・コブラス",
+      "wikidataId": "Q5392449",
+      "sport": "american-football",
+      "reading": "むるしあ・こぶらす"
+    },
+    {
+      "name": "ナランヘロス・デ・エルモシージョ",
+      "wikidataId": "Q870384",
+      "sport": "baseball",
+      "reading": "ならんへろす・で・えるもしーじょ"
+    },
+    {
+      "name": "アイスベーレン・ブレーマーハーフェン",
+      "wikidataId": "Q469053",
+      "sport": "basketball",
+      "reading": "あいすべーれん・ぶれーまーはーふぇん"
+    },
+    {
+      "name": "フォルトゥナ・デュッセルドルフ",
+      "wikidataId": "Q151747",
+      "sport": "football",
+      "reading": "ふぉるとぅな・でゅっせるどるふ"
+    },
+    {
+      "name": "アトラント・モスクワ",
+      "wikidataId": "Q665729",
+      "sport": "ice-hockey",
+      "reading": "あとらんと・もすくわ"
+    },
+    {
+      "name": "フロリダ・ゲイターズ・フットボール",
+      "wikidataId": "Q5461394",
+      "sport": "american-football",
+      "reading": "ふろりだ・げいたーず・ふっとぼーる"
+    },
+    {
+      "name": "アギラス・デ・メヒカリ",
+      "wikidataId": "Q870391",
+      "sport": "baseball",
+      "reading": "あぎらす・で・めひかり"
+    },
+    {
+      "name": "ヴュルツブルク・バスケッツ",
+      "wikidataId": "Q480478",
+      "sport": "basketball",
+      "reading": "ゔゅるつぶるく・ばすけっつ"
+    },
+    {
+      "name": "アル・ムハーラク・クラブ",
+      "wikidataId": "Q152572",
+      "sport": "football",
+      "reading": "ある・むはーらく・くらぶ"
+    },
+    {
+      "name": "ウィンストン・セーラム・ポーラー・ツインズ",
+      "wikidataId": "Q668165",
+      "sport": "ice-hockey",
+      "reading": "うぃんすとん・せーらむ・ぽーらー・ついんず"
+    },
+    {
+      "name": "ジョージア・テック・イエロー・ジャケッツ・フットボール",
+      "wikidataId": "Q5547838",
+      "sport": "american-football",
+      "reading": "じょーじあ・てっく・いえろー・じゃけっつ・ふっとぼーる"
+    },
+    {
+      "name": "カルデナレス・デ・ララ",
+      "wikidataId": "Q870407",
+      "sport": "baseball",
+      "reading": "かるでなれす・で・らら"
+    },
+    {
+      "name": "フリブール・オリンピック",
+      "wikidataId": "Q506174",
+      "sport": "basketball",
+      "reading": "ふりぶーる・おりんぴっく"
+    },
+    {
+      "name": "アレマニア・アーヘン",
+      "wikidataId": "Q153535",
+      "sport": "football",
+      "reading": "あれまにあ・あーへん"
+    },
+    {
+      "name": "テキサス・スターズ",
+      "wikidataId": "Q682872",
+      "sport": "ice-hockey",
+      "reading": "てきさす・すたーず"
+    },
+    {
+      "name": "ハーヴァード・クリムゾン・フットボール",
+      "wikidataId": "Q5676339",
+      "sport": "american-football",
+      "reading": "はーゔぁーど・くりむぞん・ふっとぼーる"
+    },
+    {
+      "name": "カリベス・デ・アンソアテギ",
+      "wikidataId": "Q870414",
+      "sport": "baseball",
+      "reading": "かりべす・で・あんそあてぎ"
+    },
+    {
+      "name": "ハーレム・グローブトロッターズ",
+      "wikidataId": "Q506754",
+      "sport": "basketball",
+      "reading": "はーれむ・ぐろーぶとろったーず"
+    },
+    {
+      "name": "ロートヴァイス・エッセン",
+      "wikidataId": "Q155218",
+      "sport": "football",
+      "reading": "ろーとゔぁいす・えっせん"
+    },
+    {
+      "name": "ハノーファー・スコーピオンズ",
+      "wikidataId": "Q688101",
+      "sport": "ice-hockey",
+      "reading": "はのーふぁー・すこーぴおんず"
+    },
+    {
+      "name": "ハワイ・アイランダーズ",
+      "wikidataId": "Q5684530",
+      "sport": "american-football",
+      "reading": "はわい・あいらんだーず"
+    },
+    {
+      "name": "ベナドス・デ・マサトラン",
+      "wikidataId": "Q870420",
+      "sport": "baseball",
+      "reading": "べなどす・で・まさとらん"
+    },
+    {
+      "name": "インディアナポリス・オリンピアンズ",
+      "wikidataId": "Q513372",
+      "sport": "basketball",
+      "reading": "いんでぃあなぽりす・おりんぴあんず"
+    },
+    {
+      "name": "ホルシュタイン・キール",
+      "wikidataId": "Q157828",
+      "sport": "football",
+      "reading": "ほるしゅたいん・きーる"
+    },
+    {
+      "name": "アイスベーレン・ベルリン",
+      "wikidataId": "Q688162",
+      "sport": "ice-hockey",
+      "reading": "あいすべーれん・べるりん"
+    },
+    {
+      "name": "ラス・ロサス・ブラック・デーモンズ",
+      "wikidataId": "Q5970742",
+      "sport": "american-football",
+      "reading": "らす・ろさす・ぶらっく・でーもんず"
+    },
+    {
+      "name": "アギラス・デル・スリア",
+      "wikidataId": "Q870427",
+      "sport": "baseball",
+      "reading": "あぎらす・でる・すりあ"
+    },
+    {
+      "name": "バスケットボール・レーヴェン・ブラウンシュヴァイク",
+      "wikidataId": "Q532269",
+      "sport": "basketball",
+      "reading": "ばすけっとぼーる・れーゔぇん・ぶらうんしゅゔぁいく"
+    },
+    {
+      "name": "キッカーズ・オッフェンバッハ",
+      "wikidataId": "Q159936",
+      "sport": "football",
+      "reading": "きっかーず・おっふぇんばっは"
+    },
+    {
+      "name": "フランクフルト・ライオンズ",
+      "wikidataId": "Q695832",
+      "sport": "ice-hockey",
+      "reading": "ふらんくふると・らいおんず"
+    },
+    {
+      "name": "アイダホ・ステート・ベンガルズ・フットボール",
+      "wikidataId": "Q5987431",
+      "sport": "american-football",
+      "reading": "あいだほ・すてーと・べんがるず・ふっとぼーる"
+    },
+    {
+      "name": "レオネス・デル・エスコヒード",
+      "wikidataId": "Q870434",
+      "sport": "baseball",
+      "reading": "れおねす・でる・えすこひーど"
+    },
+    {
+      "name": "ブルックリン・ネッツ",
+      "wikidataId": "Q572134",
+      "sport": "basketball",
+      "reading": "ぶるっくりん・ねっつ"
+    },
+    {
+      "name": "ティロ・フェデラル",
+      "wikidataId": "Q162923",
+      "sport": "football",
+      "reading": "てぃろ・ふぇでらる"
+    },
+    {
+      "name": "グリズリー・アダムス・ヴォルフスブルク",
+      "wikidataId": "Q696805",
+      "sport": "ice-hockey",
+      "reading": "ぐりずりー・あだむす・ゔぉるふすぶるく"
+    },
+    {
+      "name": "アイオワ・ホークアイズ・フットボール",
+      "wikidataId": "Q6064430",
+      "sport": "american-football",
+      "reading": "あいおわ・ほーくあいず・ふっとぼーる"
+    },
+    {
+      "name": "ヒガンテス・デル・シバオ",
+      "wikidataId": "Q870440",
+      "sport": "baseball",
+      "reading": "ひがんてす・でる・しばお"
+    },
+    {
+      "name": "アイダホ・スタンピード",
+      "wikidataId": "Q573543",
+      "sport": "basketball",
+      "reading": "あいだほ・すたんぴーど"
+    },
+    {
+      "name": "アル・アハリ・ベンガジ",
+      "wikidataId": "Q166724",
+      "sport": "football",
+      "reading": "ある・あはり・べんがじ"
+    },
+    {
+      "name": "ケルナー・ハイエ",
+      "wikidataId": "Q697902",
+      "sport": "ice-hockey",
+      "reading": "けるなー・はいえ"
+    },
+    {
+      "name": "アイオワ・ステイト・サイクロンズ・フットボール",
+      "wikidataId": "Q6064618",
+      "sport": "american-football",
+      "reading": "あいおわ・すていと・さいくろんず・ふっとぼーる"
+    },
+    {
+      "name": "ティブロネス・デ・ラ・グアイラ",
+      "wikidataId": "Q870447",
+      "sport": "baseball",
+      "reading": "てぃぶろねす・で・ら・ぐあいら"
+    },
+    {
+      "name": "アルバコンプ",
+      "wikidataId": "Q576200",
+      "sport": "basketball",
+      "reading": "あるばこんぷ"
+    },
+    {
+      "name": "ザヴィシャ・ブィドゴシュチュ",
+      "wikidataId": "Q167781",
+      "sport": "football",
+      "reading": "ざゔぃしゃ・ぶぃどごしゅちゅ"
+    },
+    {
+      "name": "ハンブルク・フリーザーズ",
+      "wikidataId": "Q700934",
+      "sport": "ice-hockey",
+      "reading": "はんぶるく・ふりーざーず"
+    },
+    {
+      "name": "ジャクソンビル・ブルズ",
+      "wikidataId": "Q6117934",
+      "sport": "american-football",
+      "reading": "じゃくそんびる・ぶるず"
+    },
+    {
+      "name": "ブラボス・デ・マルガリータ",
+      "wikidataId": "Q870625",
+      "sport": "baseball",
+      "reading": "ぶらぼす・で・まるがりーた"
+    },
+    {
+      "name": "ケアンズ・タイパンズ",
+      "wikidataId": "Q589167",
+      "sport": "basketball",
+      "reading": "けあんず・たいぱんず"
+    },
+    {
+      "name": "アル・アンサール・ベイルート",
+      "wikidataId": "Q169327",
+      "sport": "football",
+      "reading": "ある・あんさーる・べいるーと"
+    },
+    {
+      "name": "ニュルンベルク・アイスタイガース",
+      "wikidataId": "Q704524",
+      "sport": "ice-hockey",
+      "reading": "にゅるんべるく・あいすたいがーす"
+    },
+    {
+      "name": "カンザスステイト・ワイルドキャッツ・フットボール",
+      "wikidataId": "Q6365097",
+      "sport": "american-football",
+      "reading": "かんざすすていと・わいるどきゃっつ・ふっとぼーる"
+    },
+    {
+      "name": "トマテロス・デ・クリアカン",
+      "wikidataId": "Q870639",
+      "sport": "baseball",
+      "reading": "とまてろす・で・くりあかん"
+    },
+    {
+      "name": "スピロウ・シャルルロワ",
+      "wikidataId": "Q597364",
+      "sport": "basketball",
+      "reading": "すぴろう・しゃるるろわ"
+    },
+    {
+      "name": "シュトゥットガルト・キッカーズ",
+      "wikidataId": "Q170105",
+      "sport": "football",
+      "reading": "しゅとぅっとがると・きっかーず"
+    },
+    {
+      "name": "アウグスバーガー・パンター",
+      "wikidataId": "Q704577",
+      "sport": "ice-hockey",
+      "reading": "あうぐすばーがー・ぱんたー"
+    },
+    {
+      "name": "ケンタッキー・ワイルドキャッツ・フットボール",
+      "wikidataId": "Q6392427",
+      "sport": "american-football",
+      "reading": "けんたっきー・わいるどきゃっつ・ふっとぼーる"
+    },
+    {
+      "name": "カングレヘーロス・デ・サントゥルセ",
+      "wikidataId": "Q870737",
+      "sport": "baseball",
+      "reading": "かんぐれへーろす・で・さんとぅるせ"
+    },
+    {
+      "name": "ストックトン・キングス",
+      "wikidataId": "Q600353",
+      "sport": "basketball",
+      "reading": "すとっくとん・きんぐす"
+    },
+    {
+      "name": "ロート・ヴァイス・アーレン",
+      "wikidataId": "Q170125",
+      "sport": "football",
+      "reading": "ろーと・ゔぁいす・あーれん"
+    },
+    {
+      "name": "クレーフェルト・ピングイーネ",
+      "wikidataId": "Q704599",
+      "sport": "ice-hockey",
+      "reading": "くれーふぇると・ぴんぐいーね"
+    },
+    {
+      "name": "レスター・ファルコンズ",
+      "wikidataId": "Q6519179",
+      "sport": "american-football",
+      "reading": "れすたー・ふぁるこんず"
+    },
+    {
+      "name": "ティグレス・デル・リセイ",
+      "wikidataId": "Q870747",
+      "sport": "baseball",
+      "reading": "てぃぐれす・でる・りせい"
+    },
+    {
+      "name": "アンウェル・ウォロクラウィック",
+      "wikidataId": "Q613621",
+      "sport": "basketball",
+      "reading": "あんうぇる・うぉろくらうぃっく"
+    },
+    {
+      "name": "レッドスター・ベオグラード",
+      "wikidataId": "Q173009",
+      "sport": "football",
+      "reading": "れっどすたー・べおぐらーど"
+    },
+    {
+      "name": "シュトラウビング・タイガース",
+      "wikidataId": "Q707028",
+      "sport": "ice-hockey",
+      "reading": "しゅとらうびんぐ・たいがーす"
+    },
+    {
+      "name": "ロサンゼルス・ワイルドキャッツ",
+      "wikidataId": "Q6682374",
+      "sport": "american-football",
+      "reading": "ろさんぜるす・わいるどきゃっつ"
+    },
+    {
+      "name": "アスカレーロス・デル・エステ",
+      "wikidataId": "Q870757",
+      "sport": "baseball",
+      "reading": "あすかれーろす・でる・えすて"
+    },
+    {
+      "name": "ルガーノ・タイガース",
+      "wikidataId": "Q627356",
+      "sport": "basketball",
+      "reading": "るがーの・たいがーす"
+    },
+    {
+      "name": "オルドゥスポル",
+      "wikidataId": "Q178180",
+      "sport": "football",
+      "reading": "おるどぅすぽる"
+    },
+    {
+      "name": "アッシュビル・エースズ",
+      "wikidataId": "Q725211",
+      "sport": "ice-hockey",
+      "reading": "あっしゅびる・えーすず"
+    },
+    {
+      "name": "ルイヴィル・カーディナルズ・フットボール",
+      "wikidataId": "Q6689457",
+      "sport": "american-football",
+      "reading": "るいゔぃる・かーでぃなるず・ふっとぼーる"
+    },
+    {
+      "name": "マインツ・アスレチックス",
+      "wikidataId": "Q876055",
+      "sport": "baseball",
+      "reading": "まいんつ・あすれちっくす"
+    },
+    {
+      "name": "パリ・バスケ・ラシン",
+      "wikidataId": "Q638938",
+      "sport": "basketball",
+      "reading": "ぱり・ばすけ・らしん"
+    },
+    {
+      "name": "ハイドゥク・スプリト",
+      "wikidataId": "Q181216",
+      "sport": "football",
+      "reading": "はいどぅく・すぷりと"
+    },
+    {
+      "name": "ポートランド・ウィンターホークス",
+      "wikidataId": "Q739501",
+      "sport": "ice-hockey",
+      "reading": "ぽーとらんど・うぃんたーほーくす"
+    },
+    {
+      "name": "メリーランド・テラピンズフットボール",
+      "wikidataId": "Q6781508",
+      "sport": "american-football",
+      "reading": "めりーらんど・てらぴんずふっとぼーる"
+    },
+    {
+      "name": "ブルックリン・アトランティックス",
+      "wikidataId": "Q956715",
+      "sport": "baseball",
+      "reading": "ぶるっくりん・あとらんてぃっくす"
+    },
+    {
+      "name": "アルバ・ベルリン",
+      "wikidataId": "Q643795",
+      "sport": "basketball",
+      "reading": "あるば・べるりん"
+    },
+    {
+      "name": "アル・ワフダ・ダマスカス",
+      "wikidataId": "Q181868",
+      "sport": "football",
+      "reading": "ある・わふだ・だますかす"
+    },
+    {
+      "name": "メイン・マリナーズ",
+      "wikidataId": "Q739899",
+      "sport": "ice-hockey",
+      "reading": "めいん・まりなーず"
+    },
+    {
+      "name": "マイアミ・ハリケーンズ・フットボール",
+      "wikidataId": "Q6827329",
+      "sport": "american-football",
+      "reading": "まいあみ・はりけーんず・ふっとぼーる"
+    },
+    {
+      "name": "レンジャーズ・レディプーリア",
+      "wikidataId": "Q964389",
+      "sport": "baseball",
+      "reading": "れんじゃーず・れでぃぷーりあ"
+    },
+    {
+      "name": "マイアミ・ソル",
+      "wikidataId": "Q655386",
+      "sport": "basketball",
+      "reading": "まいあみ・そる"
+    },
+    {
+      "name": "アイスバフタル・シュポルト・フロイント",
+      "wikidataId": "Q187267",
+      "sport": "football",
+      "reading": "あいすばふたる・しゅぽると・ふろいんと"
+    },
+    {
+      "name": "ハミルトン・ブルドッグズ",
+      "wikidataId": "Q748294",
+      "sport": "ice-hockey",
+      "reading": "はみるとん・ぶるどっぐず"
+    },
+    {
+      "name": "ミシガン・ウルヴァリンズ・フットボール",
+      "wikidataId": "Q6837794",
+      "sport": "american-football",
+      "reading": "みしがん・うるゔぁりんず・ふっとぼーる"
+    },
+    {
+      "name": "アルバカーキ・アイソトープス",
+      "wikidataId": "Q966879",
+      "sport": "baseball",
+      "reading": "あるばかーき・あいそとーぷす"
+    },
+    {
+      "name": "シェフィールド・シャークス",
+      "wikidataId": "Q672901",
+      "sport": "basketball",
+      "reading": "しぇふぃーるど・しゃーくす"
+    },
+    {
+      "name": "パルチザン・ベオグラード",
+      "wikidataId": "Q188656",
+      "sport": "football",
+      "reading": "ぱるちざん・べおぐらーど"
+    },
+    {
+      "name": "サンディエゴ・マリナーズ",
+      "wikidataId": "Q750072",
+      "sport": "ice-hockey",
+      "reading": "さんでぃえご・まりなーず"
+    },
+    {
+      "name": "ミネソタ・ゴールデン・ゴーファーズ・フットボール",
+      "wikidataId": "Q6868253",
+      "sport": "american-football",
+      "reading": "みねそた・ごーるでん・ごーふぁーず・ふっとぼーる"
+    },
+    {
+      "name": "モンテレイ・サルタンズ",
+      "wikidataId": "Q971676",
+      "sport": "baseball",
+      "reading": "もんてれい・さるたんず"
+    },
+    {
+      "name": "アーカンソー・リムロッカーズ",
+      "wikidataId": "Q672940",
+      "sport": "basketball",
+      "reading": "あーかんそー・りむろっかーず"
+    },
+    {
+      "name": "ヤギエロニア・ビャウィストク",
+      "wikidataId": "Q189170",
+      "sport": "football",
+      "reading": "やぎえろにあ・びゃうぃすとく"
+    },
+    {
+      "name": "バーミンガム・ブルズ",
+      "wikidataId": "Q750082",
+      "sport": "ice-hockey",
+      "reading": "ばーみんがむ・ぶるず"
+    },
+    {
+      "name": "ネブラスカ・コーンハスカーズ・フットボール",
+      "wikidataId": "Q6984693",
+      "sport": "american-football",
+      "reading": "ねぶらすか・こーんはすかーず・ふっとぼーる"
+    }
+  ]
+}

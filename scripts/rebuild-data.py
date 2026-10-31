@@ -31,7 +31,7 @@ def rebuild(output, rtc_sources, require_rtc_sources):
     for name in ('etyping', 'trainers', 'constitution', 'original-long'):
         subprocess.run([sys.executable, str(ROOT / f'scripts/import-{name}.py')],
                        cwd=ROOT, env=env, check=True)
-    for source in ('typewell/typewell.json', 'space/spaceCatalogue.json'):
+    for source in ('typewell/typewell.json', 'space/spaceCatalogue.json', 'themes/themes.json'):
         shutil.copyfile(ROOT / 'data/sources' / source, output / Path(source).name)
 
 

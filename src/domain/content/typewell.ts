@@ -1,3 +1,4 @@
+import themes from '../../data/generated/themes.json' with { type: 'json' }
 import classicData from '../../data/generated/typewell.json' with { type: 'json' }
 import { legacySpaceWords, spaceWords } from './spaceWords'
 import { KanaEngine, RomanEngine } from '../typing/engine'
@@ -5,7 +6,7 @@ import type { Layout } from '../typing/engine'
 import type { Passage } from './passages'
 import type { Sentence } from './sentences'
 
-const data = { ...classicData, space: spaceWords }
+const data = { ...classicData, ...themes.words, space: spaceWords }
 
 export const typewellSets = [
   { id: 'typewell-basic', category: 'basic', title: '基本常用語', pages: 3 },
@@ -23,15 +24,30 @@ export const typewellSets = [
     pages: 4,
   },
   { id: 'typewell-space', category: 'space', title: '宇宙の名前', pages: 0 },
+  {
+    id: 'typewell-scientists',
+    category: 'scientists',
+    title: '科学者の名前',
+    pages: 0,
+  },
+  { id: 'typewell-sf', category: 'sf', title: 'SF小説の名前', pages: 0 },
+  {
+    id: 'typewell-sports',
+    category: 'sports',
+    title: 'スポーツチーム名',
+    pages: 0,
+  },
 ] as const
 export const typewellPassages: Passage[] = typewellSets.map((set, index) => ({
   id: set.id,
-  title: `${set.category === 'space' ? 'タイプウェル準拠' : 'タイプウェル'} · ${set.title}`,
+  title: `${set.pages === 0 ? 'タイプウェル準拠' : 'タイプウェル'} · ${set.title}`,
   genre: 'タイプウェル',
   subtitle:
     set.category === 'space'
       ? `${spaceWords.length}の天体名。恒星・銀河・小惑星・衛星・惑星を旅する。R 400打 / K 280打。`
-      : `全${set.pages}ページ・${data[set.category].length.toLocaleString()}語を集約。R 400打 / K 280打。`,
+      : set.pages === 0
+        ? `${data[set.category].length}語。シードでランダム出題。R 400打 / K 280打。`
+        : `全${set.pages}ページ・${data[set.category].length.toLocaleString()}語を集約。R 400打 / K 280打。`,
   accent: `T${index + 1}`,
   paragraphs: [],
 }))

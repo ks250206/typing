@@ -1,3 +1,4 @@
+import { themeTrainers } from './themes'
 import type { Passage } from './passages'
 import importedTrainers from '../../data/generated/trainers.json' with { type: 'json' }
 import { seededRandom } from './typewell'
@@ -78,6 +79,7 @@ export const trainerPassages: Passage[] = importedTrainers.map(
     })),
   }),
 )
+trainerPassages.push(...themeTrainers)
 export const sakusaku = trainerPassages.find(
   (p) => p.id === 'sakusaku-trainer',
 )!

@@ -1,3 +1,4 @@
+import { themePassages } from './themes'
 import { originalLongPassages } from './originalLong'
 import { constitution } from './constitution'
 import { constitutionArticlePassage } from './constitutionArticles'
@@ -171,4 +172,5 @@ export const passages: Passage[] = [
   ...trainerPassages,
   ...etypingPassages,
   ...originalLongPassages,
+  ...themePassages,
 ]

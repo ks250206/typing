@@ -3,7 +3,10 @@ import { passages } from '../../domain/content/passages'
 import { typewellPassages } from '../../domain/content/typewell'
 import { libraryCategory } from './libraryCategories'
 import { seededRandom } from '../../domain/content/typewell'
-import { createTrainerOrder, randomSentenceIndex } from '../../domain/content/sakusaku'
+import {
+  createTrainerOrder,
+  randomSentenceIndex,
+} from '../../domain/content/sakusaku'
 it('groups both constitution sets, the six original essays, and all five TypeWell sets', () => {
   expect(
     passages.filter((p) => libraryCategory(p) === '公的文書').map((p) => p.id),
@@ -12,8 +15,17 @@ it('groups both constitution sets, the six original essays, and all five TypeWel
     passages
       .filter((p) => libraryCategory(p) === 'オリジナル')
       .map((p) => p.genre),
-  ).toEqual(['文学', '旅', '科学', '日常', '思索', '音楽'])
-  expect(typewellPassages).toHaveLength(5)
+  ).toEqual([
+    '文学',
+    '旅',
+    '科学',
+    '日常',
+    '思索',
+    '音楽',
+    'オリジナル',
+    'オリジナル',
+  ])
+  expect(typewellPassages).toHaveLength(8)
   expect(
     typewellPassages.every((p) => libraryCategory(p) === 'タイプウェル'),
   ).toBe(true)
