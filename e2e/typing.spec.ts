@@ -260,7 +260,17 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   await expect(cursor).toHaveText('閉館')
   await page.getByRole('region').focus()
   await startPractice(page)
+  const keyboardOffset = () =>
+    page
+      .locator('.typing-area')
+      .evaluate(
+        (el) =>
+          el.querySelector('.keyboard-guide')!.getBoundingClientRect().top -
+          el.getBoundingClientRect().top,
+      )
+  let previousKeyboard = 0
   for (let i = 0; i < sentences.length; i++) {
+    if (i === sentences.length - 2) previousKeyboard = await keyboardOffset()
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
       sentences[i].text,
@@ -270,7 +280,14 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
         'data-text',
         sentences[i + 1].text,
       )
-    else await expect(page.locator('.upcoming')).toHaveCount(0)
+    else {
+      await expect(page.locator('.upcoming')).toBeHidden()
+      await expect(page.locator('.next-sentence')).toHaveAttribute(
+        'data-empty',
+        'true',
+      )
+      expect(await keyboardOffset()).toBeCloseTo(previousKeyboard, 1)
+    }
     await page.keyboard.type(new RomanEngine(sentences[i].reading).hint)
   }
   await expect(page.getByText('SESSION COMPLETE')).toBeVisible()

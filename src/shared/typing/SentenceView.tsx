@@ -136,11 +136,18 @@ export const SentenceView = memo(function SentenceView({
         romanGuide={romanGuide}
         done={done}
       />
-      {showNext && !current.continuous && !done && next && (
-        <div className="next-sentence">
+      {showNext && !current.continuous && (
+        <div
+          className="next-sentence"
+          data-empty={!next || done}
+          aria-hidden={!next || done}
+        >
           <div className="sentence-label">UP NEXT / 次の文章</div>
-          <p className="upcoming" data-text={next.text}>
-            <RubyText segments={next.segments} />
+          <p
+            className="upcoming"
+            data-text={next && !done ? next.text : undefined}
+          >
+            {next && !done ? <RubyText segments={next.segments} /> : '\u00a0'}
           </p>
         </div>
       )}

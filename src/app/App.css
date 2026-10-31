@@ -4206,3 +4206,10 @@ rt {
 .practice-main:not(.cpu-battle) > .mission-carousel > .mission-steps {
   padding-top: 8px;
 }
+
+.prose .upcoming {
+  height: 2.4em;
+}
+.next-sentence[data-empty='true'] {
+  visibility: hidden;
+}
