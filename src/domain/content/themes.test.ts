@@ -85,3 +85,26 @@ it('keeps the RTC prefix reproducible when extending 15 prompts to a full match'
       ),
     ).toBe(true)
 })
+
+it('provides 100 unique aligned and typable phrases in each AI RTC half', () => {
+  for (const part of data.rtcParts) {
+    expect(part).toHaveLength(100)
+    expect(new Set(part.map((p) => p.text)).size).toBe(100)
+    for (const phrase of part) {
+      expect(phrase.segments.map((s) => s.text).join('')).toBe(phrase.text)
+      expect(phrase.segments.map((s) => s.reading).join('')).toBe(
+        phrase.reading,
+      )
+      const engine = new RomanEngine(phrase.reading)
+      for (const key of engine.hint) expect(engine.feed(key)).toBe(true)
+      expect(engine.done).toBe(true)
+    }
+  }
+  expect(
+    new Set(
+      data.rtcParts[0].flatMap((a) =>
+        data.rtcParts[1].map((b) => a.text + b.text),
+      ),
+    ).size,
+  ).toBe(10000)
+})

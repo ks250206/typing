@@ -12341,6 +12341,1586 @@
             "reading": "べんちまーくを"
           }
         ]
+      },
+      {
+        "text": "教師あり学習の精度を",
+        "reading": "きょうしありがくしゅうのせいどを",
+        "segments": [
+          {
+            "text": "教師あり学習",
+            "reading": "きょうしありがくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "精度",
+            "reading": "せいど"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "教師なし学習の特徴を",
+        "reading": "きょうしなしがくしゅうのとくちょうを",
+        "segments": [
+          {
+            "text": "教師なし学習",
+            "reading": "きょうしなしがくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "特徴",
+            "reading": "とくちょう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "強化学習の方策を",
+        "reading": "きょうかがくしゅうのほうさくを",
+        "segments": [
+          {
+            "text": "強化学習",
+            "reading": "きょうかがくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "方策",
+            "reading": "ほうさく"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "自己教師あり学習の課題を",
+        "reading": "じこきょうしありがくしゅうのかだいを",
+        "segments": [
+          {
+            "text": "自己",
+            "reading": "じこ"
+          },
+          {
+            "text": "教師あり学習",
+            "reading": "きょうしありがくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "課題",
+            "reading": "かだい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "半教師あり学習の効果を",
+        "reading": "はんきょうしありがくしゅうのこうかを",
+        "segments": [
+          {
+            "text": "半",
+            "reading": "はん"
+          },
+          {
+            "text": "教師あり学習",
+            "reading": "きょうしありがくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "効果",
+            "reading": "こうか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "対照学習の設定を",
+        "reading": "たいしょうがくしゅうのせっていを",
+        "segments": [
+          {
+            "text": "対照",
+            "reading": "たいしょう"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "設定",
+            "reading": "せってい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "能動学習の選択基準を",
+        "reading": "のうどうがくしゅうのせんたくきじゅんを",
+        "segments": [
+          {
+            "text": "能動",
+            "reading": "のうどう"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "選択基準",
+            "reading": "せんたくきじゅん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "連合学習の通信量を",
+        "reading": "れんごうがくしゅうのつうしんりょうを",
+        "segments": [
+          {
+            "text": "連合",
+            "reading": "れんごう"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "通信量",
+            "reading": "つうしんりょう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "オンライン学習の変化を",
+        "reading": "おんらいんがくしゅうのへんかを",
+        "segments": [
+          {
+            "text": "オンライン",
+            "reading": "おんらいん"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "変化",
+            "reading": "へんか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "継続学習の忘却を",
+        "reading": "けいぞくがくしゅうのぼうきゃくを",
+        "segments": [
+          {
+            "text": "継続",
+            "reading": "けいぞく"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "忘却",
+            "reading": "ぼうきゃく"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "決定木の分岐を",
+        "reading": "けっていぎのぶんきを",
+        "segments": [
+          {
+            "text": "決定木の分岐を",
+            "reading": "けっていぎのぶんきを"
+          }
+        ]
+      },
+      {
+        "text": "ランダムフォレストの予測を",
+        "reading": "らんだむふぉれすとのよそくを",
+        "segments": [
+          {
+            "text": "ランダムフォレスト",
+            "reading": "らんだむふぉれすと"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "予測",
+            "reading": "よそく"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "勾配ブースティングの性能を",
+        "reading": "こうばいぶーすてぃんぐのせいのうを",
+        "segments": [
+          {
+            "text": "勾配",
+            "reading": "こうばい"
+          },
+          {
+            "text": "ブースティング",
+            "reading": "ぶーすてぃんぐ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "性能",
+            "reading": "せいのう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "線形回帰の係数を",
+        "reading": "せんけいかいきのけいすうを",
+        "segments": [
+          {
+            "text": "線形",
+            "reading": "せんけい"
+          },
+          {
+            "text": "回帰",
+            "reading": "かいき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "係数",
+            "reading": "けいすう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ロジスティック回帰の確率を",
+        "reading": "ろじすてぃっくかいきのかくりつを",
+        "segments": [
+          {
+            "text": "ロジスティック",
+            "reading": "ろじすてぃっく"
+          },
+          {
+            "text": "回帰",
+            "reading": "かいき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "確率",
+            "reading": "かくりつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "クラスタリングの境界を",
+        "reading": "くらすたりんぐのきょうかいを",
+        "segments": [
+          {
+            "text": "クラスタリング",
+            "reading": "くらすたりんぐ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "境界",
+            "reading": "きょうかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "主成分分析の寄与率を",
+        "reading": "しゅせいぶんぶんせきのきよりつを",
+        "segments": [
+          {
+            "text": "主成分分析",
+            "reading": "しゅせいぶんぶんせき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "寄与率",
+            "reading": "きよりつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "次元削減の結果を",
+        "reading": "じげんさくげんのけっかを",
+        "segments": [
+          {
+            "text": "次元",
+            "reading": "じげん"
+          },
+          {
+            "text": "削減",
+            "reading": "さくげん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "結果",
+            "reading": "けっか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "特徴量の重要度を",
+        "reading": "とくちょうりょうのじゅうようどを",
+        "segments": [
+          {
+            "text": "特徴量",
+            "reading": "とくちょうりょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "重要度",
+            "reading": "じゅうようど"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "欠損値の補完方法を",
+        "reading": "けっそんちのほかんほうほうを",
+        "segments": [
+          {
+            "text": "欠損値",
+            "reading": "けっそんち"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "補完",
+            "reading": "ほかん"
+          },
+          {
+            "text": "方法",
+            "reading": "ほうほう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "外れ値の判定基準を",
+        "reading": "はずれちのはんていきじゅんを",
+        "segments": [
+          {
+            "text": "外れ値の判定基準を",
+            "reading": "はずれちのはんていきじゅんを"
+          }
+        ]
+      },
+      {
+        "text": "データ拡張の効果を",
+        "reading": "でーたかくちょうのこうかを",
+        "segments": [
+          {
+            "text": "データ",
+            "reading": "でーた"
+          },
+          {
+            "text": "拡張",
+            "reading": "かくちょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "効果",
+            "reading": "こうか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ラベルの品質を",
+        "reading": "らべるのひんしつを",
+        "segments": [
+          {
+            "text": "ラベル",
+            "reading": "らべる"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "品質",
+            "reading": "ひんしつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "クラス間の偏りを",
+        "reading": "くらすかんのかたよりを",
+        "segments": [
+          {
+            "text": "クラス間の偏りを",
+            "reading": "くらすかんのかたよりを"
+          }
+        ]
+      },
+      {
+        "text": "交差検証の分割を",
+        "reading": "こうさけんしょうのぶんかつを",
+        "segments": [
+          {
+            "text": "交差",
+            "reading": "こうさ"
+          },
+          {
+            "text": "検証",
+            "reading": "けんしょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "分割",
+            "reading": "ぶんかつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "混同行列の数値を",
+        "reading": "こんどうぎょうれつのすうちを",
+        "segments": [
+          {
+            "text": "混同",
+            "reading": "こんどう"
+          },
+          {
+            "text": "行列",
+            "reading": "ぎょうれつ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "数値",
+            "reading": "すうち"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "適合率と再現率を",
+        "reading": "てきごうりつとさいげんりつを",
+        "segments": [
+          {
+            "text": "適合率と再現率を",
+            "reading": "てきごうりつとさいげんりつを"
+          }
+        ]
+      },
+      {
+        "text": "予測確率の校正を",
+        "reading": "よそくかくりつのこうせいを",
+        "segments": [
+          {
+            "text": "予測",
+            "reading": "よそく"
+          },
+          {
+            "text": "確率",
+            "reading": "かくりつ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "校正",
+            "reading": "こうせい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "不確実性の推定を",
+        "reading": "ふかくじつせいのすいていを",
+        "segments": [
+          {
+            "text": "不確実性",
+            "reading": "ふかくじつせい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "推定",
+            "reading": "すいてい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "分布外データへの応答を",
+        "reading": "ぶんぷがいでーたへのおうとうを",
+        "segments": [
+          {
+            "text": "分布外データへの応答を",
+            "reading": "ぶんぷがいでーたへのおうとうを"
+          }
+        ]
+      },
+      {
+        "text": "畳み込み層の特徴を",
+        "reading": "たたみこみそうのとくちょうを",
+        "segments": [
+          {
+            "text": "畳み込み",
+            "reading": "たたみこみ"
+          },
+          {
+            "text": "層",
+            "reading": "そう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "特徴",
+            "reading": "とくちょう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "再帰型ネットワークの状態を",
+        "reading": "さいきがたねっとわーくのじょうたいを",
+        "segments": [
+          {
+            "text": "再帰型",
+            "reading": "さいきがた"
+          },
+          {
+            "text": "ネットワーク",
+            "reading": "ねっとわーく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "状態",
+            "reading": "じょうたい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "トランスフォーマーの構造を",
+        "reading": "とらんすふぉーまーのこうぞうを",
+        "segments": [
+          {
+            "text": "トランスフォーマー",
+            "reading": "とらんすふぉーまー"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "構造",
+            "reading": "こうぞう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "位置符号化の方式を",
+        "reading": "いちふごうかのほうしきを",
+        "segments": [
+          {
+            "text": "位置",
+            "reading": "いち"
+          },
+          {
+            "text": "符号化",
+            "reading": "ふごうか"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "方式",
+            "reading": "ほうしき"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "活性化関数の性質を",
+        "reading": "かっせいかかんすうのせいしつを",
+        "segments": [
+          {
+            "text": "活性化",
+            "reading": "かっせいか"
+          },
+          {
+            "text": "関数",
+            "reading": "かんすう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "性質",
+            "reading": "せいしつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "残差接続の役割を",
+        "reading": "ざんさせつぞくのやくわりを",
+        "segments": [
+          {
+            "text": "残差",
+            "reading": "ざんさ"
+          },
+          {
+            "text": "接続",
+            "reading": "せつぞく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "役割",
+            "reading": "やくわり"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "正規化層の挙動を",
+        "reading": "せいきかそうのきょどうを",
+        "segments": [
+          {
+            "text": "正規化",
+            "reading": "せいきか"
+          },
+          {
+            "text": "層",
+            "reading": "そう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "挙動",
+            "reading": "きょどう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ドロップアウトの割合を",
+        "reading": "どろっぷあうとのわりあいを",
+        "segments": [
+          {
+            "text": "ドロップアウト",
+            "reading": "どろっぷあうと"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "割合",
+            "reading": "わりあい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "勾配蓄積の設定を",
+        "reading": "こうばいちくせきのせっていを",
+        "segments": [
+          {
+            "text": "勾配",
+            "reading": "こうばい"
+          },
+          {
+            "text": "蓄積",
+            "reading": "ちくせき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "設定",
+            "reading": "せってい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "混合精度学習の安定性を",
+        "reading": "こんごうせいどがくしゅうのあんていせいを",
+        "segments": [
+          {
+            "text": "混合",
+            "reading": "こんごう"
+          },
+          {
+            "text": "精度",
+            "reading": "せいど"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "安定性",
+            "reading": "あんていせい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "チェックポイントの内容を",
+        "reading": "ちぇっくぽいんとのないようを",
+        "segments": [
+          {
+            "text": "チェックポイント",
+            "reading": "ちぇっくぽいんと"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "内容",
+            "reading": "ないよう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "分散学習の効率を",
+        "reading": "ぶんさんがくしゅうのこうりつを",
+        "segments": [
+          {
+            "text": "分散",
+            "reading": "ぶんさん"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "効率",
+            "reading": "こうりつ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "推論時のメモリ使用量を",
+        "reading": "すいろんじのめもりしようりょうを",
+        "segments": [
+          {
+            "text": "推論時のメモリ使用量を",
+            "reading": "すいろんじのめもりしようりょうを"
+          }
+        ]
+      },
+      {
+        "text": "モデル圧縮の効果を",
+        "reading": "もでるあっしゅくのこうかを",
+        "segments": [
+          {
+            "text": "モデル",
+            "reading": "もでる"
+          },
+          {
+            "text": "圧縮",
+            "reading": "あっしゅく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "効果",
+            "reading": "こうか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "枝刈り後の性能を",
+        "reading": "えだかりごのせいのうを",
+        "segments": [
+          {
+            "text": "枝刈り後の性能を",
+            "reading": "えだかりごのせいのうを"
+          }
+        ]
+      },
+      {
+        "text": "低ランク適応の設定を",
+        "reading": "ていらんくてきおうのせっていを",
+        "segments": [
+          {
+            "text": "低",
+            "reading": "てい"
+          },
+          {
+            "text": "ランク",
+            "reading": "らんく"
+          },
+          {
+            "text": "適応",
+            "reading": "てきおう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "設定",
+            "reading": "せってい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "指示学習のデータを",
+        "reading": "しじがくしゅうのでーたを",
+        "segments": [
+          {
+            "text": "指示",
+            "reading": "しじ"
+          },
+          {
+            "text": "学習",
+            "reading": "がくしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "データ",
+            "reading": "でーた"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "選好最適化の結果を",
+        "reading": "せんこうさいてきかのけっかを",
+        "segments": [
+          {
+            "text": "選好",
+            "reading": "せんこう"
+          },
+          {
+            "text": "最適化",
+            "reading": "さいてきか"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "結果",
+            "reading": "けっか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "検索拡張生成の根拠を",
+        "reading": "けんさくかくちょうせいせいのこんきょを",
+        "segments": [
+          {
+            "text": "検索",
+            "reading": "けんさく"
+          },
+          {
+            "text": "拡張",
+            "reading": "かくちょう"
+          },
+          {
+            "text": "生成",
+            "reading": "せいせい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "根拠",
+            "reading": "こんきょ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ベクトル検索の順位を",
+        "reading": "べくとるけんさくのじゅんいを",
+        "segments": [
+          {
+            "text": "ベクトル",
+            "reading": "べくとる"
+          },
+          {
+            "text": "検索",
+            "reading": "けんさく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "順位",
+            "reading": "じゅんい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "再ランキングの効果を",
+        "reading": "さいらんきんぐのこうかを",
+        "segments": [
+          {
+            "text": "再",
+            "reading": "さい"
+          },
+          {
+            "text": "ランキング",
+            "reading": "らんきんぐ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "効果",
+            "reading": "こうか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "文書分割の粒度を",
+        "reading": "ぶんしょぶんかつのりゅうどを",
+        "segments": [
+          {
+            "text": "文書",
+            "reading": "ぶんしょ"
+          },
+          {
+            "text": "分割",
+            "reading": "ぶんかつ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "粒度",
+            "reading": "りゅうど"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "引用元との整合性を",
+        "reading": "いんようもととのせいごうせいを",
+        "segments": [
+          {
+            "text": "引用元",
+            "reading": "いんようもと"
+          },
+          {
+            "text": "との",
+            "reading": "との"
+          },
+          {
+            "text": "整合性",
+            "reading": "せいごうせい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "生成温度の影響を",
+        "reading": "せいせいおんどのえいきょうを",
+        "segments": [
+          {
+            "text": "生成",
+            "reading": "せいせい"
+          },
+          {
+            "text": "温度",
+            "reading": "おんど"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "影響",
+            "reading": "えいきょう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "サンプリングの設定を",
+        "reading": "さんぷりんぐのせっていを",
+        "segments": [
+          {
+            "text": "サンプリング",
+            "reading": "さんぷりんぐ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "設定",
+            "reading": "せってい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ビーム探索の候補を",
+        "reading": "びーむたんさくのこうほを",
+        "segments": [
+          {
+            "text": "ビーム",
+            "reading": "びーむ"
+          },
+          {
+            "text": "探索",
+            "reading": "たんさく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "候補",
+            "reading": "こうほ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "トークナイザーの語彙を",
+        "reading": "とーくないざーのごいを",
+        "segments": [
+          {
+            "text": "トークナイザー",
+            "reading": "とーくないざー"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "語彙",
+            "reading": "ごい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "長文処理の限界を",
+        "reading": "ちょうぶんしょりのげんかいを",
+        "segments": [
+          {
+            "text": "長文",
+            "reading": "ちょうぶん"
+          },
+          {
+            "text": "処理",
+            "reading": "しょり"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "限界",
+            "reading": "げんかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "幻覚の発生傾向を",
+        "reading": "げんかくのはっせいけいこうを",
+        "segments": [
+          {
+            "text": "幻覚",
+            "reading": "げんかく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "発生",
+            "reading": "はっせい"
+          },
+          {
+            "text": "傾向",
+            "reading": "けいこう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "ツール呼び出しの履歴を",
+        "reading": "つーるよびだしのりれきを",
+        "segments": [
+          {
+            "text": "ツール",
+            "reading": "つーる"
+          },
+          {
+            "text": "呼び出し",
+            "reading": "よびだし"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "履歴",
+            "reading": "りれき"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "エージェントの行動計画を",
+        "reading": "えーじぇんとのこうどうけいかくを",
+        "segments": [
+          {
+            "text": "エージェント",
+            "reading": "えーじぇんと"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "行動計画",
+            "reading": "こうどうけいかく"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "音声認識の誤りを",
+        "reading": "おんせいにんしきのあやまりを",
+        "segments": [
+          {
+            "text": "音声認識",
+            "reading": "おんせいにんしき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "誤り",
+            "reading": "あやまり"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "画像認識の精度を",
+        "reading": "がぞうにんしきのせいどを",
+        "segments": [
+          {
+            "text": "画像認識",
+            "reading": "がぞうにんしき"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "精度",
+            "reading": "せいど"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "マルチモーダル入力の扱いを",
+        "reading": "まるちもーだるにゅうりょくのあつかいを",
+        "segments": [
+          {
+            "text": "マルチモーダル",
+            "reading": "まるちもーだる"
+          },
+          {
+            "text": "入力",
+            "reading": "にゅうりょく"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "扱い",
+            "reading": "あつかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "拡散モデルの生成過程を",
+        "reading": "かくさんもでるのせいせいかていを",
+        "segments": [
+          {
+            "text": "拡散",
+            "reading": "かくさん"
+          },
+          {
+            "text": "モデル",
+            "reading": "もでる"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "生成過程",
+            "reading": "せいせいかてい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "推薦モデルの公平性を",
+        "reading": "すいせんもでるのこうへいせいを",
+        "segments": [
+          {
+            "text": "推薦",
+            "reading": "すいせん"
+          },
+          {
+            "text": "モデル",
+            "reading": "もでる"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "公平性",
+            "reading": "こうへいせい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
+      },
+      {
+        "text": "敵対的入力への耐性を",
+        "reading": "てきたいてきにゅうりょくへのたいせいを",
+        "segments": [
+          {
+            "text": "敵対的入力への耐性を",
+            "reading": "てきたいてきにゅうりょくへのたいせいを"
+          }
+        ]
+      },
+      {
+        "text": "個人情報保護の仕組みを",
+        "reading": "こじんじょうほうほごのしくみを",
+        "segments": [
+          {
+            "text": "個人情報",
+            "reading": "こじんじょうほう"
+          },
+          {
+            "text": "保護",
+            "reading": "ほご"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "仕組み",
+            "reading": "しくみ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          }
+        ]
       }
     ],
     [
@@ -12501,6 +14081,2826 @@
           {
             "text": "誤差の理由と共に考える。",
             "reading": "ごさのりゆうとともにかんがえる。"
+          }
+        ]
+      },
+      {
+        "text": "図と表で説明する。",
+        "reading": "ずとひょうでせつめいする。",
+        "segments": [
+          {
+            "text": "図と表で説明する。",
+            "reading": "ずとひょうでせつめいする。"
+          }
+        ]
+      },
+      {
+        "text": "専門用語を補足して紹介する。",
+        "reading": "せんもんようごをほそくしてしょうかいする。",
+        "segments": [
+          {
+            "text": "専門用語",
+            "reading": "せんもんようご"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "補足",
+            "reading": "ほそく"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "紹介",
+            "reading": "しょうかい"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "初学者にも伝わるように説明する。",
+        "reading": "しょがくしゃにもつたわるようにせつめいする。",
+        "segments": [
+          {
+            "text": "初学者",
+            "reading": "しょがくしゃ"
+          },
+          {
+            "text": "にも",
+            "reading": "にも"
+          },
+          {
+            "text": "伝わ",
+            "reading": "つたわ"
+          },
+          {
+            "text": "るように",
+            "reading": "るように"
+          },
+          {
+            "text": "説明す",
+            "reading": "せつめいす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "具体例を添えて共有する。",
+        "reading": "ぐたいれいをそえてきょうゆうする。",
+        "segments": [
+          {
+            "text": "具体例",
+            "reading": "ぐたいれい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "添え",
+            "reading": "そえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "共有",
+            "reading": "きょうゆう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "要点を三つにまとめる。",
+        "reading": "ようてんをみっつにまとめる。",
+        "segments": [
+          {
+            "text": "要点",
+            "reading": "ようてん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "三つ",
+            "reading": "みっつ"
+          },
+          {
+            "text": "にまとめる",
+            "reading": "にまとめる"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "短い報告書にまとめる。",
+        "reading": "みじかいほうこくしょにまとめる。",
+        "segments": [
+          {
+            "text": "短い",
+            "reading": "みじかい"
+          },
+          {
+            "text": "報告書",
+            "reading": "ほうこくしょ"
+          },
+          {
+            "text": "にまとめる",
+            "reading": "にまとめる"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "議論の出発点として提示する。",
+        "reading": "ぎろんのしゅっぱつてんとしてていじする。",
+        "segments": [
+          {
+            "text": "議論",
+            "reading": "ぎろん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "出発点",
+            "reading": "しゅっぱつてん"
+          },
+          {
+            "text": "として",
+            "reading": "として"
+          },
+          {
+            "text": "提示",
+            "reading": "ていじ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "次の会議の議題にする。",
+        "reading": "つぎのかいぎのぎだいにする。",
+        "segments": [
+          {
+            "text": "次の",
+            "reading": "つぎの"
+          },
+          {
+            "text": "会議",
+            "reading": "かいぎ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "議題",
+            "reading": "ぎだい"
+          },
+          {
+            "text": "にする",
+            "reading": "にする"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "研究チーム全体で確認する。",
+        "reading": "けんきゅうちーむぜんたいでかくにんする。",
+        "segments": [
+          {
+            "text": "研究",
+            "reading": "けんきゅう"
+          },
+          {
+            "text": "チーム",
+            "reading": "ちーむ"
+          },
+          {
+            "text": "全体",
+            "reading": "ぜんたい"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "確認す",
+            "reading": "かくにんす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "専門家の意見を聞いて見直す。",
+        "reading": "せんもんかのいけんをきいてみなおす。",
+        "segments": [
+          {
+            "text": "専門家",
+            "reading": "せんもんか"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "意見",
+            "reading": "いけん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "聞い",
+            "reading": "きい"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "見直す",
+            "reading": "みなおす"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "利用者の視点から考え直す。",
+        "reading": "りようしゃのしてんからかんがえなおす。",
+        "segments": [
+          {
+            "text": "利用者",
+            "reading": "りようしゃ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "視点",
+            "reading": "してん"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "直す",
+            "reading": "なおす"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "運用担当者と検討する。",
+        "reading": "うんようたんとうしゃとけんとうする。",
+        "segments": [
+          {
+            "text": "運用",
+            "reading": "うんよう"
+          },
+          {
+            "text": "担当者",
+            "reading": "たんとうしゃ"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "開発日誌に書き留める。",
+        "reading": "かいはつにっしにかきとめる。",
+        "segments": [
+          {
+            "text": "開発日誌に書き留める。",
+            "reading": "かいはつにっしにかきとめる。"
+          }
+        ]
+      },
+      {
+        "text": "日付を添えて記録する。",
+        "reading": "ひづけをそえてきろくする。",
+        "segments": [
+          {
+            "text": "日付",
+            "reading": "ひづけ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "添え",
+            "reading": "そえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "記録",
+            "reading": "きろく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "設定ファイルと共に保存する。",
+        "reading": "せっていふぁいるとともにほぞんする。",
+        "segments": [
+          {
+            "text": "設定",
+            "reading": "せってい"
+          },
+          {
+            "text": "ファイル",
+            "reading": "ふぁいる"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "共に",
+            "reading": "ともに"
+          },
+          {
+            "text": "保存",
+            "reading": "ほぞん"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "実行環境と共に記録する。",
+        "reading": "じっこうかんきょうとともにきろくする。",
+        "segments": [
+          {
+            "text": "実行環境",
+            "reading": "じっこうかんきょう"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "共に",
+            "reading": "ともに"
+          },
+          {
+            "text": "記録",
+            "reading": "きろく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "変更履歴と照らし合わせる。",
+        "reading": "へんこうりれきとてらしあわせる。",
+        "segments": [
+          {
+            "text": "変更履歴",
+            "reading": "へんこうりれき"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照ら",
+            "reading": "てら"
+          },
+          {
+            "text": "し",
+            "reading": "し"
+          },
+          {
+            "text": "合わ",
+            "reading": "あわ"
+          },
+          {
+            "text": "せる",
+            "reading": "せる"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "公開資料の記述と比較する。",
+        "reading": "こうかいしりょうのきじゅつとひかくする。",
+        "segments": [
+          {
+            "text": "公開",
+            "reading": "こうかい"
+          },
+          {
+            "text": "資料",
+            "reading": "しりょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "記述",
+            "reading": "きじゅつ"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "比較",
+            "reading": "ひかく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "論文の付録まで読んで確かめる。",
+        "reading": "ろんぶんのふろくまでよんでたしかめる。",
+        "segments": [
+          {
+            "text": "論文",
+            "reading": "ろんぶん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "付録",
+            "reading": "ふろく"
+          },
+          {
+            "text": "まで",
+            "reading": "まで"
+          },
+          {
+            "text": "読んで",
+            "reading": "よんで"
+          },
+          {
+            "text": "確か",
+            "reading": "たしか"
+          },
+          {
+            "text": "める",
+            "reading": "める"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "別の実装と照合する。",
+        "reading": "べつのじっそうとしょうごうする。",
+        "segments": [
+          {
+            "text": "別の",
+            "reading": "べつの"
+          },
+          {
+            "text": "実装",
+            "reading": "じっそう"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照合",
+            "reading": "しょうごう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "基準となる実験と比較する。",
+        "reading": "きじゅんとなるじっけんとひかくする。",
+        "segments": [
+          {
+            "text": "基準",
+            "reading": "きじゅん"
+          },
+          {
+            "text": "となる",
+            "reading": "となる"
+          },
+          {
+            "text": "実験",
+            "reading": "じっけん"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "比較",
+            "reading": "ひかく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "過去の実験を振り返って調べる。",
+        "reading": "かこのじっけんをふりかえってしらべる。",
+        "segments": [
+          {
+            "text": "過去",
+            "reading": "かこ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "実験",
+            "reading": "じっけん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "振り返っ",
+            "reading": "ふりかえっ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "最新の測定結果と照合する。",
+        "reading": "さいしんのそくていけっかとしょうごうする。",
+        "segments": [
+          {
+            "text": "最新",
+            "reading": "さいしん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "測定結果",
+            "reading": "そくていけっか"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照合",
+            "reading": "しょうごう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "仮説と区別して記述する。",
+        "reading": "かせつとくべつしてきじゅつする。",
+        "segments": [
+          {
+            "text": "仮説",
+            "reading": "かせつ"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "区別",
+            "reading": "くべつ"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "記述",
+            "reading": "きじゅつ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "観測事実に基づいて説明する。",
+        "reading": "かんそくじじつにもとづいてせつめいする。",
+        "segments": [
+          {
+            "text": "観測事実",
+            "reading": "かんそくじじつ"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "基づ",
+            "reading": "もとづ"
+          },
+          {
+            "text": "いて",
+            "reading": "いて"
+          },
+          {
+            "text": "説明す",
+            "reading": "せつめいす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "前提条件を明示して論じる。",
+        "reading": "ぜんていじょうけんをめいじしてろんじる。",
+        "segments": [
+          {
+            "text": "前提条件",
+            "reading": "ぜんていじょうけん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "明示",
+            "reading": "めいじ"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "論じ",
+            "reading": "ろんじ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "限界を添えて報告する。",
+        "reading": "げんかいをそえてほうこくする。",
+        "segments": [
+          {
+            "text": "限界",
+            "reading": "げんかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "添え",
+            "reading": "そえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "報告",
+            "reading": "ほうこく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "不明な点を残さず質問する。",
+        "reading": "ふめいなてんをのこさずしつもんする。",
+        "segments": [
+          {
+            "text": "不明",
+            "reading": "ふめい"
+          },
+          {
+            "text": "な",
+            "reading": "な"
+          },
+          {
+            "text": "点",
+            "reading": "てん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "残さ",
+            "reading": "のこさ"
+          },
+          {
+            "text": "ず",
+            "reading": "ず"
+          },
+          {
+            "text": "質問",
+            "reading": "しつもん"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "結論を急がずに検討する。",
+        "reading": "けつろんをいそがずにけんとうする。",
+        "segments": [
+          {
+            "text": "結論",
+            "reading": "けつろん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "急が",
+            "reading": "いそが"
+          },
+          {
+            "text": "ずに",
+            "reading": "ずに"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "反例を探しながら検証する。",
+        "reading": "はんれいをさがしながらけんしょうする。",
+        "segments": [
+          {
+            "text": "反例",
+            "reading": "はんれい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "探し",
+            "reading": "さがし"
+          },
+          {
+            "text": "ながら",
+            "reading": "ながら"
+          },
+          {
+            "text": "検証",
+            "reading": "けんしょう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "別の仮説からも考える。",
+        "reading": "べつのかせつからもかんがえる。",
+        "segments": [
+          {
+            "text": "別の",
+            "reading": "べつの"
+          },
+          {
+            "text": "仮説",
+            "reading": "かせつ"
+          },
+          {
+            "text": "からも",
+            "reading": "からも"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "成功例と失敗例から考察する。",
+        "reading": "せいこうれいとしっぱいれいからこうさつする。",
+        "segments": [
+          {
+            "text": "成功例",
+            "reading": "せいこうれい"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "失敗例",
+            "reading": "しっぱいれい"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "考察",
+            "reading": "こうさつ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "想定外の事例と共に検討する。",
+        "reading": "そうていがいのじれいとともにけんとうする。",
+        "segments": [
+          {
+            "text": "想定外の事例と共に検討する。",
+            "reading": "そうていがいのじれいとともにけんとうする。"
+          }
+        ]
+      },
+      {
+        "text": "実際の利用場面に照らして考える。",
+        "reading": "じっさいのりようばめんにてらしてかんがえる。",
+        "segments": [
+          {
+            "text": "実際",
+            "reading": "じっさい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "利用",
+            "reading": "りよう"
+          },
+          {
+            "text": "場面",
+            "reading": "ばめん"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "照ら",
+            "reading": "てら"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "導入前に詳しく調べる。",
+        "reading": "どうにゅうまえにくわしくしらべる。",
+        "segments": [
+          {
+            "text": "導入前",
+            "reading": "どうにゅうまえ"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "詳しく",
+            "reading": "くわしく"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "公開前にもう一度確認する。",
+        "reading": "こうかいまえにもういちどかくにんする。",
+        "segments": [
+          {
+            "text": "公開前",
+            "reading": "こうかいまえ"
+          },
+          {
+            "text": "にもう",
+            "reading": "にもう"
+          },
+          {
+            "text": "一度",
+            "reading": "いちど"
+          },
+          {
+            "text": "確認す",
+            "reading": "かくにんす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "更新のたびに点検する。",
+        "reading": "こうしんのたびにてんけんする。",
+        "segments": [
+          {
+            "text": "更新",
+            "reading": "こうしん"
+          },
+          {
+            "text": "のたびに",
+            "reading": "のたびに"
+          },
+          {
+            "text": "点検",
+            "reading": "てんけん"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "定期的な見直しの対象にする。",
+        "reading": "ていきてきなみなおしのたいしょうにする。",
+        "segments": [
+          {
+            "text": "定期的",
+            "reading": "ていきてき"
+          },
+          {
+            "text": "な",
+            "reading": "な"
+          },
+          {
+            "text": "見直し",
+            "reading": "みなおし"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "対象",
+            "reading": "たいしょう"
+          },
+          {
+            "text": "にする",
+            "reading": "にする"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "運用開始後も追跡する。",
+        "reading": "うんようかいしごもついせきする。",
+        "segments": [
+          {
+            "text": "運用開始後も追跡する。",
+            "reading": "うんようかいしごもついせきする。"
+          }
+        ]
+      },
+      {
+        "text": "障害対応の観点から調べる。",
+        "reading": "しょうがいたいおうのかんてんからしらべる。",
+        "segments": [
+          {
+            "text": "障害",
+            "reading": "しょうがい"
+          },
+          {
+            "text": "対応",
+            "reading": "たいおう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "観点",
+            "reading": "かんてん"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "保守のしやすさも考えて検討する。",
+        "reading": "ほしゅのしやすさもかんがえてけんとうする。",
+        "segments": [
+          {
+            "text": "保守",
+            "reading": "ほしゅ"
+          },
+          {
+            "text": "のしやすさも",
+            "reading": "のしやすさも"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "費用との関係から評価する。",
+        "reading": "ひようとのかんけいからひょうかする。",
+        "segments": [
+          {
+            "text": "費用",
+            "reading": "ひよう"
+          },
+          {
+            "text": "との",
+            "reading": "との"
+          },
+          {
+            "text": "関係",
+            "reading": "かんけい"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "評価",
+            "reading": "ひょうか"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "消費電力との関係から考える。",
+        "reading": "しょうひでんりょくとのかんけいからかんがえる。",
+        "segments": [
+          {
+            "text": "消費電力",
+            "reading": "しょうひでんりょく"
+          },
+          {
+            "text": "との",
+            "reading": "との"
+          },
+          {
+            "text": "関係",
+            "reading": "かんけい"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "計算資源の制約を踏まえて検討する。",
+        "reading": "けいさんしげんのせいやくをふまえてけんとうする。",
+        "segments": [
+          {
+            "text": "計算",
+            "reading": "けいさん"
+          },
+          {
+            "text": "資源",
+            "reading": "しげん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "制約",
+            "reading": "せいやく"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "踏ま",
+            "reading": "ふま"
+          },
+          {
+            "text": "えて",
+            "reading": "えて"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "応答時間の要件と照合する。",
+        "reading": "おうとうじかんのようけんとしょうごうする。",
+        "segments": [
+          {
+            "text": "応答時間",
+            "reading": "おうとうじかん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "要件",
+            "reading": "ようけん"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照合",
+            "reading": "しょうごう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "品質基準に照らして評価する。",
+        "reading": "ひんしつきじゅんにてらしてひょうかする。",
+        "segments": [
+          {
+            "text": "品質",
+            "reading": "ひんしつ"
+          },
+          {
+            "text": "基準",
+            "reading": "きじゅん"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "照ら",
+            "reading": "てら"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "評価",
+            "reading": "ひょうか"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "安全性の観点から点検する。",
+        "reading": "あんぜんせいのかんてんからてんけんする。",
+        "segments": [
+          {
+            "text": "安全性",
+            "reading": "あんぜんせい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "観点",
+            "reading": "かんてん"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "点検",
+            "reading": "てんけん"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "公平性の観点から見直す。",
+        "reading": "こうへいせいのかんてんからみなおす。",
+        "segments": [
+          {
+            "text": "公平性",
+            "reading": "こうへいせい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "観点",
+            "reading": "かんてん"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "見直す",
+            "reading": "みなおす"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "プライバシーへの影響も含めて考える。",
+        "reading": "ぷらいばしーへのえいきょうもふくめてかんがえる。",
+        "segments": [
+          {
+            "text": "プライバシー",
+            "reading": "ぷらいばしー"
+          },
+          {
+            "text": "への",
+            "reading": "への"
+          },
+          {
+            "text": "影響",
+            "reading": "えいきょう"
+          },
+          {
+            "text": "も",
+            "reading": "も"
+          },
+          {
+            "text": "含め",
+            "reading": "ふくめ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "説明責任の観点から整理する。",
+        "reading": "せつめいせきにんのかんてんからせいりする。",
+        "segments": [
+          {
+            "text": "説明",
+            "reading": "せつめい"
+          },
+          {
+            "text": "責任",
+            "reading": "せきにん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "観点",
+            "reading": "かんてん"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "整理",
+            "reading": "せいり"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "透明性を意識して報告する。",
+        "reading": "とうめいせいをいしきしてほうこくする。",
+        "segments": [
+          {
+            "text": "透明性",
+            "reading": "とうめいせい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "意識",
+            "reading": "いしき"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "報告",
+            "reading": "ほうこく"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "利用規約と照らし合わせる。",
+        "reading": "りようきやくとてらしあわせる。",
+        "segments": [
+          {
+            "text": "利用",
+            "reading": "りよう"
+          },
+          {
+            "text": "規約",
+            "reading": "きやく"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照ら",
+            "reading": "てら"
+          },
+          {
+            "text": "し",
+            "reading": "し"
+          },
+          {
+            "text": "合わ",
+            "reading": "あわ"
+          },
+          {
+            "text": "せる",
+            "reading": "せる"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "設計上の意図と照合する。",
+        "reading": "せっけいじょうのいととしょうごうする。",
+        "segments": [
+          {
+            "text": "設計上",
+            "reading": "せっけいじょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "意図",
+            "reading": "いと"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "照合",
+            "reading": "しょうごう"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "仕様書を読み直して確認する。",
+        "reading": "しようしょをよみなおしてかくにんする。",
+        "segments": [
+          {
+            "text": "仕様書",
+            "reading": "しようしょ"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "読み直し",
+            "reading": "よみなおし"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "確認す",
+            "reading": "かくにんす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "評価計画に沿って検討する。",
+        "reading": "ひょうかけいかくにそってけんとうする。",
+        "segments": [
+          {
+            "text": "評価",
+            "reading": "ひょうか"
+          },
+          {
+            "text": "計画",
+            "reading": "けいかく"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "沿って",
+            "reading": "そって"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "優先順位を決めて調査する。",
+        "reading": "ゆうせんじゅんいをきめてちょうさする。",
+        "segments": [
+          {
+            "text": "優先順位",
+            "reading": "ゆうせんじゅんい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "決め",
+            "reading": "きめ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "調査",
+            "reading": "ちょうさ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "段階を分けて詳しく調べる。",
+        "reading": "だんかいをわけてくわしくしらべる。",
+        "segments": [
+          {
+            "text": "段階",
+            "reading": "だんかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "分け",
+            "reading": "わけ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "詳しく",
+            "reading": "くわしく"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "関連する要因と併せて分析する。",
+        "reading": "かんれんするよういんとあわせてぶんせきする。",
+        "segments": [
+          {
+            "text": "関連す",
+            "reading": "かんれんす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "要因",
+            "reading": "よういん"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "併せ",
+            "reading": "あわせ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "分析",
+            "reading": "ぶんせき"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "原因と結果を分けて考える。",
+        "reading": "げんいんとけっかをわけてかんがえる。",
+        "segments": [
+          {
+            "text": "原因",
+            "reading": "げんいん"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "結果",
+            "reading": "けっか"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "分け",
+            "reading": "わけ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "全体の流れの中で位置づける。",
+        "reading": "ぜんたいのながれのなかでいちづける。",
+        "segments": [
+          {
+            "text": "全体",
+            "reading": "ぜんたい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "流れ",
+            "reading": "ながれ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "中",
+            "reading": "なか"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "位置",
+            "reading": "いち"
+          },
+          {
+            "text": "づける",
+            "reading": "づける"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "構成要素との関係から説明する。",
+        "reading": "こうせいようそとのかんけいからせつめいする。",
+        "segments": [
+          {
+            "text": "構成要素",
+            "reading": "こうせいようそ"
+          },
+          {
+            "text": "との",
+            "reading": "との"
+          },
+          {
+            "text": "関係",
+            "reading": "かんけい"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "説明す",
+            "reading": "せつめいす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "図解しながら理解を深める。",
+        "reading": "ずかいしながらりかいをふかめる。",
+        "segments": [
+          {
+            "text": "図解",
+            "reading": "ずかい"
+          },
+          {
+            "text": "しながら",
+            "reading": "しながら"
+          },
+          {
+            "text": "理解",
+            "reading": "りかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "深め",
+            "reading": "ふかめ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "実験の背景と共に紹介する。",
+        "reading": "じっけんのはいけいとともにしょうかいする。",
+        "segments": [
+          {
+            "text": "実験",
+            "reading": "じっけん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "背景",
+            "reading": "はいけい"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "共に",
+            "reading": "ともに"
+          },
+          {
+            "text": "紹介",
+            "reading": "しょうかい"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "技術勉強会で取り上げる。",
+        "reading": "ぎじゅつべんきょうかいでとりあげる。",
+        "segments": [
+          {
+            "text": "技術",
+            "reading": "ぎじゅつ"
+          },
+          {
+            "text": "勉強会",
+            "reading": "べんきょうかい"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "取り上げ",
+            "reading": "とりあげ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "新人向けの資料で解説する。",
+        "reading": "しんじんむけのしりょうでかいせつする。",
+        "segments": [
+          {
+            "text": "新人",
+            "reading": "しんじん"
+          },
+          {
+            "text": "向け",
+            "reading": "むけ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "資料",
+            "reading": "しりょう"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "解説",
+            "reading": "かいせつ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "授業の題材として紹介する。",
+        "reading": "じゅぎょうのだいざいとしてしょうかいする。",
+        "segments": [
+          {
+            "text": "授業",
+            "reading": "じゅぎょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "題材",
+            "reading": "だいざい"
+          },
+          {
+            "text": "として",
+            "reading": "として"
+          },
+          {
+            "text": "紹介",
+            "reading": "しょうかい"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "演習の振り返りで取り上げる。",
+        "reading": "えんしゅうのふりかえりでとりあげる。",
+        "segments": [
+          {
+            "text": "演習",
+            "reading": "えんしゅう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "振り返り",
+            "reading": "ふりかえり"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "取り上げ",
+            "reading": "とりあげ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "質問集に加えて解説する。",
+        "reading": "しつもんしゅうにくわえてかいせつする。",
+        "segments": [
+          {
+            "text": "質問",
+            "reading": "しつもん"
+          },
+          {
+            "text": "集",
+            "reading": "しゅう"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "加え",
+            "reading": "くわえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "解説",
+            "reading": "かいせつ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "用語の定義から丁寧に説明する。",
+        "reading": "ようごのていぎからていねいにせつめいする。",
+        "segments": [
+          {
+            "text": "用語",
+            "reading": "ようご"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "定義",
+            "reading": "ていぎ"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "丁寧",
+            "reading": "ていねい"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "説明す",
+            "reading": "せつめいす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "読み手に合わせて言い換える。",
+        "reading": "よみてにあわせていいかえる。",
+        "segments": [
+          {
+            "text": "読み手",
+            "reading": "よみて"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "合わ",
+            "reading": "あわ"
+          },
+          {
+            "text": "せて",
+            "reading": "せて"
+          },
+          {
+            "text": "言い換え",
+            "reading": "いいかえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "誤解を招かない表現で伝える。",
+        "reading": "ごかいをまねかないひょうげんでつたえる。",
+        "segments": [
+          {
+            "text": "誤解",
+            "reading": "ごかい"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "招か",
+            "reading": "まねか"
+          },
+          {
+            "text": "ない",
+            "reading": "ない"
+          },
+          {
+            "text": "表現",
+            "reading": "ひょうげん"
+          },
+          {
+            "text": "で",
+            "reading": "で"
+          },
+          {
+            "text": "伝え",
+            "reading": "つたえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "数値だけに頼らず説明する。",
+        "reading": "すうちだけにたよらずせつめいする。",
+        "segments": [
+          {
+            "text": "数値",
+            "reading": "すうち"
+          },
+          {
+            "text": "だけに",
+            "reading": "だけに"
+          },
+          {
+            "text": "頼ら",
+            "reading": "たよら"
+          },
+          {
+            "text": "ず",
+            "reading": "ず"
+          },
+          {
+            "text": "説明す",
+            "reading": "せつめいす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "長所と短所を並べて論じる。",
+        "reading": "ちょうしょとたんしょをならべてろんじる。",
+        "segments": [
+          {
+            "text": "長所と短所を並べて論じる。",
+            "reading": "ちょうしょとたんしょをならべてろんじる。"
+          }
+        ]
+      },
+      {
+        "text": "代替案と共に検討する。",
+        "reading": "だいたいあんとともにけんとうする。",
+        "segments": [
+          {
+            "text": "代替案",
+            "reading": "だいたいあん"
+          },
+          {
+            "text": "と",
+            "reading": "と"
+          },
+          {
+            "text": "共に",
+            "reading": "ともに"
+          },
+          {
+            "text": "検討す",
+            "reading": "けんとうす"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "改善の余地があるか調べる。",
+        "reading": "かいぜんのよちがあるかしらべる。",
+        "segments": [
+          {
+            "text": "改善",
+            "reading": "かいぜん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "余地",
+            "reading": "よち"
+          },
+          {
+            "text": "があるか",
+            "reading": "があるか"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "次の実験の手掛かりにする。",
+        "reading": "つぎのじっけんのてがかりにする。",
+        "segments": [
+          {
+            "text": "次の",
+            "reading": "つぎの"
+          },
+          {
+            "text": "実験",
+            "reading": "じっけん"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "手掛か",
+            "reading": "てがか"
+          },
+          {
+            "text": "りにする",
+            "reading": "りにする"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "追試の計画に反映する。",
+        "reading": "ついしのけいかくにはんえいする。",
+        "segments": [
+          {
+            "text": "追試",
+            "reading": "ついし"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "計画",
+            "reading": "けいかく"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "反映",
+            "reading": "はんえい"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "問題点を洗い出すために調べる。",
+        "reading": "もんだいてんをあらいだすためにしらべる。",
+        "segments": [
+          {
+            "text": "問題点",
+            "reading": "もんだいてん"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "洗い出す",
+            "reading": "あらいだす"
+          },
+          {
+            "text": "ために",
+            "reading": "ために"
+          },
+          {
+            "text": "調べ",
+            "reading": "しらべ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "長期的な運用を見据えて考える。",
+        "reading": "ちょうきてきなうんようをみすえてかんがえる。",
+        "segments": [
+          {
+            "text": "長期的",
+            "reading": "ちょうきてき"
+          },
+          {
+            "text": "な",
+            "reading": "な"
+          },
+          {
+            "text": "運用",
+            "reading": "うんよう"
+          },
+          {
+            "text": "を",
+            "reading": "を"
+          },
+          {
+            "text": "見据え",
+            "reading": "みすえ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "考え",
+            "reading": "かんがえ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "実用上の価値から評価する。",
+        "reading": "じつようじょうのかちからひょうかする。",
+        "segments": [
+          {
+            "text": "実用上",
+            "reading": "じつようじょう"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "価値",
+            "reading": "かち"
+          },
+          {
+            "text": "から",
+            "reading": "から"
+          },
+          {
+            "text": "評価",
+            "reading": "ひょうか"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "研究目的に立ち返って見直す。",
+        "reading": "けんきゅうもくてきにたちかえってみなおす。",
+        "segments": [
+          {
+            "text": "研究目的",
+            "reading": "けんきゅうもくてき"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "立ち",
+            "reading": "たち"
+          },
+          {
+            "text": "返っ",
+            "reading": "かえっ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "見直す",
+            "reading": "みなおす"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "証拠の強さに注意して論じる。",
+        "reading": "しょうこのつよさにちゅういしてろんじる。",
+        "segments": [
+          {
+            "text": "証拠",
+            "reading": "しょうこ"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "強さ",
+            "reading": "つよさ"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "注意",
+            "reading": "ちゅうい"
+          },
+          {
+            "text": "して",
+            "reading": "して"
+          },
+          {
+            "text": "論じ",
+            "reading": "ろんじ"
+          },
+          {
+            "text": "る",
+            "reading": "る"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "第三者が確認できるように記述する。",
+        "reading": "だいさんしゃがかくにんできるようにきじゅつする。",
+        "segments": [
+          {
+            "text": "第三者",
+            "reading": "だいさんしゃ"
+          },
+          {
+            "text": "が",
+            "reading": "が"
+          },
+          {
+            "text": "確認",
+            "reading": "かくにん"
+          },
+          {
+            "text": "できるように",
+            "reading": "できるように"
+          },
+          {
+            "text": "記述",
+            "reading": "きじゅつ"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
+          }
+        ]
+      },
+      {
+        "text": "次回のレビューに向けて整理する。",
+        "reading": "じかいのれびゅーにむけてせいりする。",
+        "segments": [
+          {
+            "text": "次回",
+            "reading": "じかい"
+          },
+          {
+            "text": "の",
+            "reading": "の"
+          },
+          {
+            "text": "レビュー",
+            "reading": "れびゅー"
+          },
+          {
+            "text": "に",
+            "reading": "に"
+          },
+          {
+            "text": "向け",
+            "reading": "むけ"
+          },
+          {
+            "text": "て",
+            "reading": "て"
+          },
+          {
+            "text": "整理",
+            "reading": "せいり"
+          },
+          {
+            "text": "する",
+            "reading": "する"
+          },
+          {
+            "text": "。",
+            "reading": "。"
           }
         ]
       }
