@@ -1,3 +1,4 @@
+import { displayZoom } from '../ui/displayZoom'
 import { useLayoutEffect } from 'react'
 import type { RefObject } from 'react'
 
@@ -20,8 +21,9 @@ export function useSingleLineFlow(
         consume ? '[data-word-anchor]' : cursorSelector,
       )
       const offset = cursor
-        ? cursor.getBoundingClientRect().left -
-          track.getBoundingClientRect().left
+        ? (cursor.getBoundingClientRect().left -
+            track.getBoundingClientRect().left) /
+          displayZoom()
         : 0
       const x = reset
         ? 0
@@ -37,9 +39,11 @@ export function useSingleLineFlow(
       viewport.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     }
     reveal()
+    window.addEventListener('resize', reveal)
     const observer = new ResizeObserver(reveal)
     observer.observe(viewport)
     return () => {
+      window.removeEventListener('resize', reveal)
       observer.disconnect()
       cancelAnimationFrame(frame)
       track.style.removeProperty('transition')

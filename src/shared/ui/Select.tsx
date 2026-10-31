@@ -1,3 +1,4 @@
+import { displayZoom } from './displayZoom'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
@@ -52,17 +53,25 @@ export function Select({
   useLayoutEffect(() => {
     if (!open) return
     const position = () => {
-      const r = button.current!.getBoundingClientRect(),
-        h = window.innerHeight
+      const rect = button.current!.getBoundingClientRect()
+      const zoom = displayZoom()
+      const r = {
+        left: rect.left / zoom,
+        top: rect.top / zoom,
+        bottom: rect.bottom / zoom,
+        width: rect.width / zoom,
+      }
+      const h = window.innerHeight / zoom
+      const viewportWidth = window.innerWidth / zoom
       const below = h - r.bottom - 12,
         above = r.top - 12
       const maxHeight = Math.max(60, Math.min(300, Math.max(below, above)))
-      const width = Math.min(Math.max(r.width, 220), window.innerWidth - 16)
+      const width = Math.min(Math.max(r.width, 220), viewportWidth - 16)
       const desired = Math.min(300, options.length * 44 + 12)
       const down = below >= desired || below >= above
       const height = Math.min(desired, down ? below : above, maxHeight)
       setBox({
-        left: Math.max(8, Math.min(r.left, window.innerWidth - width - 8)),
+        left: Math.max(8, Math.min(r.left, viewportWidth - width - 8)),
         top: down ? r.bottom + 5 : Math.max(8, r.top - height - 5),
         width,
         maxHeight: Math.max(60, height),

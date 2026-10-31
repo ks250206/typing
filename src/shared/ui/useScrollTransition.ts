@@ -1,3 +1,4 @@
+import { displayZoom } from './displayZoom'
 import { useCallback, useEffect, useRef } from 'react'
 
 /** Ease both ends; stop an old scroll when a new selection or manual input arrives. */
@@ -12,8 +13,9 @@ export function useScrollTransition() {
       Math.min(
         container.scrollHeight - container.clientHeight,
         from +
-          target.getBoundingClientRect().top -
-          container.getBoundingClientRect().top,
+          (target.getBoundingClientRect().top -
+            container.getBoundingClientRect().top) /
+            displayZoom(),
       ),
     )
     const setting = container
