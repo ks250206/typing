@@ -1,5 +1,4 @@
 import { PageHeading } from '../../shared/ui/PageHeading'
-import { ArrowRight } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { SessionResult } from '../results/SessionResult'
@@ -26,8 +25,8 @@ export function PracticePage({
   setSettings: Dispatch<SetStateAction<Settings>>
   records: RecordEntry[]
   bestRecords: RecordEntry[]
-  isFavorite: boolean
-  onToggleFavorite: () => void
+  isFavorite: (passageId: string) => boolean
+  onToggleFavorite: (passageId: string) => void
 }) {
   const {
     selected,
@@ -36,7 +35,6 @@ export function PracticePage({
     finishedResult,
     focus,
     reset,
-    pause,
     handleStageChange,
     status,
     resume,
@@ -70,22 +68,10 @@ export function PracticePage({
             eyebrow="SOLO PRACTICE"
             title="タイピング"
             actions={
-              <>
-                <FavoriteButton
-                  active={isFavorite}
-                  onClick={onToggleFavorite}
-                />
-                <button
-                  className="text-button"
-                  onClick={() => {
-                    pause()
-                    handleStageChange(0)
-                  }}
-                >
-                  文章を選ぶ
-                  <ArrowRight size={14} />
-                </button>
-              </>
+              <FavoriteButton
+                active={isFavorite(selected)}
+                onClick={() => onToggleFavorite(selected)}
+              />
             }
           />
           <MissionCarousel
@@ -98,6 +84,8 @@ export function PracticePage({
                 key="selected"
                 session={session}
                 settings={settings}
+                isFavorite={isFavorite}
+                onToggleFavorite={onToggleFavorite}
               />,
               <PracticePreview key="preview" session={session} />,
               <PracticeInput

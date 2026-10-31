@@ -9,6 +9,8 @@ import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 export function PracticeSelection({
   session,
   settings,
+  isFavorite,
+  onToggleFavorite,
 }: {
   session: Pick<
     PracticeSession,
@@ -33,6 +35,8 @@ export function PracticeSelection({
     | 'setFixedSeed'
   >
   settings: Settings
+  isFavorite: (passageId: string) => boolean
+  onToggleFavorite: (passageId: string) => void
 }) {
   const {
     selected,
@@ -61,6 +65,8 @@ export function PracticeSelection({
         passages={passages}
         selected={selected}
         onSelect={(id) => reset(id, settings.layout, 0)}
+        isFavorite={isFavorite}
+        onToggleFavorite={onToggleFavorite}
       />
       <div className="passage-header">
         <div>

@@ -53,9 +53,7 @@ export function FavoritesSidebar({
         <Star size={18} />
       </button>
       <div className="favorites-panel" id="sidebar-favorites-list">
-        <h2>
-          <Star size={13} /> お気に入り
-        </h2>
+        <h2 className="nav-label">FAVORITES</h2>
         {items.length === 0 ? (
           <p>文書や対戦設定の☆から登録できます。</p>
         ) : (
@@ -88,7 +86,6 @@ export function FavoritesSidebar({
                     )}
                     <span>
                       <strong>{title}</strong>
-                      <small>{layoutLabels[favorite.layout]}</small>
                       {favorite.kind === 'cpu' && <small>{detail}</small>}
                     </span>
                   </button>

@@ -93,6 +93,7 @@ export function AppShell({
             )
           })}
         </nav>
+        <hr className="sidebar-separator" />
         {favorites}
         <button className="nav-item settings-link" onClick={() => onSettings()}>
           <Settings2 size={18} />

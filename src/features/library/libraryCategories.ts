@@ -4,4 +4,6 @@ import type { Passage } from '../../domain/content/passages'
 export const libraryCategory = (p: Passage) =>
   ['文学', '旅', '科学', '日常', '思索', '音楽'].includes(p.genre)
     ? 'オリジナル'
-    : p.genre
+    : p.genre === 'RTC準拠'
+      ? 'RTC'
+      : p.genre

@@ -37,11 +37,11 @@ export default function App() {
   const history = useHistory(setNotice)
   const session = usePracticeSession(settings, history.persistResult, setNotice)
   const favorites = useFavorites(setNotice)
-  const practiceFavorite: Favorite = {
+  const practiceFavorite = (passageId: string): Favorite => ({
     kind: 'practice',
-    passageId: session.selected,
+    passageId,
     layout: settings.layout,
-  }
+  })
   const navigate = (next: AppTab) => {
     if (tab === 'practice' && next !== 'practice')
       session.reset(session.selected, settings.layout, 0)
@@ -159,8 +159,8 @@ export default function App() {
           setSettings={setSettings}
           records={history.records}
           bestRecords={history.bestRecords}
-          isFavorite={favorites.has(practiceFavorite)}
-          onToggleFavorite={() => favorites.toggle(practiceFavorite)}
+          isFavorite={(id) => favorites.has(practiceFavorite(id))}
+          onToggleFavorite={(id) => favorites.toggle(practiceFavorite(id))}
         />
       )}
       {tab === 'history' && (

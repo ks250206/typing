@@ -1,6 +1,6 @@
 import { libraryCategory } from './libraryCategories'
 import { useMemo, useState } from 'react'
-import { BookOpen, Check, ArrowRight } from 'lucide-react'
+import { BookOpen, ArrowRight } from 'lucide-react'
 import type { Passage } from '../../domain/content/passages'
 import { isTypewell } from '../../domain/content/typewell'
 import { isRtc } from '../../domain/content/rtcWords'
@@ -8,15 +8,20 @@ import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { isEtyping } from '../../domain/content/etyping'
 import { isTrainer } from '../../domain/content/sakusaku'
 import { isConstitutionArticles } from '../../domain/content/constitutionArticles'
+import { FavoriteButton } from '../favorites/FavoriteButton'
 
 export function PassageLibrary({
   passages,
   selected,
   onSelect,
+  isFavorite,
+  onToggleFavorite,
 }: {
   passages: Passage[]
   selected: string
   onSelect: (id: string) => void
+  isFavorite: (id: string) => boolean
+  onToggleFavorite: (id: string) => void
 }) {
   const categories = useMemo(() => {
     const priority = (category: string) =>
@@ -46,6 +51,9 @@ export function PassageLibrary({
           {filtered.length} / {passages.length} セット
         </span>
       </div>
+      <p className="library-favorite-hint">
+        各文書の☆からお気に入りに登録できます。
+      </p>
       <label className="library-search">
         文章を検索
         <input
@@ -69,44 +77,49 @@ export function PassageLibrary({
       </div>
       <div className="library-grid">
         {filtered.map((p) => (
-          <button
-            className="story-card"
-            key={p.id}
-            aria-label={p.title}
-            aria-pressed={selected === p.id}
-            onClick={() => onSelect(p.id)}
-          >
-            <div className="story-art">
-              <span>{p.accent}</span>
-              <BookOpen size={28} />
-              <span className="tag">{p.genre}</span>
-              {selected === p.id && (
-                <Check className="story-selected" size={22} />
-              )}
-            </div>
-            <h3>{p.title}</h3>
-            <p>{p.subtitle}</p>
-            <div>
-              <span>
-                {p.continuous
-                  ? `全文1問 · ${p.paragraphs[0].text.length}文字 · 途中の切り替えなし`
-                  : isTypewell(p.id)
-                    ? 'R 400打 / K 280打 · シード再現'
-                    : isConstitutionArticles(p.id)
-                      ? '全14条 · 条単位のシャッフル · シード再現'
-                      : isRtcOriginal(p.id)
-                        ? '15問 · 短文をシャッフル'
-                        : isRtc(p.id)
-                          ? '15問 · パートをランダム連結'
-                          : isTrainer(p.id)
-                            ? `${p.paragraphs.length}文 · 60秒 · シード再現`
-                            : isEtyping(p.id)
-                              ? '15問 · シードでシャッフル'
-                              : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
-              </span>
-              <ArrowRight size={15} />
-            </div>
-          </button>
+          <div className="story-card-wrap" key={p.id}>
+            <button
+              className="story-card"
+              aria-label={p.title}
+              aria-pressed={selected === p.id}
+              onClick={() => onSelect(p.id)}
+            >
+              <div className="story-art">
+                <span>{p.accent}</span>
+                <BookOpen size={28} />
+                <span className="tag">
+                  {p.genre === 'RTC準拠' ? 'RTC' : p.genre}
+                </span>
+              </div>
+              <h3>{p.title}</h3>
+              <p>{p.subtitle}</p>
+              <div>
+                <span>
+                  {p.continuous
+                    ? `全文1問 · ${p.paragraphs[0].text.length}文字 · 途中の切り替えなし`
+                    : isTypewell(p.id)
+                      ? 'R 400打 / K 280打 · シード再現'
+                      : isConstitutionArticles(p.id)
+                        ? '全14条 · 条単位のシャッフル · シード再現'
+                        : isRtcOriginal(p.id)
+                          ? '15問 · 短文をシャッフル'
+                          : isRtc(p.id)
+                            ? '15問 · パートをランダム連結'
+                            : isTrainer(p.id)
+                              ? `${p.paragraphs.length}文 · 60秒 · シード再現`
+                              : isEtyping(p.id)
+                                ? '15問 · シードでシャッフル'
+                                : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
+                </span>
+                <ArrowRight size={15} />
+              </div>
+            </button>
+            <FavoriteButton
+              passageTitle={p.title}
+              active={isFavorite(p.id)}
+              onClick={() => onToggleFavorite(p.id)}
+            />
+          </div>
         ))}
       </div>
       {!filtered.length && (
