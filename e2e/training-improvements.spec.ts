@@ -148,7 +148,7 @@ test('CPU settings disappear after start; the right sidebar keeps the normal mai
   })
 })
 
-test('a legacy saved log yields reusable words without particles; a repeated run saves separately, displays axes/statistics and ranks after reload', async ({
+test('a legacy log yields reusable words; repetition shows statistics and tooltips without saving records', async ({
   page,
 }) => {
   await seedLog(page)
@@ -185,9 +185,7 @@ test('a legacy saved log yields reusable words without particles; a repeated run
   await expect(
     page.getByRole('region', { name: '速度の詳細統計' }),
   ).toContainText('分散（母分散）')
-  await expect(
-    page.getByRole('region', { name: '速度の詳細統計' }),
-  ).toContainText('過去順位 1 / 1')
+  await expect(page.locator('.moving-stat small')).toHaveCount(0)
   const rawMinimum = page
     .locator('.statistics-grid > div')
     .filter({ has: page.getByText('最低速度', { exact: true }) })
@@ -197,16 +195,37 @@ test('a legacy saved log yields reusable words without particles; a repeated run
     '',
   )
 
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').some(
-          (r: { mode?: string; pace?: unknown }) =>
-            r.mode === 'weak' && !!r.pace,
-        ),
+  const cards = page.locator('.statistics-grid > div')
+  const positions = await Promise.all(
+    [0, 1, 2, 3].map((i) => cards.nth(i).boundingBox()),
+  )
+  expect(positions[0]!.x).toBeCloseTo(positions[2]!.x)
+  expect(positions[1]!.x).toBeCloseTo(positions[3]!.x)
+  expect(positions[2]!.y).toBeGreaterThan(positions[0]!.y)
+  const chart = page.getByRole('img', {
+    name: '1秒ごとのKPMとミス',
+    exact: true,
+  })
+  await chart.locator('circle').nth(2).hover()
+  await expect(page.getByRole('tooltip')).toContainText('銀河')
+  await expect(page.getByRole('tooltip')).toContainText('ミス')
+  await page.screenshot({
+    path: 'artifacts/pace-tooltip.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
+  await chart.focus()
+  await chart.press('End')
+  await expect(page.getByRole('tooltip')).toContainText('5–6秒')
+  await chart.press('Escape')
+  await expect(page.getByRole('tooltip')).toHaveCount(0)
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').some(
+        (r: { mode?: string }) => r.mode === 'weak',
       ),
-    )
-    .toBe(true)
+    ),
+  ).toBe(false)
   await page.screenshot({
     path: 'artifacts/weak-result-statistics.png',
     fullPage: true,
@@ -223,31 +242,20 @@ test('a legacy saved log yields reusable words without particles; a repeated run
     await page.keyboard.type('ginnga')
   }
   await expect(
-    page.getByRole('region', { name: '速度の詳細統計' }),
-  ).toContainText('過去順位 1 / 2')
-  await expect(
-    page.locator('.statistics-grid .moving-stat').first(),
-  ).toContainText('過去順位 2 / 2')
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').filter(
-            (r: { mode?: string }) => r.mode === 'weak',
-          ).length,
-      ),
-    )
-    .toBe(2)
+    page.getByText('反復練習 COMPLETE', { exact: true }),
+  ).toBeVisible()
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
+    ),
+  ).toBe(1)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
-  const row = page
-    .locator('.history-table tbody tr')
-    .filter({ hasText: '苦手ワード' })
-    .first()
-  await row.getByRole('button', { name: '詳細を見る', exact: true }).click()
-  await expect(
-    page.getByRole('region', { name: '速度の詳細統計' }),
-  ).toContainText('過去順位 1 / 2')
+  await expect(page.locator('.passage-records')).not.toContainText('苦手ワード')
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
+  await expect(page.locator('.history-table tbody tr')).toHaveCount(1)
+  await expect(page.locator('.history-table')).not.toContainText('苦手ワード')
   await page.setViewportSize({ width: 390, height: 900 })
   expect(
     await page.evaluate(
@@ -442,6 +450,19 @@ test('history axes use labeled hundreds and unlabeled fifty-step minor ticks wit
   ])
   await expect(axis.locator('[data-tick="minor"]')).toHaveCount(3)
   await expect(axis.locator('[data-tick="minor"] text')).toHaveCount(0)
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
+  const actions = page.locator('.history-record-actions').first()
+  const buttons = actions.getByRole('button')
+  const first = await buttons.nth(0).boundingBox()
+  const second = await buttons.nth(1).boundingBox()
+  expect(second!.y > first!.y || second!.x >= first!.x + first!.width + 6).toBe(
+    true,
+  )
+  await page.screenshot({
+    path: 'artifacts/history-record-actions.png',
+    fullPage: true,
+    animations: 'disabled',
+  })
   await page
     .locator('.history-table tbody tr')
     .first()

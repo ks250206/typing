@@ -65,6 +65,7 @@ test('the complete official preamble is selectable, readable, typable and saved'
   }
   await expect(page.getByText('SESSION COMPLETE')).toBeVisible()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody')).toContainText('日本国憲法 前文')
   expect(errors).toEqual([])
 })

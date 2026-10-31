@@ -9,6 +9,8 @@ export interface WeakWord extends Sentence {
   misses: number
   loss: number
   attempts: number
+  source?: string
+  sourceTime?: number
 }
 const particles = new Set([
   'から',
@@ -36,6 +38,8 @@ const particles = new Set([
 export function extractWeakWords(records: RecordEntry[]): WeakWord[] {
   const words = new Map<string, WeakWord>()
   for (const record of records) {
+    if (record.mode === 'weak') continue
+    const risk = new Map<string, { misses: number; loss: number }>()
     const trace = record.trace
     if (!validTrace(trace)) continue
     const intervals = trace.strokes
@@ -118,10 +122,31 @@ export function extractWeakWords(records: RecordEntry[]): WeakWord[] {
         if (!span) continue
         span.word.misses += Number(!stroke.correct)
         span.word.loss += Math.max(0, stroke.dt - baseline)
+        const event = risk.get(span.word.id) ?? { misses: 0, loss: 0 }
+        event.misses += Number(!stroke.correct)
+        event.loss += Math.max(0, stroke.dt - baseline)
+        risk.set(span.word.id, event)
         seen.add(span.word.id)
       }
       for (const id of seen) words.get(id)!.attempts++
     })
+    for (const [id, event] of risk) {
+      const word = words.get(id)!
+      const date = Date.parse(record.date)
+      if (
+        (event.misses > 0 || event.loss >= 120) &&
+        date >= (word.sourceTime ?? -Infinity)
+      ) {
+        const source = `${record.date}/${record.id}`
+        if (
+          date > (word.sourceTime ?? -Infinity) ||
+          source > (word.source ?? '')
+        ) {
+          word.source = source
+          word.sourceTime = date
+        }
+      }
+    }
   }
   return [...words.values()]
     .filter((w) => w.misses > 0 || w.loss >= 120)

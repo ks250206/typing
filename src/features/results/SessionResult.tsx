@@ -46,7 +46,10 @@ export function SessionResult({
     ...new Map(
       history
         .filter(
-          (r) => r.id !== record.id && recordGroup(r) === recordGroup(record),
+          (r) =>
+            record.mode !== 'weak' &&
+            r.id !== record.id &&
+            recordGroup(r) === recordGroup(record),
         )
         .map((r) => [r.id, r]),
     ).values(),
@@ -128,7 +131,12 @@ export function SessionResult({
       {analysis && (
         <>
           <h3>速度とミスの推移</h3>
-          <PaceChart buckets={analysis.buckets} elapsed={record.elapsed} />
+          <PaceChart
+            buckets={analysis.buckets}
+            elapsed={record.elapsed}
+            trace={record.trace}
+            layout={record.layout}
+          />
           <SpeedStatistics record={record} history={past} />
           <h3>
             間違えた箇所 <small>{analysis.mistakes.length}種類</small>

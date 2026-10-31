@@ -46,10 +46,12 @@ test('complete longform, pause, persist, export and clear records', async ({
   await expect(page.getByText('SESSION COMPLETE')).toBeVisible()
   await expect(page.locator('.practice-footer')).toContainText('100%')
   await page.getByRole('button', { name: '練習の記録' }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
   await expect(page.locator('tbody')).toContainText('夜更けの図書室')
   await page.reload()
   await page.getByRole('button', { name: '練習の記録' }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'JSON 書出し' }).click()
@@ -202,6 +204,7 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await Promise.all([complete(page), complete(other)])
   for (const tab of [page, other]) {
     await tab.getByRole('button', { name: '練習の記録' }).click()
+    await tab.getByRole('tab', { name: '全記録', exact: true }).click()
     await expect(tab.locator('tbody tr')).toHaveCount(2)
   }
   await page.getByRole('button', { name: '全記録を削除' }).click()
@@ -212,6 +215,7 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await complete(other)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録' }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
 })
 

@@ -2,7 +2,10 @@ import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
-import { battleSets, seededBattlePrompts } from '../src/domain/content/battleSets'
+import {
+  battleSets,
+  seededBattlePrompts,
+} from '../src/domain/content/battleSets'
 const input = async (page: Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +
   ((await page.locator('.remaining-roman').textContent()) ?? '')
@@ -164,6 +167,7 @@ test('seeded CPU set selection, prominent scores, full RTC trace persistence and
   expect(trace.strokes.filter((s) => s.correct)).toHaveLength(saved.keys)
   expect(trace.strokes.every((s) => s.t <= trace.elapsed)).toBe(true)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', {
       name: '対戦シード rtc-analytics を再現',
@@ -244,7 +248,10 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
   expect(Math.max(...trace.strokes.map((s) => s.dt))).toBeLessThan(3000)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
-  await expect(page.getByLabel('文章別の記録分析')).toContainText('歴代 TOP 10')
+  await expect(
+    page.getByRole('region', { name: '文章別の記録分析', exact: true }),
+  ).toContainText('歴代 TOP 10')
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.getByRole('button', { name: '詳細を見る', exact: true }).click()
   const detail = page.getByRole('region', { name: '打鍵の詳細' })
   await expect(detail).toContainText('403打鍵（実ミス 3）')
@@ -323,6 +330,7 @@ test('legacy records remain comparable and explain missing detail', async ({
   await expect(metrics).toContainText('500')
   await expect(metrics).toContainText('400.0')
   await expect(page.locator('.top-records li')).toHaveCount(6)
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: '詳細を見る', exact: true })
     .first()
@@ -356,6 +364,7 @@ test('unavailable detail storage warns and keeps every stroke exportable in memo
   await expect(page.getByText('TIME UP', { exact: true })).toBeVisible()
   await expect(page.locator('.notice')).toContainText('記録を保存できません')
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.getByRole('button', { name: '詳細を見る', exact: true }).click()
   await expect(page.getByRole('region', { name: '打鍵の詳細' })).toContainText(
     '1打鍵（実ミス 0）',

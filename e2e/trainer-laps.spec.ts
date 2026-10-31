@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test'
 import data from '../src/data/generated/trainers.json' with { type: 'json' }
-import { createTrainerOrder, sakusakuEntries } from '../src/domain/content/sakusaku'
+import {
+  createTrainerOrder,
+  sakusakuEntries,
+} from '../src/domain/content/sakusaku'
 import { RomanEngine } from '../src/domain/typing/engine'
 import { startPractice } from './startPractice'
 
@@ -91,6 +94,7 @@ test('trainer previews only lap one, then plays three separately shuffled full l
     ),
   ).toMatchObject({ keys, replayVersion: 2, seed: 'three-laps' })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: 'シード three-laps を再現', exact: true })
     .click()
@@ -132,6 +136,7 @@ test('a saved v1 trainer seed still recreates its original stream', async ({
   })
   await page.goto('/')
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: 'シード retro を再現', exact: true })
     .click()

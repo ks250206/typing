@@ -97,6 +97,7 @@ test('all 14 full articles are shuffled as intact blocks, previewed, completed, 
     misses: 0,
   })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: 'シード articles-e2e を再現', exact: true })
     .click()

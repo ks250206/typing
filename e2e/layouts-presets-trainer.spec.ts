@@ -89,6 +89,7 @@ test('trainer seed controls reproduce the same order across pauses, restart and 
   await page.clock.runFor(60050)
   await expect(page.getByText('60秒の計測が終了しました。')).toBeVisible()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect
     .poll(() =>
       page.evaluate(
@@ -268,6 +269,7 @@ for (const layout of [
       page.getByText('SESSION COMPLETE', { exact: true }),
     ).toBeVisible()
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await expect
       .poll(() =>
         page.evaluate(

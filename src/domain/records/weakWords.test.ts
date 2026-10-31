@@ -102,3 +102,21 @@ it('excludes common multi-character particles as well as single-character words'
     ),
   ).toEqual(new Set(['銀河', '記録']))
 })
+
+it('caps candidates at 100, ignores repetition runs and gives new weak encounters a new deletion token', () => {
+  const old = record()
+  const original = extractWeakWords([old])[0]
+  const practice = { ...record(), id: 'repeat', mode: 'weak' as const }
+  expect(extractWeakWords([old, practice])[0].misses).toBe(1)
+  const fresh = { ...record(), id: 'new', date: '2026-11-01T00:00:00Z' }
+  expect(extractWeakWords([old, fresh])[0].source).not.toBe(original.source)
+  const records = Array.from({ length: 125 }, (_, i) => {
+    const r = record()
+    r.id = `source-${i}`
+    const prompt = r.trace!.prompts[0]
+    prompt.segments![0].text = `銀河${i}`
+    prompt.text = prompt.segments!.map((s) => s.text).join('')
+    return r
+  })
+  expect(extractWeakWords(records)).toHaveLength(100)
+})

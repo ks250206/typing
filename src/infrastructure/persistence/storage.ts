@@ -104,7 +104,7 @@ function readRecords(key: string, limit: number): RecordEntry[] {
     return []
   }
 }
-export const readHistory = () => readRecords(HISTORY, 200)
+export const readHistory = () => readRecords(HISTORY, Number.MAX_SAFE_INTEGER)
 export const readBestHistory = () =>
   archiveBests(readRecords(BESTS, Number.MAX_SAFE_INTEGER))
 function summaries(data: RecordEntry[]) {
@@ -132,7 +132,7 @@ export function readSettings(): Settings {
   }
 }
 export function saveHistory(data: RecordEntry[]) {
-  return save(HISTORY, summaries(data.slice(0, 200)))
+  return save(HISTORY, summaries(data))
 }
 export function saveSettings(data: Settings) {
   return save(SETTINGS, data)
@@ -155,12 +155,12 @@ async function withHistoryLock<T>(operation: () => T | Promise<T>): Promise<T> {
   return await operation()
 }
 export function mergeHistory(...groups: RecordEntry[][]): RecordEntry[] {
-  return [...new Map(groups.flat().map((entry) => [entry.id, entry])).values()]
-    .sort(
-      (a, b) =>
-        Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
-    )
-    .slice(0, 200)
+  return [
+    ...new Map(groups.flat().map((entry) => [entry.id, entry])).values(),
+  ].sort(
+    (a, b) =>
+      Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
+  )
 }
 export function appendHistory(entry: RecordEntry, unsaved: RecordEntry[] = []) {
   return withHistoryLock(async () => {

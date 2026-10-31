@@ -4,14 +4,20 @@ import {
   chronological,
   recordGroup,
   recordTrend,
-  topRecords,
   modeOf,
   recordPoint,
-  recordValue,
   recordTitle,
   recordMissLabel,
 } from '../../domain/records/recordStats'
-import type { RecordMetric } from '../../domain/records/recordStats'
+import {
+  insightPace,
+  insightTop,
+  insightTrend,
+  insightValue,
+  type InsightMetric,
+} from '../../domain/records/insightMetrics'
+import { usePaceRecords } from './usePaceRecords'
+import { PassageRecords } from './PassageRecords'
 import { Select } from '../../shared/ui/Select'
 import { readTrace } from '../../infrastructure/persistence/traceStore'
 import { analyzeTrace } from '../../domain/records/telemetry'
@@ -33,23 +39,39 @@ export function HistoryInsights({
   records,
   bests,
   onSelect,
+  selection,
+  onGroupChange,
+  selectedId,
 }: {
+  selectedId?: string
+  selection: string
+  onGroupChange: (group: string) => void
   records: RecordEntry[]
   bests: RecordEntry[]
   onSelect: (r: RecordEntry) => void
 }) {
   const all = useMemo(
-    () => [...new Map([...bests, ...records].map((r) => [r.id, r])).values()],
+    () => [
+      ...new Map(
+        [...bests, ...records]
+          .filter((r) => r.mode !== 'weak')
+          .map((r) => [r.id, r]),
+      ).values(),
+    ],
     [records, bests],
   )
   const groups = useMemo(
     () => [...new Map(all.map((r) => [recordGroup(r), r])).entries()],
     [all],
   )
-  const [selection, setSelection] = useState('')
   const [sameSeed, setSameSeed] = useState(false)
-  const [metric, setMetric] = useState<RecordMetric>('point')
-  const metricName = metric === 'point' ? 'point' : 'KPM'
+  const [metric, setMetric] = useState<InsightMetric>('point')
+  const metricName = {
+    point: 'point',
+    kpm: 'KPM',
+    min: '最低速度',
+    max: '最高速度',
+  }[metric]
   const unit = metric === 'point' ? 'pt' : 'KPM'
   const selected =
     groups.find(([key]) => key === selection) ??
@@ -61,24 +83,35 @@ export function HistoryInsights({
   const match = (r: RecordEntry) =>
     recordGroup(r) === group && (!sameSeed || r.seed === anchor?.seed)
   const recent = latest.filter(match)
-  const trend = recordTrend(recent, metric)
-  const top = topRecords(all.filter(match), metric)
+  const summaryTrend = recordTrend(recent)
+  const groupRows = useMemo(
+    () => all.filter((r) => recordGroup(r) === group),
+    [all, group],
+  )
+  const paced = usePaceRecords(groupRows, metric === 'min' || metric === 'max')
+  const trend = insightTrend(paced.filter(match), metric)
+  const top = insightTop(paced.filter(match), metric)
   const points = trend.slice(-30)
   const maximum = chartAxis(
     Math.max(
       1,
-      ...points.map((p) => Math.max(recordValue(p.record, metric), p.average)),
+      ...points.map((p) =>
+        Math.max(insightValue(p.record, metric) ?? 0, p.average),
+      ),
     ),
   ).max
   return (
     <section className="history-insights" aria-label="文章別の記録分析">
       <h3>文章別の記録分析</h3>
+      <p className="history-attempts">
+        完了した挑戦 <strong>{recent.length} 回</strong>
+      </p>
       <label>
         比較する文章・配列・モード
         <Select
           label="比較する記録"
-          value={group ?? ''}
-          onChange={setSelection}
+          value={selection}
+          onChange={onGroupChange}
           options={groups.map(([key, r]) => ({
             value: key,
             label: `${r.title} / ${r.layout} / ${modes[modeOf(r)]}${r.cpuConfig ? ` / CPU ${r.cpuConfig.kpm}KPM ${r.cpuConfig.reactionMs}ms ${r.cpuConfig.curve}` : ''}${r.replayVersion ? ` / v${r.replayVersion}` : ''}`,
@@ -119,9 +152,10 @@ export function HistoryInsights({
         <div>
           <span>直近{Math.min(5, recent.length)}回の移動平均</span>
           <strong>
-            {trend.at(-1)?.pointAverage.toFixed(1) ?? '—'} <small>pt</small>
+            {summaryTrend.at(-1)?.pointAverage.toFixed(1) ?? '—'}{' '}
+            <small>pt</small>
           </strong>
-          <small>{trend.at(-1)?.kpmAverage.toFixed(1) ?? '—'} KPM</small>
+          <small>{summaryTrend.at(-1)?.kpmAverage.toFixed(1) ?? '—'} KPM</small>
         </div>
         <div>
           <span>前回との差</span>
@@ -144,10 +178,12 @@ export function HistoryInsights({
         <Select
           label="記録の主指標"
           value={metric}
-          onChange={(value) => setMetric(value as RecordMetric)}
+          onChange={(value) => setMetric(value as InsightMetric)}
           options={[
             { value: 'point', label: 'point（メイン）' },
             { value: 'kpm', label: 'KPM' },
+            { value: 'max', label: '最高速度（5秒移動平均）' },
+            { value: 'min', label: '最低速度（5秒移動平均）' },
           ]}
         />
       </label>
@@ -164,7 +200,7 @@ export function HistoryInsights({
             points={points
               .map(
                 (p, i) =>
-                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - (recordValue(p.record, metric) / maximum) * 115}`,
+                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - ((insightValue(p.record, metric) ?? 0) / maximum) * 115}`,
               )
               .join(' ')}
           />
@@ -172,13 +208,13 @@ export function HistoryInsights({
             <circle
               key={p.record.id}
               cx={58 + (i * 560) / Math.max(1, points.length - 1)}
-              cy={140 - (recordValue(p.record, metric) / maximum) * 115}
+              cy={140 - ((insightValue(p.record, metric) ?? 0) / maximum) * 115}
               r="3"
               fill="#61e8ff"
             >
               <title>
                 {new Date(p.record.date).toLocaleString('ja-JP')} ·{' '}
-                {recordValue(p.record, metric)} {unit}
+                {insightValue(p.record, metric) ?? 0} {unit}
               </title>
             </circle>
           ))}
@@ -203,29 +239,50 @@ export function HistoryInsights({
           ・時間・実ミス・新しい日時の順
         </small>
       </h4>
+      {(metric === 'min' || metric === 'max') && (
+        <p className="small muted">
+          5秒移動平均の{metricName}
+          を高い順に比較。5秒未満・算出できない記録は除外します。最低速度も高いほど上位です。
+        </p>
+      )}
+      {!top.length && (
+        <p role="status">この指標を算出できる記録はありません。</p>
+      )}
       <ol className="top-records">
-        {top.map((r) => (
-          <li key={r.id}>
-            <button onClick={() => onSelect(r)}>
-              <strong>
-                {recordValue(r, metric)} {unit}
-              </strong>
-              <span>
-                {recordTitle(r)} ·{' '}
-                {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
-              </span>
-              <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
-              <small>
-                {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
-                {r.seed ? ` · ${r.seed}` : ''}
-              </small>
-            </button>
-          </li>
-        ))}
+        {top.map((r) => {
+          const moving = insightPace(r)
+          return (
+            <li key={r.id}>
+              <button onClick={() => onSelect(r)}>
+                <strong>
+                  {insightValue(r, metric) ?? 0} {unit}
+                </strong>
+                <span>
+                  {recordTitle(r)} ·{' '}
+                  {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
+                </span>
+                <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
+                <small>
+                  {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
+                  {r.seed ? ` · ${r.seed}` : ''}
+                </small>
+                <small>
+                  5秒平均：最低 {moving ? moving.min.toFixed(1) : '—'} / 最高{' '}
+                  {moving ? moving.max.toFixed(1) : '—'} KPM
+                </small>
+              </button>
+            </li>
+          )
+        })}
       </ol>
       <p className="small muted">
-        同じ文章セット・配列・モード・出題バージョンを比較。CPU対戦はCPU設定も一致させます。TOP10は直近200件の保持枠から外れても残ります。移動平均は保存済みの直近履歴を使用します。
+        同じ文章セット・配列・モード・出題バージョンを比較。CPU対戦はCPU設定も一致させます。TOP10・移動平均は保存されている記録を使用します。
       </p>
+      <PassageRecords
+        records={recent}
+        selectedId={selectedId}
+        onSelect={onSelect}
+      />
     </section>
   )
 }

@@ -1,6 +1,9 @@
 import { startPractice } from './startPractice'
 import { test, expect, type Page } from '@playwright/test'
-import { sakusakuEntries, createTrainerOrder } from '../src/domain/content/sakusaku'
+import {
+  sakusakuEntries,
+  createTrainerOrder,
+} from '../src/domain/content/sakusaku'
 
 const remaining = async (page: Page) =>
   ((await page.locator('.roman-current').textContent()) ?? '') +
@@ -111,6 +114,7 @@ test('15 supplied texts, random next sentence, paused clock, partial 60-second r
   await page.clock.runFor(1000)
   expect(await history(page)).toEqual(saved)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody')).toContainText('さくさくタイピング')
   expect(errors).toEqual([])
 })

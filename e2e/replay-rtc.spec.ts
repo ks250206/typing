@@ -105,6 +105,7 @@ test('replay steps actual spelling and mistakes, pauses, changes speed and seeks
   })
   await page.goto('/')
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   const before = await page.evaluate(() =>
     localStorage.getItem('yohaku.history.v1'),
   )
@@ -236,6 +237,7 @@ for (const setId of ['rtc-2025-all', 'rtc-2019-all', 'rtc-2023-all'])
       )
       .toBe(1)
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await page
       .getByRole('button', { name: 'リプレイを見る', exact: true })
       .click()

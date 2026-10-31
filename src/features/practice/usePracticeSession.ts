@@ -257,7 +257,7 @@ export function usePracticeSession(
     if (customDocument) result.mode = 'weak'
     setFinishedResult(result)
     setPracticeStage(3)
-    onRecord(result)
+    if (!customDocument) onRecord(result)
   }
   useEffect(() => {
     finishTimer.current = (duration) =>

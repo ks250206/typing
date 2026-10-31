@@ -104,6 +104,7 @@ test('word sets share the library and mission; seeded R run includes spaces, ext
     ),
   ).toBe(1)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.getByRole('button', { name: 'シード replay-test を再現' }).click()
   await expect(page.getByLabel('出題シード')).toHaveValue('replay-test')
   await page.getByRole('button', { name: '全文を読む', exact: true }).click()

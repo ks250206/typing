@@ -47,7 +47,10 @@ export function SpeedStatistics({
     () => (record.trace ? intervalStatistics(record.trace) : null),
     [record.trace],
   )
-  const ranks = paceRanks(record, [...history, ...older], summary)
+  const ranks =
+    record.mode === 'weak'
+      ? null
+      : paceRanks(record, [...history, ...older], summary)
   if (!summary)
     return (
       <p className="small muted">
@@ -66,18 +69,22 @@ export function SpeedStatistics({
         <div className="moving-stat">
           <dt>{PACE_WINDOW}秒移動平均の最低速度</dt>
           <dd>{summary.moving ? `${n(summary.moving.min)} KPM` : '—'}</dd>
-          <small>
-            {ranks
-              ? `過去順位 ${ranks.min} / ${ranks.count}（高いほど上位）`
-              : unavailable}
-          </small>
+          {record.mode !== 'weak' && (
+            <small>
+              {ranks
+                ? `過去順位 ${ranks.min} / ${ranks.count}（高いほど上位）`
+                : unavailable}
+            </small>
+          )}
         </div>
         <div className="moving-stat">
           <dt>{PACE_WINDOW}秒移動平均の最高速度</dt>
           <dd>{summary.moving ? `${n(summary.moving.max)} KPM` : '—'}</dd>
-          <small>
-            {ranks ? `過去順位 ${ranks.max} / ${ranks.count}` : unavailable}
-          </small>
+          {record.mode !== 'weak' && (
+            <small>
+              {ranks ? `過去順位 ${ranks.max} / ${ranks.count}` : unavailable}
+            </small>
+          )}
         </div>
         <div>
           <dt>最低速度</dt>

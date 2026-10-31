@@ -78,6 +78,7 @@ async function prepare(
   )
   await page.goto('/')
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: 'ゴーストと対戦', exact: true })
     .click()
@@ -196,6 +197,7 @@ test('races recorded timing, alternate spellings and mistakes, pauses both clock
   await page.keyboard.type('hikaa')
   await expect(race).toContainText('GHOST WIN')
   await race.getByRole('button', { name: '記録へ戻る', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.clock.runFor(2000)
   await expect(page.locator('.history-table tbody tr')).toHaveCount(3)
   expect(errors).toEqual([])
@@ -208,6 +210,7 @@ test('ghost entry in record details reports unavailable or inconsistent logs wit
     page.getByText('この記録には打鍵ログがないため、ゴースト対戦できません。'),
   ).toBeVisible()
   await page.getByRole('button', { name: '記録へ戻る', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.getByRole('button', { name: '詳細を見る', exact: true }).click()
   await expect(page.getByText(/この記録には打鍵ログがありません/)).toBeVisible()
 })
@@ -249,9 +252,7 @@ test('unified selection filters and searches the library; briefing wraps while t
   const height = await page
     .locator('.mission-viewport')
     .evaluate((el) => el.getBoundingClientRect().height)
-  await library
-    .getByRole('button', { name: 'オリジナル', exact: true })
-    .click()
+  await library.getByRole('button', { name: 'オリジナル', exact: true }).click()
   await expect(library.locator('.story-card')).toHaveCount(6)
   await library
     .getByRole('button', { name: '星の光が届くまで', exact: true })
