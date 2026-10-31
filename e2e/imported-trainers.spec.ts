@@ -100,6 +100,7 @@ for (const set of data) {
       replayVersion: 2,
     })
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await page
       .getByRole('button', { name: 'シード html-source を再現', exact: true })
       .click()
@@ -109,6 +110,7 @@ for (const set of data) {
       first[0] as string,
     )
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await page
       .getByRole('button', { name: 'リプレイを見る', exact: true })
       .click()

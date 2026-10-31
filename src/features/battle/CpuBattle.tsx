@@ -1,7 +1,14 @@
+import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { BattleSidebar } from './BattleSidebar'
 import { CpuResults } from './CpuResults'
 import { Select } from '../../shared/ui/Select'
-import { mapKey, layoutLabels } from '../../domain/typing/engine'
+import {
+  mapKey,
+  layoutLabels,
+  isTypingShortcut,
+} from '../../domain/typing/engine'
 import type { Layout } from '../../domain/typing/engine'
 import {
   RtcMatch,
@@ -10,13 +17,22 @@ import {
   migrateCpuPreset,
 } from '../../domain/battle/cpuMatch'
 import type { CpuConfig } from '../../domain/battle/cpuMatch'
-import { battleSets, seededBattlePrompts } from '../../domain/content/battleSets'
+import {
+  battleSets,
+  seededBattlePrompts,
+} from '../../domain/content/battleSets'
 import { freshSeed } from '../../domain/content/typewell'
 import { DuelRomanGuide } from './DuelRomanGuide'
 import { SentenceView } from '../../shared/typing/SentenceView'
 import { KeyboardGuide } from '../../shared/typing/KeyboardGuide'
-import { typingTitle, formatMissRate, scorePoint } from '../../domain/typing/scoring'
+import {
+  typingTitle,
+  formatMissRate,
+  scorePoint,
+} from '../../domain/typing/scoring'
 import type { RecordEntry, Settings } from '../../domain/records/types'
+
+import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
 
 function loadCpu(): CpuConfig {
   try {
@@ -39,15 +55,20 @@ function loadCpu(): CpuConfig {
 }
 export function CpuBattle({
   settings,
+  historyRecords = [],
+  setSettings,
   onRecord,
   replay,
   onReplayConsumed,
 }: {
   settings: Settings
+  historyRecords?: RecordEntry[]
+  setSettings: Dispatch<SetStateAction<Settings>>
   replay?: RecordEntry | null
   onReplayConsumed?: () => void
   onRecord: (record: RecordEntry) => void
 }) {
+  const keyFeedback = useKeyFeedback()
   const [config, setConfig] = useState<CpuConfig>(
     () => replay?.cpuConfig ?? loadCpu(),
   )
@@ -160,6 +181,7 @@ export function CpuBattle({
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [match])
   const start = () => {
+    keyFeedback.clearKeyFeedback()
     onReplayConsumed?.()
     const nextSeed = fixed ? seed.trim() : freshSeed()
     setSeed(nextSeed)
@@ -189,6 +211,7 @@ export function CpuBattle({
     requestAnimationFrame(() => area.current?.focus())
   }
   const pause = () => {
+    keyFeedback.clearKeyFeedback()
     synchronize()
     model.current?.pause()
     setMistake(false)
@@ -208,9 +231,7 @@ export function CpuBattle({
     }
     if (
       event.repeat ||
-      event.ctrlKey ||
-      event.altKey ||
-      event.metaKey ||
+      isTypingShortcut(event.nativeEvent, layout) ||
       event.nativeEvent.isComposing
     )
       return
@@ -222,6 +243,7 @@ export function CpuBattle({
     const raw = value.misses.raw
     value.feed(key, synchronize())
     if (value.misses.raw > raw) {
+      keyFeedback.reportMiss(event.code)
       setMistake(true)
       clearTimeout(missTimer.current)
       missTimer.current = setTimeout(() => setMistake(false), 260)
@@ -250,10 +272,7 @@ export function CpuBattle({
     ? scorePoint(
         match.totalKeys + match.keys,
         match.totalPenalty + match.misses.penalty,
-        match.totalElapsed +
-          (phase === 'playing'
-            ? Math.max(0, clock.current.now - match.wordStart)
-            : 0),
+        match.activeElapsed(clock.current.now),
       )
     : 0
   const titleKeys = match ? match.totalKeys + match.keys : 0
@@ -279,306 +298,345 @@ export function CpuBattle({
     [guideSentence, guideTyped, guideHint, guidePosition, guideKana, cpuTyped],
   )
   return (
-    <section className="cpu-battle">
-      <div className="battle-brief">
-        <span className="eyebrow">CPU DUEL / BO7</span>
-        <h2>同じ言葉で、先へ。</h2>
-        <p>
-          先に打ち切ると1点。10点先取でラウンド獲得、4ラウンドで勝利。正確率95%未満は逆転判定。
-        </p>
-      </div>
-      <fieldset
-        className="cpu-config"
-        disabled={!!match && phase !== 'finished'}
-      >
-        <label>
-          CPUプリセット
-          <Select
-            label="CPUプリセット"
-            value={preset}
-            options={[
-              ...cpuPresets.map((p) => ({ value: p.name, label: p.name })),
-              { value: 'カスタム', label: 'カスタム', disabled: true },
-            ]}
-            onChange={(value) => {
-              const p = cpuPresets.find((p) => p.name === value)
-              if (p) setConfig({ ...p })
-            }}
-          />
-        </label>
-        <label>
-          CPU速度 (KPM)
-          <input
-            aria-label="CPU速度 (KPM)"
-            type="number"
-            min={35}
-            max={1800}
-            value={config.kpm}
-            onChange={(e) =>
-              setConfig((c) => ({
-                ...c,
-                kpm: Math.min(1800, Math.max(35, Number(e.target.value) || 35)),
-              }))
-            }
-          />
-        </label>
-        <label>
-          反応時間 (ms)
-          <input
-            aria-label="CPU反応時間 (ms)"
-            type="number"
-            min={100}
-            max={1500}
-            step={1}
-            value={config.reactionMs}
-            onChange={(e) =>
-              setConfig((c) => ({
-                ...c,
-                reactionMs: Math.min(
-                  1500,
-                  Math.max(100, Number(e.target.value) || 100),
-                ),
-              }))
-            }
-          />
-        </label>
-        <label>
-          打ち方
-          <Select
-            label="CPUの打ち方"
-            value={config.curve}
-            options={[
-              { value: 'constant', label: '一定速度' },
-              { value: 'ease-in', label: 'イーズイン（徐々に加速）' },
-            ]}
-            onChange={(value) =>
-              setConfig((c) => ({ ...c, curve: value as CpuConfig['curve'] }))
-            }
-          />
-        </label>
-        <label>
-          入力方式
-          <Select
-            label="対戦の入力方式"
-            value={layout}
-            options={Object.entries(layoutLabels).map(([value, label]) => ({
-              value,
-              label,
-            }))}
-            onChange={(value) => setLayout(value as Layout)}
-          />
-        </label>
-        <label className="battle-set-control">
-          文章セット
-          <Select
-            label="対戦の文章セット"
-            value={setId}
-            options={battleSets.map((s) => ({ value: s.id, label: s.title }))}
-            onChange={setSetId}
-          />
-        </label>
-        <label>
-          対戦シード
-          <input
-            aria-label="対戦シード"
-            maxLength={64}
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
-          />
-        </label>
-        <label className="battle-fixed">
-          <span>
-            <input
-              type="checkbox"
-              aria-label="対戦シードを固定する"
-              checked={fixed}
-              onChange={(e) => setFixed(e.target.checked)}
-            />{' '}
-            シードを固定する
-          </span>
-          <button
-            type="button"
-            disabled={fixed}
-            onClick={() => setSeed(freshSeed())}
-          >
-            シードを更新
-          </button>
-        </label>
-      </fieldset>
-      <p className="cpu-config-note">
-        反応時間は出題から初打鍵までの待ち時間。KPMは加速後の定常速度です。プリセットは人の反応をイメージしたゲーム内設定です。
-      </p>
-      {!match ? (
-        <button
-          className="primary-button"
-          disabled={fixed && !seed.trim()}
-          onClick={start}
+    <div className="practice-grid battle-grid">
+      <section className="cpu-battle practice-main">
+        <PageHeading
+          className="battle-brief"
+          eyebrow="CPU DUEL / BO7"
+          title="CPU対戦"
         >
-          CPUと対戦する
-        </button>
-      ) : (
-        <>
-          <div className="battle-score">
-            <div>
-              YOU{' '}
-              <strong data-testid="player-rounds">{match.roundsPlayer}</strong>
-              <span>ROUND</span>
-            </div>
-            <span>BO7</span>
-            <div>
-              CPU <strong data-testid="cpu-rounds">{match.roundsCpu}</strong>
-              <span>ROUND</span>
-            </div>
-          </div>
-          <div className="round-scoreboard" aria-label="このラウンドの得点">
-            <div className="round-score-side">
-              <span>YOU</span>
-              <strong
-                key={`you-${match.roundPlayer}`}
-                data-testid="player-points"
-              >
-                {match.roundPlayer}
-              </strong>
-              <div className="point-lights" aria-hidden="true">
-                {Array.from({ length: 10 }, (_, i) => (
-                  <i key={i} data-lit={i < match.roundPlayer} />
-                ))}
-              </div>
-            </div>
-            <div className="round-score-center">
-              <span>このラウンド</span>
-              <b>10点先取</b>
-              <small role="status">
-                {match.roundPlayer === match.roundCpu
-                  ? '同点'
-                  : match.roundPlayer > match.roundCpu
-                    ? 'YOUが先行'
-                    : 'CPUが先行'}
-              </small>
-            </div>
-            <div className="round-score-side cpu">
-              <span>CPU</span>
-              <strong key={`cpu-${match.roundCpu}`} data-testid="cpu-points">
-                {match.roundCpu}
-              </strong>
-              <div className="point-lights" aria-hidden="true">
-                {Array.from({ length: 10 }, (_, i) => (
-                  <i key={i} data-lit={i < match.roundCpu} />
-                ))}
-              </div>
-            </div>
-          </div>
-          <p className="battle-seed-info">
-            {matchSource.current.title} · シード {matchSource.current.seed} ·
-            RTC v1
+          <p>
+            先に打ち切ると1点。10点先取でラウンド獲得、4ラウンドで勝利。正確率95%未満は逆転判定。
           </p>
-          <div className="word-score">
-            <span>
-              正確率 <b>{(match.accuracy * 100).toFixed(1)}%</b> · ミス{' '}
-              {match.misses.misses}（実打 {match.misses.raw}）
-            </span>
-          </div>
-          {phase === 'round-result' || phase === 'finished' ? (
-            <CpuResults
-              match={match}
-              result={result}
-              onNext={() => {
-                match.nextRound(synchronize())
-                render((v) => v + 1)
-                requestAnimationFrame(() => area.current?.focus())
-              }}
-              onRematch={start}
-            />
-          ) : (
-            <>
-              <div
-                className="battle-arena"
-                ref={area}
-                tabIndex={0}
-                role="region"
-                aria-label="CPU対戦の入力領域"
-                onKeyDown={accept}
-                onBlur={pause}
+        </PageHeading>
+        {!match && (
+          <>
+            <fieldset
+              className="cpu-config"
+              disabled={!!match && phase !== 'finished'}
+            >
+              <label>
+                CPUプリセット
+                <Select
+                  label="CPUプリセット"
+                  value={preset}
+                  options={[
+                    ...cpuPresets.map((p) => ({
+                      value: p.name,
+                      label: p.name,
+                    })),
+                    { value: 'カスタム', label: 'カスタム', disabled: true },
+                  ]}
+                  onChange={(value) => {
+                    const p = cpuPresets.find((p) => p.name === value)
+                    if (p) setConfig({ ...p })
+                  }}
+                />
+              </label>
+              <label>
+                CPU速度 (KPM)
+                <input
+                  aria-label="CPU速度 (KPM)"
+                  type="number"
+                  min={35}
+                  max={1800}
+                  value={config.kpm}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      kpm: Math.min(
+                        1800,
+                        Math.max(35, Number(e.target.value) || 35),
+                      ),
+                    }))
+                  }
+                />
+              </label>
+              <label>
+                反応時間 (ms)
+                <input
+                  aria-label="CPU反応時間 (ms)"
+                  type="number"
+                  min={100}
+                  max={1500}
+                  step={1}
+                  value={config.reactionMs}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      reactionMs: Math.min(
+                        1500,
+                        Math.max(100, Number(e.target.value) || 100),
+                      ),
+                    }))
+                  }
+                />
+              </label>
+              <label>
+                打ち方
+                <Select
+                  label="CPUの打ち方"
+                  value={config.curve}
+                  options={[
+                    { value: 'constant', label: '一定速度' },
+                    { value: 'ease-in', label: 'イーズイン（徐々に加速）' },
+                  ]}
+                  onChange={(value) =>
+                    setConfig((c) => ({
+                      ...c,
+                      curve: value as CpuConfig['curve'],
+                    }))
+                  }
+                />
+              </label>
+              <label>
+                入力方式
+                <Select
+                  label="対戦の入力方式"
+                  value={layout}
+                  options={Object.entries(layoutLabels).map(
+                    ([value, label]) => ({
+                      value,
+                      label,
+                    }),
+                  )}
+                  onChange={(value) => setLayout(value as Layout)}
+                />
+              </label>
+              <label className="battle-set-control">
+                文章セット
+                <Select
+                  label="対戦の文章セット"
+                  value={setId}
+                  options={battleSets.map((s) => ({
+                    value: s.id,
+                    label: s.title,
+                  }))}
+                  onChange={setSetId}
+                />
+              </label>
+              <label>
+                対戦シード
+                <input
+                  aria-label="対戦シード"
+                  maxLength={64}
+                  value={seed}
+                  onChange={(e) => setSeed(e.target.value)}
+                />
+              </label>
+              <label className="battle-fixed">
+                <span>
+                  <input
+                    type="checkbox"
+                    aria-label="対戦シードを固定する"
+                    checked={fixed}
+                    onChange={(e) => setFixed(e.target.checked)}
+                  />{' '}
+                  シードを固定する
+                </span>
+                <button
+                  type="button"
+                  disabled={fixed}
+                  onClick={() => setSeed(freshSeed())}
+                >
+                  シードを更新
+                </button>
+              </label>
+            </fieldset>
+            <p className="cpu-config-note">
+              反応時間は出題から初打鍵までの待ち時間。KPMは加速後の定常速度です。プリセットは人の反応をイメージしたゲーム内設定です。
+            </p>
+          </>
+        )}
+        {!match ? (
+          <button
+            className="primary-button"
+            disabled={fixed && !seed.trim()}
+            onClick={start}
+          >
+            CPUと対戦する
+          </button>
+        ) : (
+          <>
+            <div className="battle-score">
+              <div>
+                YOU{' '}
+                <strong data-testid="player-rounds">
+                  {match.roundsPlayer}
+                </strong>
+                <span>ROUND</span>
+              </div>
+              <span>BO7</span>
+              <div>
+                CPU <strong data-testid="cpu-rounds">{match.roundsCpu}</strong>
+                <span>ROUND</span>
+              </div>
+            </div>
+            <div className="round-scoreboard" aria-label="このラウンドの得点">
+              <div className="round-score-side">
+                <span>YOU</span>
+                <strong
+                  key={`you-${match.roundPlayer}`}
+                  data-testid="player-points"
+                >
+                  {match.roundPlayer}
+                </strong>
+                <div className="point-lights" aria-hidden="true">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <i key={i} data-lit={i < match.roundPlayer} />
+                  ))}
+                </div>
+              </div>
+              <div className="round-score-center">
+                <span>このラウンド</span>
+                <b>10点先取</b>
+                <small role="status">
+                  {match.roundPlayer === match.roundCpu
+                    ? '同点'
+                    : match.roundPlayer > match.roundCpu
+                      ? 'YOUが先行'
+                      : 'CPUが先行'}
+                </small>
+              </div>
+              <div className="round-score-side cpu">
+                <span>CPU</span>
+                <strong key={`cpu-${match.roundCpu}`} data-testid="cpu-points">
+                  {match.roundCpu}
+                </strong>
+                <div className="point-lights" aria-hidden="true">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <i key={i} data-lit={i < match.roundCpu} />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <p className="battle-seed-info">
+              {matchSource.current.title} · シード {matchSource.current.seed} ·
+              RTC v1
+            </p>
+            <div className="word-score">
+              <span>
+                正確率 <b>{(match.accuracy * 100).toFixed(1)}%</b> · ミス{' '}
+                {match.misses.misses}（実打 {match.misses.raw}）
+              </span>
+            </div>
+            {phase === 'round-result' || phase === 'finished' ? (
+              <CpuResults
+                history={historyRecords}
+                match={match}
+                result={result}
+                onNext={() => {
+                  match.nextRound(synchronize())
+                  render((v) => v + 1)
+                  requestAnimationFrame(() => area.current?.focus())
+                }}
+                onRematch={start}
+              />
+            ) : (
+              <>
+                <div
+                  className="battle-arena"
+                  ref={area}
+                  tabIndex={0}
+                  role="region"
+                  aria-label="CPU対戦の入力領域"
+                  onKeyDown={accept}
+                  onBlur={pause}
+                >
+                  {mistake && (
+                    <div className="damage-overlay" aria-hidden="true" />
+                  )}
+                  {match.awaitingStart ? (
+                    <div className="battle-countdown" role="status">
+                      {Math.max(
+                        1,
+                        Math.ceil((match.deadline - clock.current.now) / 1000),
+                      )}
+                      <small>同時スタート</small>
+                    </div>
+                  ) : (
+                    <>
+                      <SentenceView
+                        current={match.sentence}
+                        position={match.engine.position}
+                        kana={match.layout === 'kana'}
+                        done={match.engine.done}
+                        target={match.engine.target}
+                        typed={match.typed}
+                        hint={match.engine.hint}
+                        wordColors={settings.wordColors}
+                        consumeTyped={settings.consumeTyped}
+                        showNext={false}
+                        romanGuide={romanGuide}
+                      />
+                      <KeyboardGuide
+                        missedKey={keyFeedback.missedKey}
+                        layout={match.layout}
+                        nextCharacter={
+                          match.layout === 'kana'
+                            ? (match.engine.target[match.engine.position] ?? '')
+                            : (match.engine.hint[0] ?? '')
+                        }
+                        enabled={phase === 'playing'}
+                      />
+                    </>
+                  )}
+                </div>
+                <div className="battle-status" role="status">
+                  {phase === 'word-result' && (
+                    <span>
+                      {match.lastWord === 'player' ? 'YOU +1' : 'CPU +1'} ·
+                      次の問題へ
+                    </span>
+                  )}
+                  {phase === 'paused' && (
+                    <button className="primary-button" onClick={resume}>
+                      対戦を再開する
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+            <div className="battle-actions">
+              <span>
+                {point} pt · {title} · 実ミス率{' '}
+                {formatMissRate(titleKeys, titleMisses)}
+              </span>
+              <button
+                onClick={pause}
+                disabled={
+                  !['playing', 'countdown', 'word-result'].includes(phase ?? '')
+                }
               >
-                {mistake && (
-                  <div className="damage-overlay" aria-hidden="true" />
-                )}
-                {match.awaitingStart ? (
-                  <div className="battle-countdown" role="status">
-                    {Math.max(
-                      1,
-                      Math.ceil((match.deadline - clock.current.now) / 1000),
-                    )}
-                    <small>同時スタート</small>
-                  </div>
-                ) : (
-                  <>
-                    <SentenceView
-                      current={match.sentence}
-                      position={match.engine.position}
-                      kana={match.layout === 'kana'}
-                      done={match.engine.done}
-                      target={match.engine.target}
-                      typed={match.typed}
-                      hint={match.engine.hint}
-                      wordColors={settings.wordColors}
-                      consumeTyped={settings.consumeTyped}
-                      showNext={false}
-                      romanGuide={romanGuide}
-                    />
-                    <KeyboardGuide
-                      layout={match.layout}
-                      nextCharacter={
-                        match.layout === 'kana'
-                          ? (match.engine.target[match.engine.position] ?? '')
-                          : (match.engine.hint[0] ?? '')
-                      }
-                      enabled={phase === 'playing'}
-                    />
-                  </>
-                )}
-              </div>
-              <div className="battle-status" role="status">
-                {phase === 'word-result' && (
-                  <span>
-                    {match.lastWord === 'player' ? 'YOU +1' : 'CPU +1'} ·
-                    次の問題へ
-                  </span>
-                )}
-                {phase === 'paused' && (
-                  <button className="primary-button" onClick={resume}>
-                    対戦を再開する
-                  </button>
-                )}
-              </div>
-            </>
-          )}
-          <div className="battle-actions">
-            <span>
-              {point} pt · {title} · 実ミス率{' '}
-              {formatMissRate(titleKeys, titleMisses)}
-            </span>
-            <button
-              onClick={pause}
-              disabled={
-                !['playing', 'countdown', 'word-result'].includes(phase ?? '')
-              }
-            >
-              対戦を一時停止
-            </button>
-            <button
-              onClick={() => {
-                model.current = null
-                setMatch(null)
-                clearTimeout(missTimer.current)
-                setMistake(false)
-              }}
-            >
-              対戦をリセット
-            </button>
-          </div>
-        </>
-      )}
-    </section>
+                対戦を一時停止
+              </button>
+              <button
+                onClick={() => {
+                  keyFeedback.clearKeyFeedback()
+                  model.current = null
+                  setMatch(null)
+                  clearTimeout(missTimer.current)
+                  setMistake(false)
+                }}
+              >
+                対戦をリセット
+              </button>
+            </div>
+          </>
+        )}
+      </section>
+      <BattleSidebar
+        settings={settings}
+        setSettings={setSettings}
+        layout={match?.layout ?? layout}
+        keys={titleKeys}
+        misses={titleMisses}
+        point={point}
+        elapsed={match?.activeElapsed(clock.current.now) ?? 0}
+        accuracy={match?.totalAccuracy ?? 1}
+        rounds={`${match?.roundsPlayer ?? 0} : ${match?.roundsCpu ?? 0}`}
+        cpu={`${config.kpm} KPM · ${config.reactionMs}ms · ${config.curve === 'constant' ? '一定速度' : 'イーズイン'}`}
+      />
+    </div>
   )
 }

@@ -95,7 +95,7 @@ test('custom menus support keyboard navigation, typeahead, cancel, Tab commit, v
   })
   await page.keyboard.press('Escape')
   await page.getByRole('button', { name: 'CPUと対戦する', exact: true }).click()
-  await expect(set).toBeDisabled()
+  await expect(set).toHaveCount(0)
   await expect(page.getByRole('listbox')).toHaveCount(0)
   await page
     .getByRole('button', { name: '対戦をリセット', exact: true })

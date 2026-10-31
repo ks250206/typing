@@ -224,7 +224,13 @@ it('round trips ghost comparison metadata without converting it into a practice 
 })
 
 it('ignores legacy guide opt-outs and accepts new layouts and the slowest CPU preset', () => {
-  for (const layout of ['colemak', 'workman'] as const) {
+  for (const layout of [
+    'colemak',
+    'workman',
+    'onishi',
+    'azerty',
+    'norman',
+  ] as const) {
     data.set('yohaku.settings.v1', JSON.stringify({ layout, guide: false }))
     expect(readSettings().layout).toBe(layout)
     expect(readSettings()).not.toHaveProperty('guide')
@@ -238,4 +244,14 @@ it('ignores legacy guide opt-outs and accepts new layouts and the slowest CPU pr
     ])
     expect(readHistory()[0]).toMatchObject({ layout, cpuConfig: { kpm: 35 } })
   }
+})
+
+it('preserves all completed records beyond the former 200-entry limit on read, save and append', async () => {
+  const rows = Array.from({ length: 225 }, (_, i) => record(`past-${i}`))
+  expect(saveHistory(rows)).toBe(true)
+  expect(readHistory()).toHaveLength(225)
+  const result = await appendHistory(record('newest'))
+  expect(result.saved).toBe(true)
+  expect(readHistory()).toHaveLength(226)
+  expect(readHistory().some((r) => r.id === 'past-224')).toBe(true)
 })

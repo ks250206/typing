@@ -1,8 +1,10 @@
 import type { SessionTrace } from './telemetry'
 import type { CpuConfig } from '../battle/cpuMatch'
 import type { Layout } from '../typing/engine'
+import type { PaceSummary } from './pace'
 
 export interface RecordEntry {
+  pace?: PaceSummary
   trace?: SessionTrace
   hasTrace?: boolean
   cpuConfig?: CpuConfig
@@ -26,7 +28,7 @@ export interface RecordEntry {
   strokeLimit?: number
   actualKeys?: number
   ghostSourceId?: string
-  mode?: 'practice' | 'cpu' | 'trainer' | 'ghost'
+  mode?: 'practice' | 'cpu' | 'trainer' | 'ghost' | 'weak'
 }
 export interface Settings {
   layout: Layout

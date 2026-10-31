@@ -4,12 +4,13 @@ import {
   Keyboard,
   Settings2,
   Target,
+  Repeat2,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { lazy, Suspense } from 'react'
 import type { Settings } from '../domain/records/types'
 
-export type AppTab = 'practice' | 'battle' | 'history' | 'ghost'
+export type AppTab = 'practice' | 'battle' | 'history' | 'ghost' | 'weak'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
 )
@@ -72,6 +73,7 @@ export function AppShell({
             ['practice', Keyboard, 'タイピング'],
             ['battle', Target, 'CPU対戦'],
             ['history', History, '練習の記録'],
+            ['weak', Repeat2, '苦手ワード練習'],
           ].map(([id, Icon, label]) => {
             const I = Icon as typeof Keyboard
             return (
@@ -116,6 +118,7 @@ export function AppShell({
             <span>
               {
                 {
+                  weak: '苦手ワード練習',
                   practice: 'タイピング',
                   ghost: 'ゴースト対戦',
                   history: '練習の記録',

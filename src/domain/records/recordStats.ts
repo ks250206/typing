@@ -52,7 +52,9 @@ export function archiveBests(rows: RecordEntry[]) {
   const groups = new Map<string, RecordEntry[]>()
   for (const row of new Map(rows.map((r) => [r.id, r])).values()) {
     const key = recordGroup(row)
-    groups.set(key, [...(groups.get(key) ?? []), row])
+    const group = groups.get(key) ?? []
+    group.push(row)
+    groups.set(key, group)
   }
   return [...groups.values()].flatMap((rows) => [
     ...new Map(

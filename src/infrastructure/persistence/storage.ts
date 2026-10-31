@@ -2,6 +2,7 @@ import type { RecordEntry, Settings } from '../../domain/records/types'
 import { archiveBests } from '../../domain/records/recordStats'
 import { writeTraces } from './traceStore'
 import { layoutLabels } from '../../domain/typing/engine'
+import { summarizePace, validPace } from '../../domain/records/pace'
 export const defaultSettings: Settings = {
   layout: 'jis',
   background: true,
@@ -37,11 +38,13 @@ function readRecords(key: string, limit: number): RecordEntry[] {
           .map((record): RecordEntry => ({
             ...record,
             trace: undefined,
+            pace: validPace(record.pace) ? record.pace : undefined,
             mode:
               record.mode === 'practice' ||
               record.mode === 'cpu' ||
               record.mode === 'trainer' ||
-              record.mode === 'ghost'
+              record.mode === 'ghost' ||
+              record.mode === 'weak'
                 ? record.mode
                 : undefined,
             ghostSourceId:
@@ -101,12 +104,13 @@ function readRecords(key: string, limit: number): RecordEntry[] {
     return []
   }
 }
-export const readHistory = () => readRecords(HISTORY, 200)
+export const readHistory = () => readRecords(HISTORY, Number.MAX_SAFE_INTEGER)
 export const readBestHistory = () =>
   archiveBests(readRecords(BESTS, Number.MAX_SAFE_INTEGER))
 function summaries(data: RecordEntry[]) {
   return data.map(({ trace, ...r }) => ({
     ...r,
+    pace: trace ? summarizePace(trace) : r.pace,
     hasTrace: r.hasTrace || (trace ? true : undefined),
   }))
 }
@@ -128,7 +132,7 @@ export function readSettings(): Settings {
   }
 }
 export function saveHistory(data: RecordEntry[]) {
-  return save(HISTORY, summaries(data.slice(0, 200)))
+  return save(HISTORY, summaries(data))
 }
 export function saveSettings(data: Settings) {
   return save(SETTINGS, data)
@@ -151,12 +155,12 @@ async function withHistoryLock<T>(operation: () => T | Promise<T>): Promise<T> {
   return await operation()
 }
 export function mergeHistory(...groups: RecordEntry[][]): RecordEntry[] {
-  return [...new Map(groups.flat().map((entry) => [entry.id, entry])).values()]
-    .sort(
-      (a, b) =>
-        Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
-    )
-    .slice(0, 200)
+  return [
+    ...new Map(groups.flat().map((entry) => [entry.id, entry])).values(),
+  ].sort(
+    (a, b) =>
+      Date.parse(b.date) - Date.parse(a.date) || b.id.localeCompare(a.id),
+  )
 }
 export function appendHistory(entry: RecordEntry, unsaved: RecordEntry[] = []) {
   return withHistoryLock(async () => {

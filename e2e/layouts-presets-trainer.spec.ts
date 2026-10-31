@@ -2,7 +2,11 @@ import { startPractice } from './startPractice'
 import { choose as pick } from './select'
 import { test, expect, type Page } from '@playwright/test'
 import { cpuPresets } from '../src/domain/battle/cpuMatch'
-import { createTrainerOrder, sakusaku, sakusakuEntries } from '../src/domain/content/sakusaku'
+import {
+  createTrainerOrder,
+  sakusaku,
+  sakusakuEntries,
+} from '../src/domain/content/sakusaku'
 import { typewellDocument } from '../src/domain/content/typewell'
 import { physicalKey } from '../src/domain/typing/physicalKeyboard'
 import type { Layout } from '../src/domain/typing/engine'
@@ -29,7 +33,9 @@ async function physicalType(page: Page, text: string, layout: Layout) {
   for (const char of text) {
     const key = physicalKey(char, layout)
     expect(key, `${layout}/${char}`).toBeDefined()
-    await page.keyboard.press(`${key!.shift ? 'Shift+' : ''}${key!.code}`)
+    await page.keyboard.press(
+      `${key!.altGraph ? 'AltGraph+' : ''}${key!.shift ? 'Shift+' : ''}${key!.code}`,
+    )
   }
 }
 const guide = (page: Page) =>
@@ -83,6 +89,7 @@ test('trainer seed controls reproduce the same order across pauses, restart and 
   await page.clock.runFor(60050)
   await expect(page.getByText('60秒の計測が終了しました。')).toBeVisible()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect
     .poll(() =>
       page.evaluate(
@@ -190,7 +197,13 @@ test('CPU has 21 rank-based profiles, migrates old defaults and persists the 35K
   await expect(page.locator('.battle-countdown')).toBeVisible()
 })
 
-for (const layout of ['colemak', 'workman'] as const)
+for (const layout of [
+  'colemak',
+  'workman',
+  'onishi',
+  'azerty',
+  'norman',
+] as const)
   test(`${layout} supports physical typing, records, replay, ghosts, CPU and always-on guides`, async ({
     page,
   }) => {
@@ -223,15 +236,23 @@ for (const layout of ['colemak', 'workman'] as const)
     await enter(page)
     await expect(page.locator('.roman-line')).toBeVisible()
     await expect(page.locator('[data-code="KeyE"] > span')).toHaveText(
-      layout === 'colemak' ? 'F' : 'R',
+      { colemak: 'F', workman: 'R', onishi: 'U', azerty: 'E', norman: 'D' }[
+        layout
+      ],
     )
-    await expect(page.locator('[data-code="KeyJ"] > span')).toHaveText('N')
+    await expect(page.locator('[data-code="KeyJ"] > span')).toHaveText(
+      { colemak: 'N', workman: 'N', onishi: 'T', azerty: 'J', norman: 'N' }[
+        layout
+      ],
+    )
     await expect(page.locator('[data-code="Semicolon"] > span')).toHaveText(
-      layout === 'colemak' ? 'O' : 'I',
+      { colemak: 'O', workman: 'I', onishi: 'H', azerty: 'M', norman: 'H' }[
+        layout
+      ],
     )
     await physicalType(page, reference.slice(0, 5), layout)
     await expect(page.locator('.typed-roman')).toHaveText(reference.slice(0, 5))
-    if (layout === 'workman')
+    if (layout === 'workman' || layout === 'azerty')
       await page.setViewportSize({ width: 390, height: 1000 })
     expect(
       await page.evaluate(
@@ -248,6 +269,7 @@ for (const layout of ['colemak', 'workman'] as const)
       page.getByText('SESSION COMPLETE', { exact: true }),
     ).toBeVisible()
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+    await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await expect
       .poll(() =>
         page.evaluate(
@@ -278,6 +300,11 @@ for (const layout of ['colemak', 'workman'] as const)
       name: /ゴースト対戦の入力領域/,
     })
     await ghostInput.focus()
+    await page.keyboard.press('Space')
+    await expect(page.locator('[data-code="Space"]')).toHaveAttribute(
+      'data-error',
+      'true',
+    )
     await physicalType(page, reference.slice(0, 5), layout)
     await expect(ghostInput.locator('.typed-roman')).toHaveText(
       reference.slice(0, 5),

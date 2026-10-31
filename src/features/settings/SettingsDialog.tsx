@@ -1,4 +1,5 @@
-import { Check, Settings2, X } from 'lucide-react'
+import { Check, Settings2, Trash2, X } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { Settings } from '../../domain/records/types'
 import { Select } from '../../shared/ui/Select'
@@ -8,12 +9,20 @@ export function SettingsDialog({
   settings,
   setSettings,
   onClose,
+  onRequestClear,
+  focusClear = false,
 }: {
   settings: Settings
   setSettings: Dispatch<SetStateAction<Settings>>
   onClose: () => void
+  onRequestClear: () => void
+  focusClear?: boolean
 }) {
   const modalRef = useModalFocus(onClose)
+  const clearButton = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (focusClear) clearButton.current?.focus()
+  }, [focusClear])
   return (
     <div className="modal-backdrop" onClick={() => onClose()}>
       <section
@@ -69,6 +78,20 @@ export function SettingsDialog({
         <p>
           記録と設定はこのブラウザのみに保存されます。ブラウザのデータを消すと失われるため、記録画面から書き出しておけます。
         </p>
+        <section className="settings-records" aria-label="記録の管理">
+          <h3>記録の管理</h3>
+          <p>
+            保存済みの履歴・TOP記録・打鍵ログをすべて削除します。設定と文章セットは残ります。
+          </p>
+          <button
+            ref={clearButton}
+            className="danger-button"
+            onClick={onRequestClear}
+          >
+            <Trash2 size={15} />
+            記録をすべて消去
+          </button>
+        </section>
         <button className="primary-button" onClick={() => onClose()}>
           設定を閉じる
           <Check size={15} />

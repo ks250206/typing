@@ -13,13 +13,16 @@ import { AppShell } from './AppShell'
 import type { AppTab } from './AppShell'
 import './App.css'
 
+const WeakPractice = lazy(() => import('../features/practice/WeakPractice'))
 const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
 
 /** Connect feature APIs here; feature state survives page changes. */
 export default function App() {
   const [tab, setTab] = useState<AppTab>('practice')
   const [notice, setNotice] = useState('')
-  const [showSettings, setShowSettings] = useState(false)
+  const [settingsDialog, setSettingsDialog] = useState<
+    'closed' | 'open' | 'clearing' | 'after-clear'
+  >('closed')
   const [ghostSource, setGhostSource] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const { settings, setSettings } = useSettings(setNotice)
@@ -35,23 +38,32 @@ export default function App() {
       settings={settings}
       tab={tab}
       onNavigate={navigate}
-      onSettings={() => setShowSettings(true)}
+      onSettings={() => setSettingsDialog('open')}
       mistake={
         session.mistake && session.status === 'running' && tab === 'practice'
       }
       misses={session.misses}
       dialogs={
         <>
-          {showSettings && (
+          {(settingsDialog === 'open' || settingsDialog === 'after-clear') && (
             <SettingsDialog
               settings={settings}
               setSettings={setSettings}
-              onClose={() => setShowSettings(false)}
+              onClose={() => setSettingsDialog('closed')}
+              onRequestClear={() => {
+                setSettingsDialog('clearing')
+                history.requestClear()
+              }}
+              focusClear={settingsDialog === 'after-clear'}
             />
           )}
           {history.confirmClear && (
             <ClearHistoryDialog
-              onClose={history.cancelClear}
+              onClose={() => {
+                history.cancelClear()
+                if (settingsDialog === 'clearing')
+                  setSettingsDialog('after-clear')
+              }}
               onConfirm={history.clearRecords}
             />
           )}
@@ -71,6 +83,7 @@ export default function App() {
           <GhostBattle
             key={ghostSource.id}
             record={ghostSource}
+            history={[...history.records, ...history.bestRecords]}
             settings={settings}
             onClose={() => navigate('history')}
             onRecord={history.persistResult}
@@ -80,10 +93,24 @@ export default function App() {
       {tab === 'battle' && (
         <CpuBattle
           settings={settings}
+          setSettings={setSettings}
+          historyRecords={[...history.records, ...history.bestRecords]}
           onRecord={history.persistResult}
           replay={cpuReplay}
           onReplayConsumed={() => setCpuReplay(null)}
         />
+      )}
+      {tab === 'weak' && (
+        <Suspense fallback={<p role="status">苦手ワード練習を準備中…</p>}>
+          <WeakPractice
+            records={history.records}
+            bestRecords={history.bestRecords}
+            settings={settings}
+            setSettings={setSettings}
+            onRecord={history.persistResult}
+            onNotice={setNotice}
+          />
+        </Suspense>
       )}
       {tab === 'practice' && (
         <PracticePage

@@ -75,6 +75,7 @@ test('a supplied long passage stays intact across punctuation, pause and complet
   await page.keyboard.type(engine.hint)
   await expect(page.getByText('SESSION COMPLETE')).toBeVisible()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await expect(page.locator('tbody tr')).toHaveCount(1)
   await page
     .getByRole('button', { name: 'リプレイを見る', exact: true })

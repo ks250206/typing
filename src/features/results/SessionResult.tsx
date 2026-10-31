@@ -9,6 +9,8 @@ import {
   chronological,
 } from '../../domain/records/recordStats'
 import { resultAnalysis } from '../../domain/records/results'
+import { SpeedStatistics } from './SpeedStatistics'
+import { PaceChart } from './PaceChart'
 import { RecordDetails } from '../history/HistoryInsights'
 const seconds = (ms: number) => `${(ms / 1000).toFixed(2)}秒`
 const keyLabel = (key: string) =>
@@ -44,13 +46,15 @@ export function SessionResult({
     ...new Map(
       history
         .filter(
-          (r) => r.id !== record.id && recordGroup(r) === recordGroup(record),
+          (r) =>
+            record.mode !== 'weak' &&
+            r.id !== record.id &&
+            recordGroup(r) === recordGroup(record),
         )
         .map((r) => [r.id, r]),
     ).values(),
   ])
   const best = past.length ? Math.max(...past.map(recordPoint)) : null
-  const max = Math.max(1, ...(analysis?.buckets.map((b) => b.kpm) ?? []))
   useEffect(() => {
     host.current?.focus({ preventScroll: true })
     host.current?.closest('.mission-face')?.scrollTo(0, 0)
@@ -127,45 +131,13 @@ export function SessionResult({
       {analysis && (
         <>
           <h3>速度とミスの推移</h3>
-          <svg
-            className="result-pace"
-            viewBox="0 0 640 135"
-            role="img"
-            aria-label="1秒ごとのKPMとミス"
-          >
-            <text x="8" y="14">
-              最大 {max.toFixed(0)} KPM
-            </text>
-            <polyline
-              points={analysis.buckets
-                .map(
-                  (b, i, a) =>
-                    `${20 + (i * 600) / Math.max(1, a.length - 1)},${115 - (b.kpm / max) * 90}`,
-                )
-                .join(' ')}
-            />
-            {analysis.buckets.map(
-              (b, i, a) =>
-                b.misses > 0 && (
-                  <circle
-                    key={i}
-                    cx={20 + (i * 600) / Math.max(1, a.length - 1)}
-                    cy={115 - (b.kpm / max) * 90}
-                    r={Math.min(8, 3 + b.misses)}
-                  >
-                    <title>
-                      {b.time}秒: {b.misses}ミス / {b.kpm.toFixed(1)}KPM
-                    </title>
-                  </circle>
-                ),
-            )}
-            <text x="10" y="132">
-              0秒
-            </text>
-            <text x="540" y="132">
-              {seconds(record.elapsed)}
-            </text>
-          </svg>
+          <PaceChart
+            buckets={analysis.buckets}
+            elapsed={record.elapsed}
+            trace={record.trace}
+            layout={record.layout}
+          />
+          <SpeedStatistics record={record} history={past} />
           <h3>
             間違えた箇所 <small>{analysis.mistakes.length}種類</small>
           </h3>
@@ -227,7 +199,11 @@ export function SessionResult({
         </>
       )}
       {details && (
-        <RecordDetails record={record} onClose={() => setDetails(false)} />
+        <RecordDetails
+          history={history}
+          record={record}
+          onClose={() => setDetails(false)}
+        />
       )}
     </section>
   )

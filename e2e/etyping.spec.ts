@@ -97,6 +97,7 @@ test('all six clean titles provide seeded 15-question previews; completing 15 sa
     mode: 'practice',
   })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page
     .getByRole('button', { name: `シード ${seed} を再現`, exact: true })
     .click()

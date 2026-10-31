@@ -178,6 +178,7 @@ test('live adjective uses raw misses and matches the saved record, detail and JS
   )
   expect(r).toMatchObject({ rank: '混沌のカメ', rawMisses: 3, actualKeys: 1 })
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await page.getByRole('tab', { name: '全記録', exact: true }).click()
   await page.getByRole('button', { name: '詳細を見る', exact: true }).click()
   await expect(page.locator('.detail-point')).toHaveText('0 pt · 混沌のカメ')
   await expect(page.getByRole('region', { name: '打鍵の詳細' })).toContainText(

@@ -14,15 +14,20 @@ export function useModalFocus(onClose: () => void) {
         modal?.querySelectorAll<HTMLElement>(
           'button,input,select,[tabindex="0"]',
         ) ?? [],
-      )
+      ).filter((item) => !item.matches(':disabled,[aria-disabled="true"]'))
     controls()[0]?.focus()
     const handle = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         close.current()
       }
       if (e.key === 'Tab') {
-        const items = controls(),
-          first = items[0],
+        const items = controls()
+        if (!items.length) {
+          e.preventDefault()
+          modal?.focus()
+          return
+        }
+        const first = items[0],
           last = items.at(-1)
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault()

@@ -5,7 +5,11 @@ import {
   recordTrend,
   topRecords,
 } from './recordStats'
-import { appendHistory, readBestHistory, readHistory } from '../../infrastructure/persistence/storage'
+import {
+  appendHistory,
+  readBestHistory,
+  readHistory,
+} from '../../infrastructure/persistence/storage'
 import { vi } from 'vitest'
 import type { RecordEntry } from './types'
 const row = (i: number, kpm = i): RecordEntry => ({
@@ -64,7 +68,7 @@ it('archives only the best ten unique records in each comparable group', () => {
     archiveBests([...rows, { ...row(0), id: 'kana', layout: 'kana' }]),
   ).toHaveLength(11)
 })
-it('keeps historical top scores after they leave the latest 200 summaries', async () => {
+it('keeps all summaries beyond 200 and retains the same historical top score', async () => {
   const data = new Map<string, string>()
   vi.stubGlobal('localStorage', {
     getItem: (k: string) => data.get(k) ?? null,
@@ -77,8 +81,8 @@ it('keeps historical top scores after they leave the latest 200 summaries', asyn
       row(202, 100),
       Array.from({ length: 201 }, (_, i) => row(i + 1, 100)),
     )
-    expect(readHistory()).toHaveLength(200)
-    expect(readHistory().some((r) => r.id === '0')).toBe(false)
+    expect(readHistory()).toHaveLength(203)
+    expect(readHistory().some((r) => r.id === '0')).toBe(true)
     expect(readBestHistory()[0].kpm).toBe(9999)
   } finally {
     vi.unstubAllGlobals()

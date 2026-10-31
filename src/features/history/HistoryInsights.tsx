@@ -4,24 +4,34 @@ import {
   chronological,
   recordGroup,
   recordTrend,
-  topRecords,
   modeOf,
   recordPoint,
-  recordValue,
   recordTitle,
   recordMissLabel,
 } from '../../domain/records/recordStats'
-import type { RecordMetric } from '../../domain/records/recordStats'
+import {
+  insightPace,
+  insightTop,
+  insightTrend,
+  insightValue,
+  type InsightMetric,
+} from '../../domain/records/insightMetrics'
+import { usePaceRecords } from './usePaceRecords'
+import { PassageRecords } from './PassageRecords'
 import { Select } from '../../shared/ui/Select'
 import { readTrace } from '../../infrastructure/persistence/traceStore'
 import { analyzeTrace } from '../../domain/records/telemetry'
 import type { SessionTrace } from '../../domain/records/telemetry'
+import { chartAxis } from '../../domain/records/chartAxis'
+import { ChartYAxis } from '../results/PaceChart'
+import { SpeedStatistics } from '../results/SpeedStatistics'
 const ReplayPlayer = lazy(() => import('./ReplayPlayer'))
 const modes = {
   practice: '練習',
   trainer: '60秒',
   cpu: 'CPU対戦',
   ghost: 'ゴースト対戦',
+  weak: '苦手ワード',
 }
 const ms = (value: number) => `${(value / 1000).toFixed(2)}秒`
 
@@ -29,23 +39,39 @@ export function HistoryInsights({
   records,
   bests,
   onSelect,
+  selection,
+  onGroupChange,
+  selectedId,
 }: {
+  selectedId?: string
+  selection: string
+  onGroupChange: (group: string) => void
   records: RecordEntry[]
   bests: RecordEntry[]
   onSelect: (r: RecordEntry) => void
 }) {
   const all = useMemo(
-    () => [...new Map([...bests, ...records].map((r) => [r.id, r])).values()],
+    () => [
+      ...new Map(
+        [...bests, ...records]
+          .filter((r) => r.mode !== 'weak')
+          .map((r) => [r.id, r]),
+      ).values(),
+    ],
     [records, bests],
   )
   const groups = useMemo(
     () => [...new Map(all.map((r) => [recordGroup(r), r])).entries()],
     [all],
   )
-  const [selection, setSelection] = useState('')
   const [sameSeed, setSameSeed] = useState(false)
-  const [metric, setMetric] = useState<RecordMetric>('point')
-  const metricName = metric === 'point' ? 'point' : 'KPM'
+  const [metric, setMetric] = useState<InsightMetric>('point')
+  const metricName = {
+    point: 'point',
+    kpm: 'KPM',
+    min: '最低速度',
+    max: '最高速度',
+  }[metric]
   const unit = metric === 'point' ? 'pt' : 'KPM'
   const selected =
     groups.find(([key]) => key === selection) ??
@@ -57,22 +83,35 @@ export function HistoryInsights({
   const match = (r: RecordEntry) =>
     recordGroup(r) === group && (!sameSeed || r.seed === anchor?.seed)
   const recent = latest.filter(match)
-  const trend = recordTrend(recent, metric)
-  const top = topRecords(all.filter(match), metric)
-  const points = trend.slice(-30)
-  const maximum = Math.max(
-    1,
-    ...points.map((p) => Math.max(recordValue(p.record, metric), p.average)),
+  const summaryTrend = recordTrend(recent)
+  const groupRows = useMemo(
+    () => all.filter((r) => recordGroup(r) === group),
+    [all, group],
   )
+  const paced = usePaceRecords(groupRows, metric === 'min' || metric === 'max')
+  const trend = insightTrend(paced.filter(match), metric)
+  const top = insightTop(paced.filter(match), metric)
+  const points = trend.slice(-30)
+  const maximum = chartAxis(
+    Math.max(
+      1,
+      ...points.map((p) =>
+        Math.max(insightValue(p.record, metric) ?? 0, p.average),
+      ),
+    ),
+  ).max
   return (
     <section className="history-insights" aria-label="文章別の記録分析">
       <h3>文章別の記録分析</h3>
+      <p className="history-attempts">
+        完了した挑戦 <strong>{recent.length} 回</strong>
+      </p>
       <label>
         比較する文章・配列・モード
         <Select
           label="比較する記録"
-          value={group ?? ''}
-          onChange={setSelection}
+          value={selection}
+          onChange={onGroupChange}
           options={groups.map(([key, r]) => ({
             value: key,
             label: `${r.title} / ${r.layout} / ${modes[modeOf(r)]}${r.cpuConfig ? ` / CPU ${r.cpuConfig.kpm}KPM ${r.cpuConfig.reactionMs}ms ${r.cpuConfig.curve}` : ''}${r.replayVersion ? ` / v${r.replayVersion}` : ''}`,
@@ -113,9 +152,10 @@ export function HistoryInsights({
         <div>
           <span>直近{Math.min(5, recent.length)}回の移動平均</span>
           <strong>
-            {trend.at(-1)?.pointAverage.toFixed(1) ?? '—'} <small>pt</small>
+            {summaryTrend.at(-1)?.pointAverage.toFixed(1) ?? '—'}{' '}
+            <small>pt</small>
           </strong>
-          <small>{trend.at(-1)?.kpmAverage.toFixed(1) ?? '—'} KPM</small>
+          <small>{summaryTrend.at(-1)?.kpmAverage.toFixed(1) ?? '—'} KPM</small>
         </div>
         <div>
           <span>前回との差</span>
@@ -138,10 +178,12 @@ export function HistoryInsights({
         <Select
           label="記録の主指標"
           value={metric}
-          onChange={(value) => setMetric(value as RecordMetric)}
+          onChange={(value) => setMetric(value as InsightMetric)}
           options={[
             { value: 'point', label: 'point（メイン）' },
             { value: 'kpm', label: 'KPM' },
+            { value: 'max', label: '最高速度（5秒移動平均）' },
+            { value: 'min', label: '最低速度（5秒移動平均）' },
           ]}
         />
       </label>
@@ -152,29 +194,27 @@ export function HistoryInsights({
           role="img"
           aria-label={`直近30回の${metricName}と5回移動平均`}
         >
-          <text x="8" y="15">
-            {maximum.toFixed(1)} {unit}
-          </text>
+          <ChartYAxis max={maximum} unit={unit} />
           <polyline
             className="chart-kpm"
             points={points
               .map(
                 (p, i) =>
-                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (recordValue(p.record, metric) / maximum) * 115}`,
+                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - ((insightValue(p.record, metric) ?? 0) / maximum) * 115}`,
               )
               .join(' ')}
           />
           {points.map((p, i) => (
             <circle
               key={p.record.id}
-              cx={20 + (i * 600) / Math.max(1, points.length - 1)}
-              cy={140 - (recordValue(p.record, metric) / maximum) * 115}
+              cx={58 + (i * 560) / Math.max(1, points.length - 1)}
+              cy={140 - ((insightValue(p.record, metric) ?? 0) / maximum) * 115}
               r="3"
               fill="#61e8ff"
             >
               <title>
                 {new Date(p.record.date).toLocaleString('ja-JP')} ·{' '}
-                {recordValue(p.record, metric)} {unit}
+                {insightValue(p.record, metric) ?? 0} {unit}
               </title>
             </circle>
           ))}
@@ -183,7 +223,7 @@ export function HistoryInsights({
             points={points
               .map(
                 (p, i) =>
-                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (p.average / maximum) * 115}`,
+                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - (p.average / maximum) * 115}`,
               )
               .join(' ')}
           />
@@ -199,29 +239,50 @@ export function HistoryInsights({
           ・時間・実ミス・新しい日時の順
         </small>
       </h4>
+      {(metric === 'min' || metric === 'max') && (
+        <p className="small muted">
+          5秒移動平均の{metricName}
+          を高い順に比較。5秒未満・算出できない記録は除外します。最低速度も高いほど上位です。
+        </p>
+      )}
+      {!top.length && (
+        <p role="status">この指標を算出できる記録はありません。</p>
+      )}
       <ol className="top-records">
-        {top.map((r) => (
-          <li key={r.id}>
-            <button onClick={() => onSelect(r)}>
-              <strong>
-                {recordValue(r, metric)} {unit}
-              </strong>
-              <span>
-                {recordTitle(r)} ·{' '}
-                {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
-              </span>
-              <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
-              <small>
-                {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
-                {r.seed ? ` · ${r.seed}` : ''}
-              </small>
-            </button>
-          </li>
-        ))}
+        {top.map((r) => {
+          const moving = insightPace(r)
+          return (
+            <li key={r.id}>
+              <button onClick={() => onSelect(r)}>
+                <strong>
+                  {insightValue(r, metric) ?? 0} {unit}
+                </strong>
+                <span>
+                  {recordTitle(r)} ·{' '}
+                  {metric === 'point' ? `${r.kpm} KPM` : `${recordPoint(r)} pt`}
+                </span>
+                <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
+                <small>
+                  {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
+                  {r.seed ? ` · ${r.seed}` : ''}
+                </small>
+                <small>
+                  5秒平均：最低 {moving ? moving.min.toFixed(1) : '—'} / 最高{' '}
+                  {moving ? moving.max.toFixed(1) : '—'} KPM
+                </small>
+              </button>
+            </li>
+          )
+        })}
       </ol>
       <p className="small muted">
-        同じ文章セット・配列・モード・出題バージョンを比較。CPU対戦はCPU設定も一致させます。TOP10は直近200件の保持枠から外れても残ります。移動平均は保存済みの直近履歴を使用します。
+        同じ文章セット・配列・モード・出題バージョンを比較。CPU対戦はCPU設定も一致させます。TOP10・移動平均は保存されている記録を使用します。
       </p>
+      <PassageRecords
+        records={recent}
+        selectedId={selectedId}
+        onSelect={onSelect}
+      />
     </section>
   )
 }
@@ -230,12 +291,14 @@ export function RecordDetails({
   record,
   onClose,
   initialView = 'trend',
+  history = [],
   onGhost,
 }: {
   record: RecordEntry
   onClose: () => void
   onGhost?: (record: RecordEntry) => void
   initialView?: string
+  history?: RecordEntry[]
 }) {
   const [loaded, setLoaded] = useState<{ trace?: SessionTrace } | null>(
     record.trace ? { trace: record.trace } : null,
@@ -259,7 +322,8 @@ export function RecordDetails({
   )
   const trace = loaded?.trace
   const rows = analysis?.buckets.slice(start, start + 120) ?? []
-  const max = Math.max(1, ...rows.map((b) => b.kpm))
+  const plotRows = rows.filter((b) => b.time * 1000 <= (trace?.elapsed ?? 0))
+  const max = chartAxis(Math.max(0, ...plotRows.map((b) => b.kpm))).max
   return (
     <section className="record-details" aria-label="打鍵の詳細">
       <div className="detail-heading">
@@ -312,7 +376,7 @@ export function RecordDetails({
           <p className="small muted">
             {trace.strokes.length}打鍵（実ミス{' '}
             {trace.strokes.filter((s) => !s.correct).length}）·
-            一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
+            グラフは完全な1秒区間のみで、末尾の端数区間は表に参考値として表示します。一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
           </p>
           {tab === 'replay' && (
             <Suspense fallback={<p role="status">リプレイを準備中…</p>}>
@@ -323,6 +387,7 @@ export function RecordDetails({
               />
             </Suspense>
           )}
+          <SpeedStatistics record={{ ...record, trace }} history={history} />
           {tab === 'trend' && (
             <>
               <label>
@@ -342,29 +407,31 @@ export function RecordDetails({
                 role="img"
                 aria-label="1秒区間のKPMとミス率"
               >
+                <ChartYAxis max={max} />
                 <polyline
                   className="chart-kpm"
-                  points={rows
+                  points={plotRows
                     .map(
                       (b, i) =>
-                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.kpm / max) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, plotRows.length - 1)},${140 - (b.kpm / max) * 115}`,
                     )
                     .join(' ')}
                 />
                 <polyline
                   className="chart-average"
-                  points={rows
+                  points={plotRows
                     .map(
                       (b, i) =>
-                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.missRate / 100) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, plotRows.length - 1)},${140 - (b.missRate / 100) * 115}`,
                     )
                     .join(' ')}
                 />
-                <text x="8" y="15">
-                  KPM 0–{max.toFixed(0)} / ミス率 0–100%
+                <text x="618" y="15" textAnchor="end">
+                  ミス率 0–100%
                 </text>
                 <text x="8" y="157">
-                  {start}–{Math.min(start + 120, analysis.buckets.length)}秒 ·
+                  {start}–
+                  {Math.min(start + 120, Math.floor(trace.elapsed / 1000))}秒 ·
                   シアン：KPM / 紫：実ミス率
                 </text>
               </svg>

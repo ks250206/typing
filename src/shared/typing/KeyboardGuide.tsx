@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import type { Layout } from '../../domain/typing/engine'
+import type { MissedKey } from './useKeyFeedback'
 import {
   fingerFor,
   keyboardGeometry,
@@ -44,15 +45,23 @@ export const KeyboardGuide = memo(function KeyboardGuide({
   layout,
   nextCharacter,
   enabled,
+  missedKey,
 }: {
   layout: Layout
   nextCharacter: string
   enabled: boolean
+  missedKey?: MissedKey | null
 }) {
   const slots = useMemo(() => keyboardGeometry(layout), [layout])
   const next = enabled ? physicalKey(nextCharacter, layout) : undefined
   const nextCodes = new Set(
-    next ? [next.code, ...(next.shift ? [shiftFor(next.code)] : [])] : [],
+    next
+      ? [
+          next.code,
+          ...(next.shift ? [shiftFor(next.code)] : []),
+          ...(next.altGraph ? ['AltRight'] : []),
+        ]
+      : [],
   )
   return (
     <figure className="keyboard-guide" aria-label="指別キーボードガイド">
@@ -62,7 +71,7 @@ export const KeyboardGuide = memo(function KeyboardGuide({
           次のキー{' '}
           <strong>
             {next
-              ? `${next.shift ? 'Shift + ' : ''}${display(nextCharacter)}`
+              ? `${next.altGraph ? 'AltGr + ' : ''}${next.shift ? 'Shift + ' : ''}${display(nextCharacter)}`
               : '—'}
           </strong>
         </span>
@@ -73,15 +82,26 @@ export const KeyboardGuide = memo(function KeyboardGuide({
       >
         {slots.map(({ code, row, column, width, tall }) => {
           const special =
-            specialLabels[code] ?? (/^F\d+$/.test(code) ? code : undefined)
+            code === 'Backquote' && layout !== 'jis' && layout !== 'kana'
+              ? undefined
+              : code === 'AltRight' && layout === 'azerty'
+                ? 'AltGr'
+                : specialLabels[code]
           const base = display(keyOutput(code, false, layout))
           const shifted = display(keyOutput(code, true, layout))
+          const alt =
+            layout === 'azerty'
+              ? display(keyOutput(code, false, layout, undefined, true))
+              : null
           return (
             <span
               key={code}
               data-code={code}
               data-finger={fingerFor(code)}
               data-state={nextCodes.has(code) ? 'next' : 'idle'}
+              data-error={
+                enabled && missedKey?.code === code ? 'true' : undefined
+              }
               data-width={width}
               className={`keyboard-key ${homeCodes.has(code) ? 'home-key' : ''} ${special ? 'special-key' : ''} ${tall ? 'enter-tall' : ''}`}
               style={{
@@ -89,14 +109,15 @@ export const KeyboardGuide = memo(function KeyboardGuide({
                 gridRow: `${row} / span ${tall ? 2 : 1}`,
               }}
             >
+              {enabled && missedKey && nextCodes.has(code) && (
+                <i key={missedKey.serial} className="next-key-pulse" />
+              )}
+              {alt && <sub className="altgr-symbol">{alt}</sub>}
               {!special && shifted && shifted !== base && (
                 <small>{shifted}</small>
               )}
               <span>
-                {code === 'Backquote' && layout !== 'jis' && layout !== 'kana'
-                  ? '`'
-                  : (special ??
-                    (layout === 'kana' ? base : base?.toUpperCase()))}
+                {special ?? (layout === 'kana' ? base : base?.toUpperCase())}
               </span>
               {(code === 'KeyF' || code === 'KeyJ') && (
                 <i className="home-ridge" />
