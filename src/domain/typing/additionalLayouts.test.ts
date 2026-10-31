@@ -6,6 +6,7 @@ it.each([
   ['onishi', ['qlu,.fwryp', 'eiao-ktnsh', 'zxcv;gdmjb']],
   ['norman', ['qwdfkjurl;', 'asetgynioh', 'zxcvbpm,./']],
   ['azerty', ['azertyuiop', 'qsdfghjklm', 'wxcvbn,;:!']],
+  ['nova-f5-pair', ['=pu-_vkhyg', 'aieo;mtrns', '(),./bdlfw']],
 ] as const)(
   '%s follows the independently checked official rows',
   (layout, rows) => {
@@ -32,7 +33,12 @@ it.each([
   },
 )
 it('covers all case-insensitive ASCII with Shift and French AltGr, including physical inversion', () => {
-  for (const layout of ['onishi', 'azerty', 'norman'] as const) {
+  for (const layout of [
+    'onishi',
+    'azerty',
+    'norman',
+    'nova-f5-pair',
+  ] as const) {
     for (let n = 32; n < 127; n++) {
       const char = String.fromCharCode(n)
       if (/[A-Z]/.test(char)) continue

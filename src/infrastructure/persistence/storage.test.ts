@@ -230,6 +230,7 @@ it('ignores legacy guide opt-outs and accepts new layouts and the slowest CPU pr
     'onishi',
     'azerty',
     'norman',
+    'nova-f5-pair',
   ] as const) {
     data.set('yohaku.settings.v1', JSON.stringify({ layout, guide: false }))
     expect(readSettings().layout).toBe(layout)

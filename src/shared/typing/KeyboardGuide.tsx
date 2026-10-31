@@ -7,6 +7,7 @@ import {
   keyOutput,
   physicalKey,
   shiftFor,
+  usesJisGeometry,
 } from '../../domain/typing/physicalKeyboard'
 const display = (value: string | null) =>
   value === '\u3099' ? '゛' : value === '\u309a' ? '゜' : value
@@ -77,12 +78,12 @@ export const KeyboardGuide = memo(function KeyboardGuide({
         </span>
       </figcaption>
       <div
-        className={`physical-keyboard ${layout === 'jis' || layout === 'kana' ? 'is-jis' : ''}`}
+        className={`physical-keyboard ${usesJisGeometry(layout) ? 'is-jis' : ''}`}
         aria-hidden="true"
       >
         {slots.map(({ code, row, column, width, tall }) => {
           const special =
-            code === 'Backquote' && layout !== 'jis' && layout !== 'kana'
+            code === 'Backquote' && !usesJisGeometry(layout)
               ? undefined
               : code === 'AltRight' && layout === 'azerty'
                 ? 'AltGr'

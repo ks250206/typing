@@ -36,6 +36,7 @@ for (const layout of [
   'onishi',
   'azerty',
   'norman',
+  'nova-f5-pair',
   'kana',
 ] as Layout[]) {
   it(`completes all 21 intact passages through physical keys with ${layout}`, () => {

@@ -1,3 +1,5 @@
+import { novaF5Pair } from './novaF5Pair'
+
 export type Layout =
   | 'jis'
   | 'us'
@@ -7,6 +9,7 @@ export type Layout =
   | 'onishi'
   | 'azerty'
   | 'norman'
+  | 'nova-f5-pair'
   | 'kana'
 export const layoutLabels: Record<Layout, string> = {
   jis: 'QWERTY · JIS',
@@ -17,6 +20,7 @@ export const layoutLabels: Record<Layout, string> = {
   onishi: '大西配列',
   azerty: 'AZERTY · French',
   norman: 'Norman',
+  'nova-f5-pair': 'NOVA F5-Pair',
   kana: 'JIS かな',
 }
 const table: Record<string, string[]> = {}
@@ -487,6 +491,10 @@ export function mapKey(
       null
     )
   if (event.code === 'Space') return ' '
+  if (layout === 'nova-f5-pair')
+    return (
+      novaF5Pair[event.code]?.[Number(event.shiftKey)]?.toLowerCase() ?? null
+    )
   if (layout === 'jis')
     return event.key.length === 1 ? event.key.toLowerCase() : null
   if (layout === 'azerty') {

@@ -199,13 +199,15 @@ export function PracticeSidebar({
           <br />
           {settings.layout === 'azerty'
             ? 'OSはQWERTY。数字はShift、記号はAltGrまたはCtrl+Altを使います。'
-            : ['dvorak', 'colemak', 'workman', 'onishi', 'norman'].includes(
-                  settings.layout,
-                )
-              ? `物理キーを ${layoutLabels[settings.layout]} 配列に変換します。OS は QWERTY に設定。`
-              : settings.layout === 'kana'
-                ? 'JIS 物理配列に対応。濁点・半濁点は別打鍵です。'
-                : 'し → shi / si など、打ち方は自由。'}
+            : settings.layout === 'nova-f5-pair'
+              ? 'JIS物理キーボードに対応。OSはQWERTYの英数入力にし、アプリ内でNOVA F5-Pairに変換します。'
+              : ['dvorak', 'colemak', 'workman', 'onishi', 'norman'].includes(
+                    settings.layout,
+                  )
+                ? `物理キーを ${layoutLabels[settings.layout]} 配列に変換します。OS は QWERTY に設定。`
+                : settings.layout === 'kana'
+                  ? 'JIS 物理配列に対応。濁点・半濁点は別打鍵です。'
+                  : 'し → shi / si など、打ち方は自由。'}
         </p>
       </div>
       <div className="tip">
