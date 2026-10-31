@@ -19,7 +19,8 @@ it('aggregates all 17 pages into exactly four complete datasets', () => {
         (s) =>
           s.category !== 'space' &&
           s.category !== 'scientists' &&
-          s.category !== 'sf',
+          s.category !== 'sf' &&
+          s.category !== 'sports',
       )
       .map((s) => [s.pages, data[s.category].length]),
   ).toEqual([

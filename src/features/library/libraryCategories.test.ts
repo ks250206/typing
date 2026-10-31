@@ -25,7 +25,7 @@ it('groups both constitution sets, the six original essays, and all five TypeWel
     'オリジナル',
     'オリジナル',
   ])
-  expect(typewellPassages).toHaveLength(7)
+  expect(typewellPassages).toHaveLength(8)
   expect(
     typewellPassages.every((p) => libraryCategory(p) === 'タイプウェル'),
   ).toBe(true)

@@ -26,7 +26,7 @@ test('trainer previews only lap one, then plays three separately shuffled full l
   for (const [category, count] of [
     ['オリジナル', 8],
     ['公的文書', 2],
-    ['タイプウェル', 7],
+    ['タイプウェル', 8],
   ] as const) {
     await library.getByRole('button', { name: category, exact: true }).click()
     await expect(library.locator('.story-card')).toHaveCount(count)

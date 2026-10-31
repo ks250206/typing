@@ -1,3 +1,4 @@
+import sportsSources from '../../../data/sources/themes/sports-provenance.json' with { type: 'json' }
 import scientistSources from '../../../data/sources/themes/scientists-provenance.json' with { type: 'json' }
 import { expect, it } from 'vitest'
 import data from '../../data/generated/themes.json' with { type: 'json' }
@@ -61,7 +62,7 @@ it.each(data.passages)(
   },
 )
 it('reproduces new word sets with fixed natural 400/280 endpoints', () => {
-  for (const id of ['typewell-scientists', 'typewell-sf'])
+  for (const id of ['typewell-scientists', 'typewell-sf', 'typewell-sports'])
     for (const layout of ['jis', 'kana'] as const) {
       const a = typewellDocument(id, 'fixed', layout)
       expect(a).toEqual(typewellDocument(id, 'fixed', layout))
@@ -130,4 +131,29 @@ it('contains 1000 distinct scientist names with sourced additions and typable re
       expect(engine.done, name).toBe(true)
     }
   }
+})
+
+it('contains 500 distinct sports teams with aligned provenance and typable readings', () => {
+  expect(data.words.sports).toHaveLength(500)
+  expect(new Set(data.words.sports.map(([name]) => name)).size).toBe(500)
+  expect(new Set(sportsSources.teams.map((p) => p.wikidataId)).size).toBe(500)
+  expect(data.words.sports).toEqual(
+    sportsSources.teams.map((p) => [p.name, p.reading]),
+  )
+  for (const [name, reading] of data.words.sports) {
+    for (const engine of [new RomanEngine(reading), new KanaEngine(reading)]) {
+      const keys = engine instanceof RomanEngine ? engine.hint : engine.target
+      for (const key of keys)
+        expect(engine.feed(key), `${name}: ${key}`).toBe(true)
+      expect(engine.done, name).toBe(true)
+    }
+  }
+})
+it('presents Silenus as a poem with one sentence per paragraph', () => {
+  const poem = themePassages.find((p) => p.id === 'theme-silenus')!
+  expect(poem.title).toBe('マーティン・サイリーナスの詩')
+  expect(poem.paragraphs).toHaveLength(20)
+  expect(practiceDocument(poem.id, 'test', 'jis', 2).sentences).toHaveLength(20)
+  for (const paragraph of poem.paragraphs)
+    expect(paragraph.text.match(/。/g)).toHaveLength(1)
 })

@@ -8,7 +8,7 @@ const added = [
   ...themePassages,
   ...themeTrainers,
   ...typewellPassages.filter((p) =>
-    ['typewell-scientists', 'typewell-sf'].includes(p.id),
+    ['typewell-scientists', 'typewell-sf', 'typewell-sports'].includes(p.id),
   ),
   ...rtcPassages.filter((p) => p.id === 'rtc-ai-ml-llm'),
 ]

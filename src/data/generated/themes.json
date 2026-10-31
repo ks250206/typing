@@ -7173,101 +7173,169 @@
     },
     {
       "id": "theme-silenus",
-      "title": "マーティン・サイリーナスのエッセイ",
+      "title": "マーティン・サイリーナスの詩",
       "genre": "オリジナル",
       "continuous": false,
       "paragraphs": [
         {
-          "text": "もしマーティン・サイリーナスが、誰にも読まれない原稿を前にしたら、まず紙の沈黙に腹を立てるだろう。",
-          "reading": "もしまーてぃん・さいりーなすが、だれにもよまれないげんこうをまえにしたら、まずかみのちんもくにはらをたてるだろう。",
+          "text": "酒をよこせ、説教なら墓石にでも聞かせておけ。",
+          "reading": "さけをよこせ、せっきょうならはかいしにでもきかせておけ。",
           "segments": [
             {
-              "text": "もし",
-              "reading": "もし"
+              "text": "酒",
+              "reading": "さけ"
             },
             {
-              "text": "マーティン・サイリーナス",
-              "reading": "まーてぃん・さいりーなす"
-            },
-            {
-              "text": "が",
-              "reading": "が"
+              "text": "をよこせ",
+              "reading": "をよこせ"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "誰",
-              "reading": "だれ"
+              "text": "説教",
+              "reading": "せっきょう"
             },
             {
-              "text": "にも",
-              "reading": "にも"
+              "text": "なら",
+              "reading": "なら"
             },
             {
-              "text": "読ま",
-              "reading": "よま"
+              "text": "墓石",
+              "reading": "はかいし"
             },
             {
-              "text": "れない",
-              "reading": "れない"
+              "text": "にでも",
+              "reading": "にでも"
             },
             {
-              "text": "原稿",
-              "reading": "げんこう"
+              "text": "聞か",
+              "reading": "きか"
+            },
+            {
+              "text": "せておけ",
+              "reading": "せておけ"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "地球は死んだが、請求書だけは星を渡って追いかけてくる。",
+          "reading": "ちきゅうはしんだが、せいきゅうしょだけはほしをわたっておいかけてくる。",
+          "segments": [
+            {
+              "text": "地球",
+              "reading": "ちきゅう"
+            },
+            {
+              "text": "は",
+              "reading": "は"
+            },
+            {
+              "text": "死ん",
+              "reading": "しん"
+            },
+            {
+              "text": "だが",
+              "reading": "だが"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "請求書",
+              "reading": "せいきゅうしょ"
+            },
+            {
+              "text": "だけは",
+              "reading": "だけは"
+            },
+            {
+              "text": "星",
+              "reading": "ほし"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "前",
-              "reading": "まえ"
+              "text": "渡っ",
+              "reading": "わたっ"
             },
             {
-              "text": "にしたら",
-              "reading": "にしたら"
+              "text": "て",
+              "reading": "て"
+            },
+            {
+              "text": "追い",
+              "reading": "おい"
+            },
+            {
+              "text": "かけてくる",
+              "reading": "かけてくる"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "文明とは、灰に値札を付ける上品な詐欺だ。",
+          "reading": "ぶんめいとは、はいにねふだをつけるじょうひんなさぎだ。",
+          "segments": [
+            {
+              "text": "文明",
+              "reading": "ぶんめい"
+            },
+            {
+              "text": "とは",
+              "reading": "とは"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "まず",
-              "reading": "まず"
-            },
-            {
-              "text": "紙",
-              "reading": "かみ"
-            },
-            {
-              "text": "の",
-              "reading": "の"
-            },
-            {
-              "text": "沈黙",
-              "reading": "ちんもく"
+              "text": "灰",
+              "reading": "はい"
             },
             {
               "text": "に",
               "reading": "に"
             },
             {
-              "text": "腹",
-              "reading": "はら"
+              "text": "値札",
+              "reading": "ねふだ"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "立て",
-              "reading": "たて"
+              "text": "付ける",
+              "reading": "つける"
             },
             {
-              "text": "るだろう",
-              "reading": "るだろう"
+              "text": "上品",
+              "reading": "じょうひん"
+            },
+            {
+              "text": "な",
+              "reading": "な"
+            },
+            {
+              "text": "詐欺",
+              "reading": "さぎ"
+            },
+            {
+              "text": "だ",
+              "reading": "だ"
             },
             {
               "text": "。",
@@ -7276,36 +7344,68 @@
           ]
         },
         {
-          "text": "宇宙船の窓には星が映る。",
-          "reading": "うちゅうせんのまどにはほしがうつる。",
+          "text": "俺の舌を凍らせた連中は、沈黙まで荷物として勘定した。",
+          "reading": "おれのしたをこおらせたれんちゅうは、ちんもくまでにもつとしてかんじょうした。",
           "segments": [
             {
-              "text": "宇宙船",
-              "reading": "うちゅうせん"
+              "text": "俺",
+              "reading": "おれ"
             },
             {
               "text": "の",
               "reading": "の"
             },
             {
-              "text": "窓",
-              "reading": "まど"
+              "text": "舌",
+              "reading": "した"
             },
             {
-              "text": "には",
-              "reading": "には"
+              "text": "を",
+              "reading": "を"
             },
             {
-              "text": "星",
-              "reading": "ほし"
+              "text": "凍ら",
+              "reading": "こおら"
             },
             {
-              "text": "が",
-              "reading": "が"
+              "text": "せた",
+              "reading": "せた"
             },
             {
-              "text": "映る",
-              "reading": "うつる"
+              "text": "連中",
+              "reading": "れんちゅう"
+            },
+            {
+              "text": "は",
+              "reading": "は"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "沈黙",
+              "reading": "ちんもく"
+            },
+            {
+              "text": "まで",
+              "reading": "まで"
+            },
+            {
+              "text": "荷物",
+              "reading": "にもつ"
+            },
+            {
+              "text": "として",
+              "reading": "として"
+            },
+            {
+              "text": "勘定",
+              "reading": "かんじょう"
+            },
+            {
+              "text": "した",
+              "reading": "した"
             },
             {
               "text": "。",
@@ -7314,44 +7414,98 @@
           ]
         },
         {
-          "text": "けれども、その星を美しいと書いただけでは、まだ誰の夜にもならない。",
-          "reading": "けれども、そのほしをうつくしいとかいただけでは、まだだれのよるにもならない。",
+          "text": "残った罵り言葉で、俺は宇宙に返事をした。",
+          "reading": "のこったののしりことばで、おれはうちゅうにへんじをした。",
           "segments": [
             {
-              "text": "けれども",
-              "reading": "けれども"
+              "text": "残っ",
+              "reading": "のこっ"
+            },
+            {
+              "text": "た",
+              "reading": "た"
+            },
+            {
+              "text": "罵り",
+              "reading": "ののしり"
+            },
+            {
+              "text": "言葉",
+              "reading": "ことば"
+            },
+            {
+              "text": "で",
+              "reading": "で"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "その",
-              "reading": "その"
+              "text": "俺",
+              "reading": "おれ"
             },
             {
-              "text": "星",
-              "reading": "ほし"
+              "text": "は",
+              "reading": "は"
             },
             {
-              "text": "を",
-              "reading": "を"
+              "text": "宇宙",
+              "reading": "うちゅう"
             },
             {
-              "text": "美しい",
-              "reading": "うつくしい"
+              "text": "に",
+              "reading": "に"
             },
             {
-              "text": "と",
-              "reading": "と"
+              "text": "返事",
+              "reading": "へんじ"
             },
             {
-              "text": "書い",
-              "reading": "かい"
+              "text": "をした",
+              "reading": "をした"
             },
             {
-              "text": "ただけでは",
-              "reading": "ただけでは"
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "おお、読者諸君、そこで感動するな、まだ酒代の話だ。",
+          "reading": "おお、どくしゃしょくん、そこでかんどうするな、まださかだいのはなしだ。",
+          "segments": [
+            {
+              "text": "おお",
+              "reading": "おお"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "読者",
+              "reading": "どくしゃ"
+            },
+            {
+              "text": "諸君",
+              "reading": "しょくん"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "そこで",
+              "reading": "そこで"
+            },
+            {
+              "text": "感動",
+              "reading": "かんどう"
+            },
+            {
+              "text": "するな",
+              "reading": "するな"
             },
             {
               "text": "、",
@@ -7362,20 +7516,20 @@
               "reading": "まだ"
             },
             {
-              "text": "誰",
-              "reading": "だれ"
+              "text": "酒代",
+              "reading": "さかだい"
             },
             {
               "text": "の",
               "reading": "の"
             },
             {
-              "text": "夜",
-              "reading": "よる"
+              "text": "話",
+              "reading": "はなし"
             },
             {
-              "text": "にもならない",
-              "reading": "にもならない"
+              "text": "だ",
+              "reading": "だ"
             },
             {
               "text": "。",
@@ -7384,116 +7538,56 @@
           ]
         },
         {
-          "text": "眠れない理由や、帰れない場所や、言いそびれた謝罪が、星の光に混ざって初めて、一行はその人のものになる。",
-          "reading": "ねむれないりゆうや、かえれないばしょや、いいそびれたしゃざいが、ほしのひかりにまざってはじめて、いちぎょうはそのひとのものになる。",
+          "text": "栄光は金箔の便器、名声はその蓋を開ける係。",
+          "reading": "えいこうはきんぱくのべんき、めいせいはそのふたをあけるかかり。",
           "segments": [
             {
-              "text": "眠れ",
-              "reading": "ねむれ"
+              "text": "栄光",
+              "reading": "えいこう"
             },
             {
-              "text": "ない",
-              "reading": "ない"
+              "text": "は",
+              "reading": "は"
             },
             {
-              "text": "理由",
-              "reading": "りゆう"
-            },
-            {
-              "text": "や",
-              "reading": "や"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "帰れ",
-              "reading": "かえれ"
-            },
-            {
-              "text": "ない",
-              "reading": "ない"
-            },
-            {
-              "text": "場所",
-              "reading": "ばしょ"
-            },
-            {
-              "text": "や",
-              "reading": "や"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "言い",
-              "reading": "いい"
-            },
-            {
-              "text": "そびれた",
-              "reading": "そびれた"
-            },
-            {
-              "text": "謝罪",
-              "reading": "しゃざい"
-            },
-            {
-              "text": "が",
-              "reading": "が"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "星",
-              "reading": "ほし"
+              "text": "金箔",
+              "reading": "きんぱく"
             },
             {
               "text": "の",
               "reading": "の"
             },
             {
-              "text": "光",
-              "reading": "ひかり"
-            },
-            {
-              "text": "に",
-              "reading": "に"
-            },
-            {
-              "text": "混ざ",
-              "reading": "まざ"
-            },
-            {
-              "text": "って",
-              "reading": "って"
-            },
-            {
-              "text": "初めて",
-              "reading": "はじめて"
+              "text": "便器",
+              "reading": "べんき"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "一行",
-              "reading": "いちぎょう"
+              "text": "名声",
+              "reading": "めいせい"
             },
             {
               "text": "はその",
               "reading": "はその"
             },
             {
-              "text": "人",
-              "reading": "ひと"
+              "text": "蓋",
+              "reading": "ふた"
             },
             {
-              "text": "のものになる",
-              "reading": "のものになる"
+              "text": "を",
+              "reading": "を"
+            },
+            {
+              "text": "開ける",
+              "reading": "あける"
+            },
+            {
+              "text": "係",
+              "reading": "かかり"
             },
             {
               "text": "。",
@@ -7502,40 +7596,52 @@
           ]
         },
         {
-          "text": "長く生きれば言葉が増えると思っていた。",
-          "reading": "ながくいきればことばがふえるとおもっていた。",
+          "text": "俺もそこへ腰を下ろし、立派な顔で腐っていた。",
+          "reading": "おれもそこへこしをおろし、りっぱなかおでくさっていた。",
           "segments": [
             {
-              "text": "長く",
-              "reading": "ながく"
+              "text": "俺",
+              "reading": "おれ"
             },
             {
-              "text": "生き",
-              "reading": "いき"
+              "text": "もそこへ",
+              "reading": "もそこへ"
             },
             {
-              "text": "れば",
-              "reading": "れば"
+              "text": "腰",
+              "reading": "こし"
             },
             {
-              "text": "言葉",
-              "reading": "ことば"
+              "text": "を",
+              "reading": "を"
             },
             {
-              "text": "が",
-              "reading": "が"
+              "text": "下ろし",
+              "reading": "おろし"
             },
             {
-              "text": "増え",
-              "reading": "ふえ"
+              "text": "、",
+              "reading": "、"
             },
             {
-              "text": "ると",
-              "reading": "ると"
+              "text": "立派",
+              "reading": "りっぱ"
             },
             {
-              "text": "思って",
-              "reading": "おもって"
+              "text": "な",
+              "reading": "な"
+            },
+            {
+              "text": "顔",
+              "reading": "かお"
+            },
+            {
+              "text": "で",
+              "reading": "で"
+            },
+            {
+              "text": "腐って",
+              "reading": "くさって"
             },
             {
               "text": "いた",
@@ -7548,52 +7654,250 @@
           ]
         },
         {
-          "text": "実際には、何度も使った言葉ほど手に負えなくなる。",
-          "reading": "じっさいには、なんどもつかったことばほどてにおえなくなる。",
+          "text": "だが一行だけが、酔いの底で歯をむいた。",
+          "reading": "だがいちぎょうだけが、よいのそこではをむいた。",
           "segments": [
             {
-              "text": "実際に",
-              "reading": "じっさいに"
+              "text": "だが",
+              "reading": "だが"
+            },
+            {
+              "text": "一行",
+              "reading": "いちぎょう"
+            },
+            {
+              "text": "だけが",
+              "reading": "だけが"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "酔い",
+              "reading": "よい"
+            },
+            {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "底",
+              "reading": "そこ"
+            },
+            {
+              "text": "で",
+              "reading": "で"
+            },
+            {
+              "text": "歯を",
+              "reading": "はを"
+            },
+            {
+              "text": "むいた",
+              "reading": "むいた"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "売れもしない、祈れもしない、喉から抜けない骨の一行。",
+          "reading": "うれもしない、いのれもしない、のどからぬけないほねのいちぎょう。",
+          "segments": [
+            {
+              "text": "売れ",
+              "reading": "うれ"
+            },
+            {
+              "text": "もしない",
+              "reading": "もしない"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "祈れ",
+              "reading": "いのれ"
+            },
+            {
+              "text": "もしない",
+              "reading": "もしない"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "喉",
+              "reading": "のど"
+            },
+            {
+              "text": "から",
+              "reading": "から"
+            },
+            {
+              "text": "抜け",
+              "reading": "ぬけ"
+            },
+            {
+              "text": "ない",
+              "reading": "ない"
+            },
+            {
+              "text": "骨",
+              "reading": "ほね"
+            },
+            {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "一行",
+              "reading": "いちぎょう"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "ビリー、王冠より軽いお前の笑いを、俺はどこへ書けばいい。",
+          "reading": "びりー、おうかんよりかるいおまえのわらいを、おれはどこへかけばいい。",
+          "segments": [
+            {
+              "text": "ビリー",
+              "reading": "びりー"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "王冠",
+              "reading": "おうかん"
+            },
+            {
+              "text": "より",
+              "reading": "より"
+            },
+            {
+              "text": "軽い",
+              "reading": "かるい"
+            },
+            {
+              "text": "お",
+              "reading": "お"
+            },
+            {
+              "text": "前",
+              "reading": "まえ"
+            },
+            {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "笑い",
+              "reading": "わらい"
+            },
+            {
+              "text": "を",
+              "reading": "を"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "俺",
+              "reading": "おれ"
+            },
+            {
+              "text": "はどこへ",
+              "reading": "はどこへ"
+            },
+            {
+              "text": "書け",
+              "reading": "かけ"
+            },
+            {
+              "text": "ばいい",
+              "reading": "ばいい"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "杯は空だ、椅子も空だ、余白だけが馬鹿みたいに白い。",
+          "reading": "さかずきはからだ、いすもからだ、よはくだけがばかみたいにしろい。",
+          "segments": [
+            {
+              "text": "杯",
+              "reading": "さかずき"
             },
             {
               "text": "は",
               "reading": "は"
             },
             {
+              "text": "空",
+              "reading": "から"
+            },
+            {
+              "text": "だ",
+              "reading": "だ"
+            },
+            {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "何度",
-              "reading": "なんど"
+              "text": "椅子",
+              "reading": "いす"
             },
             {
               "text": "も",
               "reading": "も"
             },
             {
-              "text": "使った",
-              "reading": "つかった"
+              "text": "空",
+              "reading": "から"
             },
             {
-              "text": "言葉",
-              "reading": "ことば"
+              "text": "だ",
+              "reading": "だ"
             },
             {
-              "text": "ほど",
-              "reading": "ほど"
+              "text": "、",
+              "reading": "、"
             },
             {
-              "text": "手に",
-              "reading": "てに"
+              "text": "余白",
+              "reading": "よはく"
             },
             {
-              "text": "負え",
-              "reading": "おえ"
+              "text": "だけが",
+              "reading": "だけが"
             },
             {
-              "text": "なくなる",
-              "reading": "なくなる"
+              "text": "馬鹿",
+              "reading": "ばか"
+            },
+            {
+              "text": "みたいに",
+              "reading": "みたいに"
+            },
+            {
+              "text": "白い",
+              "reading": "しろい"
             },
             {
               "text": "。",
@@ -7602,68 +7906,68 @@
           ]
         },
         {
-          "text": "愛も喪失も、口に出す前から古い衣装を着ている。",
-          "reading": "あいもそうしつも、くちにだすまえからふるいいしょうをきている。",
+          "text": "あの鉄の棘に吊られた悲鳴を、韻の都合で切り詰めるな。",
+          "reading": "あのてつのとげにつられたひめいを、いんのつごうできりつめるな。",
           "segments": [
             {
-              "text": "愛",
-              "reading": "あい"
+              "text": "あの",
+              "reading": "あの"
             },
             {
-              "text": "も",
-              "reading": "も"
+              "text": "鉄",
+              "reading": "てつ"
             },
             {
-              "text": "喪失",
-              "reading": "そうしつ"
+              "text": "の",
+              "reading": "の"
             },
             {
-              "text": "も",
-              "reading": "も"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "口",
-              "reading": "くち"
+              "text": "棘",
+              "reading": "とげ"
             },
             {
               "text": "に",
               "reading": "に"
             },
             {
-              "text": "出す",
-              "reading": "だす"
+              "text": "吊られた",
+              "reading": "つられた"
             },
             {
-              "text": "前か",
-              "reading": "まえか"
-            },
-            {
-              "text": "ら",
-              "reading": "ら"
-            },
-            {
-              "text": "古い",
-              "reading": "ふるい"
-            },
-            {
-              "text": "衣装",
-              "reading": "いしょう"
+              "text": "悲鳴",
+              "reading": "ひめい"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "着て",
-              "reading": "きて"
+              "text": "、",
+              "reading": "、"
             },
             {
-              "text": "いる",
-              "reading": "いる"
+              "text": "韻",
+              "reading": "いん"
+            },
+            {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "都合",
+              "reading": "つごう"
+            },
+            {
+              "text": "で",
+              "reading": "で"
+            },
+            {
+              "text": "切り詰める",
+              "reading": "きりつめる"
+            },
+            {
+              "text": "な",
+              "reading": "な"
             },
             {
               "text": "。",
@@ -7672,40 +7976,48 @@
           ]
         },
         {
-          "text": "私はその衣装を脱がせようとして、かえって自分の見栄を見つける。",
-          "reading": "わたしはそのいしょうをぬがせようとして、かえってじぶんのみえをみつける。",
+          "text": "切り詰めたのは誰だ、老いぼれ、まず自分の手を見ろ。",
+          "reading": "きりつめたのはだれだ、おいぼれ、まずじぶんのてをみろ。",
           "segments": [
             {
-              "text": "私",
-              "reading": "わたし"
+              "text": "切り",
+              "reading": "きり"
             },
             {
-              "text": "はその",
-              "reading": "はその"
+              "text": "詰め",
+              "reading": "つめ"
             },
             {
-              "text": "衣装",
-              "reading": "いしょう"
+              "text": "たのは",
+              "reading": "たのは"
             },
             {
-              "text": "を",
-              "reading": "を"
+              "text": "誰",
+              "reading": "だれ"
             },
             {
-              "text": "脱が",
-              "reading": "ぬが"
-            },
-            {
-              "text": "せようとして",
-              "reading": "せようとして"
+              "text": "だ",
+              "reading": "だ"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "かえって",
-              "reading": "かえって"
+              "text": "老い",
+              "reading": "おい"
+            },
+            {
+              "text": "ぼれ",
+              "reading": "ぼれ"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "まず",
+              "reading": "まず"
             },
             {
               "text": "自分",
@@ -7716,20 +8028,16 @@
               "reading": "の"
             },
             {
-              "text": "見栄",
-              "reading": "みえ"
+              "text": "手",
+              "reading": "て"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "見つ",
-              "reading": "みつ"
-            },
-            {
-              "text": "ける",
-              "reading": "ける"
+              "text": "見ろ",
+              "reading": "みろ"
             },
             {
               "text": "。",
@@ -7738,88 +8046,36 @@
           ]
         },
         {
-          "text": "立派な比喩より、机に残った冷たい飲み物の方が、その夜を正しく覚えていることもある。",
-          "reading": "りっぱなひゆより、つくえにのこったつめたいのみもののほうが、そのよるをただしくおぼえていることもある。",
+          "text": "畜生、墨より先に落ちるものがある。",
+          "reading": "ちくしょう、すみよりさきにおちるものがある。",
           "segments": [
             {
-              "text": "立派",
-              "reading": "りっぱ"
+              "text": "畜生",
+              "reading": "ちくしょう"
             },
             {
-              "text": "な",
-              "reading": "な"
+              "text": "、",
+              "reading": "、"
             },
             {
-              "text": "比喩",
-              "reading": "ひゆ"
+              "text": "墨",
+              "reading": "すみ"
             },
             {
               "text": "より",
               "reading": "より"
             },
             {
-              "text": "、",
-              "reading": "、"
+              "text": "先に",
+              "reading": "さきに"
             },
             {
-              "text": "机",
-              "reading": "つくえ"
+              "text": "落ちる",
+              "reading": "おちる"
             },
             {
-              "text": "に",
-              "reading": "に"
-            },
-            {
-              "text": "残っ",
-              "reading": "のこっ"
-            },
-            {
-              "text": "た",
-              "reading": "た"
-            },
-            {
-              "text": "冷たい",
-              "reading": "つめたい"
-            },
-            {
-              "text": "飲み物",
-              "reading": "のみもの"
-            },
-            {
-              "text": "の",
-              "reading": "の"
-            },
-            {
-              "text": "方が",
-              "reading": "ほうが"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "その",
-              "reading": "その"
-            },
-            {
-              "text": "夜",
-              "reading": "よる"
-            },
-            {
-              "text": "を",
-              "reading": "を"
-            },
-            {
-              "text": "正しく",
-              "reading": "ただしく"
-            },
-            {
-              "text": "覚え",
-              "reading": "おぼえ"
-            },
-            {
-              "text": "ていることもある",
-              "reading": "ていることもある"
+              "text": "ものがある",
+              "reading": "ものがある"
             },
             {
               "text": "。",
@@ -7828,64 +8084,110 @@
           ]
         },
         {
-          "text": "詩を書けば世界が救われる、と大声で言うつもりはない。",
-          "reading": "しをかけばせかいがすくわれる、とおおごえでいうつもりはない。",
+          "text": "詩の女神よ、綺麗な顔をするな、今夜はお前も床を拭け。",
+          "reading": "しのめがみよ、きれいなかおをするな、こんやはおまえもゆかをふけ。",
           "segments": [
             {
               "text": "詩",
               "reading": "し"
             },
             {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "女神",
+              "reading": "めがみ"
+            },
+            {
+              "text": "よ",
+              "reading": "よ"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "綺麗",
+              "reading": "きれい"
+            },
+            {
+              "text": "な",
+              "reading": "な"
+            },
+            {
+              "text": "顔",
+              "reading": "かお"
+            },
+            {
+              "text": "をするな",
+              "reading": "をするな"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "今夜",
+              "reading": "こんや"
+            },
+            {
+              "text": "は",
+              "reading": "は"
+            },
+            {
+              "text": "お前",
+              "reading": "おまえ"
+            },
+            {
+              "text": "も",
+              "reading": "も"
+            },
+            {
+              "text": "床",
+              "reading": "ゆか"
+            },
+            {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "書け",
-              "reading": "かけ"
+              "text": "拭け",
+              "reading": "ふけ"
             },
             {
-              "text": "ば",
-              "reading": "ば"
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "俺は救われるために書くのではない。",
+          "reading": "おれはすくわれるためにかくのではない。",
+          "segments": [
+            {
+              "text": "俺",
+              "reading": "おれ"
             },
             {
-              "text": "世界",
-              "reading": "せかい"
-            },
-            {
-              "text": "が",
-              "reading": "が"
+              "text": "は",
+              "reading": "は"
             },
             {
               "text": "救わ",
               "reading": "すくわ"
             },
             {
-              "text": "れる",
-              "reading": "れる"
+              "text": "れるために",
+              "reading": "れるために"
             },
             {
-              "text": "、",
-              "reading": "、"
+              "text": "書く",
+              "reading": "かく"
             },
             {
-              "text": "と",
-              "reading": "と"
-            },
-            {
-              "text": "大声",
-              "reading": "おおごえ"
-            },
-            {
-              "text": "で",
-              "reading": "で"
-            },
-            {
-              "text": "言う",
-              "reading": "いう"
-            },
-            {
-              "text": "つもりはない",
-              "reading": "つもりはない"
+              "text": "のではない",
+              "reading": "のではない"
             },
             {
               "text": "。",
@@ -7894,260 +8196,68 @@
           ]
         },
         {
-          "text": "ただ、世界という大きすぎる言葉の中で、誰か一人の痛みが消えてしまうことには抵抗したい。",
-          "reading": "ただ、せかいというおおきすぎることばのなかで、だれかひとりのいたみがきえてしまうことにはていこうしたい。",
+          "text": "死者を飾りに使った俺を、死者の名で逃がさないために書く。",
+          "reading": "ししゃをかざりにつかったおれを、ししゃのなでにがさないためにかく。",
           "segments": [
             {
-              "text": "ただ",
-              "reading": "ただ"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "世界",
-              "reading": "せかい"
-            },
-            {
-              "text": "という",
-              "reading": "という"
-            },
-            {
-              "text": "大きす",
-              "reading": "おおきす"
-            },
-            {
-              "text": "ぎる",
-              "reading": "ぎる"
-            },
-            {
-              "text": "言葉",
-              "reading": "ことば"
-            },
-            {
-              "text": "の",
-              "reading": "の"
-            },
-            {
-              "text": "中",
-              "reading": "なか"
-            },
-            {
-              "text": "で",
-              "reading": "で"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "誰か",
-              "reading": "だれか"
-            },
-            {
-              "text": "一人",
-              "reading": "ひとり"
-            },
-            {
-              "text": "の",
-              "reading": "の"
-            },
-            {
-              "text": "痛み",
-              "reading": "いたみ"
-            },
-            {
-              "text": "が",
-              "reading": "が"
-            },
-            {
-              "text": "消え",
-              "reading": "きえ"
-            },
-            {
-              "text": "てしまうことには",
-              "reading": "てしまうことには"
-            },
-            {
-              "text": "抵抗",
-              "reading": "ていこう"
-            },
-            {
-              "text": "したい",
-              "reading": "したい"
-            },
-            {
-              "text": "。",
-              "reading": "。"
-            }
-          ]
-        },
-        {
-          "text": "その抵抗は、ときには句読点ほど小さい。",
-          "reading": "そのていこうは、ときにはくとうてんほどちいさい。",
-          "segments": [
-            {
-              "text": "その",
-              "reading": "その"
-            },
-            {
-              "text": "抵抗",
-              "reading": "ていこう"
-            },
-            {
-              "text": "は",
-              "reading": "は"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "ときには",
-              "reading": "ときには"
-            },
-            {
-              "text": "句読点",
-              "reading": "くとうてん"
-            },
-            {
-              "text": "ほど",
-              "reading": "ほど"
-            },
-            {
-              "text": "小さい",
-              "reading": "ちいさい"
-            },
-            {
-              "text": "。",
-              "reading": "。"
-            }
-          ]
-        },
-        {
-          "text": "書き終えた一文を読み返す。",
-          "reading": "かきおえたいちぶんをよみかえす。",
-          "segments": [
-            {
-              "text": "書き",
-              "reading": "かき"
-            },
-            {
-              "text": "終え",
-              "reading": "おえ"
-            },
-            {
-              "text": "た",
-              "reading": "た"
-            },
-            {
-              "text": "一文",
-              "reading": "いちぶん"
+              "text": "死者",
+              "reading": "ししゃ"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "読み返す",
-              "reading": "よみかえす"
-            },
-            {
-              "text": "。",
-              "reading": "。"
-            }
-          ]
-        },
-        {
-          "text": "窓の外で星は相変わらず遠い。",
-          "reading": "まどのそとでほしはあいかわらずとおい。",
-          "segments": [
-            {
-              "text": "窓",
-              "reading": "まど"
-            },
-            {
-              "text": "の",
-              "reading": "の"
-            },
-            {
-              "text": "外",
-              "reading": "そと"
-            },
-            {
-              "text": "で",
-              "reading": "で"
-            },
-            {
-              "text": "星",
-              "reading": "ほし"
-            },
-            {
-              "text": "は",
-              "reading": "は"
-            },
-            {
-              "text": "相変わらず",
-              "reading": "あいかわらず"
-            },
-            {
-              "text": "遠い",
-              "reading": "とおい"
-            },
-            {
-              "text": "。",
-              "reading": "。"
-            }
-          ]
-        },
-        {
-          "text": "それでも、さっきまで名前のなかった沈黙に、わずかな輪郭ができている。",
-          "reading": "それでも、さっきまでなまえのなかったちんもくに、わずかなりんかくができている。",
-          "segments": [
-            {
-              "text": "それでも",
-              "reading": "それでも"
-            },
-            {
-              "text": "、",
-              "reading": "、"
-            },
-            {
-              "text": "さっきまで",
-              "reading": "さっきまで"
-            },
-            {
-              "text": "名前",
-              "reading": "なまえ"
-            },
-            {
-              "text": "のなかった",
-              "reading": "のなかった"
-            },
-            {
-              "text": "沈黙",
-              "reading": "ちんもく"
+              "text": "飾り",
+              "reading": "かざり"
             },
             {
               "text": "に",
               "reading": "に"
             },
             {
+              "text": "使った",
+              "reading": "つかった"
+            },
+            {
+              "text": "俺",
+              "reading": "おれ"
+            },
+            {
+              "text": "を",
+              "reading": "を"
+            },
+            {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "わずかな",
-              "reading": "わずかな"
+              "text": "死者",
+              "reading": "ししゃ"
             },
             {
-              "text": "輪郭",
-              "reading": "りんかく"
+              "text": "の",
+              "reading": "の"
             },
             {
-              "text": "ができている",
-              "reading": "ができている"
+              "text": "名",
+              "reading": "な"
+            },
+            {
+              "text": "で",
+              "reading": "で"
+            },
+            {
+              "text": "逃がさない",
+              "reading": "にがさない"
+            },
+            {
+              "text": "ために",
+              "reading": "ために"
+            },
+            {
+              "text": "書く",
+              "reading": "かく"
             },
             {
               "text": "。",
@@ -8156,52 +8266,134 @@
           ]
         },
         {
-          "text": "今日はそれだけで、もう一枚の紙を取り出す理由になる。",
-          "reading": "きょうはそれだけで、もういちまいのかみをとりだすりゆうになる。",
+          "text": "夜明けなど勝手にしろ、宇宙の締め切りは俺が決める。",
+          "reading": "よあけなどかってにしろ、うちゅうのしめきりはおれがきめる。",
           "segments": [
             {
-              "text": "今日は",
-              "reading": "きょうは"
+              "text": "夜明け",
+              "reading": "よあけ"
             },
             {
-              "text": "それだけで",
-              "reading": "それだけで"
+              "text": "など",
+              "reading": "など"
+            },
+            {
+              "text": "勝手",
+              "reading": "かって"
+            },
+            {
+              "text": "にしろ",
+              "reading": "にしろ"
             },
             {
               "text": "、",
               "reading": "、"
             },
             {
-              "text": "もう",
-              "reading": "もう"
-            },
-            {
-              "text": "一枚",
-              "reading": "いちまい"
+              "text": "宇宙",
+              "reading": "うちゅう"
             },
             {
               "text": "の",
               "reading": "の"
             },
             {
+              "text": "締め切り",
+              "reading": "しめきり"
+            },
+            {
+              "text": "は",
+              "reading": "は"
+            },
+            {
+              "text": "俺",
+              "reading": "おれ"
+            },
+            {
+              "text": "が",
+              "reading": "が"
+            },
+            {
+              "text": "決め",
+              "reading": "きめ"
+            },
+            {
+              "text": "る",
+              "reading": "る"
+            },
+            {
+              "text": "。",
+              "reading": "。"
+            }
+          ]
+        },
+        {
+          "text": "酒をよこせ、それから紙だ、まだ最後の一行が俺を殺していない。",
+          "reading": "さけをよこせ、それからかみだ、まださいごのいちぎょうがおれをころしていない。",
+          "segments": [
+            {
+              "text": "酒",
+              "reading": "さけ"
+            },
+            {
+              "text": "をよこせ",
+              "reading": "をよこせ"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "それから",
+              "reading": "それから"
+            },
+            {
               "text": "紙",
               "reading": "かみ"
+            },
+            {
+              "text": "だ",
+              "reading": "だ"
+            },
+            {
+              "text": "、",
+              "reading": "、"
+            },
+            {
+              "text": "まだ",
+              "reading": "まだ"
+            },
+            {
+              "text": "最後",
+              "reading": "さいご"
+            },
+            {
+              "text": "の",
+              "reading": "の"
+            },
+            {
+              "text": "一行",
+              "reading": "いちぎょう"
+            },
+            {
+              "text": "が",
+              "reading": "が"
+            },
+            {
+              "text": "俺",
+              "reading": "おれ"
             },
             {
               "text": "を",
               "reading": "を"
             },
             {
-              "text": "取り出す",
-              "reading": "とりだす"
+              "text": "殺し",
+              "reading": "ころし"
             },
             {
-              "text": "理由",
-              "reading": "りゆう"
-            },
-            {
-              "text": "になる",
-              "reading": "になる"
+              "text": "ていない",
+              "reading": "ていない"
             },
             {
               "text": "。",
@@ -8210,7 +8402,7 @@
           ]
         }
       ],
-      "subtitle": "架空の詩人を題材にした独自エッセイ"
+      "subtitle": "毒舌と自嘲の奥に、死者への負い目と詩への執念を抱く老詩人。非公式の独自詩。"
     },
     {
       "id": "theme-keats",
@@ -15577,6 +15769,2008 @@
       [
         "息吹",
         "いぶき"
+      ]
+    ],
+    "sports": [
+      [
+        "阪神タイガース",
+        "はんしんたいがーす"
+      ],
+      [
+        "福岡ソフトバンクホークス",
+        "ふくおかそふとばんくほーくす"
+      ],
+      [
+        "中日ドラゴンズ",
+        "ちゅうにちどらごんず"
+      ],
+      [
+        "北海道日本ハムファイターズ",
+        "ほっかいどうにっぽんはむふぁいたーず"
+      ],
+      [
+        "横浜DeNAベイスターズ",
+        "よこはまでぃーえぬえーべいすたーず"
+      ],
+      [
+        "読売ジャイアンツ",
+        "よみうりじゃいあんつ"
+      ],
+      [
+        "広島東洋カープ",
+        "ひろしまとうようかーぷ"
+      ],
+      [
+        "埼玉西武ライオンズ",
+        "さいたませいぶらいおんず"
+      ],
+      [
+        "東京ヤクルトスワローズ",
+        "とうきょうやくるとすわろーず"
+      ],
+      [
+        "オリックス・バファローズ",
+        "おりっくす・ばふぁろーず"
+      ],
+      [
+        "東北楽天ゴールデンイーグルス",
+        "とうほくらくてんごーるでんいーぐるす"
+      ],
+      [
+        "千葉ロッテマリーンズ",
+        "ちばろってまりーんず"
+      ],
+      [
+        "鹿島アントラーズ",
+        "かしまあんとらーず"
+      ],
+      [
+        "アルビレックス新潟",
+        "あるびれっくすにいがた"
+      ],
+      [
+        "川崎フロンターレ",
+        "かわさきふろんたーれ"
+      ],
+      [
+        "大分トリニータ",
+        "おおいたとりにーた"
+      ],
+      [
+        "湘南ベルマーレ",
+        "しょうなんべるまーれ"
+      ],
+      [
+        "ガンバ大阪",
+        "がんばおおさか"
+      ],
+      [
+        "ベガルタ仙台",
+        "べがるたせんだい"
+      ],
+      [
+        "浦和レッドダイヤモンズ",
+        "うらわれっどだいやもんず"
+      ],
+      [
+        "サガン鳥栖",
+        "さがんとす"
+      ],
+      [
+        "アビスパ福岡",
+        "あびすぱふくおか"
+      ],
+      [
+        "清水エスパルス",
+        "しみずえすぱるす"
+      ],
+      [
+        "ヴィッセル神戸",
+        "ゔぃっせるこうべ"
+      ],
+      [
+        "ニューオーリンズ・セインツ",
+        "にゅーおーりんず・せいんつ"
+      ],
+      [
+        "エリー・シーウルブズ",
+        "えりー・しーうるぶず"
+      ],
+      [
+        "バンビット・バスケットボールクラブ",
+        "ばんびっと・ばすけっとぼーるくらぶ"
+      ],
+      [
+        "インテルナツィオナーレ・ミラノ",
+        "いんてるなつぃおなーれ・みらの"
+      ],
+      [
+        "サンアントニオ・ランページ",
+        "さんあんとにお・らんぺーじ"
+      ],
+      [
+        "ニューヨーク・ジャイアンツ",
+        "にゅーよーく・じゃいあんつ"
+      ],
+      [
+        "ニューオーリンズ・ゼファーズ",
+        "にゅーおーりんず・ぜふぁーず"
+      ],
+      [
+        "アスヴェル・バスケット",
+        "あすゔぇる・ばすけっと"
+      ],
+      [
+        "オリンピック・リヨン",
+        "おりんぴっく・りよん"
+      ],
+      [
+        "ユノスト・ミンスク",
+        "ゆのすと・みんすく"
+      ],
+      [
+        "ピッツバーグ・スティーラーズ",
+        "ぴっつばーぐ・すてぃーらーず"
+      ],
+      [
+        "マンハイム・トルネードス",
+        "まんはいむ・とるねーどす"
+      ],
+      [
+        "サンタクルーズ・ウォリアーズ",
+        "さんたくるーず・うぉりあーず"
+      ],
+      [
+        "カリアリ・カルチョ",
+        "かりあり・かるちょ"
+      ],
+      [
+        "バッファロー・セイバーズ",
+        "ばっふぁろー・せいばーず"
+      ],
+      [
+        "ニューイングランド・ペイトリオッツ",
+        "にゅーいんぐらんど・ぺいとりおっつ"
+      ],
+      [
+        "ニューヨーク・ヤンキース",
+        "にゅーよーく・やんきーす"
+      ],
+      [
+        "ディナモ・サンクトペテルブルク",
+        "でぃなも・さんくとぺてるぶるく"
+      ],
+      [
+        "カルチョ・カターニア",
+        "かるちょ・かたーにあ"
+      ],
+      [
+        "アイントラハト・ブラウンシュヴァイク",
+        "あいんとらはと・ぶらうんしゅゔぁいく"
+      ],
+      [
+        "インディアナポリス・コルツ",
+        "いんでぃあなぽりす・こるつ"
+      ],
+      [
+        "ボストン・レッドソックス",
+        "ぼすとん・れっどそっくす"
+      ],
+      [
+        "アンジェリコ・ビエラ",
+        "あんじぇりこ・びえら"
+      ],
+      [
+        "ウディネーゼ・カルチョ",
+        "うでぃねーぜ・かるちょ"
+      ],
+      [
+        "ドゥク・ト・ディジョン",
+        "どぅく・と・でぃじょん"
+      ],
+      [
+        "ダラス・カウボーイズ",
+        "だらす・かうぼーいず"
+      ],
+      [
+        "マジョス・デ・ナボホア",
+        "まじょす・で・なぼほあ"
+      ],
+      [
+        "ヴィルトゥス・ボローニャ",
+        "ゔぃるとぅす・ぼろーにゃ"
+      ],
+      [
+        "アスコリ・カルチョ",
+        "あすこり・かるちょ"
+      ],
+      [
+        "トライシティ・アメリカンズ",
+        "とらいしてぃ・あめりかんず"
+      ],
+      [
+        "シカゴ・ベアーズ",
+        "しかご・べあーず"
+      ],
+      [
+        "シカゴ・カブス",
+        "しかご・かぶす"
+      ],
+      [
+        "パラカネストロ・カントゥ",
+        "ぱらかねすとろ・かんとぅ"
+      ],
+      [
+        "ブレシア・カルチョ",
+        "ぶれしあ・かるちょ"
+      ],
+      [
+        "モントリオール・カナディアンズ",
+        "もんとりおーる・かなでぃあんず"
+      ],
+      [
+        "ワシントン・コマンダーズ",
+        "わしんとん・こまんだーず"
+      ],
+      [
+        "パルマ・ベースボールクラブ",
+        "ぱるま・べーすぼーるくらぶ"
+      ],
+      [
+        "ユヴェカゼルタ・バスケット",
+        "ゆゔぇかぜるた・ばすけっと"
+      ],
+      [
+        "カルチョ・パドヴァ",
+        "かるちょ・ぱどゔぁ"
+      ],
+      [
+        "ニューヨーク・レンジャース",
+        "にゅーよーく・れんじゃーす"
+      ],
+      [
+        "グリーンベイ・パッカーズ",
+        "ぐりーんべい・ぱっかーず"
+      ],
+      [
+        "アギラス・シバエーニャス",
+        "あぎらす・しばえーにゃす"
+      ],
+      [
+        "ヴァノリ・クレモナ",
+        "ゔぁのり・くれもな"
+      ],
+      [
+        "スペツィア・カルチョ",
+        "すぺつぃあ・かるちょ"
+      ],
+      [
+        "ニュージャージー・デビルス",
+        "にゅーじゃーじー・でびるす"
+      ],
+      [
+        "ニューヨーク・ジェッツ",
+        "にゅーよーく・じぇっつ"
+      ],
+      [
+        "カイマネス・デ・バランキージャ",
+        "かいまねす・で・ばらんきーじゃ"
+      ],
+      [
+        "オリンピア・ミラノ",
+        "おりんぴあ・みらの"
+      ],
+      [
+        "テルナーナ・カルチョ",
+        "てるなーな・かるちょ"
+      ],
+      [
+        "フィラデルフィア・フライヤーズ",
+        "ふぃらでるふぃあ・ふらいやーず"
+      ],
+      [
+        "フィラデルフィア・イーグルス",
+        "ふぃらでるふぃあ・いーぐるす"
+      ],
+      [
+        "サンフランシスコ・ジャイアンツ",
+        "さんふらんしすこ・じゃいあんつ"
+      ],
+      [
+        "スーター・モンテネグロ",
+        "すーたー・もんてねぐろ"
+      ],
+      [
+        "ヴァレーゼ・カルチョ",
+        "ゔぁれーぜ・かるちょ"
+      ],
+      [
+        "アナハイム・ダックス",
+        "あなはいむ・だっくす"
+      ],
+      [
+        "ミネソタ・バイキングス",
+        "みねそた・ばいきんぐす"
+      ],
+      [
+        "レーゲンスブルク・レギオネーレ",
+        "れーげんすぶるく・れぎおねーれ"
+      ],
+      [
+        "ディナモ・バスケット・サッサリ",
+        "でぃなも・ばすけっと・さっさり"
+      ],
+      [
+        "ヴィチェンツァ・カルチョ",
+        "ゔぃちぇんつぁ・かるちょ"
+      ],
+      [
+        "バンクーバー・カナックス",
+        "ばんくーばー・かなっくす"
+      ],
+      [
+        "バッファロー・ビルズ",
+        "ばっふぁろー・びるず"
+      ],
+      [
+        "テキサス・レンジャーズ",
+        "てきさす・れんじゃーず"
+      ],
+      [
+        "メンズ・サーナ・バスケット",
+        "めんず・さーな・ばすけっと"
+      ],
+      [
+        "レアル・マドリード",
+        "れある・まどりーど"
+      ],
+      [
+        "ピッツバーグ・ペンギンズ",
+        "ぴっつばーぐ・ぺんぎんず"
+      ],
+      [
+        "シアトル・シーホークス",
+        "しあとる・しーほーくす"
+      ],
+      [
+        "ロサンゼルス・ドジャース",
+        "ろさんぜるす・どじゃーす"
+      ],
+      [
+        "パラカネストロ・ヴァレーゼ",
+        "ぱらかねすとろ・ゔぁれーぜ"
+      ],
+      [
+        "アスレティック・ビルバオ",
+        "あすれてぃっく・びるばお"
+      ],
+      [
+        "デトロイト・レッドウィングス",
+        "でとろいと・れっどうぃんぐす"
+      ],
+      [
+        "マイアミ・ドルフィンズ",
+        "まいあみ・どるふぃんず"
+      ],
+      [
+        "シカゴ・ホワイトソックス",
+        "しかご・ほわいとそっくす"
+      ],
+      [
+        "ヴェネツィア",
+        "ゔぇねつぃあ"
+      ],
+      [
+        "アトレティコ・マドリード",
+        "あとれてぃこ・まどりーど"
+      ],
+      [
+        "ボストン・ブルーインズ",
+        "ぼすとん・ぶるーいんず"
+      ],
+      [
+        "デンバー・ブロンコス",
+        "でんばー・ぶろんこす"
+      ],
+      [
+        "キンタナロー・タイガース",
+        "きんたなろー・たいがーす"
+      ],
+      [
+        "ル・マン・サルト・バスケット",
+        "る・まん・さると・ばすけっと"
+      ],
+      [
+        "レアル・ベティス",
+        "れある・べてぃす"
+      ],
+      [
+        "カルガリー・フレームス",
+        "かるがりー・ふれーむす"
+      ],
+      [
+        "シンシナティ・ベンガルズ",
+        "しんしなてぃ・べんがるず"
+      ],
+      [
+        "コロラド・ロッキーズ",
+        "ころらど・ろっきーず"
+      ],
+      [
+        "スカファーティ・バスケット",
+        "すかふぁーてぃ・ばすけっと"
+      ],
+      [
+        "セルタ・デ・ビーゴ",
+        "せるた・で・びーご"
+      ],
+      [
+        "ニューヨーク・アイランダース",
+        "にゅーよーく・あいらんだーす"
+      ],
+      [
+        "ヒューストン・テキサンズ",
+        "ひゅーすとん・てきさんず"
+      ],
+      [
+        "アルトゥーナ・カーブ",
+        "あるとぅーな・かーぶ"
+      ],
+      [
+        "スカリジェラ・バスケット・ヴェローナ",
+        "すかりじぇら・ばすけっと・ゔぇろーな"
+      ],
+      [
+        "デポルティーボ・ラ・コルーニャ",
+        "でぽるてぃーぼ・ら・こるーにゃ"
+      ],
+      [
+        "ニューオーリンズ・ブラス",
+        "にゅーおーりんず・ぶらす"
+      ],
+      [
+        "カンザスシティ・チーフス",
+        "かんざすしてぃ・ちーふす"
+      ],
+      [
+        "アトランタ・ブレーブス",
+        "あとらんた・ぶれーぶす"
+      ],
+      [
+        "アウロラ・バスケット・イェージ",
+        "あうろら・ばすけっと・いぇーじ"
+      ],
+      [
+        "ラーヨ・バジェカーノ",
+        "らーよ・ばじぇかーの"
+      ],
+      [
+        "カロライナ・ハリケーンズ",
+        "かろらいな・はりけーんず"
+      ],
+      [
+        "クリーブランド・ブラウンズ",
+        "くりーぶらんど・ぶらうんず"
+      ],
+      [
+        "シアトル・マリナーズ",
+        "しあとる・まりなーず"
+      ],
+      [
+        "パラカネストロ・トリエステ",
+        "ぱらかねすとろ・とりえすて"
+      ],
+      [
+        "レアル・サラゴサ",
+        "れある・さらごさ"
+      ],
+      [
+        "タンパベイ・ライトニング",
+        "たんぱべい・らいとにんぐ"
+      ],
+      [
+        "アリゾナ・カージナルス",
+        "ありぞな・かーじなるす"
+      ],
+      [
+        "ハンファ・イーグルス",
+        "はんふぁ・いーぐるす"
+      ],
+      [
+        "フルゴー・リベルタス・フォルリ",
+        "ふるごー・りべるたす・ふぉるり"
+      ],
+      [
+        "レアル・ソシエダ",
+        "れある・そしえだ"
+      ],
+      [
+        "リジャイナ・パッツ",
+        "りじゃいな・ぱっつ"
+      ],
+      [
+        "デトロイト・ライオンズ",
+        "でとろいと・らいおんず"
+      ],
+      [
+        "キウム・ヒーローズ",
+        "きうむ・ひーろーず"
+      ],
+      [
+        "バロンセスト・フエンラブラダ",
+        "ばろんせすと・ふえんらぶらだ"
+      ],
+      [
+        "レアル・バリャドリード",
+        "れある・ばりゃどりーど"
+      ],
+      [
+        "ロサンゼルス・キングス",
+        "ろさんぜるす・きんぐす"
+      ],
+      [
+        "アトランタ・ファルコンズ",
+        "あとらんた・ふぁるこんず"
+      ],
+      [
+        "サムスン・ライオンズ",
+        "さむすん・らいおんず"
+      ],
+      [
+        "ホベントゥート・バダローナ",
+        "ほべんとぅーと・ばだろーな"
+      ],
+      [
+        "ヘラクレス・アルメロ",
+        "へらくれす・あるめろ"
+      ],
+      [
+        "オタワ・セネターズ",
+        "おたわ・せねたーず"
+      ],
+      [
+        "ロサンゼルス・チャージャーズ",
+        "ろさんぜるす・ちゃーじゃーず"
+      ],
+      [
+        "ロッテ・ジャイアンツ",
+        "ろって・じゃいあんつ"
+      ],
+      [
+        "バスケット・マンレサ",
+        "ばすけっと・まんれさ"
+      ],
+      [
+        "レアル・ムルシア",
+        "れある・むるしあ"
+      ],
+      [
+        "トロント・メープルリーフス",
+        "とろんと・めーぷるりーふす"
+      ],
+      [
+        "ジャクソンビル・ジャガーズ",
+        "じゃくそんびる・じゃがーず"
+      ],
+      [
+        "セントルイス・カージナルス",
+        "せんとるいす・かーじなるす"
+      ],
+      [
+        "レアル・マドリード・バロンセスト",
+        "れある・まどりーど・ばろんせすと"
+      ],
+      [
+        "ラシン・サンタンデール",
+        "らしん・さんたんでーる"
+      ],
+      [
+        "フロリダ・パンサーズ",
+        "ふろりだ・ぱんさーず"
+      ],
+      [
+        "ボルチモア・レイブンズ",
+        "ぼるちもあ・れいぶんず"
+      ],
+      [
+        "アスレチックス",
+        "あすれちっくす"
+      ],
+      [
+        "ギプスコア・バスケットクラブ",
+        "ぎぷすこあ・ばすけっとくらぶ"
+      ],
+      [
+        "レクレアティーボ・ウェルバ",
+        "れくれあてぃーぼ・うぇるば"
+      ],
+      [
+        "ワシントン・キャピタルズ",
+        "わしんとん・きゃぴたるず"
+      ],
+      [
+        "デュッセルドルフ・パンサー",
+        "でゅっせるどるふ・ぱんさー"
+      ],
+      [
+        "ラスベガス・アビエイターズ",
+        "らすべがす・あびえいたーず"
+      ],
+      [
+        "サスキ・バスコニア",
+        "さすき・ばすこにあ"
+      ],
+      [
+        "スポルティング・デ・ヒホン",
+        "すぽるてぃんぐ・で・ひほん"
+      ],
+      [
+        "エドモントン・オイラーズ",
+        "えどもんとん・おいらーず"
+      ],
+      [
+        "シュヴェービッシュ・ハル・ユニコーンズ",
+        "しゅゔぇーびっしゅ・はる・ゆにこーんず"
+      ],
+      [
+        "ティグレス・デ・アラグア",
+        "てぃぐれす・で・あらぐあ"
+      ],
+      [
+        "レアル・ベティス・バロンセスト",
+        "れある・べてぃす・ばろんせすと"
+      ],
+      [
+        "カザーレ・カルチョ",
+        "かざーれ・かるちょ"
+      ],
+      [
+        "コロラド・アバランチ",
+        "ころらど・あばらんち"
+      ],
+      [
+        "タンパベイ・バッカニアーズ",
+        "たんぱべい・ばっかにあーず"
+      ],
+      [
+        "ポータケット・レッドソックス",
+        "ぽーたけっと・れっどそっくす"
+      ],
+      [
+        "ロゼート・バスケット",
+        "ろぜーと・ばすけっと"
+      ],
+      [
+        "ペルージャ・カルチョ",
+        "ぺるーじゃ・かるちょ"
+      ],
+      [
+        "アリゾナ・コヨーテズ",
+        "ありぞな・こよーてず"
+      ],
+      [
+        "テネシー・タイタンズ",
+        "てねしー・たいたんず"
+      ],
+      [
+        "ミネソタ・ツインズ",
+        "みねそた・ついんず"
+      ],
+      [
+        "ユタ・スターズ",
+        "ゆた・すたーず"
+      ],
+      [
+        "クラブ・デ・ヒムナシア・イ・エスグリマ・ラ・プラタ",
+        "くらぶ・で・ひむなしあ・い・えすぐりま・ら・ぷらた"
+      ],
+      [
+        "ミネソタ・ワイルド",
+        "みねそた・わいるど"
+      ],
+      [
+        "ラスベガス・レイダース",
+        "らすべがす・れいだーす"
+      ],
+      [
+        "サンバンウル・レイダース",
+        "さんばんうる・れいだーす"
+      ],
+      [
+        "ロサンゼルス・レイカーズ",
+        "ろさんぜるす・れいかーず"
+      ],
+      [
+        "ウニベルシタリオ・デポルテス",
+        "うにべるしたりお・でぽるてす"
+      ],
+      [
+        "サンノゼ・シャークス",
+        "さんのぜ・しゃーくす"
+      ],
+      [
+        "カロライナ・パンサーズ",
+        "かろらいな・ぱんさーず"
+      ],
+      [
+        "シャーロット・ナイツ",
+        "しゃーろっと・ないつ"
+      ],
+      [
+        "レイクランド・マジック",
+        "れいくらんど・まじっく"
+      ],
+      [
+        "スタッド・レンヌ",
+        "すたっど・れんぬ"
+      ],
+      [
+        "コロンバス・ブルージャケッツ",
+        "ころんばす・ぶるーじゃけっつ"
+      ],
+      [
+        "ロサンゼルス・ラムズ",
+        "ろさんぜるす・らむず"
+      ],
+      [
+        "クリーブランド・ガーディアンズ",
+        "くりーぶらんど・がーでぃあんず"
+      ],
+      [
+        "シカゴ・ブルズ",
+        "しかご・ぶるず"
+      ],
+      [
+        "ケイル・テタンジュ",
+        "けいる・てたんじゅ"
+      ],
+      [
+        "セントルイス・ブルース",
+        "せんとるいす・ぶるーす"
+      ],
+      [
+        "サンフランシスコ・フォーティナイナーズ",
+        "さんふらんしすこ・ふぉーてぃないなーず"
+      ],
+      [
+        "レッジョ・ベースボール",
+        "れっじょ・べーすぼーる"
+      ],
+      [
+        "ニューヨーク・ニックス",
+        "にゅーよーく・にっくす"
+      ],
+      [
+        "フェラルピサロ",
+        "ふぇらるぴさろ"
+      ],
+      [
+        "ナッシュビル・プレデターズ",
+        "なっしゅびる・ぷれでたーず"
+      ],
+      [
+        "ダラス・デザイア",
+        "だらす・でざいあ"
+      ],
+      [
+        "テレマーケット・リミニ",
+        "てれまーけっと・りみに"
+      ],
+      [
+        "ボストン・セルティックス",
+        "ぼすとん・せるてぃっくす"
+      ],
+      [
+        "アイントラハト・フランクフルト",
+        "あいんとらはと・ふらんくふると"
+      ],
+      [
+        "ダラス・スターズ",
+        "だらす・すたーず"
+      ],
+      [
+        "シカゴ・ブリス",
+        "しかご・ぶりす"
+      ],
+      [
+        "ボルチモア・オリオールズ",
+        "ぼるちもあ・おりおーるず"
+      ],
+      [
+        "トロント・ラプターズ",
+        "とろんと・らぷたーず"
+      ],
+      [
+        "ボルシア・ドルトムント",
+        "ぼるしあ・どるとむんと"
+      ],
+      [
+        "シカゴ・ブラックホークス",
+        "しかご・ぶらっくほーくす"
+      ],
+      [
+        "ニューヨーカー・ライオンズ",
+        "にゅーよーかー・らいおんず"
+      ],
+      [
+        "トロント・ブルージェイズ",
+        "とろんと・ぶるーじぇいず"
+      ],
+      [
+        "ダラス・マーベリックス",
+        "だらす・まーべりっくす"
+      ],
+      [
+        "アンタルヤスポル",
+        "あんたるやすぽる"
+      ],
+      [
+        "ルイジアナ・アイスゲイターズ",
+        "るいじあな・あいすげいたーず"
+      ],
+      [
+        "ロサンゼルス・エクスプレス",
+        "ろさんぜるす・えくすぷれす"
+      ],
+      [
+        "フィラデルフィア・フィリーズ",
+        "ふぃらでるふぃあ・ふぃりーず"
+      ],
+      [
+        "フィラデルフィア・セブンティシクサーズ",
+        "ふぃらでるふぃあ・せぶんてぃしくさーず"
+      ],
+      [
+        "セレンゲ・プレス",
+        "せれんげ・ぷれす"
+      ],
+      [
+        "アトランタ・スラッシャーズ",
+        "あとらんた・すらっしゃーず"
+      ],
+      [
+        "スヴァルコ・レイダーズ・チロル",
+        "すゔぁるこ・れいだーず・ちろる"
+      ],
+      [
+        "デトロイト・タイガース",
+        "でとろいと・たいがーす"
+      ],
+      [
+        "ゴールデンステート・ウォリアーズ",
+        "ごーるでんすてーと・うぉりあーず"
+      ],
+      [
+        "エスペランス・スポルティーブ・ドゥ・チュニス",
+        "えすぺらんす・すぽるてぃーぶ・どぅ・ちゅにす"
+      ],
+      [
+        "ハル・オタワ・カナディアンズ",
+        "はる・おたわ・かなでぃあんず"
+      ],
+      [
+        "バダロナ・ドラックス",
+        "ばだろな・どらっくす"
+      ],
+      [
+        "タンパベイ・レイズ",
+        "たんぱべい・れいず"
+      ],
+      [
+        "サンアントニオ・スパーズ",
+        "さんあんとにお・すぱーず"
+      ],
+      [
+        "オンセ・カルダス",
+        "おんせ・かるだす"
+      ],
+      [
+        "ディナモ・リガ",
+        "でぃなも・りが"
+      ],
+      [
+        "ベルガモ・ライオンズ",
+        "べるがも・らいおんず"
+      ],
+      [
+        "マイアミ・マーリンズ",
+        "まいあみ・まーりんず"
+      ],
+      [
+        "アトランタ・ホークス",
+        "あとらんた・ほーくす"
+      ],
+      [
+        "ヴィラ・テレサ",
+        "ゔぃら・てれさ"
+      ],
+      [
+        "トロント・マーリーズ",
+        "とろんと・まーりーず"
+      ],
+      [
+        "ベルリン・レベルズ",
+        "べるりん・れべるず"
+      ],
+      [
+        "ピッツバーグ・パイレーツ",
+        "ぴっつばーぐ・ぱいれーつ"
+      ],
+      [
+        "オーランド・マジック",
+        "おーらんど・まじっく"
+      ],
+      [
+        "ヴェルダー・ブレーメン",
+        "ゔぇるだー・ぶれーめん"
+      ],
+      [
+        "オーウェンサウンド・アタック",
+        "おーうぇんさうんど・あたっく"
+      ],
+      [
+        "ブルックリン・ドジャース",
+        "ぶるっくりん・どじゃーす"
+      ],
+      [
+        "マホーニングバレー・スクラッパーズ",
+        "まほーにんぐばれー・すくらっぱーず"
+      ],
+      [
+        "ヒューストン・ロケッツ",
+        "ひゅーすとん・ろけっつ"
+      ],
+      [
+        "レフ・ポズナン",
+        "れふ・ぽずなん"
+      ],
+      [
+        "アボッツフォード・ヒート",
+        "あぼっつふぉーど・ひーと"
+      ],
+      [
+        "ウエストバージニア・マウンテニアーズ・フットボール",
+        "うえすとばーじにあ・まうんてにあーず・ふっとぼーる"
+      ],
+      [
+        "アリゾナ・ダイヤモンドバックス",
+        "ありぞな・だいやもんどばっくす"
+      ],
+      [
+        "デンバー・ナゲッツ",
+        "でんばー・なげっつ"
+      ],
+      [
+        "ペルシバ・バントゥル",
+        "ぺるしば・ばんとぅる"
+      ],
+      [
+        "フィッシュタウン・ペンギンズ",
+        "ふぃっしゅたうん・ぺんぎんず"
+      ],
+      [
+        "シカゴ・ロケッツ",
+        "しかご・ろけっつ"
+      ],
+      [
+        "サザンメリーランド・ブルークラブス",
+        "さざんめりーらんど・ぶるーくらぶす"
+      ],
+      [
+        "クリーブランド・キャバリアーズ",
+        "くりーぶらんど・きゃばりあーず"
+      ],
+      [
+        "アル・イテファク",
+        "ある・いてふぁく"
+      ],
+      [
+        "スターブルス・ローゼンハイム",
+        "すたーぶるす・ろーぜんはいむ"
+      ],
+      [
+        "フランクフルト・ユニバース",
+        "ふらんくふると・ゆにばーす"
+      ],
+      [
+        "ニューヨーク・メッツ",
+        "にゅーよーく・めっつ"
+      ],
+      [
+        "シャーロット・ホーネッツ",
+        "しゃーろっと・ほーねっつ"
+      ],
+      [
+        "アル・ヒラル",
+        "ある・ひらる"
+      ],
+      [
+        "ハノーファー・インディアンス",
+        "はのーふぁー・いんでぃあんす"
+      ],
+      [
+        "ロサンゼルス・ドンズ",
+        "ろさんぜるす・どんず"
+      ],
+      [
+        "サンディエゴ・パドレス",
+        "さんでぃえご・ぱどれす"
+      ],
+      [
+        "フェニックス・サンズ",
+        "ふぇにっくす・さんず"
+      ],
+      [
+        "クルーベ・ナウチコ・カピバリベ",
+        "くるーべ・なうちこ・かぴばりべ"
+      ],
+      [
+        "アデレード・アドレナリン",
+        "あでれーど・あどれなりん"
+      ],
+      [
+        "バレンシア・ファイアーバッツ",
+        "ばれんしあ・ふぁいあーばっつ"
+      ],
+      [
+        "カンザスシティ・モナークス",
+        "かんざすしてぃ・もなーくす"
+      ],
+      [
+        "メンフィス・グリズリーズ",
+        "めんふぃす・ぐりずりーず"
+      ],
+      [
+        "スポルティング・クルーベ・デ・ポルトゥガル",
+        "すぽるてぃんぐ・くるーべ・で・ぽるとぅがる"
+      ],
+      [
+        "アドラー・マンハイム",
+        "あどらー・まんはいむ"
+      ],
+      [
+        "ルスピタレート・パイオニアーズ",
+        "るすぴたれーと・ぱいおにあーず"
+      ],
+      [
+        "バッファロー・バイソンズ",
+        "ばっふぁろー・ばいそんず"
+      ],
+      [
+        "サクラメント・キングス",
+        "さくらめんと・きんぐす"
+      ],
+      [
+        "アヤックス・アムステルダム",
+        "あやっくす・あむすてるだむ"
+      ],
+      [
+        "マルメ・レッドホークス",
+        "まるめ・れっどほーくす"
+      ],
+      [
+        "オービックシーガルズ",
+        "おーびっくしーがるず"
+      ],
+      [
+        "グロッセート・オリオールズ",
+        "ぐろっせーと・おりおーるず"
+      ],
+      [
+        "ポートランド・トレイルブレイザーズ",
+        "ぽーとらんど・とれいるぶれいざーず"
+      ],
+      [
+        "グールニク・コニン",
+        "ぐーるにく・こにん"
+      ],
+      [
+        "ダンビル・ダッシャーズ",
+        "だんびる・だっしゃーず"
+      ],
+      [
+        "オリエンタルバイオシルバースター",
+        "おりえんたるばいおしるばーすたー"
+      ],
+      [
+        "ロサンゼルス・エンゼルス",
+        "ろさんぜるす・えんぜるす"
+      ],
+      [
+        "テキサス・レジェンズ",
+        "てきさす・れじぇんず"
+      ],
+      [
+        "クラブ・ブルーミング",
+        "くらぶ・ぶるーみんぐ"
+      ],
+      [
+        "ホイーリング・ネイラーズ",
+        "ほいーりんぐ・ねいらーず"
+      ],
+      [
+        "タンパベイ・バンディッツ",
+        "たんぱべい・ばんでぃっつ"
+      ],
+      [
+        "カンザスシティ・ロイヤルズ",
+        "かんざすしてぃ・ろいやるず"
+      ],
+      [
+        "マイアミ・ヒート",
+        "まいあみ・ひーと"
+      ],
+      [
+        "ボルシア・メンヒェングラートバッハ",
+        "ぼるしあ・めんひぇんぐらーとばっは"
+      ],
+      [
+        "アク・バルス・カザン",
+        "あく・ばるす・かざん"
+      ],
+      [
+        "サンアントニオ・ガンスリンガーズ",
+        "さんあんとにお・がんすりんがーず"
+      ],
+      [
+        "ビンガムトン・メッツ",
+        "びんがむとん・めっつ"
+      ],
+      [
+        "ワシントン・ウィザーズ",
+        "わしんとん・うぃざーず"
+      ],
+      [
+        "ヘルタ・ベルリン",
+        "へるた・べるりん"
+      ],
+      [
+        "ベルリナー・シュリットシュークルプ",
+        "べるりなー・しゅりっとしゅーくるぷ"
+      ],
+      [
+        "ナッシュビル・キャッツ",
+        "なっしゅびる・きゃっつ"
+      ],
+      [
+        "アラサネス・デ・グランマ",
+        "あらさねす・で・ぐらんま"
+      ],
+      [
+        "ミルウォーキー・バックス",
+        "みるうぉーきー・ばっくす"
+      ],
+      [
+        "バイエル・レバークーゼン",
+        "ばいえる・ればーくーぜん"
+      ],
+      [
+        "モントリオール・ワンダラーズ",
+        "もんとりおーる・わんだらーず"
+      ],
+      [
+        "リバス・オソス",
+        "りばす・おそす"
+      ],
+      [
+        "トレド・マッドヘンズ",
+        "とれど・まっどへんず"
+      ],
+      [
+        "デトロイト・ピストンズ",
+        "でとろいと・ぴすとんず"
+      ],
+      [
+        "アルミニア・ビーレフェルト",
+        "あるみにあ・びーれふぇると"
+      ],
+      [
+        "ウィニペグ・ジェッツ",
+        "うぃにぺぐ・じぇっつ"
+      ],
+      [
+        "ウォーリアーズ・ボローニャ",
+        "うぉーりあーず・ぼろーにゃ"
+      ],
+      [
+        "ワシントン・ナショナルズ",
+        "わしんとん・なしょなるず"
+      ],
+      [
+        "インディアナ・ペイサーズ",
+        "いんでぃあな・ぺいさーず"
+      ],
+      [
+        "エネルギー・コットブス",
+        "えねるぎー・こっとぶす"
+      ],
+      [
+        "アラスカ・エーシズ",
+        "あらすか・えーしず"
+      ],
+      [
+        "ボルチモア・チャーム",
+        "ぼるちもあ・ちゃーむ"
+      ],
+      [
+        "シンシナティ・レッズ",
+        "しんしなてぃ・れっず"
+      ],
+      [
+        "ミネソタ・ティンバーウルブズ",
+        "みねそた・てぃんばーうるぶず"
+      ],
+      [
+        "エユプスポル",
+        "えゆぷすぽる"
+      ],
+      [
+        "アムール・ハバロフスク",
+        "あむーる・はばろふすく"
+      ],
+      [
+        "ロサンゼルス・テンプテイション",
+        "ろさんぜるす・てんぷていしょん"
+      ],
+      [
+        "ハイデンハイム・ハイデケッフェ",
+        "はいでんはいむ・はいでけっふぇ"
+      ],
+      [
+        "ユタ・ジャズ",
+        "ゆた・じゃず"
+      ],
+      [
+        "クラブ・ホルヘ・ウィルステルマン",
+        "くらぶ・ほるへ・うぃるすてるまん"
+      ],
+      [
+        "チャイナドラゴン",
+        "ちゃいなどらごん"
+      ],
+      [
+        "マイアミ・カリエンテ",
+        "まいあみ・かりえんて"
+      ],
+      [
+        "ミルウォーキー・ブルワーズ",
+        "みるうぉーきー・ぶるわーず"
+      ],
+      [
+        "ニューオーリンズ・ペリカンズ",
+        "にゅーおーりんず・ぺりかんず"
+      ],
+      [
+        "オリエンテ・ペトロレロ",
+        "おりえんて・ぺとろれろ"
+      ],
+      [
+        "イーザーローン・ルースターズ",
+        "いーざーろーん・るーすたーず"
+      ],
+      [
+        "ニューヨーク・マジェスティ",
+        "にゅーよーく・まじぇすてぃ"
+      ],
+      [
+        "ヒューストン・アストロズ",
+        "ひゅーすとん・あすとろず"
+      ],
+      [
+        "オクラホマシティ・サンダー",
+        "おくらほましてぃ・さんだー"
+      ],
+      [
+        "クラブ・アウロラ",
+        "くらぶ・あうろら"
+      ],
+      [
+        "インディアナポリス・レイサーズ",
+        "いんでぃあなぽりす・れいさーず"
+      ],
+      [
+        "オーランド・ファンタジー",
+        "おーらんど・ふぁんたじー"
+      ],
+      [
+        "パース・ヒート",
+        "ぱーす・ひーと"
+      ],
+      [
+        "ヤカマ・サンキングス",
+        "やかま・さんきんぐす"
+      ],
+      [
+        "ザ・ストロンゲスト",
+        "ざ・すとろんげすと"
+      ],
+      [
+        "レディング・ロイヤルズ",
+        "れでぃんぐ・ろいやるず"
+      ],
+      [
+        "フィラデルフィア・パッション",
+        "ふぃらでるふぃあ・ぱっしょん"
+      ],
+      [
+        "ブリスベン・バンディッツ",
+        "ぶりすべん・ばんでぃっつ"
+      ],
+      [
+        "オルレアンズ・ロワレ・バスケット",
+        "おるれあんず・ろわれ・ばすけっと"
+      ],
+      [
+        "レアル・ポトシ",
+        "れある・ぽとし"
+      ],
+      [
+        "シュヴェニンガーワイルド・ウィングス",
+        "しゅゔぇにんがーわいるど・うぃんぐす"
+      ],
+      [
+        "タンパ・ブリーズ",
+        "たんぱ・ぶりーず"
+      ],
+      [
+        "ボストン・レッズ",
+        "ぼすとん・れっず"
+      ],
+      [
+        "シアトル・スーパーソニックス",
+        "しあとる・すーぱーそにっくす"
+      ],
+      [
+        "クラブ・ボリバル",
+        "くらぶ・ぼりばる"
+      ],
+      [
+        "ケベック・ノルディクス",
+        "けべっく・のるでぃくす"
+      ],
+      [
+        "アビリーン・クリスチャン・ワイルドキャッツ・フットボール",
+        "あびりーん・くりすちゃん・わいるどきゃっつ・ふっとぼーる"
+      ],
+      [
+        "ルイビル・カーネルズ",
+        "るいびる・かーねるず"
+      ],
+      [
+        "フェネルバフチェ・ユルケル",
+        "ふぇねるばふちぇ・ゆるける"
+      ],
+      [
+        "ウニベルシタリオ・デ・スクレ",
+        "うにべるしたりお・で・すくれ"
+      ],
+      [
+        "シドニー・ベアーズ",
+        "しどにー・べあーず"
+      ],
+      [
+        "アラバマ・クリムゾンタイド・フットボール",
+        "あらばま・くりむぞんたいど・ふっとぼーる"
+      ],
+      [
+        "ユカタン・ライオンズ",
+        "ゆかたん・らいおんず"
+      ],
+      [
+        "サイエンスシティ・イェーナ",
+        "さいえんすしてぃ・いぇーな"
+      ],
+      [
+        "デポルティーボ・グアビラ",
+        "でぽるてぃーぼ・ぐあびら"
+      ],
+      [
+        "イルベスホッケーオイ",
+        "いるべすほっけーおい"
+      ],
+      [
+        "アリゾナ・ワイルドキャッツ",
+        "ありぞな・わいるどきゃっつ"
+      ],
+      [
+        "エル・アギラ・デ・ベラクルス",
+        "える・あぎら・で・べらくるす"
+      ],
+      [
+        "レシオファーム・ウルム",
+        "れしおふぁーむ・うるむ"
+      ],
+      [
+        "マニサスポル",
+        "まにさすぽる"
+      ],
+      [
+        "モントリオール・マルーンズ",
+        "もんとりおーる・まるーんず"
+      ],
+      [
+        "アーカンソー・レイザーバックス・フットボール",
+        "あーかんそー・れいざーばっくす・ふっとぼーる"
+      ],
+      [
+        "サルティーヨ・サラペメーカーズ",
+        "さるてぃーよ・さらぺめーかーず"
+      ],
+      [
+        "サリー・スコーチャーズ",
+        "さりー・すこーちゃーず"
+      ],
+      [
+        "オリンピック・マルセイユ",
+        "おりんぴっく・まるせいゆ"
+      ],
+      [
+        "トルペド・ニジニ・ノヴゴロド",
+        "とるぺど・にじに・のゔごろど"
+      ],
+      [
+        "シンシナティ・ベアキャッツ・フットボール",
+        "しんしなてぃ・べあきゃっつ・ふっとぼーる"
+      ],
+      [
+        "ミナティトラン・オイラーズ",
+        "みなてぃとらん・おいらーず"
+      ],
+      [
+        "アソシエイション・ディポーティバ・アテナ",
+        "あそしえいしょん・でぃぽーてぃば・あてな"
+      ],
+      [
+        "グレミオ・バルエリ",
+        "ぐれみお・ばるえり"
+      ],
+      [
+        "ハーシー・ベアーズ",
+        "はーしー・べあーず"
+      ],
+      [
+        "クレムゾン・タイガーズ・フットボール",
+        "くれむぞん・たいがーず・ふっとぼーる"
+      ],
+      [
+        "オアハカ・ウォーリアーズ",
+        "おあはか・うぉーりあーず"
+      ],
+      [
+        "マンチェスター・ジャイアンツ",
+        "まんちぇすたー・じゃいあんつ"
+      ],
+      [
+        "フェイエノールト",
+        "ふぇいえのーると"
+      ],
+      [
+        "ベーカーズフィールド・コンドルズ",
+        "べーかーずふぃーるど・こんどるず"
+      ],
+      [
+        "カレッジフットボール・オールアメリカンチーム",
+        "かれっじふっとぼーる・おーるあめりかんちーむ"
+      ],
+      [
+        "アルゴドネロス・デ・ウニオン・ラグーナ",
+        "あるごどねろす・で・うにおん・らぐーな"
+      ],
+      [
+        "ニュルンベルク・ファルコンズ",
+        "にゅるんべるく・ふぁるこんず"
+      ],
+      [
+        "グールニク・ザブジェ",
+        "ぐーるにく・ざぶじぇ"
+      ],
+      [
+        "ローウェル・ロック・モンスターズ",
+        "ろーうぇる・ろっく・もんすたーず"
+      ],
+      [
+        "コロラド・バッファローズ・フットボール",
+        "ころらど・ばっふぁろーず・ふっとぼーる"
+      ],
+      [
+        "タバスコ・オルメクス",
+        "たばすこ・おるめくす"
+      ],
+      [
+        "バスケットボール・ニンブルク",
+        "ばすけっとぼーる・にんぶるく"
+      ],
+      [
+        "フォッジャ・カルチョ",
+        "ふぉっじゃ・かるちょ"
+      ],
+      [
+        "アフトモビリスト・エカテリンブルグ",
+        "あふともびりすと・えかてりんぶるぐ"
+      ],
+      [
+        "ダートマス・ビッグ・グリーン・フットボール",
+        "だーとます・びっぐ・ぐりーん・ふっとぼーる"
+      ],
+      [
+        "ピラータス・デ・カンペチェ",
+        "ぴらーたす・で・かんぺちぇ"
+      ],
+      [
+        "シャンパーニュ・シャロン・ランス・バスケット",
+        "しゃんぱーにゅ・しゃろん・らんす・ばすけっと"
+      ],
+      [
+        "ザグウェンビェ・ソスノヴィエツ",
+        "ざぐうぇんびぇ・そすのゔぃえつ"
+      ],
+      [
+        "ビンガムトン・ホエーラーズ",
+        "びんがむとん・ほえーらーず"
+      ],
+      [
+        "デラウェア・ステイト・ホーネッツ・フットボール",
+        "でらうぇあ・すていと・ほーねっつ・ふっとぼーる"
+      ],
+      [
+        "レイノサ・ブロンコス",
+        "れいのさ・ぶろんこす"
+      ],
+      [
+        "オールバニ・パトルーンズ",
+        "おーるばに・ぱとるーんず"
+      ],
+      [
+        "ザグウェンビェ・ルビン",
+        "ざぐうぇんびぇ・るびん"
+      ],
+      [
+        "ドゥルモンヴィル・ヴォルティギュール",
+        "どぅるもんゔぃる・ゔぉるてぃぎゅーる"
+      ],
+      [
+        "イーストカロライナ・パイレーツ・フットボール",
+        "いーすとかろらいな・ぱいれーつ・ふっとぼーる"
+      ],
+      [
+        "モンクローバ・スティーラーズ",
+        "もんくろーば・すてぃーらーず"
+      ],
+      [
+        "タイガース・テュービンゲン",
+        "たいがーす・てゅーびんげん"
+      ],
+      [
+        "アノルトシス・ファマグスタ",
+        "あのるとしす・ふぁまぐすた"
+      ],
+      [
+        "ホッケー・クラブ・エッパン・アッピアーノ",
+        "ほっけー・くらぶ・えっぱん・あっぴあーの"
+      ],
+      [
+        "イースタンケンタッキー・コロネルス・フットボール",
+        "いーすたんけんたっきー・ころねるす・ふっとぼーる"
+      ],
+      [
+        "ホーフトドルプ・ピオニールス",
+        "ほーふとどるぷ・ぴおにーるす"
+      ],
+      [
+        "フェニックス・ハーゲン",
+        "ふぇにっくす・はーげん"
+      ],
+      [
+        "ハンザ・ロストック",
+        "はんざ・ろすとっく"
+      ],
+      [
+        "コロラド・イーグルス",
+        "ころらど・いーぐるす"
+      ],
+      [
+        "イースタン・ミシガン・イーグルスフットボールチーム",
+        "いーすたん・みしがん・いーぐるすふっとぼーるちーむ"
+      ],
+      [
+        "スパルタ・フェイエノールト",
+        "すぱるた・ふぇいえのーると"
+      ],
+      [
+        "パーダーボルン・バスケッツ",
+        "ぱーだーぼるん・ばすけっつ"
+      ],
+      [
+        "デルトラス・シドアルジョ",
+        "でるとらす・しどあるじょ"
+      ],
+      [
+        "パース・サンダー",
+        "ぱーす・さんだー"
+      ],
+      [
+        "ムルシア・コブラス",
+        "むるしあ・こぶらす"
+      ],
+      [
+        "ナランヘロス・デ・エルモシージョ",
+        "ならんへろす・で・えるもしーじょ"
+      ],
+      [
+        "アイスベーレン・ブレーマーハーフェン",
+        "あいすべーれん・ぶれーまーはーふぇん"
+      ],
+      [
+        "フォルトゥナ・デュッセルドルフ",
+        "ふぉるとぅな・でゅっせるどるふ"
+      ],
+      [
+        "アトラント・モスクワ",
+        "あとらんと・もすくわ"
+      ],
+      [
+        "フロリダ・ゲイターズ・フットボール",
+        "ふろりだ・げいたーず・ふっとぼーる"
+      ],
+      [
+        "アギラス・デ・メヒカリ",
+        "あぎらす・で・めひかり"
+      ],
+      [
+        "ヴュルツブルク・バスケッツ",
+        "ゔゅるつぶるく・ばすけっつ"
+      ],
+      [
+        "アル・ムハーラク・クラブ",
+        "ある・むはーらく・くらぶ"
+      ],
+      [
+        "ウィンストン・セーラム・ポーラー・ツインズ",
+        "うぃんすとん・せーらむ・ぽーらー・ついんず"
+      ],
+      [
+        "ジョージア・テック・イエロー・ジャケッツ・フットボール",
+        "じょーじあ・てっく・いえろー・じゃけっつ・ふっとぼーる"
+      ],
+      [
+        "カルデナレス・デ・ララ",
+        "かるでなれす・で・らら"
+      ],
+      [
+        "フリブール・オリンピック",
+        "ふりぶーる・おりんぴっく"
+      ],
+      [
+        "アレマニア・アーヘン",
+        "あれまにあ・あーへん"
+      ],
+      [
+        "テキサス・スターズ",
+        "てきさす・すたーず"
+      ],
+      [
+        "ハーヴァード・クリムゾン・フットボール",
+        "はーゔぁーど・くりむぞん・ふっとぼーる"
+      ],
+      [
+        "カリベス・デ・アンソアテギ",
+        "かりべす・で・あんそあてぎ"
+      ],
+      [
+        "ハーレム・グローブトロッターズ",
+        "はーれむ・ぐろーぶとろったーず"
+      ],
+      [
+        "ロートヴァイス・エッセン",
+        "ろーとゔぁいす・えっせん"
+      ],
+      [
+        "ハノーファー・スコーピオンズ",
+        "はのーふぁー・すこーぴおんず"
+      ],
+      [
+        "ハワイ・アイランダーズ",
+        "はわい・あいらんだーず"
+      ],
+      [
+        "ベナドス・デ・マサトラン",
+        "べなどす・で・まさとらん"
+      ],
+      [
+        "インディアナポリス・オリンピアンズ",
+        "いんでぃあなぽりす・おりんぴあんず"
+      ],
+      [
+        "ホルシュタイン・キール",
+        "ほるしゅたいん・きーる"
+      ],
+      [
+        "アイスベーレン・ベルリン",
+        "あいすべーれん・べるりん"
+      ],
+      [
+        "ラス・ロサス・ブラック・デーモンズ",
+        "らす・ろさす・ぶらっく・でーもんず"
+      ],
+      [
+        "アギラス・デル・スリア",
+        "あぎらす・でる・すりあ"
+      ],
+      [
+        "バスケットボール・レーヴェン・ブラウンシュヴァイク",
+        "ばすけっとぼーる・れーゔぇん・ぶらうんしゅゔぁいく"
+      ],
+      [
+        "キッカーズ・オッフェンバッハ",
+        "きっかーず・おっふぇんばっは"
+      ],
+      [
+        "フランクフルト・ライオンズ",
+        "ふらんくふると・らいおんず"
+      ],
+      [
+        "アイダホ・ステート・ベンガルズ・フットボール",
+        "あいだほ・すてーと・べんがるず・ふっとぼーる"
+      ],
+      [
+        "レオネス・デル・エスコヒード",
+        "れおねす・でる・えすこひーど"
+      ],
+      [
+        "ブルックリン・ネッツ",
+        "ぶるっくりん・ねっつ"
+      ],
+      [
+        "ティロ・フェデラル",
+        "てぃろ・ふぇでらる"
+      ],
+      [
+        "グリズリー・アダムス・ヴォルフスブルク",
+        "ぐりずりー・あだむす・ゔぉるふすぶるく"
+      ],
+      [
+        "アイオワ・ホークアイズ・フットボール",
+        "あいおわ・ほーくあいず・ふっとぼーる"
+      ],
+      [
+        "ヒガンテス・デル・シバオ",
+        "ひがんてす・でる・しばお"
+      ],
+      [
+        "アイダホ・スタンピード",
+        "あいだほ・すたんぴーど"
+      ],
+      [
+        "アル・アハリ・ベンガジ",
+        "ある・あはり・べんがじ"
+      ],
+      [
+        "ケルナー・ハイエ",
+        "けるなー・はいえ"
+      ],
+      [
+        "アイオワ・ステイト・サイクロンズ・フットボール",
+        "あいおわ・すていと・さいくろんず・ふっとぼーる"
+      ],
+      [
+        "ティブロネス・デ・ラ・グアイラ",
+        "てぃぶろねす・で・ら・ぐあいら"
+      ],
+      [
+        "アルバコンプ",
+        "あるばこんぷ"
+      ],
+      [
+        "ザヴィシャ・ブィドゴシュチュ",
+        "ざゔぃしゃ・ぶぃどごしゅちゅ"
+      ],
+      [
+        "ハンブルク・フリーザーズ",
+        "はんぶるく・ふりーざーず"
+      ],
+      [
+        "ジャクソンビル・ブルズ",
+        "じゃくそんびる・ぶるず"
+      ],
+      [
+        "ブラボス・デ・マルガリータ",
+        "ぶらぼす・で・まるがりーた"
+      ],
+      [
+        "ケアンズ・タイパンズ",
+        "けあんず・たいぱんず"
+      ],
+      [
+        "アル・アンサール・ベイルート",
+        "ある・あんさーる・べいるーと"
+      ],
+      [
+        "ニュルンベルク・アイスタイガース",
+        "にゅるんべるく・あいすたいがーす"
+      ],
+      [
+        "カンザスステイト・ワイルドキャッツ・フットボール",
+        "かんざすすていと・わいるどきゃっつ・ふっとぼーる"
+      ],
+      [
+        "トマテロス・デ・クリアカン",
+        "とまてろす・で・くりあかん"
+      ],
+      [
+        "スピロウ・シャルルロワ",
+        "すぴろう・しゃるるろわ"
+      ],
+      [
+        "シュトゥットガルト・キッカーズ",
+        "しゅとぅっとがると・きっかーず"
+      ],
+      [
+        "アウグスバーガー・パンター",
+        "あうぐすばーがー・ぱんたー"
+      ],
+      [
+        "ケンタッキー・ワイルドキャッツ・フットボール",
+        "けんたっきー・わいるどきゃっつ・ふっとぼーる"
+      ],
+      [
+        "カングレヘーロス・デ・サントゥルセ",
+        "かんぐれへーろす・で・さんとぅるせ"
+      ],
+      [
+        "ストックトン・キングス",
+        "すとっくとん・きんぐす"
+      ],
+      [
+        "ロート・ヴァイス・アーレン",
+        "ろーと・ゔぁいす・あーれん"
+      ],
+      [
+        "クレーフェルト・ピングイーネ",
+        "くれーふぇると・ぴんぐいーね"
+      ],
+      [
+        "レスター・ファルコンズ",
+        "れすたー・ふぁるこんず"
+      ],
+      [
+        "ティグレス・デル・リセイ",
+        "てぃぐれす・でる・りせい"
+      ],
+      [
+        "アンウェル・ウォロクラウィック",
+        "あんうぇる・うぉろくらうぃっく"
+      ],
+      [
+        "レッドスター・ベオグラード",
+        "れっどすたー・べおぐらーど"
+      ],
+      [
+        "シュトラウビング・タイガース",
+        "しゅとらうびんぐ・たいがーす"
+      ],
+      [
+        "ロサンゼルス・ワイルドキャッツ",
+        "ろさんぜるす・わいるどきゃっつ"
+      ],
+      [
+        "アスカレーロス・デル・エステ",
+        "あすかれーろす・でる・えすて"
+      ],
+      [
+        "ルガーノ・タイガース",
+        "るがーの・たいがーす"
+      ],
+      [
+        "オルドゥスポル",
+        "おるどぅすぽる"
+      ],
+      [
+        "アッシュビル・エースズ",
+        "あっしゅびる・えーすず"
+      ],
+      [
+        "ルイヴィル・カーディナルズ・フットボール",
+        "るいゔぃる・かーでぃなるず・ふっとぼーる"
+      ],
+      [
+        "マインツ・アスレチックス",
+        "まいんつ・あすれちっくす"
+      ],
+      [
+        "パリ・バスケ・ラシン",
+        "ぱり・ばすけ・らしん"
+      ],
+      [
+        "ハイドゥク・スプリト",
+        "はいどぅく・すぷりと"
+      ],
+      [
+        "ポートランド・ウィンターホークス",
+        "ぽーとらんど・うぃんたーほーくす"
+      ],
+      [
+        "メリーランド・テラピンズフットボール",
+        "めりーらんど・てらぴんずふっとぼーる"
+      ],
+      [
+        "ブルックリン・アトランティックス",
+        "ぶるっくりん・あとらんてぃっくす"
+      ],
+      [
+        "アルバ・ベルリン",
+        "あるば・べるりん"
+      ],
+      [
+        "アル・ワフダ・ダマスカス",
+        "ある・わふだ・だますかす"
+      ],
+      [
+        "メイン・マリナーズ",
+        "めいん・まりなーず"
+      ],
+      [
+        "マイアミ・ハリケーンズ・フットボール",
+        "まいあみ・はりけーんず・ふっとぼーる"
+      ],
+      [
+        "レンジャーズ・レディプーリア",
+        "れんじゃーず・れでぃぷーりあ"
+      ],
+      [
+        "マイアミ・ソル",
+        "まいあみ・そる"
+      ],
+      [
+        "アイスバフタル・シュポルト・フロイント",
+        "あいすばふたる・しゅぽると・ふろいんと"
+      ],
+      [
+        "ハミルトン・ブルドッグズ",
+        "はみるとん・ぶるどっぐず"
+      ],
+      [
+        "ミシガン・ウルヴァリンズ・フットボール",
+        "みしがん・うるゔぁりんず・ふっとぼーる"
+      ],
+      [
+        "アルバカーキ・アイソトープス",
+        "あるばかーき・あいそとーぷす"
+      ],
+      [
+        "シェフィールド・シャークス",
+        "しぇふぃーるど・しゃーくす"
+      ],
+      [
+        "パルチザン・ベオグラード",
+        "ぱるちざん・べおぐらーど"
+      ],
+      [
+        "サンディエゴ・マリナーズ",
+        "さんでぃえご・まりなーず"
+      ],
+      [
+        "ミネソタ・ゴールデン・ゴーファーズ・フットボール",
+        "みねそた・ごーるでん・ごーふぁーず・ふっとぼーる"
+      ],
+      [
+        "モンテレイ・サルタンズ",
+        "もんてれい・さるたんず"
+      ],
+      [
+        "アーカンソー・リムロッカーズ",
+        "あーかんそー・りむろっかーず"
+      ],
+      [
+        "ヤギエロニア・ビャウィストク",
+        "やぎえろにあ・びゃうぃすとく"
+      ],
+      [
+        "バーミンガム・ブルズ",
+        "ばーみんがむ・ぶるず"
+      ],
+      [
+        "ネブラスカ・コーンハスカーズ・フットボール",
+        "ねぶらすか・こーんはすかーず・ふっとぼーる"
       ]
     ]
   },

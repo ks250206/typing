@@ -31,6 +31,12 @@ export const typewellSets = [
     pages: 0,
   },
   { id: 'typewell-sf', category: 'sf', title: 'SF小説の名前', pages: 0 },
+  {
+    id: 'typewell-sports',
+    category: 'sports',
+    title: 'スポーツチーム名',
+    pages: 0,
+  },
 ] as const
 export const typewellPassages: Passage[] = typewellSets.map((set, index) => ({
   id: set.id,
