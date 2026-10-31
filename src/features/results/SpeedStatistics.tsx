@@ -86,7 +86,9 @@ export function SpeedStatistics({
         </div>
         <div>
           <dt>変動係数</dt>
-          <dd>{summary.mean ? n((summary.sd / summary.mean) * 100) : '0'}%</dd>
+          <dd>
+            {summary.mean ? `${n((summary.sd / summary.mean) * 100)}%` : '—'}
+          </dd>
         </div>
         <div>
           <dt>90パーセンタイル</dt>
@@ -96,15 +98,15 @@ export function SpeedStatistics({
           <>
             <div>
               <dt>平均打鍵間隔</dt>
-              <dd>{n(intervals.mean)} ms</dd>
+              <dd>{intervals.max ? `${n(intervals.mean)} ms` : '—'}</dd>
             </div>
             <div>
               <dt>打鍵間隔の中央値</dt>
-              <dd>{n(intervals.median)} ms</dd>
+              <dd>{intervals.max ? `${n(intervals.median)} ms` : '—'}</dd>
             </div>
             <div>
               <dt>最大打鍵間隔</dt>
-              <dd>{n(intervals.max)} ms</dd>
+              <dd>{intervals.max ? `${n(intervals.max)} ms` : '—'}</dd>
             </div>
             <div>
               <dt>最長連続ミス</dt>
@@ -115,7 +117,7 @@ export function SpeedStatistics({
       </dl>
       <p className="small muted">
         完全な1秒区間 {summary.samples}
-        個の正しい実打鍵KPMで計算。無入力区間は0、末尾の1秒未満は除外します。順位は同じ文章セット・配列・モード・出題方式の、統計またはログが残る保存記録と今回を比較（同率は同順位）。最低速度も高いほど上位です。休止時間を除き、打鍵間隔の統計は0msを除外します。
+        個の正しい実打鍵KPMで計算。無入力区間は0、末尾の1秒未満は除外します。順位は同じ文章セット・配列・モード・出題方式の、統計またはログが残る保存記録と今回を比較（同率は同順位）。最低速度も高いほど上位です。休止時間を除き、打鍵間隔の統計は0msを除外します。平均速度0の変動係数や、打鍵間隔の標本がない項目は—で表示します。
       </p>
     </section>
   )
