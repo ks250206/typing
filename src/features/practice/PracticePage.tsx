@@ -10,6 +10,7 @@ import { PracticeSelection } from './PracticeSelection'
 import { PracticeSidebar } from './PracticeSidebar'
 import type { PracticeSession } from './usePracticeSession'
 import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
+import { FavoriteButton } from '../favorites/FavoriteButton'
 
 export function PracticePage({
   session,
@@ -17,12 +18,16 @@ export function PracticePage({
   setSettings,
   records,
   bestRecords,
+  isFavorite,
+  onToggleFavorite,
 }: {
   session: PracticeSession
   settings: Settings
   setSettings: Dispatch<SetStateAction<Settings>>
   records: RecordEntry[]
   bestRecords: RecordEntry[]
+  isFavorite: boolean
+  onToggleFavorite: () => void
 }) {
   const {
     selected,
@@ -65,16 +70,22 @@ export function PracticePage({
             eyebrow="SOLO PRACTICE"
             title="タイピング"
             actions={
-              <button
-                className="text-button"
-                onClick={() => {
-                  pause()
-                  handleStageChange(0)
-                }}
-              >
-                文章を選ぶ
-                <ArrowRight size={14} />
-              </button>
+              <>
+                <FavoriteButton
+                  active={isFavorite}
+                  onClick={onToggleFavorite}
+                />
+                <button
+                  className="text-button"
+                  onClick={() => {
+                    pause()
+                    handleStageChange(0)
+                  }}
+                >
+                  文章を選ぶ
+                  <ArrowRight size={14} />
+                </button>
+              </>
             }
           />
           <MissionCarousel

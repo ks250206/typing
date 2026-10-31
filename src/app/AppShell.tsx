@@ -23,6 +23,7 @@ export function AppShell({
   misses,
   children,
   dialogs,
+  favorites,
 }: {
   settings: Settings
   tab: AppTab
@@ -32,6 +33,7 @@ export function AppShell({
   misses: number
   children: ReactNode
   dialogs: ReactNode
+  favorites: ReactNode
 }) {
   return (
     <div
@@ -68,7 +70,7 @@ export function AppShell({
           </span>
         </a>
         <div className="nav-label">WORKSPACE</div>
-        <nav>
+        <nav aria-label="WORKSPACE">
           {[
             ['practice', Keyboard, 'タイピング'],
             ['battle', Target, 'CPU対戦'],
@@ -91,16 +93,7 @@ export function AppShell({
             )
           })}
         </nav>
-        <div className="sidebar-note">
-          <span className="tiny-label">YOUR OWN PACE</span>
-          <p>速さの、その先へ。</p>
-          <span>
-            一文字ずつ、深く潜る。
-            <br />
-            自分のリズムで、長文を。
-          </span>
-          <div className="note-orbit">✧</div>
-        </div>
+        {favorites}
         <button className="nav-item settings-link" onClick={() => onSettings()}>
           <Settings2 size={18} />
           環境設定

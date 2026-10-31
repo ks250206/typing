@@ -27,7 +27,7 @@ export function useGameShortcuts(
         document.querySelector('[aria-modal="true"]') ||
         (event.target instanceof Element &&
           event.target.closest(
-            'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"], [role="listbox"], [role="slider"]',
+            '[data-game-shortcuts="off"], input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"], [role="listbox"], [role="slider"]',
           ))
       )
         return

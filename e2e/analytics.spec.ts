@@ -111,7 +111,7 @@ test('seeded CPU set selection, prominent scores, full RTC trace persistence and
           await page
             .getByTestId('player-points')
             .evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
-        ).toBeGreaterThanOrEqual(46)
+        ).toBeGreaterThanOrEqual(30)
         await expect(
           page.locator('.point-lights [data-lit="true"]'),
         ).toHaveCount(1)

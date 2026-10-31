@@ -12,6 +12,9 @@ import { useSettings } from '../features/settings/useSettings'
 import { AppShell } from './AppShell'
 import type { AppTab } from './AppShell'
 import './App.css'
+import type { Favorite } from '../domain/records/favorites'
+import { useFavorites } from '../features/favorites/useFavorites'
+import { FavoritesSidebar } from '../features/favorites/FavoritesSidebar'
 
 const WeakPractice = lazy(() => import('../features/practice/WeakPractice'))
 const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
@@ -25,13 +28,38 @@ export default function App() {
   >('closed')
   const [ghostSource, setGhostSource] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
+  const [cpuFavorite, setCpuFavorite] = useState<Extract<
+    Favorite,
+    { kind: 'cpu' }
+  > | null>(null)
+  const [cpuRequest, setCpuRequest] = useState(0)
   const { settings, setSettings } = useSettings(setNotice)
   const history = useHistory(setNotice)
   const session = usePracticeSession(settings, history.persistResult, setNotice)
+  const favorites = useFavorites(setNotice)
+  const practiceFavorite: Favorite = {
+    kind: 'practice',
+    passageId: session.selected,
+    layout: settings.layout,
+  }
   const navigate = (next: AppTab) => {
     if (tab === 'practice' && next !== 'practice')
       session.reset(session.selected, settings.layout, 0)
+    if (next !== 'battle') setCpuFavorite(null)
     setTab(next)
+  }
+  const openFavorite = (favorite: Favorite) => {
+    if (favorite.kind === 'practice') {
+      session.openRandomDocument(favorite.passageId, favorite.layout)
+      setSettings((value) => ({ ...value, layout: favorite.layout }))
+      setCpuFavorite(null)
+      setTab('practice')
+    } else {
+      setCpuReplay(null)
+      setCpuFavorite(favorite)
+      setCpuRequest((value) => value + 1)
+      navigate('battle')
+    }
   }
 
   return (
@@ -44,6 +72,13 @@ export default function App() {
         session.mistake && session.status === 'running' && tab === 'practice'
       }
       misses={session.misses}
+      favorites={
+        <FavoritesSidebar
+          items={favorites.items}
+          onSelect={openFavorite}
+          onRemove={favorites.remove}
+        />
+      }
       dialogs={
         <>
           {(settingsDialog === 'open' || settingsDialog === 'after-clear') && (
@@ -93,12 +128,16 @@ export default function App() {
       )}
       {tab === 'battle' && (
         <CpuBattle
+          key={cpuRequest}
           settings={settings}
           setSettings={setSettings}
           historyRecords={[...history.records, ...history.bestRecords]}
           onRecord={history.persistResult}
           replay={cpuReplay}
           onReplayConsumed={() => setCpuReplay(null)}
+          favorite={cpuFavorite}
+          isFavorite={favorites.has}
+          onToggleFavorite={favorites.toggle}
         />
       )}
       {tab === 'weak' && (
@@ -120,6 +159,8 @@ export default function App() {
           setSettings={setSettings}
           records={history.records}
           bestRecords={history.bestRecords}
+          isFavorite={favorites.has(practiceFavorite)}
+          onToggleFavorite={() => favorites.toggle(practiceFavorite)}
         />
       )}
       {tab === 'history' && (

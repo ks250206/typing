@@ -4,6 +4,7 @@ import { BookOpen, Check, ArrowRight } from 'lucide-react'
 import type { Passage } from '../../domain/content/passages'
 import { isTypewell } from '../../domain/content/typewell'
 import { isRtc } from '../../domain/content/rtcWords'
+import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { isEtyping } from '../../domain/content/etyping'
 import { isTrainer } from '../../domain/content/sakusaku'
 import { isConstitutionArticles } from '../../domain/content/constitutionArticles'
@@ -93,13 +94,15 @@ export function PassageLibrary({
                     ? 'R 400打 / K 280打 · シード再現'
                     : isConstitutionArticles(p.id)
                       ? '全14条 · 条単位のシャッフル · シード再現'
-                      : isRtc(p.id)
-                        ? '15問 · パートをランダム連結'
-                        : isTrainer(p.id)
-                          ? `${p.paragraphs.length}文 · 60秒 · シード再現`
-                          : isEtyping(p.id)
-                            ? '15問 · シードでシャッフル'
-                            : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
+                      : isRtcOriginal(p.id)
+                        ? '15問 · 短文をシャッフル'
+                        : isRtc(p.id)
+                          ? '15問 · パートをランダム連結'
+                          : isTrainer(p.id)
+                            ? `${p.paragraphs.length}文 · 60秒 · シード再現`
+                            : isEtyping(p.id)
+                              ? '15問 · シードでシャッフル'
+                              : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
               </span>
               <ArrowRight size={15} />
             </div>
