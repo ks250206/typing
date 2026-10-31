@@ -1,6 +1,12 @@
 import { expect, it } from 'vitest'
 import { TypingTrace } from './telemetry'
-import { intervalStatistics, paceRanks, summarizePace, validPace } from './pace'
+import {
+  intervalStatistics,
+  paceRanks,
+  summarizePace,
+  validPace,
+  movingPace,
+} from './pace'
 import type { RecordEntry } from './types'
 
 const sentence = {
@@ -30,29 +36,58 @@ it('uses complete seconds including idle seconds, rejects a fractional-only run,
   expect(validPace({ ...stats, min: -1 })).toBe(false)
   expect(summarizePace({ ...data, elapsed: 999 })).toBeUndefined()
 })
-it('ranks higher minima and maxima first, deduplicates, ignores other groups and newer dates, and handles ties', () => {
+function countedTrace(counts: number[]) {
+  const trace = new TypingTrace()
+  trace.begin(sentence, 0, 'jis')
+  for (const [second, count] of counts.entries())
+    for (let i = 0; i < count; i++)
+      trace.add('a', 'a', 0, true, second * 1000 + (i + 1) * 10)
+  return trace.finish(counts.length * 1000 + 500)
+}
+it('calculates complete trailing five-second averages before sorting raw values', () => {
+  expect(movingPace([0, 600, 0, 600])).toEqual([])
+  expect(movingPace([0, 600, 0, 600, 0, 0, 300])).toEqual([
+    { time: 5, kpm: 240 },
+    { time: 6, kpm: 240 },
+    { time: 7, kpm: 180 },
+  ])
+  const summary = summarizePace(countedTrace([0, 10, 0, 10, 0, 0, 5]))!
+  expect(summary.moving).toEqual({ window: 5, samples: 3, min: 180, max: 240 })
+  expect(validPace(summary)).toBe(true)
+  expect(validPace({ ...summary, moving: undefined })).toBe(true) // stored v1 summary remains readable
+  expect(
+    validPace({ ...summary, moving: { ...summary.moving, window: 3 } }),
+  ).toBe(false)
+  expect(
+    validPace({ ...summary, moving: { ...summary.moving, samples: 4 } }),
+  ).toBe(false)
+})
+it('ranks moving minima and maxima, deduplicates and rebuilds legacy summaries from logs without mixing raw extrema', () => {
+  const trace = countedTrace([0, 10, 0, 10, 0, 0, 5])
   const record: RecordEntry = {
     id: 'now',
     passageId: 'p',
     title: 'p',
     layout: 'onishi',
     date: '2026-10-31T01:00:00Z',
-    elapsed: 3500,
-    keys: 7,
+    elapsed: trace.elapsed,
+    keys: 25,
     misses: 0,
     accuracy: 100,
     kpm: 120,
-    trace: data,
+    trace,
   }
   const better = {
     ...record,
     id: 'better',
     date: '2026-10-30T01:00:00Z',
     trace: undefined,
-    pace: { ...summarizePace(data)!, min: 60, max: 300 },
+    pace: summarizePace(countedTrace([10, 10, 10, 0, 0, 10, 10])),
   }
   const tie = { ...record, id: 'tie', date: better.date }
   const ignored = { ...better, id: 'wrong', layout: 'jis' as const }
+  const oldPace = { ...summarizePace(trace)!, moving: undefined }
+  const legacy = { ...tie, id: 'legacy', pace: oldPace }
   expect(
     paceRanks(record, [
       record,
@@ -60,10 +95,13 @@ it('ranks higher minima and maxima first, deduplicates, ignores other groups and
       better,
       tie,
       ignored,
+      legacy,
+      { ...legacy, id: 'no-log', trace: undefined },
       { ...better, id: 'future', date: '2026-11-01T01:00:00Z' },
     ]),
-  ).toEqual({ min: 2, max: 2, count: 3 })
+  ).toEqual({ min: 2, max: 2, count: 4 })
   expect(paceRanks({ ...record, trace: undefined }, [])).toBeNull()
+  expect(paceRanks({ ...record, trace: data }, [])).toBeNull() // under 5 seconds
 })
 it('reports inter-key timing and the longest real error streak', () => {
   const trace = new TypingTrace()

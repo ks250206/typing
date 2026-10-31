@@ -4,6 +4,7 @@ import {
   intervalStatistics,
   paceRanks,
   summarizePace,
+  PACE_WINDOW,
 } from '../../domain/records/pace'
 import { recordGroup } from '../../domain/records/recordStats'
 import { readTraces } from '../../infrastructure/persistence/traceStore'
@@ -20,7 +21,11 @@ export function SpeedStatistics({
   useEffect(() => {
     let active = true
     const missing = history.filter(
-      (r) => !r.pace && !r.trace && r.hasTrace && recordGroup(r) === group,
+      (r) =>
+        (!r.pace || (r.pace.samples >= PACE_WINDOW && !r.pace.moving)) &&
+        !r.trace &&
+        r.hasTrace &&
+        recordGroup(r) === group,
     )
     void readTraces(missing.map((r) => r.id)).then((traces) => {
       if (active)
@@ -49,24 +54,38 @@ export function SpeedStatistics({
         速度統計は1秒以上の打鍵ログがある記録で表示します。
       </p>
     )
+  const unavailable =
+    summary.samples < PACE_WINDOW
+      ? `${PACE_WINDOW}秒以上の計測で順位を表示`
+      : '移動平均の算出には打鍵ログが必要です'
   const n = (v: number) => Number(v.toFixed(2)).toLocaleString('ja-JP')
   return (
     <section className="speed-statistics" aria-label="速度の詳細統計">
       <h3>速度の詳細統計</h3>
       <dl className="statistics-grid">
+        <div className="moving-stat">
+          <dt>{PACE_WINDOW}秒移動平均の最低速度</dt>
+          <dd>{summary.moving ? `${n(summary.moving.min)} KPM` : '—'}</dd>
+          <small>
+            {ranks
+              ? `過去順位 ${ranks.min} / ${ranks.count}（高いほど上位）`
+              : unavailable}
+          </small>
+        </div>
+        <div className="moving-stat">
+          <dt>{PACE_WINDOW}秒移動平均の最高速度</dt>
+          <dd>{summary.moving ? `${n(summary.moving.max)} KPM` : '—'}</dd>
+          <small>
+            {ranks ? `過去順位 ${ranks.max} / ${ranks.count}` : unavailable}
+          </small>
+        </div>
         <div>
           <dt>最低速度</dt>
           <dd>{n(summary.min)} KPM</dd>
-          <small>
-            過去順位 {ranks?.min} / {ranks?.count}（高いほど上位）
-          </small>
         </div>
         <div>
           <dt>最高速度</dt>
           <dd>{n(summary.max)} KPM</dd>
-          <small>
-            過去順位 {ranks?.max} / {ranks?.count}
-          </small>
         </div>
         <div>
           <dt>区間平均</dt>
@@ -117,7 +136,7 @@ export function SpeedStatistics({
       </dl>
       <p className="small muted">
         完全な1秒区間 {summary.samples}
-        個の正しい実打鍵KPMで計算。無入力区間は0、末尾の1秒未満は除外します。順位は同じ文章セット・配列・モード・出題方式の、統計またはログが残る保存記録と今回を比較（同率は同順位）。最低速度も高いほど上位です。休止時間を除き、打鍵間隔の統計は0msを除外します。平均速度0の変動係数や、打鍵間隔の標本がない項目は—で表示します。
+        個の正しい実打鍵KPMで計算。無入力区間は0、末尾の1秒未満は除外します。移動平均は完全な5秒区間を1秒ずつ送って計算し、過去順位はその最低・最高値のみで比較します。5秒未満は順位の対象外です。順位は同じ文章セット・配列・モード・出題方式の、移動平均の要約または再計算できるログが残る保存記録と今回を比較（同率は同順位）。最低速度も高いほど上位です。休止時間を除き、打鍵間隔の統計は0msを除外します。平均速度0の変動係数や、打鍵間隔の標本がない項目は—で表示します。
       </p>
     </section>
   )

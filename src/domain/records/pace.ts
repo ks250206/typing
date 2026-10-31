@@ -1,6 +1,7 @@
 import type { SessionTrace } from './telemetry'
 import type { RecordEntry } from './types'
 import { recordGroup } from './recordStats'
+export const PACE_WINDOW = 5
 
 export interface PaceSummary {
   version: 1
@@ -12,6 +13,24 @@ export interface PaceSummary {
   variance: number
   sd: number
   p90: number
+  moving?: {
+    window: typeof PACE_WINDOW
+    samples: number
+    min: number
+    max: number
+  }
+}
+/** Only complete trailing windows qualify; never compare a short warm-up average. */
+export function movingPace(values: readonly number[]) {
+  const result: { time: number; kpm: number }[] = []
+  let sum = 0
+  for (const [i, value] of values.entries()) {
+    sum += value
+    if (i >= PACE_WINDOW) sum -= values[i - PACE_WINDOW]
+    if (i >= PACE_WINDOW - 1)
+      result.push({ time: i + 1, kpm: sum / PACE_WINDOW })
+  }
+  return result
 }
 const quantile = (sorted: number[], p: number) => {
   const position = (sorted.length - 1) * p
@@ -30,7 +49,9 @@ export function summarizePace(trace: SessionTrace): PaceSummary | undefined {
     )
     if (stroke.correct && index < counts.length) counts[index]++
   }
-  const values = counts.map((count) => count * 60).sort((a, b) => a - b)
+  const chronological = counts.map((count) => count * 60)
+  const moving = movingPace(chronological)
+  const values = [...chronological].sort((a, b) => a - b)
   if (!values.length) return undefined
   const mean = values.reduce((sum, v) => sum + v, 0) / values.length
   const variance =
@@ -45,6 +66,16 @@ export function summarizePace(trace: SessionTrace): PaceSummary | undefined {
     variance,
     sd: Math.sqrt(variance),
     p90: quantile(values, 0.9),
+    ...(moving.length
+      ? {
+          moving: {
+            window: PACE_WINDOW,
+            samples: moving.length,
+            min: Math.min(...moving.map((p) => p.kpm)),
+            max: Math.max(...moving.map((p) => p.kpm)),
+          },
+        }
+      : {}),
   }
 }
 export function validPace(value: unknown): value is PaceSummary {
@@ -60,16 +91,25 @@ export function validPace(value: unknown): value is PaceSummary {
     }) &&
     v.min <= v.max &&
     v.mean >= v.min &&
-    v.mean <= v.max
+    v.mean <= v.max &&
+    (v.moving === undefined ||
+      (!!v.moving &&
+        v.moving.window === PACE_WINDOW &&
+        v.moving.samples === v.samples - PACE_WINDOW + 1 &&
+        v.moving.samples > 0 &&
+        Number.isFinite(v.moving.min) &&
+        Number.isFinite(v.moving.max) &&
+        v.moving.min >= 0 &&
+        v.moving.min <= v.moving.max))
   )
 }
 export function paceRanks(
   record: RecordEntry,
   history: RecordEntry[],
-  summary = record.pace ??
-    (record.trace ? summarizePace(record.trace) : undefined),
+  summary = record.trace ? summarizePace(record.trace) : record.pace,
 ) {
-  if (!summary) return null
+  if (!summary?.moving) return null
+  const current = summary.moving
   const past = [
     ...new Map(
       history
@@ -82,12 +122,12 @@ export function paceRanks(
         .map((r) => [r.id, r]),
     ).values(),
   ].flatMap((r) => {
-    const pace = r.pace ?? (r.trace ? summarizePace(r.trace) : undefined)
-    return pace ? [pace] : []
+    const pace = r.trace ? summarizePace(r.trace) : r.pace
+    return pace?.moving?.window === current.window ? [pace.moving] : []
   })
   return {
-    min: 1 + past.filter((p) => p.min > summary.min).length,
-    max: 1 + past.filter((p) => p.max > summary.max).length,
+    min: 1 + past.filter((p) => p.min > current.min).length,
+    max: 1 + past.filter((p) => p.max > current.max).length,
     count: past.length + 1,
   }
 }

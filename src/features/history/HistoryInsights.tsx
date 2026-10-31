@@ -16,6 +16,7 @@ import { Select } from '../../shared/ui/Select'
 import { readTrace } from '../../infrastructure/persistence/traceStore'
 import { analyzeTrace } from '../../domain/records/telemetry'
 import type { SessionTrace } from '../../domain/records/telemetry'
+import { chartAxis } from '../../domain/records/chartAxis'
 import { ChartYAxis } from '../results/PaceChart'
 import { SpeedStatistics } from '../results/SpeedStatistics'
 const ReplayPlayer = lazy(() => import('./ReplayPlayer'))
@@ -63,10 +64,12 @@ export function HistoryInsights({
   const trend = recordTrend(recent, metric)
   const top = topRecords(all.filter(match), metric)
   const points = trend.slice(-30)
-  const maximum = Math.max(
-    1,
-    ...points.map((p) => Math.max(recordValue(p.record, metric), p.average)),
-  )
+  const maximum = chartAxis(
+    Math.max(
+      1,
+      ...points.map((p) => Math.max(recordValue(p.record, metric), p.average)),
+    ),
+  ).max
   return (
     <section className="history-insights" aria-label="文章別の記録分析">
       <h3>文章別の記録分析</h3>
@@ -168,7 +171,7 @@ export function HistoryInsights({
           {points.map((p, i) => (
             <circle
               key={p.record.id}
-              cx={20 + (i * 600) / Math.max(1, points.length - 1)}
+              cx={58 + (i * 560) / Math.max(1, points.length - 1)}
               cy={140 - (recordValue(p.record, metric) / maximum) * 115}
               r="3"
               fill="#61e8ff"
@@ -262,7 +265,8 @@ export function RecordDetails({
   )
   const trace = loaded?.trace
   const rows = analysis?.buckets.slice(start, start + 120) ?? []
-  const max = Math.max(1, ...rows.map((b) => b.kpm))
+  const plotRows = rows.filter((b) => b.time * 1000 <= (trace?.elapsed ?? 0))
+  const max = chartAxis(Math.max(0, ...plotRows.map((b) => b.kpm))).max
   return (
     <section className="record-details" aria-label="打鍵の詳細">
       <div className="detail-heading">
@@ -315,7 +319,7 @@ export function RecordDetails({
           <p className="small muted">
             {trace.strokes.length}打鍵（実ミス{' '}
             {trace.strokes.filter((s) => !s.correct).length}）·
-            一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
+            グラフは完全な1秒区間のみで、末尾の端数区間は表に参考値として表示します。一時停止を除く経過時刻。分析のKPMは有効な実打鍵数で算出し、タイプウェルの基準打鍵KPMとは区別します。
           </p>
           {tab === 'replay' && (
             <Suspense fallback={<p role="status">リプレイを準備中…</p>}>
@@ -349,27 +353,28 @@ export function RecordDetails({
                 <ChartYAxis max={max} />
                 <polyline
                   className="chart-kpm"
-                  points={rows
+                  points={plotRows
                     .map(
                       (b, i) =>
-                        `${58 + (i * 560) / Math.max(1, rows.length - 1)},${140 - (b.kpm / max) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, plotRows.length - 1)},${140 - (b.kpm / max) * 115}`,
                     )
                     .join(' ')}
                 />
                 <polyline
                   className="chart-average"
-                  points={rows
+                  points={plotRows
                     .map(
                       (b, i) =>
-                        `${58 + (i * 560) / Math.max(1, rows.length - 1)},${140 - (b.missRate / 100) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, plotRows.length - 1)},${140 - (b.missRate / 100) * 115}`,
                     )
                     .join(' ')}
                 />
-                <text x="8" y="15">
-                  KPM 0–{max.toFixed(0)} / ミス率 0–100%
+                <text x="618" y="15" textAnchor="end">
+                  ミス率 0–100%
                 </text>
                 <text x="8" y="157">
-                  {start}–{Math.min(start + 120, analysis.buckets.length)}秒 ·
+                  {start}–
+                  {Math.min(start + 120, Math.floor(trace.elapsed / 1000))}秒 ·
                   シアン：KPM / 紫：実ミス率
                 </text>
               </svg>

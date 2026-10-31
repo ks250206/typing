@@ -20,7 +20,9 @@ const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
 export default function App() {
   const [tab, setTab] = useState<AppTab>('practice')
   const [notice, setNotice] = useState('')
-  const [showSettings, setShowSettings] = useState(false)
+  const [settingsDialog, setSettingsDialog] = useState<
+    'closed' | 'open' | 'clearing' | 'after-clear'
+  >('closed')
   const [ghostSource, setGhostSource] = useState<RecordEntry | null>(null)
   const [cpuReplay, setCpuReplay] = useState<RecordEntry | null>(null)
   const { settings, setSettings } = useSettings(setNotice)
@@ -36,23 +38,32 @@ export default function App() {
       settings={settings}
       tab={tab}
       onNavigate={navigate}
-      onSettings={() => setShowSettings(true)}
+      onSettings={() => setSettingsDialog('open')}
       mistake={
         session.mistake && session.status === 'running' && tab === 'practice'
       }
       misses={session.misses}
       dialogs={
         <>
-          {showSettings && (
+          {(settingsDialog === 'open' || settingsDialog === 'after-clear') && (
             <SettingsDialog
               settings={settings}
               setSettings={setSettings}
-              onClose={() => setShowSettings(false)}
+              onClose={() => setSettingsDialog('closed')}
+              onRequestClear={() => {
+                setSettingsDialog('clearing')
+                history.requestClear()
+              }}
+              focusClear={settingsDialog === 'after-clear'}
             />
           )}
           {history.confirmClear && (
             <ClearHistoryDialog
-              onClose={history.cancelClear}
+              onClose={() => {
+                history.cancelClear()
+                if (settingsDialog === 'clearing')
+                  setSettingsDialog('after-clear')
+              }}
               onConfirm={history.clearRecords}
             />
           )}

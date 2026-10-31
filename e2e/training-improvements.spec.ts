@@ -175,7 +175,7 @@ test('a legacy saved log yields reusable words without particles; a repeated run
     'true',
   )
   for (let i = 0; i < 3; i++) {
-    await page.clock.runFor(1100)
+    await page.clock.runFor(2200)
     await page.keyboard.type('ginnga')
   }
   await expect(
@@ -188,6 +188,15 @@ test('a legacy saved log yields reusable words without particles; a repeated run
   await expect(
     page.getByRole('region', { name: '速度の詳細統計' }),
   ).toContainText('過去順位 1 / 1')
+  const rawMinimum = page
+    .locator('.statistics-grid > div')
+    .filter({ has: page.getByText('最低速度', { exact: true }) })
+  await expect(rawMinimum).not.toContainText('過去順位')
+  await expect(page.locator('.result-pace .pace-moving')).not.toHaveAttribute(
+    'points',
+    '',
+  )
+
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -210,12 +219,15 @@ test('a legacy saved log yields reusable words without particles; a repeated run
   await page.keyboard.press('Space')
   await page.clock.runFor(3000)
   for (let i = 0; i < 3; i++) {
-    await page.clock.runFor(1500)
+    await page.clock.runFor(2500)
     await page.keyboard.type('ginnga')
   }
   await expect(
     page.getByRole('region', { name: '速度の詳細統計' }),
   ).toContainText('過去順位 1 / 2')
+  await expect(
+    page.locator('.statistics-grid .moving-stat').first(),
+  ).toContainText('過去順位 2 / 2')
   await expect
     .poll(() =>
       page.evaluate(
@@ -295,4 +307,160 @@ test('changing layout in weak practice also resets the suspended normal engine',
     'next',
   ) // い
   await expect(page.locator('[data-error="true"]')).toHaveCount(0)
+})
+
+test('settings delete uses a separate confirmation, cancels safely, removes stored records and logs, and preserves settings', async ({
+  page,
+}) => {
+  await seedLog(page)
+  await setup(page)
+  await page.setViewportSize({ width: 390, height: 600 })
+  await page.getByRole('button', { name: '環境設定', exact: true }).click()
+  const settings = page.getByRole('dialog')
+  const clear = settings.getByRole('button', {
+    name: '記録をすべて消去',
+    exact: true,
+  })
+  const box = await settings.boundingBox()
+  expect(box!.y).toBeGreaterThanOrEqual(24)
+  expect(box!.y + box!.height).toBeLessThanOrEqual(576)
+  const preferences = await page.evaluate(() =>
+    localStorage.getItem('yohaku.settings.v1'),
+  )
+  await clear.click()
+  const confirm = page.getByRole('alertdialog')
+  await expect(settings).toHaveCount(0)
+  await expect(
+    confirm.getByRole('button', { name: 'キャンセル', exact: true }),
+  ).toBeFocused()
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
+    ),
+  ).toBe(1)
+  await confirm.getByRole('button', { name: 'キャンセル', exact: true }).click()
+  await expect(clear).toBeFocused()
+  await clear.click()
+  await page.keyboard.press('Escape')
+  await expect(clear).toBeFocused()
+  await clear.click()
+  await confirm.getByRole('button', { name: '削除する', exact: true }).click()
+  await expect(confirm).toHaveCount(0)
+  await expect(clear).toBeFocused()
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]'),
+    ),
+  ).toEqual([])
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('galactype.bests.v1') ?? '[]'),
+    ),
+  ).toEqual([])
+  expect(
+    await page.evaluate(() => localStorage.getItem('yohaku.settings.v1')),
+  ).toBe(preferences)
+  const count = await page.evaluate(
+    () =>
+      new Promise<number>((resolve, reject) => {
+        const request = indexedDB.open('galactype.telemetry.v1', 1)
+        request.onsuccess = () => {
+          const db = request.result,
+            tx = db.transaction('traces'),
+            rows = tx.objectStore('traces').count()
+          rows.onsuccess = () => resolve(rows.result)
+          tx.oncomplete = () => db.close()
+        }
+        request.onerror = () => reject(request.error)
+      }),
+  )
+  expect(count).toBe(0)
+  await settings.getByRole('button', { name: '閉じる', exact: true }).click()
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await expect(
+    page.getByText('最初の一篇から、はじめよう。', { exact: true }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await expect(
+    page.getByRole('button', { name: '夜更けの図書室', exact: true }),
+  ).toBeVisible()
+})
+
+test('failed settings deletion keeps the confirmation and stored data for retry', async ({
+  page,
+}) => {
+  await seedLog(page)
+  await setup(page)
+  await page.getByRole('button', { name: '環境設定', exact: true }).click()
+  await page
+    .getByRole('button', { name: '記録をすべて消去', exact: true })
+    .click()
+  await page.evaluate(() =>
+    Object.defineProperty(indexedDB, 'open', {
+      configurable: true,
+      value: () => {
+        throw new Error('test: storage blocked')
+      },
+    }),
+  )
+  const confirm = page.getByRole('alertdialog')
+  await confirm.getByRole('button', { name: '削除する', exact: true }).click()
+  await expect(confirm.getByRole('alert')).toContainText(
+    '記録を削除できませんでした',
+  )
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(localStorage.getItem('yohaku.history.v1') ?? '[]').length,
+    ),
+  ).toBe(1)
+  await expect(
+    confirm.getByRole('button', { name: 'キャンセル', exact: true }),
+  ).toBeFocused()
+  await confirm.getByRole('button', { name: 'キャンセル', exact: true }).click()
+  await page.reload()
+  await page
+    .getByRole('button', { name: '苦手ワード練習', exact: true })
+    .click()
+  await expect(page.getByLabel('銀河を練習', { exact: true })).toBeVisible()
+})
+
+test('history axes use labeled hundreds and unlabeled fifty-step minor ticks with a rounded maximum', async ({
+  page,
+}) => {
+  await seedLog(page)
+  await setup(page)
+  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
+  await choose(page.getByLabel('記録の主指標', { exact: true }), 'kpm')
+  const axis = page.locator('.history-insights .chart-y-axis')
+  await expect(axis.locator('[data-tick="major"] text')).toHaveText([
+    '0',
+    '100',
+    '200',
+    '300',
+  ])
+  await expect(axis.locator('[data-tick="minor"]')).toHaveCount(3)
+  await expect(axis.locator('[data-tick="minor"] text')).toHaveCount(0)
+  await page
+    .locator('.history-table tbody tr')
+    .first()
+    .getByRole('button', { name: '詳細を見る', exact: true })
+    .click()
+  const detail = page.getByRole('region', { name: '打鍵の詳細', exact: true })
+  await expect(detail.locator('.chart-y-axis')).toBeVisible()
+  const labels = await detail
+    .locator('.chart-y-axis [data-tick="major"] text')
+    .allTextContents()
+  expect(labels.length).toBeGreaterThan(1)
+  expect(labels.map(Number).every((v, i) => v === i * 100)).toBe(true)
+  await expect(
+    detail.locator('.chart-y-axis [data-tick="minor"] text'),
+  ).toHaveCount(0)
+  await page.setViewportSize({ width: 390, height: 900 })
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
 })

@@ -748,6 +748,8 @@ td small {
   padding: 25px;
 }
 .modal {
+  max-height: calc(100dvh - 50px);
+  overflow-y: auto;
   max-width: 450px;
   width: 100%;
   background: #10152f;
@@ -3781,4 +3783,39 @@ rt {
 .chart-y-axis line {
   stroke: #6888a64d;
   stroke-width: 1;
+}
+
+.result-pace .pace-moving {
+  stroke: #c1a4ff;
+  stroke-dasharray: 5 3;
+}
+.pace-axis[data-tick='minor'] line,
+.chart-y-axis [data-tick='minor'] line {
+  stroke-opacity: 0.4;
+  stroke-dasharray: 2 4;
+}
+.statistics-grid .moving-stat {
+  border-color: #b899e94d;
+  background: #201e3c;
+}
+.settings-records {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #ce6c875e;
+  border-radius: 8px;
+  background: #351d302e;
+}
+.settings-records h3 {
+  font-size: 14px;
+  color: #ffc7d5;
+}
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: #ffd5dd;
+  border: 1px solid #d77391;
+  border-radius: 6px;
+  background: #63273c;
 }
