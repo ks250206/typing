@@ -491,3 +491,5 @@ RTC2019とRTC2023は、提供された `RTC2019word5.zip`・`RTC2023word2.zip` �
 - **RTC風**：AI・機械学習・LLM。100の前半と100の後半を組み合わせた10,000通りからシードで15問を生成。CPU対戦では同じ仕組みで問題列を延長します。
 
 全文確認・CPU対戦・保存記録・リプレイ・ゴーストにも対応します。原稿と読みは `data/sources/themes/themes.json`、アプリ用JSONは `src/data/generated/themes.json` です。`python3 scripts/rebuild-data.py` で再生成できます。文章の区分と参考資料は[原稿の説明](data/sources/themes/README.md)を参照してください。
+
+追加本文とRTC風のフレーズも、既存セットと同じ単語単位の余白・色分け・入力済み単語の消去に対応する細かな本文／読み区間を保持しています。
