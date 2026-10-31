@@ -1,8 +1,8 @@
 """Import supplied Words XML, retaining exact Display/Characters pairs and source order.
 
-Usage: python3 scripts/import-etyping.py path/to/*.xml
-With no paths, rebuild from the bundled source snapshots.
-Only identical same-title sets are deduplicated; differing sets fail explicitly.
+Usage: python3 scripts/import-etyping.py
+Rebuild from the bundled source and reviewed word-boundary snapshots.
+Same-title rounds are one set; existing snapshots take precedence.
 """
 from functools import lru_cache
 from pathlib import Path
@@ -42,6 +42,8 @@ REVIEWED = {
 }
 
 
+REVIEWED.update(json.loads((SOURCES / 'reviewed-readings.json').read_text())['kanji_readings'])
+
 def normalize(text):
     return ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c
                    for c in unicodedata.normalize('NFKC', text))
@@ -79,23 +81,56 @@ def align(text, reading):
 
 
 def main():
-    paths = list(map(Path, sys.argv[1:])) or sorted(SOURCES.glob('*.xml'))
+    paths = list(map(Path, sys.argv[1:])) or sorted(SOURCES.glob('*.xml'), key=lambda p: (p.name.startswith('annual-'), p.name))
+    catalog_path = SOURCES / 'weekly-catalog.json'
+    identifiers = dict(IDS)
+    if catalog_path.exists():
+        identifiers.update({entry['title']: entry['id'].removeprefix('etyping-')
+                            for entry in json.loads(catalog_path.read_text())['sets']})
+    snapshot = json.loads((SOURCES / 'word-segmentation.json').read_text())
+    if snapshot['metadata']['reviewed_readings_sha256'] != hashlib.sha256((SOURCES / 'reviewed-readings.json').read_bytes()).hexdigest():
+        raise ValueError('Reviewed readings changed; regenerate the word segmentation snapshot')
+    annotations = {(row[0], row[1]): row for row in snapshot['entries']}
     result = {}
     for path in paths:
         raw = path.read_bytes()
+        if snapshot['metadata']['sources_sha256'].get(path.name) != hashlib.sha256(raw).hexdigest():
+            raise ValueError(f'Segmentation snapshot does not match source: {path.name}')
         root = ET.fromstring(raw)
-        title = re.sub(r'\(\d+回\)$', '', root.findtext('Name', '')).strip()
-        identifier = IDS[title]
+        title = re.sub(r'[（(]\d+回[）)]$', '', root.findtext('Name', '')).strip()
+        # Previously imported titles can fall outside a future 52-week window.
+        # Their canonical filename still carries the registered stable ID.
+        identifier = identifiers.get(title)
+        if identifier is None and path.name.startswith('annual-'):
+            identifier = path.stem.removeprefix('annual-')
+        if not identifier:
+            raise ValueError(f'Unknown title without a stable identifier: {title}')
         pairs = [(w.findtext('Display'), w.findtext('Characters')) for w in root.findall('.//Word')]
         if not pairs or any(not t or not r for t, r in pairs):
             raise ValueError(f'Empty word in {path}')
         source = {'file': path.name, 'sha256': hashlib.sha256(raw).hexdigest(), 'count': len(pairs)}
         if identifier in result:
-            if pairs != [(r[0], r[1]) for r in result[identifier]['entries']]:
-                raise ValueError(f'Different data for same title: {title}')
-            result[identifier]['sources'].append(source)
+            # All aliases are audited in weekly-catalog.json. Never replace a
+            # registered corpus with a later round of the same title.
+            if pairs == [(r[0], r[1]) for r in result[identifier]['entries']]:
+                result[identifier]['sources'].append(source)
             continue
-        rows = [[text, reading, align(text, reading)] for text, reading in pairs]
+        rows = []
+        for text, reading in pairs:
+            row = annotations.get((text, reading))
+            if row is None:
+                raise ValueError(f'Missing word annotation: {text!r}')
+            segments, starts = row[2:]
+            if ''.join(part[0] for part in segments) != text or ''.join(part[1] for part in segments) != reading:
+                raise ValueError(f'Word annotation mismatch: {text!r}')
+            offsets = set()
+            offset = 0
+            for surface, _ in segments:
+                offsets.add(offset)
+                offset += len(surface)
+            if starts != sorted(set(starts)) or any(start <= 0 or start >= len(text) or start not in offsets for start in starts):
+                raise ValueError(f'Invalid word boundaries: {text!r}')
+            rows.append(row)
         result[identifier] = {'id': 'etyping-' + identifier, 'title': title, 'sources': [source], 'entries': rows}
     output = generated_path('etyping.json')
     output.write_text(json.dumps(list(result.values()), ensure_ascii=False, separators=(',', ':')) + '\n')

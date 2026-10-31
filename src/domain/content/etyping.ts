@@ -8,15 +8,17 @@ export const etypingPassages: Passage[] = data.map((set) => ({
   title: set.title,
   genre: 'e-typing',
   accent: 'E',
+  splitSentences: false,
   subtitle: `${set.entries.length}文から、シードでランダムに15問出題。`,
   source: {
     label: 'uaaaaaaaa.com',
     url: 'https://uaaaaaaaa.com/typing/word',
     kind: 'provided',
   },
-  paragraphs: set.entries.map(([text, reading, alignment]) => ({
+  paragraphs: set.entries.map(([text, reading, alignment, starts]) => ({
     text: text as string,
     reading: reading as string,
+    wordStarts: starts as number[],
     segments: (alignment as string[][]).map(([text, reading]) => ({
       text,
       reading,

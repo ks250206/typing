@@ -6,9 +6,10 @@ const japaneseWords = new Intl.Segmenter('ja', { granularity: 'word' })
 /** Map word boundaries through the reviewed text/reading alignment, never ratios. */
 export function sentenceWordStarts(sentence: Sentence) {
   const text = new Set(
-    [...japaneseWords.segment(sentence.text)]
-      .filter((part) => part.isWordLike && part.index > 0)
-      .map((part) => part.index),
+    sentence.wordStarts ??
+      [...japaneseWords.segment(sentence.text)]
+        .filter((part) => part.isWordLike && part.index > 0)
+        .map((part) => part.index),
   )
   const reading = new Set<number>()
   const segments = new Set<number>()
