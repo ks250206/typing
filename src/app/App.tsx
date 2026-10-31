@@ -16,7 +16,7 @@ import './App.css'
 const WeakPractice = lazy(() => import('../features/practice/WeakPractice'))
 const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
 
-/** Connect feature APIs here; feature state survives page changes. */
+/** Connect feature APIs here; leaving practice cancels its current game. */
 export default function App() {
   const [tab, setTab] = useState<AppTab>('practice')
   const [notice, setNotice] = useState('')
@@ -29,7 +29,8 @@ export default function App() {
   const history = useHistory(setNotice)
   const session = usePracticeSession(settings, history.persistResult, setNotice)
   const navigate = (next: AppTab) => {
-    session.pause()
+    if (tab === 'practice' && next !== 'practice')
+      session.reset(session.selected, settings.layout, 0)
     setTab(next)
   }
 

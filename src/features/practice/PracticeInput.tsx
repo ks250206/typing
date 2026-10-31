@@ -138,7 +138,11 @@ export function PracticeInput({
               <Play size={24} />
               再開する
             </button>
-            <p>計測を止めています</p>
+            <p>
+              {session.weak
+                ? '計測を止めています'
+                : 'Space / Esc / Enter で再開 · R でやり直す'}
+            </p>
           </div>
         )}
         {status === 'countdown' && (

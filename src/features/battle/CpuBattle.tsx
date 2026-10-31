@@ -33,6 +33,7 @@ import {
 import type { RecordEntry, Settings } from '../../domain/records/types'
 
 import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
+import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
 
 function loadCpu(): CpuConfig {
   try {
@@ -252,6 +253,25 @@ export function CpuBattle({
     render((v) => v + 1)
   }
   const phase = match?.phase
+  const nextRound = () => {
+    model.current?.nextRound(synchronize())
+    render((v) => v + 1)
+    requestAnimationFrame(() => area.current?.focus())
+  }
+  useGameShortcuts((event) => {
+    const key = event.key.toLowerCase()
+    const currentPhase = model.current?.phase
+    if (
+      currentPhase === 'round-result' &&
+      ['n', 's', ' ', 'enter'].includes(key)
+    )
+      return nextRound
+    if (currentPhase === 'finished' && key === 'r') return start
+    if (currentPhase === 'paused') {
+      if ([' ', 'escape', 'enter'].includes(key)) return resume
+      if (key === 'r') return start
+    }
+  })
   const preset =
     cpuPresets.find(
       (p) =>
@@ -525,11 +545,7 @@ export function CpuBattle({
                 history={historyRecords}
                 match={match}
                 result={result}
-                onNext={() => {
-                  match.nextRound(synchronize())
-                  render((v) => v + 1)
-                  requestAnimationFrame(() => area.current?.focus())
-                }}
+                onNext={nextRound}
                 onRematch={start}
               />
             ) : (
@@ -590,14 +606,20 @@ export function CpuBattle({
                     </span>
                   )}
                   {phase === 'paused' && (
-                    <button className="primary-button" onClick={resume}>
-                      対戦を再開する
-                    </button>
+                    <>
+                      <button className="primary-button" onClick={resume}>
+                        対戦を再開する
+                      </button>
+                      <small>Space / Esc / Enter で再開 · R でリスタート</small>
+                    </>
                   )}
                 </div>
               </>
             )}
-            <div className="battle-actions">
+            <div
+              className="battle-actions"
+              onMouseDown={(event) => event.preventDefault()}
+            >
               <span>
                 {point} pt · {title} · 実ミス率{' '}
                 {formatMissRate(titleKeys, titleMisses)}

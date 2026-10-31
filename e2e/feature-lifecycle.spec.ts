@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-// Feature extraction must not turn page changes into practice-session remounts.
-test('practice survives navigation and both dialogs restore focus without restarting its clock', async ({
+test('dialogs preserve practice progress and focus; leaving the page cancels the game', async ({
   page,
 }) => {
   const errors: string[] = []
@@ -31,22 +30,9 @@ test('practice survives navigation and both dialogs restore focus without restar
   const progress = await page.locator('.typed-roman').textContent()
   const keys = page.locator('.miss-stat strong').nth(1)
   await expect(keys).toHaveText('2')
-  await page.getByRole('button', { name: '練習の記録', exact: true }).click()
-  await page.clock.runFor(120000)
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await expect(
-    page.locator('.practice-overlay[data-phase=paused]'),
-  ).toBeVisible()
-  await expect(keys).toHaveText('2')
-  await expect(page.locator('.typed-roman')).toHaveText(progress!)
-  await expect(
-    page
-      .locator('.stat-grid > div')
-      .filter({ hasText: '経過時間' })
-      .locator('strong'),
-  ).toHaveText('00:01')
   const settings = page.getByRole('button', { name: '環境設定', exact: true })
   await settings.click()
+  await page.clock.runFor(120000)
   const dialog = page.getByRole('dialog')
   const first = dialog.getByRole('button', { name: '閉じる', exact: true })
   const last = dialog.getByRole('button', { name: '設定を閉じる', exact: true })
@@ -58,6 +44,17 @@ test('practice survives navigation and both dialogs restore focus without restar
   await page.keyboard.press('Escape')
   await expect(dialog).toHaveCount(0)
   await expect(settings).toBeFocused()
+  await expect(
+    page.locator('.practice-overlay[data-phase=paused]'),
+  ).toBeVisible()
+  await expect(keys).toHaveText('2')
+  await expect(page.locator('.typed-roman')).toHaveText(progress!)
+  await expect(
+    page
+      .locator('.stat-grid > div')
+      .filter({ hasText: '経過時間' })
+      .locator('strong'),
+  ).toHaveText('00:01')
   await page.getByRole('button', { name: '再開する', exact: true }).click()
   await page.clock.runFor(1000)
   await expect(
@@ -81,7 +78,11 @@ test('practice survives navigation and both dialogs restore focus without restar
   await expect(confirm).toHaveCount(0)
   await expect(clear).toBeFocused()
   await page.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await page.getByRole('button', { name: 'やり直す', exact: true }).click()
+  await expect(page.locator('.mission-carousel')).toHaveAttribute(
+    'data-stage',
+    '0',
+  )
+  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
   await page.clock.runFor(120000)
   await expect(
     page.locator('.practice-overlay[data-phase=ready]'),

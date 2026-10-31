@@ -211,7 +211,10 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await page.getByRole('button', { name: '削除する', exact: true }).click()
   await expect(other.getByText('最初の一篇から、はじめよう。')).toBeVisible()
   await other.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await other.getByRole('button', { name: 'もう一度', exact: true }).click()
+  await expect(other.locator('.mission-carousel')).toHaveAttribute(
+    'data-stage',
+    '0',
+  )
   await complete(other)
   await page.reload()
   await page.getByRole('button', { name: '練習の記録' }).click()

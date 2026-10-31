@@ -59,11 +59,19 @@ export function CpuResults({
         }
         actions={
           complete ? (
-            <button className="primary-button" onClick={onRematch}>
+            <button
+              className="primary-button"
+              aria-keyshortcuts="r"
+              onClick={onRematch}
+            >
               再戦する
             </button>
           ) : (
-            <button className="primary-button" onClick={onNext}>
+            <button
+              className="primary-button"
+              aria-keyshortcuts="n s Space Enter"
+              onClick={onNext}
+            >
               次のラウンド
             </button>
           )

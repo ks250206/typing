@@ -9,6 +9,7 @@ import { PracticePreview } from './PracticePreview'
 import { PracticeSelection } from './PracticeSelection'
 import { PracticeSidebar } from './PracticeSidebar'
 import type { PracticeSession } from './usePracticeSession'
+import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
 
 export function PracticePage({
   session,
@@ -32,7 +33,30 @@ export function PracticePage({
     reset,
     pause,
     handleStageChange,
+    status,
+    resume,
+    area,
   } = session
+  const retry = () => {
+    reset(selected, settings.layout, 2)
+    focus()
+  }
+  useGameShortcuts((event) => {
+    const key = event.key.toLowerCase()
+    if (practiceStage === 3 && finishedResult && key === 'r') return retry
+    if (practiceStage === 2 && status === 'paused') {
+      if (key === 'r') return retry
+      if ([' ', 'escape', 'enter'].includes(key)) return resume
+    }
+    if (
+      (status === 'ready' || status === 'done') &&
+      !area.current?.contains(document.activeElement) &&
+      /^[1-4]$/.test(key)
+    ) {
+      const stage = Number(key) - 1
+      if (stage !== 3 || finishedResult) return () => handleStageChange(stage)
+    }
+  })
   return (
     <>
       <div className="practice-grid">
@@ -85,10 +109,8 @@ export function PracticePage({
                     <>
                       <button
                         className="primary-button"
-                        onClick={() => {
-                          reset(selected, settings.layout, 2)
-                          focus()
-                        }}
+                        aria-keyshortcuts="r"
+                        onClick={retry}
                       >
                         もう一度
                       </button>
