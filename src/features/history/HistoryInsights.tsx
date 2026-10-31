@@ -16,12 +16,15 @@ import { Select } from '../../shared/ui/Select'
 import { readTrace } from '../../infrastructure/persistence/traceStore'
 import { analyzeTrace } from '../../domain/records/telemetry'
 import type { SessionTrace } from '../../domain/records/telemetry'
+import { ChartYAxis } from '../results/PaceChart'
+import { SpeedStatistics } from '../results/SpeedStatistics'
 const ReplayPlayer = lazy(() => import('./ReplayPlayer'))
 const modes = {
   practice: '練習',
   trainer: '60秒',
   cpu: 'CPU対戦',
   ghost: 'ゴースト対戦',
+  weak: '苦手ワード',
 }
 const ms = (value: number) => `${(value / 1000).toFixed(2)}秒`
 
@@ -152,15 +155,13 @@ export function HistoryInsights({
           role="img"
           aria-label={`直近30回の${metricName}と5回移動平均`}
         >
-          <text x="8" y="15">
-            {maximum.toFixed(1)} {unit}
-          </text>
+          <ChartYAxis max={maximum} unit={unit} />
           <polyline
             className="chart-kpm"
             points={points
               .map(
                 (p, i) =>
-                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (recordValue(p.record, metric) / maximum) * 115}`,
+                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - (recordValue(p.record, metric) / maximum) * 115}`,
               )
               .join(' ')}
           />
@@ -183,7 +184,7 @@ export function HistoryInsights({
             points={points
               .map(
                 (p, i) =>
-                  `${20 + (i * 600) / Math.max(1, points.length - 1)},${140 - (p.average / maximum) * 115}`,
+                  `${58 + (i * 560) / Math.max(1, points.length - 1)},${140 - (p.average / maximum) * 115}`,
               )
               .join(' ')}
           />
@@ -230,12 +231,14 @@ export function RecordDetails({
   record,
   onClose,
   initialView = 'trend',
+  history = [],
   onGhost,
 }: {
   record: RecordEntry
   onClose: () => void
   onGhost?: (record: RecordEntry) => void
   initialView?: string
+  history?: RecordEntry[]
 }) {
   const [loaded, setLoaded] = useState<{ trace?: SessionTrace } | null>(
     record.trace ? { trace: record.trace } : null,
@@ -323,6 +326,7 @@ export function RecordDetails({
               />
             </Suspense>
           )}
+          <SpeedStatistics record={{ ...record, trace }} history={history} />
           {tab === 'trend' && (
             <>
               <label>
@@ -342,12 +346,13 @@ export function RecordDetails({
                 role="img"
                 aria-label="1秒区間のKPMとミス率"
               >
+                <ChartYAxis max={max} />
                 <polyline
                   className="chart-kpm"
                   points={rows
                     .map(
                       (b, i) =>
-                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.kpm / max) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, rows.length - 1)},${140 - (b.kpm / max) * 115}`,
                     )
                     .join(' ')}
                 />
@@ -356,7 +361,7 @@ export function RecordDetails({
                   points={rows
                     .map(
                       (b, i) =>
-                        `${20 + (i * 600) / Math.max(1, rows.length - 1)},${140 - (b.missRate / 100) * 115}`,
+                        `${58 + (i * 560) / Math.max(1, rows.length - 1)},${140 - (b.missRate / 100) * 115}`,
                     )
                     .join(' ')}
                 />

@@ -24,6 +24,8 @@ export function PracticeInput({
     | 'keys'
     | 'snapshot'
     | 'mistake'
+    | 'missedKey'
+    | 'weak'
     | 'normalizedKeys'
     | 'progress'
     | 'area'
@@ -101,7 +103,7 @@ export function PracticeInput({
             ) : articles ? (
               `${sentenceIndex + 1} / ${sentences.length} 条`
             ) : (
-              `${sentenceIndex + 1} / ${sentences.length} 文`
+              `${sentenceIndex + 1} / ${sentences.length} ${session.weak ? '語' : '文'}`
             )}
           </span>
         </div>
@@ -155,7 +157,7 @@ export function PracticeInput({
         <SentenceView
           current={sentences[sentenceIndex]}
           next={sentences[sentenceIndex + 1]}
-          showNext={!typewell && !durationMs}
+          showNext={!typewell && !durationMs && !session.weak}
           partialRoman={typewell}
           position={snapshot.position}
           kana={settings.layout === 'kana'}
@@ -168,6 +170,7 @@ export function PracticeInput({
         />
         <KeyboardGuide
           layout={settings.layout}
+          missedKey={session.missedKey}
           nextCharacter={
             settings.layout === 'kana'
               ? (snapshot.target[snapshot.position] ?? '')

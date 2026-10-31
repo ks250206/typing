@@ -33,6 +33,9 @@ for (const layout of [
   'dvorak',
   'colemak',
   'workman',
+  'onishi',
+  'azerty',
+  'norman',
   'kana',
 ] as Layout[]) {
   it(`completes all 21 intact passages through physical keys with ${layout}`, () => {

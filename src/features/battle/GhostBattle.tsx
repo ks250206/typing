@@ -4,20 +4,24 @@ import type { RecordEntry, Settings } from '../../domain/records/types'
 import type { SessionTrace } from '../../domain/records/telemetry'
 import { readTrace } from '../../infrastructure/persistence/traceStore'
 import { GhostRace } from '../../domain/battle/ghost'
-import { mapKey } from '../../domain/typing/engine'
+import { mapKey, isTypingShortcut } from '../../domain/typing/engine'
 import { SentenceView } from '../../shared/typing/SentenceView'
 import { KeyboardGuide } from '../../shared/typing/KeyboardGuide'
 import { SessionResult } from '../results/SessionResult'
 import { formatMissRate } from '../../domain/typing/scoring'
 
+import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
+
 export default function GhostBattle({
   record,
   settings,
+  history,
   onClose,
   onRecord,
 }: {
   record: RecordEntry
   settings: Settings
+  history: RecordEntry[]
   onClose: () => void
   onRecord: (record: RecordEntry) => void
 }) {
@@ -67,6 +71,7 @@ export default function GhostBattle({
           record={record}
           trace={loaded.trace}
           settings={settings}
+          history={history}
           onRecord={onRecord}
           onRetry={() => setAttempt((n) => n + 1)}
         />
@@ -78,12 +83,14 @@ function GhostAttempt({
   record,
   trace,
   settings,
+  history,
   onRecord,
   onRetry,
 }: {
   record: RecordEntry
   trace: SessionTrace
   settings: Settings
+  history: RecordEntry[]
   onRecord: (record: RecordEntry) => void
   onRetry: () => void
 }) {
@@ -101,6 +108,7 @@ function GhostAttempt({
     <GhostSession
       race={prepared.race}
       settings={settings}
+      history={history}
       onRecord={onRecord}
       onRetry={onRetry}
     />
@@ -111,14 +119,17 @@ function GhostAttempt({
 function GhostSession({
   race,
   settings,
+  history,
   onRecord,
   onRetry,
 }: {
   race: GhostRace
   settings: Settings
+  history: RecordEntry[]
   onRecord: (record: RecordEntry) => void
   onRetry: () => void
 }) {
+  const keyFeedback = useKeyFeedback()
   const [status, setStatus] = useState<'ready' | 'running' | 'paused' | 'done'>(
     'ready',
   )
@@ -137,6 +148,7 @@ function GhostSession({
     return now
   }
   const pause = () => {
+    keyFeedback.clearKeyFeedback()
     if (phase.current !== 'running') return
     clock.current.accumulated = synchronize()
     phase.current = 'paused'
@@ -177,9 +189,7 @@ function GhostSession({
     if (
       event.repeat ||
       event.nativeEvent.isComposing ||
-      event.ctrlKey ||
-      event.altKey ||
-      event.metaKey ||
+      isTypingShortcut(event.nativeEvent, race.source.layout) ||
       phase.current === 'paused' ||
       phase.current === 'done'
     )
@@ -196,8 +206,9 @@ function GhostSession({
       phase.current = 'running'
       setStatus('running')
     }
-    race.feed(key, synchronize())
+    if (!race.feed(key, synchronize())) keyFeedback.reportMiss(event.code)
     if (race.finished) {
+      keyFeedback.clearKeyFeedback()
       phase.current = 'done'
       setStatus('done')
       if (!saved.current) {
@@ -213,6 +224,7 @@ function GhostSession({
     return (
       <SessionResult
         record={result}
+        history={history}
         heading={race.result}
         variant={
           race.result === 'YOU WIN'
@@ -363,6 +375,7 @@ function GhostSession({
         />
       </div>
       <KeyboardGuide
+        missedKey={keyFeedback.missedKey}
         layout={race.source.layout}
         nextCharacter={
           recordKana(race)

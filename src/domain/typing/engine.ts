@@ -1,10 +1,22 @@
-export type Layout = 'jis' | 'us' | 'dvorak' | 'colemak' | 'workman' | 'kana'
+export type Layout =
+  | 'jis'
+  | 'us'
+  | 'dvorak'
+  | 'colemak'
+  | 'workman'
+  | 'onishi'
+  | 'azerty'
+  | 'norman'
+  | 'kana'
 export const layoutLabels: Record<Layout, string> = {
   jis: 'QWERTY · JIS',
   us: 'QWERTY · US',
   dvorak: 'Dvorak',
   colemak: 'Colemak',
   workman: 'Workman',
+  onishi: '大西配列',
+  azerty: 'AZERTY · French',
+  norman: 'Norman',
   kana: 'JIS かな',
 }
 const table: Record<string, string[]> = {}
@@ -341,7 +353,43 @@ const cm = "`1234567890-=qwfpgjluy;[]arstdhneio'zxcvbkm,./"
 const cmShift = '~!@#$%^&*()_+QWFPGJLUY:{}ARSTDHNEIO"ZXCVBKM<>?'
 const wm = "`1234567890-=qdrwbjfup;[]ashtgyneoi'zxmcvkl,./"
 const wmShift = '~!@#$%^&*()_+QDRWBJFUP:{}ASHTGYNEOI"ZXMCVKL<>?'
+// Onishi's official 31-key mapping (including Minus); other US keys stay put.
+const remapped = (from: string, to: string): [string, string] => {
+  const replacements = new Map([...from].map((key, index) => [key, to[index]]))
+  const normal = [...us].map((key) => replacements.get(key) ?? key).join('')
+  return [normal, [...normal].map((key) => usShift[us.indexOf(key)]).join('')]
+}
+const onishi = remapped(
+  '-qwertyuiopasdfghjkl;zxcvbnm,./',
+  '/qlu,.fwrypeiao-ktnshzxcv;gdmjb',
+)
+const norman = remapped(
+  'qwertyuiopasdfghjkl;zxcvbnm',
+  'qwdfkjurl;asetgyniohzxcvbpm',
+)
+// Microsoft French Legacy (0000040C), with ISO and AltGr positions below.
+const azerty = [
+  '²&é"\'(-è_çà)=azertyuiop^$qsdfghjklmùwxcvbn,;:!',
+  '²1234567890°+AZERTYUIOP¨£QSDFGHJKLM%WXCVBN?./§',
+]
+const azertyAlt: Record<string, string> = {
+  Digit2: '~',
+  Digit3: '#',
+  Digit4: '{',
+  Digit5: '[',
+  Digit6: '|',
+  Digit7: '`',
+  Digit8: '\\',
+  Digit9: '^',
+  Digit0: '@',
+  Minus: ']',
+  Equal: '}',
+  KeyE: '€',
+}
 const physicalLayouts = {
+  onishi,
+  norman,
+  azerty,
   us: [us, usShift],
   dvorak: [dv, dvShift],
   colemak: [cm, cmShift],
@@ -417,7 +465,11 @@ const kanaShift: Record<string, string> = {
   IntlRo: 'ー',
 }
 export function mapKey(
-  event: Pick<KeyboardEvent, 'code' | 'key' | 'shiftKey'>,
+  event: Pick<KeyboardEvent, 'code' | 'key' | 'shiftKey'> & {
+    getModifierState?: (name: string) => boolean
+    ctrlKey?: boolean
+    altKey?: boolean
+  },
   layout: Layout,
   expected?: string,
 ): string | null {
@@ -437,6 +489,11 @@ export function mapKey(
   if (event.code === 'Space') return ' '
   if (layout === 'jis')
     return event.key.length === 1 ? event.key.toLowerCase() : null
+  if (layout === 'azerty') {
+    if (altGraphPressed(event)) return azertyAlt[event.code] ?? null
+    if (event.code === 'IntlBackslash') return event.shiftKey ? '>' : '<'
+    if (event.code === 'Backslash') return event.shiftKey ? 'µ' : '*'
+  }
   if (event.code === 'Backslash') return event.shiftKey ? '|' : '\\'
   const index = codes.indexOf(event.code)
   const rows = physicalLayouts[layout]
@@ -445,4 +502,25 @@ export function mapKey(
       ? null
       : (rows[Number(event.shiftKey)][index]?.toLowerCase() ?? null)
   return event.key.length === 1 ? event.key.toLowerCase() : null
+}
+
+const altGraphPressed = (event: {
+  getModifierState?: (name: string) => boolean
+  ctrlKey?: boolean
+  altKey?: boolean
+}) => event.getModifierState?.('AltGraph') || (event.ctrlKey && event.altKey)
+
+/** AltGr is printable on French AZERTY, while command shortcuts remain untouched. */
+export function isTypingShortcut(
+  event: Pick<
+    KeyboardEvent,
+    'ctrlKey' | 'altKey' | 'metaKey' | 'getModifierState'
+  >,
+  layout: Layout,
+) {
+  return (
+    event.metaKey ||
+    ((event.ctrlKey || event.altKey) &&
+      !(layout === 'azerty' && altGraphPressed(event)))
+  )
 }

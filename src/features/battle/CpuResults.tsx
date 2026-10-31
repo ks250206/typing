@@ -4,11 +4,13 @@ import { scorePoint } from '../../domain/typing/scoring'
 import { SessionResult } from '../results/SessionResult'
 export function CpuResults({
   match,
+  history,
   result,
   onNext,
   onRematch,
 }: {
   match: RtcMatch
+  history: RecordEntry[]
   result: RecordEntry | null
   onNext: () => void
   onRematch: () => void
@@ -41,6 +43,7 @@ export function CpuResults({
       <SessionResult
         key={complete ? 'final' : match.roundResults.length}
         record={record}
+        history={history}
         variant={win ? 'win' : 'loss'}
         heading={
           complete

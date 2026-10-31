@@ -224,7 +224,13 @@ it('round trips ghost comparison metadata without converting it into a practice 
 })
 
 it('ignores legacy guide opt-outs and accepts new layouts and the slowest CPU preset', () => {
-  for (const layout of ['colemak', 'workman'] as const) {
+  for (const layout of [
+    'colemak',
+    'workman',
+    'onishi',
+    'azerty',
+    'norman',
+  ] as const) {
     data.set('yohaku.settings.v1', JSON.stringify({ layout, guide: false }))
     expect(readSettings().layout).toBe(layout)
     expect(readSettings()).not.toHaveProperty('guide')

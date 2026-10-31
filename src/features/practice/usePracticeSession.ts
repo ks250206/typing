@@ -22,8 +22,14 @@ import { practiceResult } from '../../domain/records/practiceResult'
 import { TypingTrace } from '../../domain/records/telemetry'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import type { Layout } from '../../domain/typing/engine'
-import { KanaEngine, mapKey, RomanEngine } from '../../domain/typing/engine'
+import {
+  KanaEngine,
+  mapKey,
+  RomanEngine,
+  isTypingShortcut,
+} from '../../domain/typing/engine'
 import { MissEpisodes, scorePoint } from '../../domain/typing/scoring'
+import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
 import type { PracticeStatus } from './usePracticeClock'
 import { usePracticeClock } from './usePracticeClock'
 import { usePracticeFocus } from './usePracticeFocus'
@@ -37,7 +43,10 @@ export function usePracticeSession(
   settings: Settings,
   onRecord: (record: RecordEntry) => void,
   setNotice: (message: string) => void,
+  customDocument?: ReturnType<typeof practiceDocument>,
 ) {
+  const keyFeedback = useKeyFeedback()
+  const currentLayout = useRef(settings.layout)
   const {
     seed,
     setSeed,
@@ -48,7 +57,9 @@ export function usePracticeSession(
     fixedSeed,
     setFixedSeed,
   } = usePracticeSeed()
-  const [selected, setSelected] = useState(practicePassages[0].id)
+  const [selected, setSelected] = useState(
+    customDocument?.passage.id ?? practicePassages[0].id,
+  )
   const [finishedResult, setFinishedResult] = useState<RecordEntry | null>(null)
   const [status, setStatus] = useState<PracticeStatus>('ready'),
     [sentenceIndex, setSentenceIndex] = useState(0),
@@ -58,7 +69,8 @@ export function usePracticeSession(
     [missPenalty, setMissPenalty] = useState(0),
     [snapshot, setSnapshot] = useState(() => {
       const initial = makeEngine(
-        sentencesByPassage[practicePassages[0].id][0].reading,
+        customDocument?.sentences[0].reading ??
+          sentencesByPassage[practicePassages[0].id][0].reading,
         settings.layout,
       )
       return {
@@ -70,10 +82,12 @@ export function usePracticeSession(
       }
     }),
     [mistake, setMistake] = useState(false),
-    [practiceStage, setPracticeStage] = useState(0)
+    [practiceStage, setPracticeStage] = useState(customDocument ? 2 : 0)
   const practice = useMemo(
-    () => practiceDocument(selected, seed, settings.layout, replayVersion),
-    [selected, seed, settings.layout, replayVersion],
+    () =>
+      customDocument ??
+      practiceDocument(selected, seed, settings.layout, replayVersion),
+    [customDocument, selected, seed, settings.layout, replayVersion],
   )
   const { passage } = practice
   const sentences: Sentence[] = practice.sentences
@@ -133,8 +147,11 @@ export function usePracticeSession(
       setSeed(nextSeed)
       setSeedDraft(nextSeed)
     }
+    currentLayout.current = layout
+    keyFeedback.clearKeyFeedback()
     clock.reset()
-    const doc = practiceDocument(id, nextSeed, layout, version)
+    const doc =
+      customDocument ?? practiceDocument(id, nextSeed, layout, version)
     trainerOrder.current = createTrainerOrder(
       nextSeed,
       doc.sentences.length,
@@ -167,7 +184,13 @@ export function usePracticeSession(
     clearTimeout(missTimer.current)
     setMistake(false)
   }
+  // A layout can also change in the independent weak-word session's sidebar.
+  useEffect(() => {
+    if (currentLayout.current !== settings.layout)
+      reset(selected, settings.layout)
+  })
   const pause = () => {
+    keyFeedback.clearKeyFeedback()
     if (clock.isCountingDown()) {
       clock.reset()
       setStatus('ready')
@@ -203,6 +226,7 @@ export function usePracticeSession(
   const finishSession = (nextKeys: number, sampledDuration = elapsedNow()) => {
     if (recorded.current) return
     recorded.current = true
+    keyFeedback.clearKeyFeedback()
     const duration = durationMs
       ? Math.min(durationMs, sampledDuration)
       : sampledDuration
@@ -230,6 +254,7 @@ export function usePracticeSession(
       // oxlint-disable-next-line react/purity
       date: new Date().toISOString(),
     })
+    if (customDocument) result.mode = 'weak'
     setFinishedResult(result)
     setPracticeStage(3)
     onRecord(result)
@@ -245,7 +270,7 @@ export function usePracticeSession(
       pause()
       return
     }
-    if (e.ctrlKey || e.metaKey || e.altKey) return
+    if (isTypingShortcut(e.nativeEvent, settings.layout)) return
     if (e.repeat) {
       if (e.code === 'Space') e.preventDefault()
       return
@@ -283,6 +308,7 @@ export function usePracticeSession(
     const accepted = engine.current.feed(key)
     trace.current.add(key, expected, position, accepted, keyTime)
     if (!accepted) {
+      keyFeedback.reportMiss(e.code)
       if (missEpisodes.current.miss()) setMisses(missEpisodes.current.misses)
       setRawMisses(missEpisodes.current.raw)
       setMissPenalty(missEpisodes.current.penalty)
@@ -362,6 +388,8 @@ export function usePracticeSession(
         ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
         : 100
   return {
+    weak: !!customDocument,
+    missedKey: keyFeedback.missedKey,
     selected,
     passage,
     sentences,

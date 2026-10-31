@@ -2,6 +2,7 @@ import type { RecordEntry, Settings } from '../../domain/records/types'
 import { archiveBests } from '../../domain/records/recordStats'
 import { writeTraces } from './traceStore'
 import { layoutLabels } from '../../domain/typing/engine'
+import { summarizePace, validPace } from '../../domain/records/pace'
 export const defaultSettings: Settings = {
   layout: 'jis',
   background: true,
@@ -37,11 +38,12 @@ function readRecords(key: string, limit: number): RecordEntry[] {
           .map((record): RecordEntry => ({
             ...record,
             trace: undefined,
+            pace: validPace(record.pace) ? record.pace : undefined,
             mode:
               record.mode === 'practice' ||
               record.mode === 'cpu' ||
               record.mode === 'trainer' ||
-              record.mode === 'ghost'
+              record.mode === 'ghost' || record.mode === 'weak'
                 ? record.mode
                 : undefined,
             ghostSourceId:
@@ -107,6 +109,7 @@ export const readBestHistory = () =>
 function summaries(data: RecordEntry[]) {
   return data.map(({ trace, ...r }) => ({
     ...r,
+    pace: trace ? summarizePace(trace) : r.pace,
     hasTrace: r.hasTrace || (trace ? true : undefined),
   }))
 }

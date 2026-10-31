@@ -16,6 +16,19 @@ const short = {
   segments: [{ text: 'あ', reading: 'あ' }],
 }
 const config = { kpm: 300, reactionMs: 300, curve: 'constant' as const }
+it('reports sidebar active time without counting countdowns or double-counting the word-result gap', () => {
+  const match = new RtcMatch([short], 'norman', config)
+  expect(match.activeElapsed(2000)).toBe(0)
+  match.advance(3100)
+  expect(match.activeElapsed(3100)).toBe(100)
+  match.pause()
+  expect(match.activeElapsed(3100)).toBe(100)
+  match.resume()
+  match.feed('a', 3200)
+  expect(match.activeElapsed(3400)).toBe(200)
+  match.pause()
+  expect(match.activeElapsed(3400)).toBe(200)
+})
 it('waits for visual reaction and models acceleration as a cumulative curve', () => {
   expect(cpuCharacters(299, config)).toBe(0)
   expect(cpuCharacters(300, config)).toBe(1)

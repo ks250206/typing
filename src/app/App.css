@@ -1818,7 +1818,7 @@ rt {
 .physical-keyboard {
   display: grid;
   grid-template-columns: repeat(60, minmax(0, 1fr));
-  grid-template-rows: 27px repeat(5, 43px);
+  grid-template-rows: repeat(5, 43px);
   row-gap: 4px;
 }
 .physical-keyboard .keyboard-key {
@@ -1924,7 +1924,7 @@ rt {
     height: 2.7em;
   }
   .physical-keyboard {
-    grid-template-rows: 20px repeat(5, 30px);
+    grid-template-rows: repeat(5, 30px);
     row-gap: 3px;
   }
   .physical-keyboard .keyboard-key {
@@ -3584,4 +3584,201 @@ rt {
   color: #8ea8c6;
   margin-bottom: 10px;
   line-height: 1.8;
+}
+
+/* Error color stays visible while the expected key gets an independent pulse. */
+.keyboard-key {
+  transition:
+    background-color 180ms,
+    border-color 180ms,
+    box-shadow 180ms,
+    color 180ms;
+}
+.keyboard-key[data-error='true'] {
+  color: #fff0f5;
+  background: #a62852;
+  border-color: #ff9db9;
+  box-shadow: 0 0 18px #ff487b80;
+}
+.next-key-pulse {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid #b6fbff;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: expected-key-pulse 600ms ease-out;
+}
+@keyframes expected-key-pulse {
+  from {
+    opacity: 1;
+    transform: scale(0.9);
+    box-shadow: 0 0 22px #80f6ff;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+    box-shadow: 0 0 0 transparent;
+  }
+}
+.altgr-symbol {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 8px;
+  color: #b5f6df;
+}
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-key {
+    transition: none;
+  }
+  .next-key-pulse {
+    animation: none;
+    transform: none;
+  }
+}
+
+.battle-grid {
+  margin-top: 24px;
+}
+.battle-grid .cpu-config {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.battle-grid .cpu-battle {
+  min-width: 0;
+  padding: 20px;
+}
+.battle-grid .battle-brief h2 {
+  margin-top: 8px;
+}
+.battle-grid .battle-arena {
+  padding: 16px 0;
+}
+.battle-sidebar-rounds {
+  color: #b9f6ff;
+  font-weight: 700;
+}
+.result-pace {
+  height: auto;
+  min-height: 160px;
+}
+.result-pace .pace-axis,
+.result-pace .pace-axis line {
+  stroke: #6487a04f;
+  stroke-width: 1;
+}
+.result-pace circle[data-miss='false'] {
+  fill: #81eaff;
+}
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.statistics-grid > div {
+  padding: 12px;
+  background: #10233b;
+  border: 1px solid #7daed329;
+  border-radius: 7px;
+  min-width: 0;
+}
+.statistics-grid dt {
+  font-size: 11px;
+  color: #a6bed4;
+}
+.statistics-grid dd {
+  margin: 7px 0;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  color: #d4f7ff;
+}
+.statistics-grid small {
+  font-size: 10px;
+  color: #b9a9ec;
+}
+@media (max-width: 600px) {
+  .battle-grid .cpu-config {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .statistics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .statistics-grid dd {
+    font-size: 15px;
+  }
+  .battle-grid .cpu-battle {
+    padding: 12px;
+  }
+}
+
+.weak-practice > p {
+  color: #aec0d7;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.weak-controls {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.weak-controls label {
+  display: grid;
+  gap: 8px;
+  color: #a9c9db;
+  font-size: 12px;
+}
+.weak-controls input {
+  width: 90px;
+  padding: 9px;
+  background: #111e36;
+  border: 1px solid #7794bc60;
+  color: white;
+  border-radius: 5px;
+}
+.weak-word-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.weak-word {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #142239;
+  border: 1px solid #7896c137;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.weak-word:has(input:checked) {
+  border-color: #67ddef;
+  background: #143143;
+}
+.weak-word > span {
+  min-width: 0;
+  flex: 1;
+}
+.weak-word strong {
+  color: #cdf7ff;
+  font-size: 16px;
+}
+.weak-word small {
+  display: block;
+  color: #aabdd4;
+  font-size: 11px;
+  margin-top: 5px;
+}
+.weak-run > div {
+  padding-top: 14px;
+}
+@media (max-width: 700px) {
+  .weak-word-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-y-axis line {
+  stroke: #6888a64d;
+  stroke-width: 1;
 }

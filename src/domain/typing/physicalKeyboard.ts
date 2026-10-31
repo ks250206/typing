@@ -43,7 +43,13 @@ export function keyboardCodes(layout: Layout) {
       ...row,
       ...(index === 0 && jis ? ['IntlYen'] : []),
       ...(index === (jis ? 2 : 1) ? ['Backslash'] : []),
-      ...(index === 3 ? [...(jis ? ['IntlRo'] : []), 'ShiftRight'] : []),
+      ...(index === 3
+        ? [
+            ...(jis ? ['IntlRo'] : []),
+            ...(layout === 'azerty' ? ['IntlBackslash'] : []),
+            'ShiftRight',
+          ]
+        : []),
     ])
     .concat([['Space']])
 }
@@ -52,6 +58,7 @@ export function keyOutput(
   shift: boolean,
   layout: Layout,
   expected?: string,
+  altGraph = false,
 ) {
   if (code.startsWith('Shift')) return null
   const jis = layout === 'jis' || layout === 'kana'
@@ -62,20 +69,34 @@ export function keyOutput(
     key = shift ? (jis ? ')!"#$%&\'()' : ')!@#$%^&*(')[digit] : String(digit)
     if (jis && shift && digit === 0) key = ''
   } else key = (jis ? jisSymbols : usSymbols)[code]?.[Number(shift)] ?? ''
-  return mapKey({ code, key, shiftKey: shift }, layout, expected)
+  return mapKey(
+    {
+      code,
+      key,
+      shiftKey: shift,
+      getModifierState: (name) => name === 'AltGraph' && altGraph,
+    },
+    layout,
+    expected,
+  )
 }
 export function physicalKey(character: string, layout: Layout) {
-  for (const shift of [false, true]) {
+  for (const [shift, altGraph] of [
+    [false, false],
+    [true, false],
+    ...(layout === 'azerty' ? [[false, true]] : []),
+  ]) {
     for (const code of keyboardCodes(layout).flat()) {
-      if (keyOutput(code, shift, layout, character) === character)
-        return { code, shift }
+      if (keyOutput(code, shift, layout, character, altGraph) === character)
+        return { code, shift, ...(altGraph ? { altGraph: true } : {}) }
     }
   }
 }
 export function fingerFor(code: string) {
   if (['Space', 'NonConvert', 'Convert', 'KanaMode'].includes(code))
     return 'thumb'
-  if (['ControlLeft', 'MetaLeft', 'AltLeft'].includes(code)) return 'left-pinky'
+  if (['ControlLeft', 'MetaLeft', 'AltLeft', 'IntlBackslash'].includes(code))
+    return 'left-pinky'
   if (/^(Digit1|Key[QAZ]|ShiftLeft)$/.test(code)) return 'left-pinky'
   if (/^(Digit2|Key[WSX])$/.test(code)) return 'left-ring'
   if (/^(Digit3|Key[EDC])$/.test(code)) return 'left-middle'
@@ -99,14 +120,8 @@ export interface KeySlot {
 /** Quarter-key units keep the same pitch across rows (15 standard key units). */
 export function keyboardGeometry(layout: Layout): KeySlot[] {
   const jis = layout === 'jis' || layout === 'kana'
-  const slots: KeySlot[] = [{ code: 'Escape', row: 1, column: 1, width: 4 }]
-  for (let index = 0; index < 12; index++)
-    slots.push({
-      code: `F${index + 1}`,
-      row: 1,
-      column: 9 + index * 4 + Math.floor(index / 4) * 2,
-      width: 4,
-    })
+  const slots: KeySlot[] = []
+  const iso = layout === 'azerty'
   const add = (row: number, keys: [string, number][]) => {
     let column = 1
     for (const [code, width] of keys) {
@@ -116,32 +131,33 @@ export function keyboardGeometry(layout: Layout): KeySlot[] {
   }
   const regular = (keys: string[]): [string, number][] =>
     keys.map((code) => [code, 4])
-  add(2, [
+  add(1, [
     ['Backquote', 4],
     ...regular(keyboardRows[0]),
     ...(jis ? [['IntlYen', 4] as [string, number]] : []),
     ['Backspace', jis ? 4 : 8],
   ])
-  add(3, [
+  add(2, [
     ['Tab', 6],
     ...regular(keyboardRows[1]),
-    ...(jis ? [] : [['Backslash', 6] as [string, number]]),
+    ...(jis || iso ? [] : [['Backslash', 6] as [string, number]]),
   ])
-  if (jis)
-    slots.push({ code: 'Enter', row: 3, column: 55, width: 6, tall: true })
-  add(4, [
+  if (jis || iso)
+    slots.push({ code: 'Enter', row: 2, column: 55, width: 6, tall: true })
+  add(3, [
     ['CapsLock', 7],
     ...regular([...letters('ASDFGHJKL'), 'Semicolon', 'Quote']),
-    [jis ? 'Backslash' : 'Enter', jis ? 4 : 9],
+    [jis || iso ? 'Backslash' : 'Enter', jis || iso ? 4 : 9],
   ])
-  add(5, [
-    ['ShiftLeft', 9],
+  add(4, [
+    ['ShiftLeft', iso ? 5 : 9],
+    ...(iso ? [['IntlBackslash', 4] as [string, number]] : []),
     ...regular([...letters('ZXCVBNM'), 'Comma', 'Period', 'Slash']),
     ...(jis ? [['IntlRo', 4] as [string, number]] : []),
     ['ShiftRight', jis ? 7 : 11],
   ])
   add(
-    6,
+    5,
     jis
       ? [
           ['ControlLeft', 5],

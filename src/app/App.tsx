@@ -13,6 +13,7 @@ import { AppShell } from './AppShell'
 import type { AppTab } from './AppShell'
 import './App.css'
 
+const WeakPractice = lazy(() => import('../features/practice/WeakPractice'))
 const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
 
 /** Connect feature APIs here; feature state survives page changes. */
@@ -71,6 +72,7 @@ export default function App() {
           <GhostBattle
             key={ghostSource.id}
             record={ghostSource}
+            history={[...history.records, ...history.bestRecords]}
             settings={settings}
             onClose={() => navigate('history')}
             onRecord={history.persistResult}
@@ -80,10 +82,24 @@ export default function App() {
       {tab === 'battle' && (
         <CpuBattle
           settings={settings}
+          setSettings={setSettings}
+          historyRecords={[...history.records, ...history.bestRecords]}
           onRecord={history.persistResult}
           replay={cpuReplay}
           onReplayConsumed={() => setCpuReplay(null)}
         />
+      )}
+      {tab === 'weak' && (
+        <Suspense fallback={<p role="status">苦手ワード練習を準備中…</p>}>
+          <WeakPractice
+            records={history.records}
+            bestRecords={history.bestRecords}
+            settings={settings}
+            setSettings={setSettings}
+            onRecord={history.persistResult}
+            onNotice={setNotice}
+          />
+        </Suspense>
       )}
       {tab === 'practice' && (
         <PracticePage

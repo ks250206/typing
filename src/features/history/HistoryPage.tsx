@@ -73,6 +73,7 @@ export function HistoryPage({
         <RecordDetails
           key={`${detail.id}/${detailReplay}`}
           initialView={detailReplay ? 'replay' : 'trend'}
+          history={[...records, ...bestRecords]}
           record={detail}
           onGhost={(record) => {
             onGhost(record)

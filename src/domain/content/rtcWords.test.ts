@@ -78,6 +78,9 @@ it('keeps every fragment aligned and typable in all six layouts, including liter
     'dvorak',
     'colemak',
     'workman',
+  'onishi',
+  'azerty',
+  'norman',
     'kana',
   ] as Layout[]
   const characters = new Map(layouts.map((l) => [l, new Set<string>()]))
@@ -106,6 +109,6 @@ it('keeps every fragment aligned and typable in all six layouts, including liter
     for (const char of chars) {
       const key = physicalKey(char, layout)
       expect(key, `${layout}: ${char}`).toBeDefined()
-      expect(keyOutput(key!.code, key!.shift, layout, char)).toBe(char)
+      expect(keyOutput(key!.code, key!.shift, layout, char, key!.altGraph)).toBe(char)
     }
 })
