@@ -4397,17 +4397,89 @@ rt {
 .favorite-open span {
   min-width: 0;
 }
+.favorite-open .favorite-copy {
+  flex: 1;
+}
 .favorite-open strong {
   display: block;
   font-size: 11px;
   font-weight: 500;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 .favorite-open small {
   display: block;
   font-size: 9px;
   color: #799fb6;
   line-height: 1.6;
+  white-space: nowrap;
+}
+.favorite-marquee {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.favorite-marquee-track {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: translateX(0);
+}
+.favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true'] {
+  text-overflow: clip;
+}
+.favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true']
+  > .favorite-marquee-track {
+  max-width: none;
+  animation: favorite-overflow-marquee var(--marquee-duration) linear infinite;
+}
+@keyframes favorite-overflow-marquee {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  80%,
+  90% {
+    transform: translateX(calc(-1 * var(--marquee-distance)));
+  }
+  90.01%,
+  100% {
+    transform: translateX(0);
+  }
+}
+.sidebar-favorites:has([data-dragging='true'])
+  .favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true'] {
+  text-overflow: ellipsis;
+}
+.sidebar-favorites:has([data-dragging='true'])
+  .favorites-panel
+  li
+  .favorite-marquee[data-overflow='true']
+  > .favorite-marquee-track {
+  max-width: 100%;
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .favorites-panel
+    li:is(:hover, :has(:focus-visible))
+    .favorite-marquee[data-overflow='true'] {
+    text-overflow: ellipsis;
+  }
+  .favorites-panel
+    li:is(:hover, :has(:focus-visible))
+    .favorite-marquee[data-overflow='true']
+    > .favorite-marquee-track {
+    max-width: 100%;
+  }
 }
 .favorite-remove {
   padding: 9px 5px;

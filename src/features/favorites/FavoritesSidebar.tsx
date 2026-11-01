@@ -5,6 +5,7 @@ import { battleSets } from '../../domain/content/battleSets'
 import { favoriteKey, type Favorite } from '../../domain/records/favorites'
 import { layoutLabels } from '../../domain/typing/engine'
 import { useFavoriteOrder } from './useFavoriteOrder'
+import { FavoriteMarquee } from './FavoriteMarquee'
 
 export function FavoritesSidebar({
   items,
@@ -126,9 +127,15 @@ export function FavoritesSidebar({
                     ) : (
                       <Keyboard size={14} />
                     )}
-                    <span>
-                      <strong>{title}</strong>
-                      {favorite.kind === 'cpu' && <small>{detail}</small>}
+                    <span className="favorite-copy">
+                      <strong>
+                        <FavoriteMarquee text={title} />
+                      </strong>
+                      {favorite.kind === 'cpu' && (
+                        <small>
+                          <FavoriteMarquee text={detail} />
+                        </small>
+                      )}
                     </span>
                   </button>
                   <button
