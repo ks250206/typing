@@ -1,0 +1,506 @@
+/* App shell: sidebar navigation, top bar, notices, page transitions and the space background. */
+.app-shell {
+  min-height: 100vh;
+}
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 222px;
+  background: #0b0f22;
+  border-right: 1px solid #ffffff0c;
+  display: flex;
+  flex-direction: column;
+  padding: 34px 21px 22px;
+  z-index: 5;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 26px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.brand-icon {
+  font-family: serif;
+  background: #8ddaeb;
+  color: #0f132c;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  width: 41px;
+  height: 44px;
+  font-size: 26px;
+}
+.brand-caption {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  margin-top: 3px;
+  color: #6eaab7;
+}
+.nav-label {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #4d8d9b;
+  margin: 53px 12px 17px;
+}
+.nav-item {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  width: 100%;
+  padding: 13px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6ca9b7;
+  text-align: left;
+  margin-bottom: 7px;
+}
+.nav-item.active,
+.favorites-panel li[data-active='true'] {
+  background: #8bd9ea12;
+  color: #99deed;
+}
+.nav-item:hover,
+.favorites-panel li:hover {
+  background: linear-gradient(90deg, #41dfff20, #ad70ff0c);
+  color: #8cefff;
+}
+.nav-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8cdaeb;
+  margin-left: auto;
+}
+.settings-link {
+  margin-top: auto;
+  padding-top: 26px;
+}
+.status-dot {
+  background: #85b8c3;
+  width: 5px;
+  height: 5px;
+  display: inline-block;
+  border-radius: 50%;
+}
+.topbar {
+  height: 72px;
+  border-bottom: 1px solid #ffffff0a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 42px;
+  font-size: 10px;
+  color: #80b5c0;
+}
+.topbar > div {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.breadcrumb {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #46828f;
+}
+.topbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 8px;
+  letter-spacing: 1.7px;
+}
+.keycap {
+  border: 1px solid #ffffff18;
+  padding: 3px 5px;
+  border-radius: 4px;
+  margin-left: 10px;
+  color: #5ea1b0;
+  font-size: 12px;
+}
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 0 22px;
+  font-size: 8px;
+  color: #457f8c;
+  letter-spacing: 0.5px;
+  gap: 12px;
+}
+.page-footer > span:last-child {
+  font-size: 7px;
+  letter-spacing: 1.8px;
+}
+.page-footer > span > span {
+  margin: 0 8px;
+}
+.notice {
+  margin-top: 18px;
+  padding: 12px 15px;
+  background: #7fd6e812;
+  border: 1px solid #7fd6e830;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94dcec;
+}
+.notice button {
+  display: flex;
+}
+@media (min-width: 1500px) {
+  .sidebar {
+    width: 245px;
+  }
+}
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 185px;
+    padding: 28px 13px;
+  }
+  .brand {
+    font-size: 23px;
+  }
+  .brand-caption {
+    font-size: 7px;
+  }
+}
+@media (max-width: 1100px) {
+  .topbar {
+    padding: 0 25px;
+  }
+}
+@media (max-width: 800px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 17px 22px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid #ffffff0c;
+  }
+  .brand {
+    font-size: 20px;
+    gap: 8px;
+  }
+  .brand-icon {
+    width: 34px;
+    height: 35px;
+    font-size: 22px;
+  }
+  .brand-caption {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .sidebar nav {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-item {
+    width: auto;
+    margin: 0;
+    padding: 10px;
+    font-size: 0;
+    gap: 0;
+  }
+  .nav-item svg {
+    width: 19px;
+  }
+  .nav-dot,
+  .nav-label {
+    display: none;
+  }
+  .settings-link {
+    margin: 0;
+    padding: 8px;
+  }
+  .nav-item.active {
+    border: 1px solid #8edaeb22;
+  }
+}
+@media (max-width: 800px) {
+  .topbar {
+    height: 48px;
+  }
+}
+@media (max-width: 800px) {
+  .page-footer > span:last-child {
+    display: none;
+  }
+  .topbar-right {
+    font-size: 7px;
+  }
+}
+@media (max-width: 480px) {
+  .topbar {
+    padding: 0 17px;
+  }
+}
+/* Deep-space surfaces; luminous accents stay outside the reading foreground. */
+.app-shell {
+  background:
+    radial-gradient(ellipse at 85% 0%, #7735d924, transparent 42%),
+    radial-gradient(ellipse at 25% 70%, #00cfff0a, transparent 50%), #080b1a;
+}
+.sidebar {
+  background: #0b1023ed;
+  border-color: #75dfff20;
+}
+.brand-icon {
+  background: linear-gradient(140deg, #7ef6ff, #a58aff);
+  color: #10112b;
+  box-shadow: 0 0 25px #53eaff20;
+}
+.nav-item.active,
+.favorites-panel li[data-active='true'] {
+  background: linear-gradient(90deg, #41dfff20, #ad70ff0c);
+  color: #8cefff;
+  box-shadow: inset 2px 0 #5fe6ff;
+}
+/* The star system fills the viewport; opaque reading surfaces keep text steady. */
+.app-shell {
+  isolation: isolate;
+}
+.space-scene,
+.space-loading {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: calc(100vh / var(--display-zoom, 1));
+  height: calc(100dvh / var(--display-zoom, 1));
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 77% 18%, #7444a525, transparent 48%);
+}
+.space-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.space-scene[data-rendering='fallback'] canvas {
+  visibility: hidden;
+}
+.space-fallback {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.space-scene[data-rendering='webgl'] .space-fallback {
+  display: none;
+}
+.space-fallback i {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow:
+    inset -25px -15px 35px #050518c9,
+    0 0 35px #c9a2ff1c;
+}
+.space-fallback i:nth-child(1) {
+  width: 170px;
+  height: 170px;
+  top: 14%;
+  right: 12%;
+  background: repeating-linear-gradient(
+    14deg,
+    #ad7e79,
+    #ddbd9c 12%,
+    #6e527e 19%
+  );
+}
+.space-fallback i:nth-child(1)::after {
+  content: '';
+  position: absolute;
+  inset: 28% -35%;
+  border: 12px solid #bc9bb668;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+}
+.space-fallback i:nth-child(2) {
+  width: 75px;
+  height: 75px;
+  top: 8%;
+  right: 40%;
+  background: radial-gradient(at 35% 28%, #91d3d2, #207896 45%, #092641);
+}
+.space-fallback i:nth-child(3) {
+  width: 52px;
+  height: 52px;
+  top: 39%;
+  right: 5%;
+  background: radial-gradient(at 30% 30%, #edb18c, #ae4d45, #341c30);
+}
+.topbar {
+  background: #090d1b99;
+}
+.damage-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    #e3286533 75%,
+    #ff275c80
+  );
+  box-shadow:
+    inset 0 0 55px #ff315bc0,
+    inset 0 0 140px #c91f5c65;
+  animation: damage-impact 520ms ease-out both;
+}
+.damage-reticle {
+  position: absolute;
+  inset: 12px;
+  border: 2px solid #ff6b8e70;
+  clip-path: polygon(
+    0 0,
+    12% 0,
+    12% 2%,
+    88% 2%,
+    88% 0,
+    100% 0,
+    100% 100%,
+    88% 100%,
+    88% 98%,
+    12% 98%,
+    12% 100%,
+    0 100%
+  );
+}
+.damage-label {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd3df;
+  font: 700 11px monospace;
+  letter-spacing: 0.35em;
+  text-shadow: 0 0 12px #ff265c;
+}
+@keyframes damage-impact {
+  0% {
+    opacity: 0.95;
+  }
+  35% {
+    opacity: 0.65;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .damage-overlay {
+    background: none;
+    box-shadow: inset 0 0 0 3px #dd6884;
+    animation: none;
+  }
+  .damage-reticle,
+  .damage-label {
+    display: none;
+  }
+}
+/* Keep the full GALACTYPE wordmark within the sidebar and compact mobile nav. */
+.brand {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.brand-icon {
+  flex-shrink: 0;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-weight: 700;
+}
+@media (max-width: 600px) {
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    gap: 6px;
+  }
+  .brand-caption {
+    font-size: 5px;
+    letter-spacing: 0.7px;
+  }
+}
+.page-view {
+  padding-top: 24px;
+  animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+@keyframes page-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Explicit navigation preference can override the OS-wide motion reduction.
+   Keep this limited to navigation: background, typing and damage still obey OS. */
+.app-shell[data-navigation-motion='on'] .page-view {
+  animation: page-arrive 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='on'] .mission-face.is-active {
+  animation: mission-slide 0.65s cubic-bezier(0.4, 0, 0.2, 1) backwards !important;
+}
+.app-shell[data-navigation-motion='off'] :is(.page-view, .mission-face) {
+  animation: none !important;
+  transition: none !important;
+}
+.app-shell[data-navigation-motion='off'] .history-panel {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-shell:not([data-navigation-motion='on']) .history-panel {
+    animation: none;
+  }
+}
+/* Keep zoomed narrow screens usable without reducing the chosen text size. */
+@media (max-width: 600px) {
+  html[data-display-enlarged] .sidebar {
+    flex-wrap: wrap;
+  }
+}
+/* Favorites fill the former promotional space while settings stay reachable. */
+.sidebar-separator {
+  margin: 24px 10px 0;
+  border: 0;
+  border-top: 1px solid #ffffff0c;
+  flex-shrink: 0;
+}
+@media (max-width: 800px) {
+  .sidebar {
+    position: relative;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+  .sidebar > .brand {
+    flex: 1;
+  }
+  .sidebar > nav {
+    order: 4;
+    width: 100%;
+    justify-content: space-around;
+  }
+  .sidebar > nav .nav-item {
+    flex: 1;
+    justify-content: center;
+  }
+}
+@media (max-width: 800px) {
+  .sidebar-separator {
+    display: none;
+  }
+}
+.app-shell[data-navigation-motion='off']
+  :is(.session-sidebar, .sentence-attempt > .prose, .sentence-crossfade-out) {
+  animation: none;
+}

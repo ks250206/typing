@@ -1,0 +1,147 @@
+/* Element defaults and generic text and button helpers. */
+main {
+  margin-left: 222px;
+}
+.content {
+  max-width: 1500px;
+  padding: 0 42px;
+  margin: auto;
+}
+h1 {
+  font-family: inherit;
+  font-size: 37px;
+  line-height: 1.55;
+  letter-spacing: 5px;
+  color: #cdeff6;
+  font-weight: 400;
+  margin: 17px 0 13px;
+}
+.muted {
+  color: #579dac;
+  font-size: 10px;
+}
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  color: #7cd4e8;
+}
+.small {
+  font-size: 9px;
+}
+.best {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #ffffff0a;
+  margin-top: 17px;
+  padding-top: 14px;
+  color: #7ab2be;
+  font-size: 8px;
+  flex-wrap: wrap;
+}
+.best strong {
+  font-size: 15px;
+  font-weight: 400;
+  margin-left: auto;
+}
+.best small {
+  font-size: 7px;
+  color: #5298a7;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+  text-align: left;
+}
+th {
+  font-size: 9px;
+  color: #5b9fae;
+  font-weight: 400;
+  padding: 17px 23px;
+  border-bottom: 1px solid #ffffff10;
+}
+td {
+  font-size: 11px;
+  color: #8ad9ea;
+  padding: 18px 23px;
+  border-bottom: 1px solid #ffffff08;
+}
+td small {
+  display: block;
+  font-size: 8px;
+  color: #4d8e9c;
+  margin-top: 7px;
+}
+@media (min-width: 1500px) {
+  .content {
+    padding: 0 65px;
+  }
+}
+@media (min-width: 1500px) {
+  main {
+    margin-left: 245px;
+  }
+}
+@media (max-width: 1100px) {
+  main {
+    margin-left: 185px;
+  }
+  .content {
+    padding: 0 25px;
+  }
+}
+@media (max-width: 800px) {
+  main {
+    margin-left: 0;
+  }
+}
+@media (max-width: 800px) {
+  .content {
+    padding: 0 22px;
+  }
+}
+@media (max-width: 480px) {
+  .content {
+    padding: 0 15px;
+  }
+}
+@media (max-width: 480px) {
+  .best {
+    font-size: 7px;
+  }
+  .best strong {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+/* Genuine ruby annotations use the reviewed kanji/reading pairs. */
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+rt {
+  font-size: max(9px, 0.42em);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #a8bfd6;
+  text-shadow: none;
+}
+[data-consumed='true'] {
+  visibility: hidden;
+}

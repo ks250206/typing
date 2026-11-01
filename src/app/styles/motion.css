@@ -1,0 +1,9 @@
+/* Global reduced-motion overrides; loaded last so they win over every feature. */
+@media (prefers-reduced-motion: reduce) {
+  .page-view,
+  .mission-face.is-active,
+  .session-result,
+  .select-popup {
+    animation: none;
+  }
+}

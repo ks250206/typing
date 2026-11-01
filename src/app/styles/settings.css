@@ -1,0 +1,35 @@
+/* Settings dialog. */
+.navigation-motion-setting {
+  margin-block: 20px;
+}
+.navigation-motion-setting > p {
+  margin-top: 10px;
+}
+.navigation-motion-setting > label {
+  display: block;
+  margin-bottom: 8px;
+}
+.navigation-motion-setting > .custom-select {
+  width: 100%;
+}
+.settings-records {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #ce6c875e;
+  border-radius: 8px;
+  background: #351d302e;
+}
+.settings-records h3 {
+  font-size: 14px;
+  color: #ffc7d5;
+}
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: #ffd5dd;
+  border: 1px solid #d77391;
+  border-radius: 6px;
+  background: #63273c;
+}
