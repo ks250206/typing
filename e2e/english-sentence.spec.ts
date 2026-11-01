@@ -161,6 +161,9 @@ for (const width of [1440, 390]) {
       'data-state',
       'next',
     )
+    // Install alone still advances with real execution. Pause before starting,
+    // then run only the active intervals so CI render/input speed is irrelevant.
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000))
     await startPractice(page, true)
     await page.screenshot({
       path: `artifacts/english-input-${width}.png`,
@@ -171,7 +174,14 @@ for (const width of [1440, 390]) {
     await page.keyboard.type(doc.sentences[0].text.slice(0, 10))
     await page.clock.runFor(1000)
     await page.keyboard.press('Escape')
+    const pausedTime = await page
+      .locator('.stat-grid strong')
+      .last()
+      .innerText()
     await page.clock.runFor(10000)
+    await expect(page.locator('.stat-grid strong').last()).toHaveText(
+      pausedTime,
+    )
     await page.keyboard.press('Enter')
     await page.keyboard.type(doc.sentences[0].text.slice(10))
     for (const sentence of doc.sentences.slice(1)) {
@@ -198,7 +208,9 @@ for (const width of [1440, 390]) {
       doc.sentences.reduce((n, s) => n + s.text.length, 0),
     )
     expect(record.rawMisses).toBe(1)
-    expect(record.elapsed).toBeLessThan(3000)
+    expect(record.elapsed).toBe(1500)
+    // Resume ordinary UI timers for the lazy-loaded replay after measurement.
+    await page.clock.resume()
     await page.getByRole('button', { name: '練習の記録', exact: true }).click()
     await page.getByRole('tab', { name: '全記録', exact: true }).click()
     await page
