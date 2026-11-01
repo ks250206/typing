@@ -65,14 +65,17 @@ for (const width of [1440, 390]) {
       exact: true,
     })
     await expect(inputStyle).toHaveCSS('display', 'flex')
-    const nameBox = await inputStyle.locator('span').boundingBox()
-    const arrowBox = await inputStyle.locator('svg').boundingBox()
-    expect(
-      Math.abs(
-        nameBox!.y + nameBox!.height / 2 - arrowBox!.y - arrowBox!.height / 2,
-      ),
-    ).toBeLessThan(1)
-    expect(arrowBox!.x).toBeGreaterThan(nameBox!.x + nameBox!.width)
+    // Read both boxes in one frame so scroll anchoring cannot move the card between reads.
+    const geometry = await inputStyle.evaluate((element) => {
+      const name = element.querySelector('span')!.getBoundingClientRect()
+      const arrow = element.querySelector('svg')!.getBoundingClientRect()
+      return {
+        delta: Math.abs(name.y + name.height / 2 - arrow.y - arrow.height / 2),
+        after: arrow.x > name.right,
+      }
+    })
+    expect(geometry.delta).toBeLessThan(1)
+    expect(geometry.after).toBe(true)
     const text = sentencePracticePool('en-library', 'jis')[0].text
     const table = page.getByRole('region', {
       name: '文章別の練習統計',

@@ -752,7 +752,7 @@ export function CpuBattle({
                   {phase === 'paused' && (
                     <PauseOverlay
                       onResume={resume}
-                      description="Space / Esc / Enter で再開 · R で再戦 · C で対戦設定"
+                      description="Space / Esc / Enter で再開 · R でやり直す · C で対戦設定"
                     />
                   )}
                 </div>
