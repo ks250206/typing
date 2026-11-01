@@ -1,4 +1,5 @@
 import { KanaEngine, RomanEngine } from '../typing/engine'
+import { sentenceEngine } from '../typing/sentenceEngine'
 import type { Layout } from '../typing/engine'
 import type { SessionTrace, TracePrompt } from './telemetry'
 import { validTrace } from './telemetry'
@@ -37,6 +38,7 @@ function displaySentence(p: TracePrompt): Sentence {
       segments = text.map((text, i) => ({ text, reading: reading[i] }))
   }
   return {
+    ...(p.language === 'en' ? { language: 'en' } : {}),
     ...(p.continuous === true ? { continuous: true } : {}),
     ...(typeof p.label === 'string' ? { label: p.label } : {}),
     ...(p.wordStarts ? { wordStarts: [...p.wordStarts] } : {}),
@@ -60,11 +62,13 @@ export function replayEngine(
   layout: Layout,
   strokeLimit?: number,
 ) {
-  return strokeLimit
-    ? typewellEngine(planTypewell(sentence, layout))
-    : layout === 'kana'
-      ? new KanaEngine(sentence.reading)
-      : new RomanEngine(sentence.reading)
+  return sentence.language === 'en'
+    ? sentenceEngine(sentence, layout)
+    : strokeLimit
+      ? typewellEngine(planTypewell(sentence, layout))
+      : layout === 'kana'
+        ? new KanaEngine(sentence.reading)
+        : new RomanEngine(sentence.reading)
 }
 export function remaining(engine: RomanEngine | KanaEngine) {
   return engine instanceof RomanEngine

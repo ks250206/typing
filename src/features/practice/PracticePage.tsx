@@ -1,5 +1,8 @@
 import { PageHeading } from '../../shared/ui/PageHeading'
 import type { Dispatch, SetStateAction } from 'react'
+import { useEffect } from 'react'
+import { englishPassages, isEnglish } from '../../domain/content/english'
+import { japanesePracticePassages } from '../../domain/content/practiceDocument'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { SessionResult } from '../results/SessionResult'
 import { MissionCarousel } from './MissionCarousel'
@@ -40,6 +43,10 @@ export function PracticePage({
     resume,
     area,
   } = session
+  useEffect(() => {
+    if (isEnglish(selected) && settings.layout === 'kana')
+      setSettings((value) => ({ ...value, layout: 'jis' }))
+  }, [selected, settings.layout, setSettings])
   const retry = () => {
     reset(selected, settings.layout, 2)
     focus()
@@ -86,6 +93,20 @@ export function PracticePage({
                 settings={settings}
                 isFavorite={isFavorite}
                 onToggleFavorite={onToggleFavorite}
+                onLanguageChange={(language) => {
+                  const id = (
+                    language === 'en'
+                      ? englishPassages
+                      : japanesePracticePassages
+                  )[0].id
+                  const layout =
+                    language === 'en' && settings.layout === 'kana'
+                      ? 'jis'
+                      : settings.layout
+                  if (layout !== settings.layout)
+                    setSettings((value) => ({ ...value, layout }))
+                  reset(id, layout, 0)
+                }}
               />,
               <PracticePreview key="preview" session={session} />,
               <PracticeInput

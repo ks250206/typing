@@ -8,6 +8,10 @@ import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { isEtyping } from '../../domain/content/etyping'
 import { isTrainer } from '../../domain/content/sakusaku'
 import { isConstitutionArticles } from '../../domain/content/constitutionArticles'
+import {
+  isEnglishTypewell,
+  isSeededEnglish,
+} from '../../domain/content/english'
 import { FavoriteButton } from '../favorites/FavoriteButton'
 
 export function PassageLibrary({
@@ -99,17 +103,21 @@ export function PassageLibrary({
                     ? `全文1問 · ${p.paragraphs[0].text.length}文字 · 途中の切り替えなし`
                     : isTypewell(p.id)
                       ? 'R 400打 / K 280打 · シード再現'
-                      : isConstitutionArticles(p.id)
-                        ? '全14条 · 条単位のシャッフル · シード再現'
-                        : isRtcOriginal(p.id)
-                          ? '15問 · 短文をシャッフル'
-                          : isRtc(p.id)
-                            ? '15問 · パートをランダム連結'
-                            : isTrainer(p.id)
-                              ? `${p.paragraphs.length}文 · 60秒 · シード再現`
-                              : isEtyping(p.id)
-                                ? '15問 · シードでシャッフル'
-                                : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
+                      : isEnglishTypewell(p.id)
+                        ? '400打 · シード再現'
+                        : isSeededEnglish(p.id)
+                          ? '15問 · シードでシャッフル'
+                          : isConstitutionArticles(p.id)
+                            ? '全14条 · 条単位のシャッフル · シード再現'
+                            : isRtcOriginal(p.id)
+                              ? '15問 · 短文をシャッフル'
+                              : isRtc(p.id)
+                                ? '15問 · パートをランダム連結'
+                                : isTrainer(p.id)
+                                  ? `${p.paragraphs.length}文 · 60秒 · シード再現`
+                                  : isEtyping(p.id)
+                                    ? '15問 · シードでシャッフル'
+                                    : `${p.paragraphs.reduce((n, row) => n + row.text.length, 0)} 文字`}
                 </span>
               </div>
             </button>

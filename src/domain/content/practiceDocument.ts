@@ -1,4 +1,5 @@
 import type { Layout } from '../typing/engine'
+import { englishPassages, englishDocument, isEnglish } from './english'
 import {
   constitutionArticleDocument,
   isConstitutionArticles,
@@ -14,11 +15,15 @@ import {
   rtcOriginalPassage,
 } from './rtcOriginal'
 
-export const practicePassages = [
+export const japanesePracticePassages = [
   ...essayPassages,
   ...typewellPassages,
   ...rtcPassages,
   rtcOriginalPassage,
+]
+export const practicePassages = [
+  ...japanesePracticePassages,
+  ...englishPassages,
 ]
 export function practiceDocument(
   id: string,
@@ -26,6 +31,7 @@ export function practiceDocument(
   layout: Layout,
   version: 1 | 2,
 ) {
+  if (isEnglish(id)) return englishDocument(id, seed)
   if (isRtcOriginal(id)) return rtcOriginalDocument(seed)
   return isConstitutionArticles(id)
     ? constitutionArticleDocument(seed)

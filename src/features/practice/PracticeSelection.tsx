@@ -1,5 +1,7 @@
 import { ArrowRight } from 'lucide-react'
-import { practicePassages as passages } from '../../domain/content/practiceDocument'
+import { japanesePracticePassages } from '../../domain/content/practiceDocument'
+import { englishPassages } from '../../domain/content/english'
+import { LanguageSwitch } from '../library/LanguageSwitch'
 import { freshSeed } from '../../domain/content/typewell'
 import type { Settings } from '../../domain/records/types'
 import { PassageLibrary } from '../library/PassageLibrary'
@@ -11,6 +13,7 @@ export function PracticeSelection({
   settings,
   isFavorite,
   onToggleFavorite,
+  onLanguageChange,
 }: {
   session: Pick<
     PracticeSession,
@@ -37,6 +40,7 @@ export function PracticeSelection({
   settings: Settings
   isFavorite: (passageId: string) => boolean
   onToggleFavorite: (passageId: string) => void
+  onLanguageChange: (language: 'ja' | 'en') => void
 }) {
   const {
     selected,
@@ -61,8 +65,15 @@ export function PracticeSelection({
   } = session
   return (
     <div key="selected">
+      <LanguageSwitch
+        value={passage.language ?? 'ja'}
+        onChange={onLanguageChange}
+      />
       <PassageLibrary
-        passages={passages}
+        key={passage.language ?? 'ja'}
+        passages={
+          passage.language === 'en' ? englishPassages : japanesePracticePassages
+        }
         selected={selected}
         onSelect={(id) => reset(id, settings.layout, 0)}
         isFavorite={isFavorite}
@@ -73,7 +84,9 @@ export function PracticeSelection({
           <span className="tag">{passage.genre}</span>
           <span className="muted small">
             {typewell
-              ? 'R 400打 / K 280打 · '
+              ? passage.language === 'en'
+                ? '400打 · '
+                : 'R 400打 / K 280打 · '
               : etyping
                 ? 'WORD SET · '
                 : passage.source

@@ -13,6 +13,7 @@ export function PracticeInput({
   session: Pick<
     PracticeSession,
     | 'sentences'
+    | 'english'
     | 'seed'
     | 'typewell'
     | 'articles'
@@ -92,7 +93,14 @@ export function PracticeInput({
             }
           </span>
           <span className="small muted">
-            {layoutLabels[settings.layout]} ·{' '}
+            {
+              layoutLabels[
+                session.english && settings.layout === 'kana'
+                  ? 'jis'
+                  : settings.layout
+              ]
+            }{' '}
+            ·{' '}
             {durationMs ? (
               <span aria-label="残り時間">
                 残り {Math.max(0, Math.ceil((durationMs - elapsed) / 1000))} 秒
@@ -152,7 +160,7 @@ export function PracticeInput({
           showNext={!typewell && !durationMs && !session.weak}
           partialRoman={typewell}
           position={snapshot.position}
-          kana={settings.layout === 'kana'}
+          kana={!session.english && settings.layout === 'kana'}
           done={status === 'done' && !durationMs}
           target={snapshot.target}
           typed={snapshot.typed}
@@ -161,10 +169,14 @@ export function PracticeInput({
           consumeTyped={settings.consumeTyped}
         />
         <KeyboardGuide
-          layout={settings.layout}
+          layout={
+            session.english && settings.layout === 'kana'
+              ? 'jis'
+              : settings.layout
+          }
           missedKey={session.missedKey}
           nextCharacter={
-            settings.layout === 'kana'
+            !session.english && settings.layout === 'kana'
               ? (snapshot.target[snapshot.position] ?? '')
               : (snapshot.hint[0] ?? '')
           }

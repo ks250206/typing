@@ -7,6 +7,7 @@ import { romanWordStarts } from '../../domain/typing/wordSpacing'
 import { readingCursor } from '../../domain/typing/readingCursor'
 
 export function ReadingGuide({
+  english = false,
   consumed,
   consumeTyped,
   wordStarts,
@@ -19,6 +20,7 @@ export function ReadingGuide({
   romanGuide,
   done,
 }: {
+  english?: boolean
   consumed: { reading: number; roman: number }
   consumeTyped: boolean
   wordStarts: Set<number>
@@ -36,10 +38,21 @@ export function ReadingGuide({
   const reading = readingCursor(target, position)
   const romanStarts = useMemo(
     () =>
-      showRoman && !romanGuide
-        ? romanWordStarts(target, typed + hint, wordStarts, partialRoman)
-        : new Set<number>(),
-    [target, typed, hint, wordStarts, showRoman, partialRoman, romanGuide],
+      english
+        ? wordStarts
+        : showRoman && !romanGuide
+          ? romanWordStarts(target, typed + hint, wordStarts, partialRoman)
+          : new Set<number>(),
+    [
+      target,
+      typed,
+      hint,
+      wordStarts,
+      showRoman,
+      partialRoman,
+      romanGuide,
+      english,
+    ],
   )
   const kanaOffset = reading.before.length
   const revision = `${target}/${position}/${typed}/${showRoman}`
@@ -62,36 +75,41 @@ export function ReadingGuide({
       <div className="guide-row">
         <div
           className="guide-line kana-line"
-          aria-label="ひらがなの読み"
+          aria-label={english ? undefined : 'ひらがなの読み'}
+          aria-hidden={english || undefined}
           ref={kanaHost}
         >
-          <span className="flow-track">
-            <span className="typed-kana">
-              <SpacedText
-                text={reading.before}
-                hideBefore={consumed.reading}
-                boundaries={wordStarts}
-              />
+          {english ? (
+            '\u00a0'
+          ) : (
+            <span className="flow-track">
+              <span className="typed-kana">
+                <SpacedText
+                  text={reading.before}
+                  hideBefore={consumed.reading}
+                  boundaries={wordStarts}
+                />
+              </span>
+              <span className="remaining-kana">
+                {!done && reading.current && (
+                  <span className="guide-current" data-guide-cursor>
+                    <SpacedText
+                      text={reading.current}
+                      start={kanaOffset}
+                      boundaries={wordStarts}
+                      hideBefore={consumed.reading}
+                    />
+                  </span>
+                )}
+                <SpacedText
+                  text={reading.after}
+                  start={kanaOffset + reading.current.length}
+                  boundaries={wordStarts}
+                  hideBefore={consumed.reading}
+                />
+              </span>
             </span>
-            <span className="remaining-kana">
-              {!done && reading.current && (
-                <span className="guide-current" data-guide-cursor>
-                  <SpacedText
-                    text={reading.current}
-                    start={kanaOffset}
-                    boundaries={wordStarts}
-                    hideBefore={consumed.reading}
-                  />
-                </span>
-              )}
-              <SpacedText
-                text={reading.after}
-                start={kanaOffset + reading.current.length}
-                boundaries={wordStarts}
-                hideBefore={consumed.reading}
-              />
-            </span>
-          </span>
+          )}
         </div>
       </div>
       {romanGuide ??
@@ -99,7 +117,7 @@ export function ReadingGuide({
           <div className="guide-row">
             <div
               className="guide-line roman-line"
-              aria-label="ローマ字入力ガイド"
+              aria-label={english ? '英語入力ガイド' : 'ローマ字入力ガイド'}
               ref={romanHost}
             >
               <span className="flow-track">

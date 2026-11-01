@@ -2,6 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { isConstitutionArticles } from '../../domain/content/constitutionArticles'
 import { isEtyping } from '../../domain/content/etyping'
 import {
+  isEnglishTypewell,
+  isSeededEnglish,
+} from '../../domain/content/english'
+import { sentenceEngine } from '../../domain/typing/sentenceEngine'
+import {
   practiceDocument,
   practicePassages,
 } from '../../domain/content/practiceDocument'
@@ -24,7 +29,6 @@ import { TypingTrace } from '../../domain/records/telemetry'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import type { Layout } from '../../domain/typing/engine'
 import {
-  KanaEngine,
   mapKey,
   RomanEngine,
   isTypingShortcut,
@@ -36,15 +40,12 @@ import { usePracticeClock } from './usePracticeClock'
 import { usePracticeFocus } from './usePracticeFocus'
 import { usePracticeSeed } from './usePracticeSeed'
 
-function makeEngine(reading: string, layout: Layout) {
-  return layout === 'kana' ? new KanaEngine(reading) : new RomanEngine(reading)
-}
-
 export function usePracticeSession(
   settings: Settings,
   onRecord: (record: RecordEntry) => void,
   setNotice: (message: string) => void,
   customDocument?: ReturnType<typeof practiceDocument>,
+  options?: { startOnFirstKey: boolean },
 ) {
   const keyFeedback = useKeyFeedback()
   const currentLayout = useRef(settings.layout)
@@ -69,9 +70,9 @@ export function usePracticeSession(
     [rawMisses, setRawMisses] = useState(0),
     [missPenalty, setMissPenalty] = useState(0),
     [snapshot, setSnapshot] = useState(() => {
-      const initial = makeEngine(
-        customDocument?.sentences[0].reading ??
-          sentencesByPassage[practicePassages[0].id][0].reading,
+      const initial = sentenceEngine(
+        customDocument?.sentences[0] ??
+          sentencesByPassage[practicePassages[0].id][0],
         settings.layout,
       )
       return {
@@ -92,15 +93,17 @@ export function usePracticeSession(
   )
   const { passage } = practice
   const sentences: Sentence[] = practice.sentences
-  const typewell = isTypewell(selected)
-  const etyping = isEtyping(selected)
+  const english = sentences[sentenceIndex]?.language === 'en'
+  const typewell = isTypewell(selected) || isEnglishTypewell(selected)
+  const etyping =
+    isEtyping(selected) || (isSeededEnglish(selected) && !typewell)
   const rtc = isRtc(selected) || isRtcOriginal(selected)
   const trainer = isTrainer(selected)
   const articles = isConstitutionArticles(selected)
   const seeded = typewell || etyping || rtc || trainer || articles
-  const limit = strokeLimit(settings.layout)
+  const limit = english ? 400 : strokeLimit(settings.layout)
   const durationMs = passage.durationMs ?? 0
-  const engine = useRef(makeEngine(sentences[0].reading, settings.layout)),
+  const engine = useRef(sentenceEngine(sentences[0], settings.layout)),
     missTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
     missEpisodes = useRef(new MissEpisodes()),
     liveKeys = useRef(0),
@@ -139,6 +142,7 @@ export function usePracticeSession(
   ) => {
     if (
       isTypewell(id) ||
+      isSeededEnglish(id) ||
       isEtyping(id) ||
       isRtc(id) ||
       isRtcOriginal(id) ||
@@ -162,7 +166,7 @@ export function usePracticeSession(
     const initialIndex = doc.passage.durationMs ? trainerOrder.current() : 0
     engine.current = doc.plan
       ? typewellEngine(doc.plan)
-      : makeEngine(doc.sentences[initialIndex].reading, layout)
+      : sentenceEngine(doc.sentences[initialIndex], layout)
     setSelected(id)
     setSentenceIndex(initialIndex)
     liveKeys.current = 0
@@ -288,13 +292,28 @@ export function usePracticeSession(
       return
     }
     if (status === 'ready' || status === 'countdown') {
-      if (e.key.length === 1 || e.code === 'Space') e.preventDefault()
-      if (status === 'ready' && !clock.isCountingDown() && e.code === 'Space')
-        beginCountdown()
-      return
+      if (
+        options?.startOnFirstKey &&
+        status === 'ready' &&
+        e.key.length === 1
+      ) {
+        clock.start()
+        trace.current.begin(sentences[sentenceIndex], 0, settings.layout)
+        setStatus('running')
+      } else {
+        if (e.key.length === 1 || e.code === 'Space') e.preventDefault()
+        if (status === 'ready' && !clock.isCountingDown() && e.code === 'Space')
+          beginCountdown()
+        return
+      }
     }
     if (status === 'paused' || status === 'done') return
-    const key = mapKey(e.nativeEvent, settings.layout, engine.current.hint[0])
+    const key = mapKey(
+      e.nativeEvent,
+      english && settings.layout === 'kana' ? 'jis' : settings.layout,
+      engine.current.hint[0],
+      english,
+    )
     if (!key) return
     e.preventDefault()
     if (durationMs && status === 'running' && elapsedNow() >= durationMs) {
@@ -337,7 +356,7 @@ export function usePracticeSession(
       if (durationMs) {
         const index = trainerOrder.current()
         setSentenceIndex(index)
-        engine.current = makeEngine(sentences[index].reading, settings.layout)
+        engine.current = sentenceEngine(sentences[index], settings.layout)
         trace.current.begin(sentences[index], keyTime, settings.layout)
         setSnapshot({
           position: 0,
@@ -349,7 +368,7 @@ export function usePracticeSession(
       } else if (!typewell && sentenceIndex < sentences.length - 1) {
         const n = sentenceIndex + 1
         setSentenceIndex(n)
-        engine.current = makeEngine(sentences[n].reading, settings.layout)
+        engine.current = sentenceEngine(sentences[n], settings.layout)
         trace.current.begin(sentences[n], keyTime, settings.layout)
         setSnapshot({
           position: engine.current.position,
@@ -391,6 +410,7 @@ export function usePracticeSession(
         : 100
   return {
     weak: !!customDocument,
+    english,
     missedKey: keyFeedback.missedKey,
     selected,
     passage,

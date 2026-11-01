@@ -63,6 +63,7 @@ export const SentenceView = memo(function SentenceView({
         words.reading,
         done,
         partialRoman,
+        current.language === 'en',
       )
     : { reading: 0, input: 0, roman: 0 }
   useSingleLineFlow(
@@ -76,6 +77,7 @@ export const SentenceView = memo(function SentenceView({
     <div
       className={`prose ${wordColors ? 'word-colors' : ''}`}
       data-flow={consumeTyped ? 'consume' : 'dim'}
+      data-language={current.language ?? 'ja'}
     >
       <div className="sentence-label">
         {done ? 'COMPLETE' : (current.label ?? 'NOW / 現在の文章')}
@@ -124,6 +126,7 @@ export const SentenceView = memo(function SentenceView({
         </span>
       </p>
       <ReadingGuide
+        english={current.language === 'en'}
         wordStarts={words.reading}
         consumed={consumed}
         consumeTyped={consumeTyped}

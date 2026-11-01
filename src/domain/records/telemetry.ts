@@ -12,6 +12,7 @@ export interface Stroke {
   character: string
 }
 export interface TracePrompt {
+  language?: 'en'
   continuous?: boolean
   label?: string
   segments?: ReadingSegment[]
@@ -41,6 +42,7 @@ export class TypingTrace {
     const last = this.data.prompts.at(-1)
     if (last) last.end = time
     this.data.prompts.push({
+      ...(sentence.language ? { language: sentence.language } : {}),
       ...(sentence.continuous ? { continuous: true } : {}),
       segments: sentence.segments.map((s) => ({ ...s })),
       ...(sentence.wordStarts ? { wordStarts: [...sentence.wordStarts] } : {}),
@@ -177,6 +179,7 @@ export function validTrace(value: unknown): value is SessionTrace {
         p &&
         typeof p.text === 'string' &&
         typeof p.reading === 'string' &&
+        (p.language === undefined || p.language === 'en') &&
         (p.wordStarts === undefined ||
           (Array.isArray(p.wordStarts) &&
             p.wordStarts.every(

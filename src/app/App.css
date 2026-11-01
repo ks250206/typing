@@ -4485,6 +4485,142 @@ rt {
   padding: 9px 5px;
   color: #829db4;
 }
+/* English already includes real word spaces. Keep the empty kana row's height. */
+.prose[data-language='en'] .word-start {
+  margin-inline-start: 0;
+}
+.language-switch {
+  padding: 16px 28px 0;
+}
+.sentence-practice .practice-main {
+  min-width: 0;
+}
+.sentence-challenge-heading,
+.sentence-streak,
+.sentence-attempts {
+  padding: 20px 28px;
+}
+.sentence-challenge-heading h3 {
+  margin: 8px 0;
+}
+.sentence-challenge-heading {
+  padding-block: 12px;
+}
+.sentence-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.sentence-picker input {
+  width: 72px;
+}
+.sentence-options input[type='number'],
+.sentence-picker input {
+  padding: 10px 12px;
+  border: 1px solid #8ab4ce38;
+  border-radius: 7px;
+  color: #c1dce8;
+  background: #09142680;
+  font: inherit;
+}
+.sentence-streak {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  border-block: 1px solid #8498c21a;
+  padding-block: 12px;
+}
+.sentence-streak > span {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #85cddd;
+}
+.sentence-streak strong {
+  font-size: 30px;
+  font-weight: 400;
+}
+.sentence-streak small {
+  font-size: 14px;
+}
+.sentence-streak progress {
+  width: 100%;
+  height: 4px;
+  accent-color: #8fd9e7;
+  appearance: none;
+  border: 0;
+}
+.sentence-streak progress::-webkit-progress-bar {
+  background: #8fbdcf20;
+  border-radius: 2px;
+}
+.sentence-streak progress::-webkit-progress-value {
+  background: #8fd9e7;
+  border-radius: 2px;
+}
+.sentence-streak progress::-moz-progress-bar {
+  background: #8fd9e7;
+}
+.sentence-attempt.typing-area {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+.sentence-options input[type='number'] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+}
+.sentence-options .config-card h3 {
+  margin-block: 8px 20px;
+}
+.sentence-options .config-card:first-child {
+  margin-top: 0;
+}
+.sentence-options .config-card > label {
+  display: block;
+  margin-block: 16px;
+}
+.sentence-options .config-card > button {
+  display: block;
+  margin-top: 18px;
+}
+.sentence-controls {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sentence-attempts ol {
+  padding: 0;
+  list-style: none;
+}
+.sentence-attempts li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  border-top: 1px solid #8498c21a;
+  padding: 12px 0;
+  font-size: 12px;
+}
+.sentence-attempts li[data-passed='true'] strong {
+  color: #8fd9e7;
+}
+.sentence-attempts li[data-passed='false'] strong {
+  color: #e9b29e;
+}
+@media (max-width: 800px) {
+  .language-switch {
+    padding: 12px 16px 0;
+  }
+  .sentence-challenge-heading,
+  .sentence-streak,
+  .sentence-attempts {
+    padding: 16px;
+  }
+}
 .favorite-toggle {
   display: inline-flex;
   align-items: center;

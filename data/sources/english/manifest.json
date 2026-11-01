@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/physics-HTFI/TypeLighter",
+  "commit": "08fd32e0e692126fadaba4fdd0f14adfd1a0389e",
+  "archive_url": "https://github.com/physics-HTFI/TypeLighter/blob/08fd32e0e692126fadaba4fdd0f14adfd1a0389e/html/TypeLighter.zip",
+  "sha256": "084da74e54ff5499dbd2485dc39eb01984b0be4d47dae8e0f346e973c392e2d2",
+  "retrieved": "2026-11-01",
+  "coverage": "English e-typing rounds 1–38 (2012), TypeWell TWEW215 four dictionaries. User approved latest data in this archive, not current-year data.",
+  "policy": "Newest numbered round per title; retain first round as ID. Exact case-sensitive deduplication within each set. Preserve case, punctuation and spaces. No Japanese roman strings used as English."
+}

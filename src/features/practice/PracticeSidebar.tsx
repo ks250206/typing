@@ -7,6 +7,7 @@ import { layoutLabels } from '../../domain/typing/engine'
 import { formatMissRate, typingTitle } from '../../domain/typing/scoring'
 import { time } from '../../shared/formatTime'
 import { Select } from '../../shared/ui/Select'
+import { isEnglish } from '../../domain/content/english'
 import type { PracticeSession } from './usePracticeSession'
 
 export function PracticeSidebar({
@@ -140,10 +141,12 @@ export function PracticeSidebar({
             status === 'paused' ||
             status === 'countdown'
           }
-          options={Object.entries(layoutLabels).map(([value, label]) => ({
-            value,
-            label,
-          }))}
+          options={Object.entries(layoutLabels)
+            .filter(([value]) => value !== 'kana' || !isEnglish(selected))
+            .map(([value, label]) => ({
+              value,
+              label,
+            }))}
           onChange={(value) => {
             const layout = value as Layout
             setSettings((s) => ({ ...s, layout }))

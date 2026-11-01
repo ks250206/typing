@@ -5,12 +5,14 @@ import {
   Settings2,
   Target,
   Repeat2,
+  TextCursorInput,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { lazy, Suspense } from 'react'
 import type { Settings } from '../domain/records/types'
 
-export type AppTab = 'practice' | 'battle' | 'history' | 'ghost' | 'weak'
+export type AppTab =
+  'practice' | 'battle' | 'history' | 'ghost' | 'weak' | 'sentence'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
 )
@@ -75,6 +77,7 @@ export function AppShell({
         <nav aria-label="WORKSPACE">
           {[
             ['practice', Keyboard, 'タイピング'],
+            ['sentence', TextCursorInput, '一文練習'],
             ['battle', Target, 'CPU対戦'],
             ['history', History, '練習の記録'],
             ['weak', Repeat2, '苦手ワード練習'],
@@ -118,6 +121,7 @@ export function AppShell({
               {
                 {
                   weak: '苦手ワード練習',
+                  sentence: '一文練習',
                   practice: 'タイピング',
                   ghost: 'ゴースト対戦',
                   history: '練習の記録',

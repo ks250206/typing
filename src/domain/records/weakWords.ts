@@ -101,8 +101,9 @@ export function extractWeakWords(records: RecordEntry[]): WeakWord[] {
           particles.has(text)
         )
           continue
-        const id = `${text}\u0000${reading}`
+        const id = `${text}\u0000${reading}${prompt.language === 'en' ? '\u0000en' : ''}`
         const word = words.get(id) ?? {
+          ...(prompt.language ? { language: prompt.language } : {}),
           id,
           text,
           reading,
@@ -173,6 +174,7 @@ export function weakDocument(words: WeakWord[], repetitions: number) {
     hash = Math.imul(hash ^ char.charCodeAt(0), 16777619)
   const sentences: Sentence[] = Array.from({ length: repetitions }, () =>
     words.map((w) => ({
+      ...(w.language ? { language: w.language } : {}),
       text: w.text,
       reading: w.reading,
       segments: w.segments.map((s) => ({ ...s })),

@@ -5,6 +5,7 @@ import { constitutionArticlePassage } from './constitutionArticles'
 import { trainerPassages } from './sakusaku'
 import { etypingPassages } from './etyping'
 export interface Passage {
+  language?: 'en'
   id: string
   title: string
   subtitle: string

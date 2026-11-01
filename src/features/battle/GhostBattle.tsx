@@ -200,6 +200,7 @@ function GhostSession({
       event.nativeEvent,
       race.source.layout,
       race.engine.target[race.engine.position],
+      race.sentence.language === 'en',
     )
     if (!key) return
     event.preventDefault()
