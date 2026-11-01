@@ -360,6 +360,9 @@ for (const id of ['en-etyping-05', 'en-typewell-01', 'en-long-observatory']) {
   test(`English set ${id} completes with reproducible input and seed`, async ({
     page,
   }) => {
+    // A continuous story sends thousands of real key events on shared CI runners.
+    // Match the budget of other full-session tests while retaining the whole input.
+    if (id.startsWith('en-long')) test.setTimeout(120_000)
     await setup(page)
     await page
       .getByRole('group', { name: '文章の言語' })
