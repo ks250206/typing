@@ -7,7 +7,7 @@ import {
 
 it('requires five consecutive successes by default and resets the streak after either failure', () => {
   let streak = 0
-  const good = { keys: 30, elapsed: 6000, rawMisses: 0 }
+  const good = { keys: 30, elapsed: 3000, rawMisses: 10 }
   for (let i = 1; i <= 5; i++) {
     const result = judgeSentence(defaultSentenceGoals, streak, good)
     expect(result.streak).toBe(i)
@@ -15,23 +15,23 @@ it('requires five consecutive successes by default and resets the streak after e
     streak = result.streak
   }
   expect(
-    judgeSentence(defaultSentenceGoals, 4, { ...good, elapsed: 12000 }).streak,
+    judgeSentence(defaultSentenceGoals, 4, { ...good, elapsed: 6000 }).streak,
   ).toBe(0)
   expect(
-    judgeSentence(defaultSentenceGoals, 4, { ...good, rawMisses: 1 }).streak,
+    judgeSentence(defaultSentenceGoals, 4, { ...good, rawMisses: 11 }).streak,
   ).toBe(0)
 })
 it('judges exact speeds and raw wrong keystrokes, not rounded KPM or miss episodes', () => {
   expect(
     judgeSentence(defaultSentenceGoals, 0, {
-      keys: 3,
+      keys: 10,
       elapsed: 1001,
       rawMisses: 0,
     }).passed,
   ).toBe(false)
   expect(
     judgeSentence(defaultSentenceGoals, 0, {
-      keys: 3,
+      keys: 10,
       elapsed: 1000,
       rawMisses: 0,
     }).passed,

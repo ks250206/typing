@@ -4,8 +4,8 @@ export interface SentenceGoals {
   repetitions: number
 }
 export const defaultSentenceGoals: SentenceGoals = {
-  targetKpm: 180,
-  maxMisses: 0,
+  targetKpm: 600,
+  maxMisses: 10,
   repetitions: 5,
 }
 export function normalizeSentenceGoals(

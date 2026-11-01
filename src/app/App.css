@@ -4830,15 +4830,10 @@ rt {
   }
 }
 
-/* Keep session controls within reach while the document list scrolls. */
+/* Session controls arrive with a small motion alongside the practice area. */
 @media (min-width: 801px) {
   .session-sidebar {
-    position: sticky;
-    top: 20px;
     align-self: start;
-    max-height: calc(100dvh / var(--display-zoom, 1) - 40px);
-    overflow-y: auto;
-    scrollbar-width: thin;
     animation: session-sidebar-enter 200ms ease-out;
   }
 }

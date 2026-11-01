@@ -477,7 +477,8 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
     .getByRole('button', { name: '初期設定に戻す', exact: true })
     .click()
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
-  await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('180')
+  await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('600')
+  await expect(page.getByLabel('ミス上限', { exact: true })).toHaveValue('10')
   await page.evaluate(() =>
     localStorage.setItem(
       'galactype.sentence-practice.v1',
@@ -492,7 +493,8 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await page.reload()
   await page.getByRole('button', { name: '一文練習', exact: true }).click()
   await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
-  await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('180')
+  await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('600')
+  await expect(page.getByLabel('ミス上限', { exact: true })).toHaveValue('10')
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
   await expect(page.locator('.sentence-list-heading')).toContainText(
     '夜更けの図書室',
