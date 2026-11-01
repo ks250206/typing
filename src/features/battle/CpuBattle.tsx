@@ -282,6 +282,15 @@ export function CpuBattle({
     render((v) => v + 1)
     requestAnimationFrame(() => area.current?.focus())
   }
+  const resetMatch = () => {
+    keyFeedback.clearKeyFeedback()
+    model.current = null
+    promptVersion.current = 2
+    setMatch(null)
+    setResult(null)
+    clearTimeout(missTimer.current)
+    setMistake(false)
+  }
   const accept = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault()
@@ -331,6 +340,11 @@ export function CpuBattle({
   useGameShortcuts((event) => {
     const key = event.key.toLowerCase()
     const currentPhase = model.current?.phase
+    if (
+      key === 'c' &&
+      ['paused', 'round-result', 'finished'].includes(currentPhase ?? '')
+    )
+      return resetMatch
     if (
       currentPhase === 'round-result' &&
       ['n', 's', ' ', 'enter'].includes(key)
@@ -557,33 +571,35 @@ export function CpuBattle({
                   />
                 </label>
               )}
-              <label>
-                対戦シード
+              <div className="battle-seed-controls">
+                <label className="battle-seed-label" htmlFor="cpu-match-seed">
+                  対戦シード
+                </label>
                 <input
+                  id="cpu-match-seed"
                   aria-label="対戦シード"
                   maxLength={64}
                   value={seed}
-                  onChange={(e) => setSeed(e.target.value)}
+                  onChange={(event) => setSeed(event.target.value)}
                 />
-              </label>
-              <label className="battle-fixed">
-                <span>
+                <label className="battle-fixed-toggle">
+                  <span>固定</span>
                   <input
                     type="checkbox"
                     aria-label="対戦シードを固定する"
                     checked={fixed}
-                    onChange={(e) => setFixed(e.target.checked)}
-                  />{' '}
-                  シードを固定する
-                </span>
+                    onChange={(event) => setFixed(event.target.checked)}
+                  />
+                </label>
                 <button
+                  className="battle-seed-refresh"
                   type="button"
                   disabled={fixed}
                   onClick={() => setSeed(freshSeed())}
                 >
-                  シードを更新
+                  更新
                 </button>
-              </label>
+              </div>
             </fieldset>
             <p className="cpu-config-note">
               反応時間は出題から初打鍵までの待ち時間。KPMは加速後の定常速度です。プリセットは人の反応をイメージしたゲーム内設定です。
@@ -673,6 +689,7 @@ export function CpuBattle({
                 result={result}
                 onNext={nextRound}
                 onRematch={start}
+                onConfigure={resetMatch}
               />
             ) : (
               <>
@@ -726,7 +743,12 @@ export function CpuBattle({
                       />
                     </>
                   )}
-                  {phase === 'paused' && <PauseOverlay onResume={resume} />}
+                  {phase === 'paused' && (
+                    <PauseOverlay
+                      onResume={resume}
+                      description="Space / Esc / Enter で再開 · R で再戦 · C で対戦設定"
+                    />
+                  )}
                 </div>
                 <div className="battle-status" role="status">
                   {phase === 'word-result' && (
@@ -759,18 +781,7 @@ export function CpuBattle({
                 {phase === 'paused' ? <Play size={14} /> : <Pause size={14} />}
                 {phase === 'paused' ? '再開' : '一時停止'}
               </button>
-              <button
-                onClick={() => {
-                  keyFeedback.clearKeyFeedback()
-                  model.current = null
-                  promptVersion.current = 2
-                  setMatch(null)
-                  clearTimeout(missTimer.current)
-                  setMistake(false)
-                }}
-              >
-                対戦をリセット
-              </button>
+              <button onClick={resetMatch}>対戦をリセット</button>
             </div>
           </>
         )}

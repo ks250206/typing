@@ -132,13 +132,21 @@ export function PracticeInput({
             >
               <kbd>Space</kbd>でスタート
             </button>
-            <p>3秒のカウント後に計測開始 · IME OFF</p>
+            <p>
+              {session.weak
+                ? '3秒のカウント後に計測開始 · IME OFF'
+                : '3秒のカウント後に計測開始 · C で文章選択'}
+            </p>
           </div>
         )}
         {status === 'paused' && (
           <PauseOverlay
             onResume={resume}
-            description={session.weak ? '計測を止めています' : undefined}
+            description={
+              session.weak
+                ? '計測を止めています'
+                : 'Space / Esc / Enter で再開 · R でやり直す · C で文章選択'
+            }
           />
         )}
         {status === 'countdown' && (

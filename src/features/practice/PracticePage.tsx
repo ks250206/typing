@@ -53,6 +53,13 @@ export function PracticePage({
   }
   useGameShortcuts((event) => {
     const key = event.key.toLowerCase()
+    if (
+      key === 'c' &&
+      (status === 'paused' ||
+        status === 'done' ||
+        (status === 'ready' && practiceStage === 2))
+    )
+      return () => reset(selected, settings.layout, 0)
     if (practiceStage === 3 && finishedResult && key === 'r') return retry
     if (practiceStage === 2 && status === 'paused') {
       if (key === 'r') return retry
@@ -137,7 +144,7 @@ export function PracticePage({
                       <button
                         onClick={() => reset(selected, settings.layout, 0)}
                       >
-                        文章を選び直す
+                        文章を選び直す <kbd>C</kbd>
                       </button>
                     </>
                   }

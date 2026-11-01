@@ -8,12 +8,14 @@ export function CpuResults({
   result,
   onNext,
   onRematch,
+  onConfigure,
 }: {
   match: RtcMatch
   history: RecordEntry[]
   result: RecordEntry | null
   onNext: () => void
   onRematch: () => void
+  onConfigure: () => void
 }) {
   const complete = match.phase === 'finished'
   const round = match.roundResults.at(-1)!
@@ -58,23 +60,28 @@ export function CpuResults({
             : `${round.player} : ${round.cpu} / 10点先取${round.reversal ? ' · 正確率95%ルールによる逆転' : ''}`
         }
         actions={
-          complete ? (
-            <button
-              className="primary-button"
-              aria-keyshortcuts="r"
-              onClick={onRematch}
-            >
-              再戦する
+          <>
+            {complete ? (
+              <button
+                className="primary-button"
+                aria-keyshortcuts="r"
+                onClick={onRematch}
+              >
+                再戦する
+              </button>
+            ) : (
+              <button
+                className="primary-button"
+                aria-keyshortcuts="n s Space Enter"
+                onClick={onNext}
+              >
+                次のラウンド
+              </button>
+            )}
+            <button onClick={onConfigure} aria-keyshortcuts="c">
+              対戦設定に戻る <kbd>C</kbd>
             </button>
-          ) : (
-            <button
-              className="primary-button"
-              aria-keyshortcuts="n s Space Enter"
-              onClick={onNext}
-            >
-              次のラウンド
-            </button>
-          )
+          </>
         }
       />
       <div className="round-reports" aria-label="ラウンド別の結果">

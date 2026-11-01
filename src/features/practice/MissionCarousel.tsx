@@ -5,11 +5,13 @@ export function MissionCarousel({
   onStage,
   children,
   hasResult = false,
+  footer,
 }: {
   stage: number
   onStage: (stage: number) => void
   hasResult?: boolean
   children: ReactNode[]
+  footer?: ReactNode
 }) {
   const [motion, setMotion] = useState({ stage, direction: 1 })
   if (motion.stage !== stage) {
@@ -51,6 +53,7 @@ export function MissionCarousel({
           </div>
         ))}
       </div>
+      {footer}
     </div>
   )
 }

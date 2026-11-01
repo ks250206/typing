@@ -1,3 +1,4 @@
+import { PassageSummary } from '../library/PassageSummary'
 import { ArrowRight } from 'lucide-react'
 import { japanesePracticePassages } from '../../domain/content/practiceDocument'
 import { englishPassages } from '../../domain/content/english'
@@ -75,10 +76,10 @@ export function PracticeSelection({
         isFavorite={isFavorite}
         onToggleFavorite={onToggleFavorite}
       />
-      <div className="passage-header">
-        <div>
-          <span className="tag">{passage.genre}</span>
-          <span className="muted small">
+      <PassageSummary
+        passage={passage}
+        meta={
+          <>
             {typewell
               ? passage.language === 'en'
                 ? '400打 · '
@@ -94,24 +95,9 @@ export function PracticeSelection({
               ? 'ランダム出題'
               : passage.paragraphs.reduce((n, p) => n + p.text.length, 0)}{' '}
             {!typewell && '文字'}
-          </span>
-          <h2>{passage.title}</h2>
-          <p>{passage.subtitle}</p>
-          {passage.source?.url ? (
-            <a
-              className="text-button"
-              href={passage.source.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              出典：{passage.source.label}
-            </a>
-          ) : passage.source ? (
-            <p className="small muted">出典：{passage.source.label}</p>
-          ) : null}
-        </div>
-        <span className="passage-symbol">{passage.accent}</span>
-      </div>
+          </>
+        }
+      />
       {seeded && (
         <div className="seed-settings">
           <label>

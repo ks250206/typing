@@ -356,15 +356,15 @@ for (const width of [1440, 390]) {
   })
 }
 
-test('English imported sets and uninterrupted long text complete with reproducible seeds', async ({
-  page,
-}) => {
-  await setup(page)
-  await page
-    .getByRole('group', { name: '文章の言語' })
-    .getByRole('button', { name: 'English', exact: true })
-    .click()
-  for (const id of ['en-etyping-05', 'en-typewell-01', 'en-long-observatory']) {
+for (const id of ['en-etyping-05', 'en-typewell-01', 'en-long-observatory']) {
+  test(`English set ${id} completes with reproducible input and seed`, async ({
+    page,
+  }) => {
+    await setup(page)
+    await page
+      .getByRole('group', { name: '文章の言語' })
+      .getByRole('button', { name: 'English', exact: true })
+      .click()
     const docTitle = englishDocument(id, 'test').passage.title
     await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
     await page.getByRole('button', { name: docTitle, exact: true }).click()
@@ -420,8 +420,8 @@ test('English imported sets and uninterrupted long text complete with reproducib
         doc.sentences[0].text,
       )
     }
-  }
-})
+  })
+}
 
 test('Japanese one-sentence input, source selection, persisted goals, reset and invalid-value fallback', async ({
   page,
@@ -475,7 +475,10 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await page
     .getByRole('button', { name: 'TypeWell · 基本英単語', exact: true })
     .click()
-  await expect(page.locator('.sentence-list-heading')).toContainText('1500件')
+  await expect(page.locator('.sentence-word-table')).toHaveAttribute(
+    'aria-rowcount',
+    '1501',
+  )
   await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(area.locator('.current-paragraph')).toHaveAttribute(
     'data-text',
@@ -487,8 +490,9 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('1')
   await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('10')
   await expect(page.getByLabel('ミス上限', { exact: true })).toHaveValue('2')
-  await expect(page.locator('.sentence-list-heading')).toContainText(
-    'TypeWell · 基本英単語',
+  await expect(page.locator('.sentence-word-list')).toHaveAttribute(
+    'data-passage-id',
+    'en-typewell-01',
   )
   await page
     .getByRole('button', { name: '初期設定に戻す', exact: true })
@@ -513,8 +517,9 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('600')
   await expect(page.getByLabel('ミス上限', { exact: true })).toHaveValue('10')
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
-  await expect(page.locator('.sentence-list-heading')).toContainText(
-    '夜更けの図書室',
+  await expect(page.locator('.sentence-word-list')).toHaveAttribute(
+    'data-passage-id',
+    'night-library',
   )
 })
 

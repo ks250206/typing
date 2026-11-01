@@ -1,3 +1,4 @@
+import { PassageSummary } from '../library/PassageSummary'
 import {
   useCallback,
   useMemo,
@@ -229,6 +230,17 @@ export default function SentencePractice({
           stage={stage}
           onStage={handleStageChange}
           hasResult={!!summary}
+          footer={
+            <SentenceWordTable
+              key={`${config.passageId}/${layout}`}
+              pool={pool}
+              passageId={config.passageId}
+              layout={layout}
+              selected={index % pool.length}
+              stats={stats}
+              onSelect={changeSentence}
+            />
+          }
         >
           {[
             stage === 0 ? (
@@ -254,18 +266,8 @@ export default function SentencePractice({
                   isFavorite={isFavorite}
                   onToggleFavorite={onToggleFavorite}
                 />
-                <div className="sentence-selection-footer">
-                  <h3>{passage.title}</h3>
-                  {passage.source?.url && (
-                    <a
-                      className="text-button small"
-                      href={passage.source.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      出典：{passage.source.label}
-                    </a>
-                  )}
+                <PassageSummary passage={passage} subtitle={null} />
+                <div className="mission-select-actions">
                   <button
                     className="primary-button"
                     onClick={() => handleStageChange(1)}
@@ -340,16 +342,6 @@ export default function SentencePractice({
             ),
           ]}
         </MissionCarousel>
-        <SentenceWordTable
-          key={`${config.passageId}/${layout}`}
-          pool={pool}
-          passageId={config.passageId}
-          title={passage.title}
-          layout={layout}
-          selected={index % pool.length}
-          stats={stats}
-          onSelect={changeSentence}
-        />
         {attempts.length > 0 && (
           <details className="sentence-attempts" aria-label="今回の試行結果">
             <summary>
