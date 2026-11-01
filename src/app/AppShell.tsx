@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from 'react'
 import { lazy, Suspense } from 'react'
 import type { Settings } from '../domain/records/types'
+import { GithubMark } from '../shared/ui/GithubMark'
 
 export type AppTab =
   'practice' | 'battle' | 'history' | 'ghost' | 'weak' | 'sentence'
@@ -113,7 +114,7 @@ export function AppShell({
           <div>
             <span className="breadcrumb">WORKSPACE</span>
             <ChevronRight size={12} />
-            <span>
+            <span className="topbar-page">
               {
                 {
                   weak: '苦手ワード練習',
@@ -127,8 +128,20 @@ export function AppShell({
             </span>
           </div>
           <span className="topbar-right">
-            <span className="status-dot" />
-            FOCUS MODE <span className="keycap">⌘</span>
+            <span className="topbar-status">
+              <span className="status-dot" />
+              FOCUS MODE <span className="keycap">⌘</span>
+            </span>
+            <a
+              className="topbar-github"
+              href="https://github.com/ks250206/typing"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHubリポジトリを開く（新しいタブ）"
+              title="GitHubリポジトリを開く"
+            >
+              <GithubMark />
+            </a>
           </span>
         </header>
         <div className="content page-view" key={tab}>

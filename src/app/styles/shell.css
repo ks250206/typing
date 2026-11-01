@@ -98,8 +98,14 @@
 }
 .topbar > div {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 13px;
+}
+.topbar-page {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .breadcrumb {
   font-size: 8px;
@@ -108,10 +114,37 @@
 }
 .topbar-right {
   display: flex;
-  gap: 10px;
+  gap: 14px;
+  flex-shrink: 0;
   align-items: center;
   font-size: 8px;
   letter-spacing: 1.7px;
+}
+.topbar-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: #80b5c0;
+  transition:
+    color 0.16s,
+    background-color 0.16s;
+}
+.topbar-github:hover {
+  color: #b9f6ff;
+  background-color: #5fe6ff12;
+}
+.topbar-github:focus-visible {
+  color: #b9f6ff;
+  outline: 2px solid #8aeaff;
+  outline-offset: 2px;
 }
 .keycap {
   border: 1px solid #ffffff18;
@@ -243,6 +276,14 @@
 @media (max-width: 480px) {
   .topbar {
     padding: 0 17px;
+  }
+  .topbar-status .keycap {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .topbar-status {
+    display: none;
   }
 }
 /* Deep-space surfaces; luminous accents stay outside the reading foreground. */
