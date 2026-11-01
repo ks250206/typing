@@ -14,7 +14,7 @@ import { physicalKey, keyOutput } from '../typing/physicalKeyboard'
 import { TypingTrace } from '../records/telemetry'
 import { ReplayTimeline } from '../records/replay'
 import { extractWeakWords, weakDocument } from '../records/weakWords'
-import { sentenceEngine } from '../typing/sentenceEngine'
+import { sentenceEngine, sentenceKeyCount } from '../typing/sentenceEngine'
 
 it('imports the 19 latest distinct e-typing titles and four complete English dictionaries', () => {
   expect(data.filter((s) => s.kind === 'etyping')).toHaveLength(19)
@@ -104,6 +104,8 @@ it.each(practicePassages)(
 )
 
 it('requires Shift for capitals, respects Caps Lock and preserves the Japanese case-insensitive behavior', () => {
+  expect(sentenceKeyCount({ reading: 'がぱ' }, 'kana')).toBe(4)
+  expect(sentenceKeyCount(englishSentence('A B.'), 'jis')).toBe(4)
   const engine = new EnglishEngine('Hello! A B.')
   expect(engine.feed('h')).toBe(false)
   expect(engine.feed('H')).toBe(true)

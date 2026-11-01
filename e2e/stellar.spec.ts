@@ -8,7 +8,7 @@ test('integrated guides track alternate spellings, misses, transitions and reset
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region')
@@ -90,7 +90,7 @@ test('damage covers the viewport, never blocks typing, clears and respects reduc
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const area = page.getByRole('region')
@@ -137,7 +137,7 @@ test('stellar scene animates, freezes on reduced motion, resizes and releases it
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   const scene = page.locator('.space-scene')
   await expect(scene).toHaveAttribute('data-rendering', 'webgl')
@@ -195,7 +195,7 @@ test('CSS planets remain visible when WebGL is unavailable', async ({
     } as typeof getContext
   })
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.space-fallback')).toBeVisible()
   await expect(page.locator('.space-scene canvas')).toHaveCount(0)
@@ -213,7 +213,7 @@ test('word-spaced guides are large, label-free and close to the main text on des
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   for (const width of [1440, 390]) {

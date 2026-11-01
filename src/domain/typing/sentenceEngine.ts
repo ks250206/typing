@@ -31,3 +31,13 @@ export function sentenceEngine(
       ? new KanaEngine(sentence.reading)
       : new RomanEngine(sentence.reading)
 }
+
+export function sentenceKeyCount(
+  sentence: Pick<Sentence, 'reading' | 'language'>,
+  layout: Layout,
+) {
+  const engine = sentenceEngine(sentence, layout)
+  return engine instanceof KanaEngine
+    ? engine.target.length
+    : engine.hint.length
+}

@@ -25,7 +25,7 @@ test('the complete official preamble is selectable, readable, typable and saved'
     expect(
       await paragraphs.nth(i).locator('.token-text').allTextContents(),
     ).toEqual(constitution.paragraphs[i].segments!.map((s) => s.text))
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.screenshot({
     path: 'artifacts/constitution-desktop.png',

@@ -20,7 +20,7 @@ test('selection and preview share a frame, typing fits its content, and every li
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1100 })
     const heights = []
-    for (const name of ['文章選択へ', '全文確認へ', '入力へ進む']) {
+    for (const name of ['文章選択へ', '全文確認へ', '練習へ進む']) {
       await page.getByRole('button', { name, exact: true }).click()
       await expect(page.locator('.mission-face.is-active')).toHaveCSS(
         'transform',

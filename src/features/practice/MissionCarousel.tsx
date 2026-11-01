@@ -18,12 +18,12 @@ export function MissionCarousel({
   return (
     <div className="mission-carousel" data-stage={stage}>
       <nav className="mission-steps" aria-label="練習ステップ">
-        {['文章選択', '全文確認', '入力', '結果']
+        {['文章選択', '全文確認', '練習', '結果']
           .slice(0, children.length)
           .map((label, index) => (
             <button
               key={label}
-              aria-label={index === 2 ? '入力へ進む' : `${label}へ`}
+              aria-label={index === 2 ? '練習へ進む' : `${label}へ`}
               disabled={index === 3 && !hasResult}
               aria-current={stage === index ? 'step' : undefined}
               onClick={() => onStage(index)}

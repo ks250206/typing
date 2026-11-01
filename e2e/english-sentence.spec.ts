@@ -41,7 +41,7 @@ for (const width of [1440, 390]) {
       .getByRole('group', { name: '文章の言語' })
       .getByRole('button', { name: 'English', exact: true })
       .click()
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     const wordColors = page.getByRole('checkbox', {
       name: '単語の色分け',
       exact: true,
@@ -85,6 +85,7 @@ for (const width of [1440, 390]) {
     await expect(typed).toHaveText('A ')
     await consume.check()
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(consume).toBeChecked()
     await expect(wordColors).not.toBeChecked()
     expect(await colors()).toHaveLength(1)
@@ -98,7 +99,7 @@ for (const width of [1440, 390]) {
     await page.keyboard.type('A ')
     await expect(typed.locator('[data-consumed=true]')).toHaveText('A ')
     await wordColors.uncheck()
-    await expect(area.getByText('IN THE FLOW', { exact: true })).toBeVisible()
+    await expect(area).toHaveAttribute('data-status', 'running')
     await expect(area.locator('.typed-roman')).toHaveText('A ')
     await consume.uncheck()
     await expect(typed.locator('[data-consumed=true]')).toHaveCount(0)
@@ -107,6 +108,7 @@ for (const width of [1440, 390]) {
     await consume.check()
     await page.reload()
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(wordColors).not.toBeChecked()
     await expect(consume).toBeChecked()
     expect(await colors()).toHaveLength(1)
@@ -121,7 +123,7 @@ for (const width of [1440, 390]) {
     page.on('pageerror', (e) => errors.push(e.message))
     await page.setViewportSize({ width, height: 1000 })
     await setup(page)
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     const kanaHeight = await page
       .locator('.mission-face.is-active .kana-line')
       .evaluate((el) => el.getBoundingClientRect().height)
@@ -145,7 +147,7 @@ for (const width of [1440, 390]) {
         exact: true,
       })
       .click()
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     const area = page.getByRole('region', { name: /タイピング入力領域/ })
     const kana = area.locator('.kana-line')
     await expect(kana).toHaveAttribute('aria-hidden', 'true')
@@ -230,7 +232,7 @@ for (const width of [1440, 390]) {
         .click()
     await page
       .getByRole('button', {
-        name: /お気に入りを開く：タイピング · The Quiet Library/,
+        name: /お気に入りを開く：通常練習 · The Quiet Library/,
       })
       .click()
     await expect(
@@ -250,6 +252,7 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 })
     await setup(page, true)
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
     const area = page.getByRole('region', {
       name: '一文練習の入力領域',
@@ -279,7 +282,8 @@ for (const width of [1440, 390]) {
       await expect(
         page.getByRole('status', { name: '連続達成数' }),
       ).toContainText(`${i} / 5 回`)
-      await page.keyboard.press('Enter')
+      await expect(area).toHaveAttribute('data-status', 'running')
+      await expect(area).toBeFocused()
     }
     await attempt(true)
     await expect(page.locator('.sentence-attempts li').last()).toContainText(
@@ -288,19 +292,24 @@ for (const width of [1440, 390]) {
     await expect(
       page.getByRole('status', { name: '連続達成数' }),
     ).toContainText('0 / 5 回')
-    await page.keyboard.press('Enter')
+    await expect(area).toHaveAttribute('data-status', 'running')
     for (let i = 1; i <= 5; i++) {
       await attempt()
       await expect(
         page.getByRole('status', { name: '連続達成数' }),
       ).toContainText(`${i} / 5 回`)
-      if (i < 5) await page.keyboard.press('Enter')
+      if (i === 1)
+        await page.screenshot({
+          path: `artifacts/sentence-practice-${width}.png`,
+          fullPage: true,
+        })
+      if (i < 5) await expect(area).toHaveAttribute('data-status', 'running')
     }
     await expect(
       page.getByRole('status', { name: '連続達成数' }),
     ).toContainText('CHALLENGE CLEAR')
     await page.screenshot({
-      path: `artifacts/sentence-practice-${width}.png`,
+      path: `artifacts/sentence-result-${width}.png`,
       fullPage: true,
     })
     await page.keyboard.press('Enter')
@@ -314,9 +323,8 @@ for (const width of [1440, 390]) {
     await page.keyboard.type('I')
     await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
-    await expect(
-      page.getByText('最初の文字で開始', { exact: true }),
-    ).toBeVisible()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
+    await expect(area).toHaveAttribute('data-status', 'ready')
     await expect(page.locator('.sentence-attempts')).toHaveCount(0)
     expect(
       await page.evaluate(
@@ -353,7 +361,7 @@ test('English imported sets and uninterrupted long text complete with reproducib
         'href',
         'https://github.com/physics-HTFI/TypeLighter',
       )
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await startPractice(page, true)
     for (const sentence of doc.sentences) {
       await page.clock.runFor(500)
@@ -403,6 +411,7 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
 }) => {
   await setup(page)
   await page.getByRole('button', { name: '一文練習', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   for (const [label, value] of [
     ['目標KPM', '10'],
     ['ミス上限', '2'],
@@ -437,11 +446,11 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await expect(page.getByRole('status', { name: '連続達成数' })).toContainText(
     '1 / 1 回',
   )
-  await expect(area.locator('[data-consumed=true]')).toHaveCount(0)
+  await expect(
+    page.locator('.sentence-attempt [data-consumed=true]'),
+  ).toHaveCount(0)
   await consume.check()
-  await page
-    .getByRole('button', { name: '文章セットを選ぶ', exact: true })
-    .click()
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page
     .getByRole('group', { name: '文章の言語' })
     .getByRole('button', { name: 'English', exact: true })
@@ -449,20 +458,19 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   await page
     .getByRole('button', { name: 'TypeWell · 基本英単語', exact: true })
     .click()
-  await expect(page.getByLabel('文章番号', { exact: true })).toHaveAttribute(
-    'max',
-    '1500',
-  )
+  await expect(page.locator('.sentence-list-heading')).toContainText('1500件')
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(area.locator('.current-paragraph')).toHaveAttribute(
     'data-text',
     sentencePracticePool('en-typewell-01', 'jis')[0].text,
   )
   await page.reload()
   await page.getByRole('button', { name: '一文練習', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('1')
   await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('10')
   await expect(page.getByLabel('ミス上限', { exact: true })).toHaveValue('2')
-  await expect(page.locator('.sentence-challenge-heading')).toContainText(
+  await expect(page.locator('.sentence-list-heading')).toContainText(
     'TypeWell · 基本英単語',
   )
   await page
@@ -483,9 +491,10 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
   )
   await page.reload()
   await page.getByRole('button', { name: '一文練習', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.getByLabel('目標KPM', { exact: true })).toHaveValue('180')
   await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
-  await expect(page.locator('.sentence-challenge-heading')).toContainText(
+  await expect(page.locator('.sentence-list-heading')).toContainText(
     '夜更けの図書室',
   )
 })
@@ -506,9 +515,8 @@ test('English switches out of kana, saves favorites with an alphabetic layout an
   await language.getByRole('button', { name: '日本語', exact: true }).click()
   await choose(page.getByLabel('入力方式', { exact: true }), 'kana')
   await page.getByRole('button', { name: '一文練習', exact: true }).click()
-  await page
-    .getByRole('button', { name: '文章セットを選ぶ', exact: true })
-    .click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page
     .getByRole('button', {
       name: 'お気に入りに登録：The Quiet Library',
@@ -523,7 +531,7 @@ test('English switches out of kana, saves favorites with an alphabetic layout an
   ).toBe('jis')
   await page
     .getByRole('button', {
-      name: /お気に入りを開く：タイピング · The Quiet Library/,
+      name: /お気に入りを開く：通常練習 · The Quiet Library/,
     })
     .click()
   await expect(
@@ -533,7 +541,7 @@ test('English switches out of kana, saves favorites with an alphabetic layout an
     page.locator('.favorites-panel li[data-active=true]'),
   ).toHaveCount(1)
   await choose(page.getByLabel('入力方式', { exact: true }), 'dvorak')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await startPractice(page, true)
   const text = 'A small light'
   for (const character of text) {

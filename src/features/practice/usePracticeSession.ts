@@ -45,8 +45,17 @@ export function usePracticeSession(
   onRecord: (record: RecordEntry) => void,
   setNotice: (message: string) => void,
   customDocument?: ReturnType<typeof practiceDocument>,
-  options?: { startOnFirstKey: boolean },
+  options?: {
+    startOnFirstKey: boolean
+    onTrialComplete?: (record: RecordEntry) => boolean
+  },
 ) {
+  const trial = useRef({
+    trace: new TypingTrace(),
+    misses: new MissEpisodes(),
+    keys: 0,
+    started: 0,
+  })
   const keyFeedback = useKeyFeedback()
   const currentLayout = useRef(settings.layout)
   const {
@@ -299,6 +308,7 @@ export function usePracticeSession(
       ) {
         clock.start()
         trace.current.begin(sentences[sentenceIndex], 0, settings.layout)
+        trial.current.trace.begin(sentences[sentenceIndex], 0, settings.layout)
         setStatus('running')
       } else {
         if (e.key.length === 1 || e.code === 'Space') e.preventDefault()
@@ -328,6 +338,19 @@ export function usePracticeSession(
         : engine.current.hint[0]) ?? ''
     const accepted = engine.current.feed(key)
     trace.current.add(key, expected, position, accepted, keyTime)
+    if (options?.onTrialComplete) {
+      trial.current.trace.add(
+        key,
+        expected,
+        position,
+        accepted,
+        keyTime - trial.current.started,
+      )
+      if (accepted) {
+        trial.current.keys++
+        trial.current.misses.accept()
+      } else trial.current.misses.miss()
+    }
     if (!accepted) {
       keyFeedback.reportMiss(e.code)
       if (missEpisodes.current.miss()) setMisses(missEpisodes.current.misses)
@@ -353,7 +376,59 @@ export function usePracticeSession(
           : (engine.current as RomanEngine).naturalProgress,
     })
     if (engine.current.done) {
-      if (durationMs) {
+      if (options?.onTrialComplete) {
+        const duration = keyTime - trial.current.started
+        const result = practiceResult({
+          id: crypto.randomUUID(),
+          passage,
+          layout: settings.layout,
+          duration,
+          durationMs: 0,
+          nextKeys: trial.current.keys,
+          typewell: false,
+          trainer: false,
+          etyping: false,
+          rtc: false,
+          articles: false,
+          limit,
+          seed,
+          replayVersion,
+          missEpisodes: trial.current.misses,
+          trace: trial.current.trace.finish(duration),
+          date: new Date().toISOString(),
+        })
+        result.mode = 'weak'
+        if (options.onTrialComplete(result)) finishSession(nextKeys, keyTime)
+        else {
+          engine.current = sentenceEngine(
+            sentences[sentenceIndex],
+            settings.layout,
+          )
+          trace.current.begin(
+            sentences[sentenceIndex],
+            keyTime,
+            settings.layout,
+          )
+          trial.current = {
+            trace: new TypingTrace(),
+            misses: new MissEpisodes(),
+            keys: 0,
+            started: keyTime,
+          }
+          trial.current.trace.begin(
+            sentences[sentenceIndex],
+            0,
+            settings.layout,
+          )
+          setSnapshot({
+            position: 0,
+            target: engine.current.target,
+            hint: engine.current.hint,
+            typed: '',
+            naturalKeys: 0,
+          })
+        }
+      } else if (durationMs) {
         const index = trainerOrder.current()
         setSentenceIndex(index)
         engine.current = sentenceEngine(sentences[index], settings.layout)

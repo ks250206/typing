@@ -93,7 +93,7 @@ for (const width of [1440, 390]) {
     await expect(menu.locator('li')).toHaveCount(2)
     await menu
       .getByRole('button', {
-        name: /お気に入りを開く：タイピング · RTCオリジナル/,
+        name: /お気に入りを開く：通常練習 · RTCオリジナル/,
       })
       .click()
     await expect(page.locator('.mission-carousel')).toHaveAttribute(
@@ -117,7 +117,7 @@ for (const width of [1440, 390]) {
     menu = await favoriteMenu(page)
     await menu
       .getByRole('button', {
-        name: /お気に入りを開く：タイピング · RTCオリジナル/,
+        name: /お気に入りを開く：通常練習 · RTCオリジナル/,
       })
       .click()
     expect(
@@ -203,7 +203,7 @@ test('RTC original completes 15 seeded prompts in solo practice, saves and reope
     (s) => s.text,
   )
   expect(await previewText(page)).toEqual(expected)
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await page.keyboard.press('Space')
   await page.clock.runFor(3000)
@@ -254,13 +254,13 @@ test('favorites keyboard activation takes priority over paused game shortcuts; s
   await page
     .getByRole('button', { name: 'お気に入りに登録', exact: true })
     .click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await page.keyboard.press('Space')
   await page.clock.runFor(3000)
   await page.keyboard.press('Escape')
   await page
-    .getByRole('button', { name: /お気に入りを開く：タイピング/ })
+    .getByRole('button', { name: /お気に入りを開く：通常練習/ })
     .focus()
   await page.keyboard.press('Enter')
   await expect(page.locator('.mission-carousel')).toHaveAttribute(
@@ -282,7 +282,7 @@ test('favorites keyboard activation takes priority over paused game shortcuts; s
     'お気に入りを保存できません',
   )
   await expect(
-    page.getByRole('button', { name: /お気に入りを開く：タイピング/ }),
+    page.getByRole('button', { name: /お気に入りを開く：通常練習/ }),
   ).toBeVisible()
 })
 

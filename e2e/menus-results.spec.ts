@@ -143,7 +143,7 @@ test('finishing opens the result face with point, errors, loss, full log and rep
     .getByRole('button', { name: 'このシードを使う', exact: true })
     .click()
   const doc = typewellDocument('typewell-basic', 'result-screen', 'jis', 2)
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await startPractice(page)
   await page.keyboard.type('%%%')
@@ -266,7 +266,7 @@ test('page and carousel transitions animate and honor reduced motion', async ({
     'animation-name',
     'page-arrive',
   )
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('.mission-face.is-active')).toHaveCSS(
     'animation-name',
     'mission-slide',
@@ -288,7 +288,7 @@ test('page and carousel transitions animate and honor reduced motion', async ({
   await page.getByRole('button', { name: '設定を閉じる', exact: true }).click()
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(page.locator('.mission-face.is-active')).toHaveCSS(
     'animation-name',
     'none',
@@ -337,9 +337,9 @@ test('navigation animates under OS reduced motion, can follow OS or stop, and pe
   for (const label of [
     '練習の記録',
     'CPU対戦',
-    'タイピング',
+    '通常練習',
     '練習の記録',
-    'タイピング',
+    '通常練習',
   ]) {
     await page.getByRole('button', { name: label, exact: true }).click()
     await observe('.page-view', 'page-arrive')
@@ -372,10 +372,10 @@ test('navigation animates under OS reduced motion, can follow OS or stop, and pe
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await expect(page.locator('.page-view')).toHaveCSS('animation-name', 'none')
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await observe('.page-view', 'page-arrive')
   await setMode('off')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('.mission-face.is-active')).toHaveCSS(
     'animation-name',
     'none',

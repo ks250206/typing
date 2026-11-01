@@ -58,7 +58,7 @@ test('trainer previews only lap one, then plays three separately shuffled full l
     expect(
       (await rows.nth(i).locator('.token-text').allTextContents()).join(''),
     ).toBe(set.entries[order[i]][0])
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.clock.pauseAt(
     new Date(await page.evaluate(() => Date.now() + 10000)),
   )
@@ -143,7 +143,7 @@ test('a saved v1 trainer seed still recreates its original stream', async ({
   await expect(
     page.getByText('旧記録の出題方式（v1）を再現しています。'),
   ).toBeVisible()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('.current-paragraph')).toHaveAttribute(
     'data-text',
     sakusakuEntries[createTrainerOrder('retro', 15, 1)()][0],

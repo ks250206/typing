@@ -31,7 +31,7 @@ async function selectLong(page: Page, index: number) {
     ).join(''),
   ).toBe(originalLongEntries[index].text)
   await expect(page.getByLabel('単語の色分け', { exact: true })).toBeChecked()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.reading-toolbar')).toContainText('全文1問')
 }

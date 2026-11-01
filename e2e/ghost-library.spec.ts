@@ -309,7 +309,7 @@ test('unified selection filters and searches the library; briefing wraps while t
     fullPage: true,
     animations: 'disabled',
   })
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('.sentence-stream')).toHaveCSS(
     'white-space',
     'nowrap',

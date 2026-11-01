@@ -15,7 +15,7 @@ async function setup(page: Page) {
   )
 }
 async function enter(page: Page) {
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
 }
 const phase = (page: Page, value: string) =>
@@ -170,7 +170,7 @@ test('countdown is cancelled by Escape, focus loss, face/page changes, reset and
   await start()
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await page.clock.runFor(5000)
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(page.locator('.mission-carousel')).toHaveAttribute(
     'data-stage',
     '0',

@@ -23,7 +23,7 @@ test('new RTC sets are available in solo and CPU, and README shows real active i
       page.getByRole('button', { name: set.title, exact: true }),
     ).toBeVisible()
   await page.getByRole('button', { name: sets[0].title, exact: true }).click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await startPractice(page)
   const text =
     ((await page.locator('.roman-current').textContent()) ?? '') +

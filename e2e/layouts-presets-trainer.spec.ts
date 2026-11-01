@@ -24,7 +24,7 @@ async function setup(page: Page, layout: Layout = 'jis') {
   await page.goto('/')
 }
 async function enter(page: Page) {
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await startPractice(page, true)

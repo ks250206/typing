@@ -50,7 +50,7 @@ export function ClearHistoryDialog({
       >
         <h2 id="clear-title">すべての記録を削除しますか？</h2>
         <p>
-          履歴・TOP記録・打鍵ログをすべて削除します。この操作は取り消せません。必要な記録は
+          履歴・TOP記録・打鍵ログ・一文練習の文別統計を削除します。この操作は取り消せません。必要な記録は
           JSON に書き出してください。設定と文章セットは残ります。
         </p>
         {error && <p role="alert">{error}</p>}

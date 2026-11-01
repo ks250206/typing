@@ -42,7 +42,7 @@ test('favorites drag order persists, cancels safely and synchronizes without nav
   const first = (await handles.nth(0).boundingBox())!
   const last = (await handles.nth(2).boundingBox())!
   const workspace = page.getByRole('button', {
-    name: 'タイピング',
+    name: '通常練習',
     exact: true,
   })
   await workspace.hover()
@@ -107,7 +107,7 @@ test('favorites drag order persists, cancels safely and synchronizes without nav
   const other = await context.newPage()
   await other.goto('/')
   await menu
-    .getByRole('button', { name: /お気に入りを開く：タイピング · 春の言葉/ })
+    .getByRole('button', { name: /お気に入りを開く：通常練習 · 春の言葉/ })
     .click()
   const seed = await page.getByLabel('出題シード', { exact: true }).inputValue()
   await handles.nth(0).focus()
@@ -281,8 +281,8 @@ for (const width of [1440, 390]) {
       await page.keyboard.press(key)
       await expect(overlay).toHaveCount(0)
     }
-    await page.getByRole('button', { name: 'タイピング', exact: true }).click()
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '通常練習', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await startPractice(page, true)
     await page.keyboard.press('Escape')
     await expect(overlay).toBeVisible()

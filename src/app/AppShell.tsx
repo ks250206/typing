@@ -76,7 +76,7 @@ export function AppShell({
         <div className="nav-label">WORKSPACE</div>
         <nav aria-label="WORKSPACE">
           {[
-            ['practice', Keyboard, 'タイピング'],
+            ['practice', Keyboard, '通常練習'],
             ['sentence', TextCursorInput, '一文練習'],
             ['battle', Target, 'CPU対戦'],
             ['history', History, '練習の記録'],
@@ -107,10 +107,6 @@ export function AppShell({
           <Settings2 size={18} />
           環境設定
         </button>
-        <div className="local-status">
-          <span />
-          ローカルに保存 · あなただけの記録
-        </div>
       </aside>
       <main>
         <header className="topbar">
@@ -122,7 +118,7 @@ export function AppShell({
                 {
                   weak: '苦手ワード練習',
                   sentence: '一文練習',
-                  practice: 'タイピング',
+                  practice: '通常練習',
                   ghost: 'ゴースト対戦',
                   history: '練習の記録',
                   battle: 'CPU対戦',

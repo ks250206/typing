@@ -8,7 +8,7 @@ test('complete longform, pause, persist, export and clear records', async ({
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Long input streams should not compete with CI software WebGL rendering.
   // Background-on input is covered by the stellar scene test.
@@ -67,7 +67,7 @@ test('library, settings persistence, screenshots and responsive layout', async (
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 1100 })
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.space-scene')).toHaveAttribute(
     'data-rendering',
@@ -103,7 +103,7 @@ test('JIS kana physical keys accept voiced syllables and pause on blur', async (
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await page.getByRole('region').focus()
@@ -137,7 +137,7 @@ test('guides stay visible with a legacy opt-out, after resize and restart', asyn
     ),
   )
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('button', { name: '文章選択へ', exact: true }).click()
   await page
@@ -145,7 +145,7 @@ test('guides stay visible with a legacy opt-out, after resize and restart', asyn
     .click()
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   await expect(page.getByLabel('入力ガイド', { exact: true })).toHaveCount(0)
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region').focus()
   await startPractice(page)
@@ -191,13 +191,13 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
 }) => {
   test.setTimeout(90000)
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const other = await context.newPage()
   await other.goto('/')
   const complete = async (tab: typeof page) => {
-    await tab.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await tab.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(tab.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
     await tab.getByRole('region').focus()
     await startPractice(tab)
@@ -214,7 +214,7 @@ test('two tabs keep simultaneous completions, synchronize deletion, and do not r
   await page.getByRole('button', { name: '全記録を削除' }).click()
   await page.getByRole('button', { name: '削除する', exact: true }).click()
   await expect(other.getByText('最初の一篇から、はじめよう。')).toBeVisible()
-  await other.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await other.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(other.locator('.mission-carousel')).toHaveAttribute(
     'data-stage',
     '0',
@@ -230,7 +230,7 @@ test('main cursor, two-sentence window, feedback and reduced motion', async ({
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Long input streams should not compete with CI software WebGL rendering.
   // Background-on input is covered by the stellar scene test.

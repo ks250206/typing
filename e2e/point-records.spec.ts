@@ -48,7 +48,7 @@ test('point leads summary, ranking and trends while KPM remains visible; pinky b
     )
   })
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   for (const [code, color] of [
     ['KeyA', '#6390ff'],
@@ -142,7 +142,7 @@ test('live adjective uses raw misses and matches the saved record, detail and JS
       exact: true,
     })
     .click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await expect(page.locator('.point-panel > span')).toHaveText('カメ')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()

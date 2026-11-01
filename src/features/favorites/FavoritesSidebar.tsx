@@ -80,7 +80,7 @@ export function FavoritesSidebar({
                 (favorite.kind === 'cpu' ? battleSets : practicePassages).find(
                   (p) => p.id === favorite.passageId,
                 )?.title ?? favorite.passageId
-              const description = `${favorite.kind === 'cpu' ? 'CPU対戦' : 'タイピング'} · ${title} · ${layoutLabels[favorite.layout]}`
+              const description = `${favorite.kind === 'cpu' ? 'CPU対戦' : '通常練習'} · ${title} · ${layoutLabels[favorite.layout]}`
               const detail =
                 favorite.kind === 'cpu'
                   ? `${favorite.cpuConfig.kpm} KPM · ${favorite.cpuConfig.reactionMs} ms · ${favorite.cpuConfig.curve === 'constant' ? '一定速度' : 'イーズイン'}`

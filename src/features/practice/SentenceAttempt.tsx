@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
+import { PracticeSessionCard } from './PracticeSidebar'
+import { sentenceEngine } from '../../domain/typing/sentenceEngine'
 import { Pause, Play, RotateCcw } from 'lucide-react'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import type { Sentence } from '../../domain/content/sentences'
@@ -13,6 +16,10 @@ const discardRecord = () => {}
 
 export function SentenceAttempt({
   sentence,
+  previousSentence,
+  onTransitionEnd,
+  sidebarHost,
+  bestKpm,
   passage,
   settings,
   autoFocus,
@@ -22,17 +29,23 @@ export function SentenceAttempt({
   onRestart,
   onContinue,
   cleared,
+  active,
 }: {
   sentence: Sentence
+  previousSentence: Sentence | null
+  onTransitionEnd: () => void
+  sidebarHost: HTMLElement | null
+  bestKpm: number
   passage: Passage
   settings: Settings
   autoFocus: boolean
   onNotice: (message: string) => void
   onStatus: (status: PracticeStatus) => void
-  onDone: (record: RecordEntry) => void
+  onDone: (record: RecordEntry) => boolean
   onRestart: () => void
   onContinue: () => void
   cleared: boolean
+  active: boolean
 }) {
   const document = useMemo(
     () => ({
@@ -52,23 +65,32 @@ export function SentenceAttempt({
     discardRecord,
     onNotice,
     document,
-    { startOnFirstKey: true },
+    { startOnFirstKey: true, onTrialComplete: onDone },
   )
-  const { area } = session
-  const seen = useRef<string | null>(null)
+  const { area, pause, focus } = session
   useEffect(() => {
     onStatus(session.status)
   }, [session.status, onStatus])
   useEffect(() => {
-    if (autoFocus) session.area.current?.focus()
-  }, [autoFocus, session.area])
+    if (autoFocus && active) focus()
+  }, [autoFocus, active, focus])
   useEffect(() => {
-    if (session.finishedResult && seen.current !== session.finishedResult.id) {
-      seen.current = session.finishedResult.id
-      onDone(session.finishedResult)
-    }
-  }, [session.finishedResult, onDone])
+    if (!active) pause()
+  }, [active, pause])
+  useEffect(() => {
+    if (!previousSentence) return
+    const timer = setTimeout(onTransitionEnd, 240)
+    return () => clearTimeout(timer)
+  }, [previousSentence, onTransitionEnd])
+  const previous = useMemo(
+    () =>
+      previousSentence
+        ? sentenceEngine(previousSentence, settings.layout)
+        : null,
+    [previousSentence, settings.layout],
+  )
   useGameShortcuts((event) => {
+    if (!active) return
     const key = event.key.toLowerCase()
     if (session.status === 'paused') {
       if ([' ', 'enter', 'escape'].includes(key)) return session.resume
@@ -80,9 +102,29 @@ export function SentenceAttempt({
     }
   })
   return (
-    <>
+    <div className="sentence-attempt-content">
+      {sidebarHost &&
+        createPortal(
+          <PracticeSessionCard session={session} bestKpm={bestKpm} />,
+          sidebarHost,
+        )}
+      {active &&
+        session.mistake &&
+        createPortal(
+          <div
+            key={session.rawMisses}
+            className="damage-overlay"
+            aria-hidden="true"
+          >
+            <div className="damage-reticle" />
+            <span className="damage-label">MISS</span>
+          </div>,
+          window.document.body,
+        )}
       <div
         className={`typing-area sentence-attempt ${session.mistake ? 'mistake' : ''}`}
+        data-status={session.status}
+        data-transition={!!previousSentence}
         ref={area}
         role="region"
         aria-label="一文練習の入力領域"
@@ -93,25 +135,6 @@ export function SentenceAttempt({
             session.pause()
         }}
       >
-        <div className="reading-toolbar">
-          <span
-            className={`live-label ${session.status === 'running' ? 'live' : ''}`}
-          >
-            <span />
-            {
-              {
-                ready: '最初の文字で開始',
-                countdown: 'STARTING',
-                running: 'IN THE FLOW',
-                paused: 'PAUSED',
-                done: 'ATTEMPT COMPLETE',
-              }[session.status]
-            }
-          </span>
-          <span className="small muted">
-            {session.kpm} KPM · ミス {session.rawMisses}
-          </span>
-        </div>
         {session.status === 'paused' && (
           <PauseOverlay onResume={session.resume} />
         )}
@@ -138,6 +161,24 @@ export function SentenceAttempt({
           enabled={session.status === 'ready' || session.status === 'running'}
         />
       </div>
+      {previousSentence && previous && (
+        <div className="sentence-crossfade-out" aria-hidden="true">
+          <SentenceView
+            current={previousSentence}
+            position={0}
+            kana={
+              settings.layout === 'kana' && previousSentence.language !== 'en'
+            }
+            done={false}
+            target={previous.target}
+            typed=""
+            hint={previous.hint}
+            wordColors={settings.wordColors}
+            consumeTyped={false}
+            showNext={false}
+          />
+        </div>
+      )}
       <div
         className="practice-footer sentence-controls"
         onMouseDown={(event) => event.preventDefault()}
@@ -171,6 +212,6 @@ export function SentenceAttempt({
           </button>
         )}
       </div>
-    </>
+    </div>
   )
 }

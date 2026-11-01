@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 export function usePracticeFocus() {
   const area = useRef<HTMLDivElement>(null)
   const focusRevision = useRef(0)
-  const focus = () => {
+  const focus = useCallback(() => {
     const revision = ++focusRevision.current
     const previous = document.activeElement
     requestAnimationFrame(() => {
@@ -28,7 +28,7 @@ export function usePracticeFocus() {
         el.focus()
       })
     })
-  }
+  }, [])
   useEffect(
     () => () => {
       focusRevision.current++

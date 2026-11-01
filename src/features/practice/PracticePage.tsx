@@ -73,7 +73,7 @@ export function PracticePage({
         <div className="practice-main">
           <PageHeading
             eyebrow="SOLO PRACTICE"
-            title="タイピング"
+            title="通常練習"
             actions={
               <FavoriteButton
                 active={isFavorite(selected)}
