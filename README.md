@@ -117,6 +117,7 @@ python3 -m unittest discover -s scripts -p 'test_*.py'
 - **CPU対戦**：文章セット・入力方式・CPU速度・反応時間・一定速度／イーズインを保存し、呼び出すとその設定画面を表示します。対戦中に別のお気に入りを選ぶと、現在の対戦を取り消して設定を切り替えます。
 - **シード**：お気に入りには保存せず、呼び出しのたびに新しいシードを作り、固定チェックを解除します。固定シードで練習していた場合もランダムへ戻ります。保存記録からの「シードを再現」は従来どおり固定した同じ出題を再現します。
 - **並び順**：項目左のハンドルをドラッグして並べ替えます。PC・タッチ操作に対応し、ドロップ時に順番を保存します。Escでドラッグを取り消せます。ハンドルにフォーカスして上下矢印・Home・Endでも移動でき、他タブや再読込後も順番を保持します。並べ替えで文書・シード・対戦設定は変えません。
+- **長い項目**：文章タイトルとCPU設定はそれぞれ1行で表示します。収まらない行は通常は省略し、項目のホバー中（キーボードではフォーカス中）だけ横に流します。末尾で少し止まり、先頭へ瞬時に戻って繰り返します。ホバーを外すと先頭に戻り、ドラッグ中とOSの「動きを減らす」設定では停止します。
 - 同じ条件は重複登録しません。登録済みの☆または一覧の×から解除できます。ブラウザに保存し、再読込や画面移動でも保持します。保存が拒否された場合は通知し、その画面ではメモリ内のお気に入りを利用できます。
 
 [文書カードから登録（PC）](docs/favorites-desktop.png) · [モバイル](docs/favorites-mobile.png)
@@ -124,6 +125,8 @@ python3 -m unittest discover -s scripts -p 'test_*.py'
 [お気に入りから全文確認（PC）](docs/favorites-preview-desktop.png) · [モバイル](docs/favorites-preview-mobile.png)
 
 [ドラッグで並べ替え（PC）](docs/favorites-reorder-desktop.png) · [モバイル](docs/favorites-reorder-mobile.png)
+
+[1行表示と省略（PC）](docs/favorites-marquee-desktop.png) · [ホバー中の末尾表示](docs/favorites-marquee-hover.png) · [モバイル](docs/favorites-marquee-mobile.png)
 
 ## RTCオリジナル
 
