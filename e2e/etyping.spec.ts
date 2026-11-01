@@ -26,7 +26,7 @@ const preview = async (page: Page) => {
     )
 }
 const enter = async (page: Page, advanceClock = false) => {
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   await startPractice(page, advanceClock)

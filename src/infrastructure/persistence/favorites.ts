@@ -1,3 +1,7 @@
+import {
+  isTypewellBattle,
+  normalizeCpuWordsPerPrompt,
+} from '../../domain/battle/cpuPromptSettings'
 import { battleSets } from '../../domain/content/battleSets'
 import { practicePassages } from '../../domain/content/practiceDocument'
 import { favoriteKey, type Favorite } from '../../domain/records/favorites'
@@ -44,6 +48,9 @@ export function readFavorites(): Favorite[] {
         favorite = {
           kind: 'cpu',
           ...base,
+          ...(isTypewellBattle(base.passageId)
+            ? { wordsPerPrompt: normalizeCpuWordsPerPrompt(row.wordsPerPrompt) }
+            : {}),
           cpuConfig: {
             kpm: config.kpm,
             reactionMs: config.reactionMs,

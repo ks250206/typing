@@ -1,0 +1,431 @@
+import { PassageSummary } from '../library/PassageSummary'
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
+import {
+  practicePassages,
+  japanesePracticePassages,
+} from '../../domain/content/practiceDocument'
+import { englishPassages } from '../../domain/content/english'
+import { sentencePracticePool } from '../../domain/content/sentencePracticePool'
+import {
+  judgeSentence,
+  normalizeSentenceGoals,
+} from '../../domain/typing/sentenceChallenge'
+import {
+  sentenceChallengeResult,
+  sentenceStatsKey,
+} from '../../domain/records/sentencePractice'
+import type { RecordEntry, Settings } from '../../domain/records/types'
+import { PageHeading } from '../../shared/ui/PageHeading'
+import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
+import { PassageLibrary } from '../library/PassageLibrary'
+import { SessionResult } from '../results/SessionResult'
+import { InputStyleCard } from './PracticeSidebar'
+import { SentenceAttempt } from './SentenceAttempt'
+import { SentenceWordTable } from './SentenceWordTable'
+import { MissionCarousel } from './MissionCarousel'
+import { PracticePreview } from './PracticePreview'
+import { useSentenceStats } from './useSentenceStats'
+import type { PracticeStatus } from './usePracticeClock'
+import {
+  defaultSentencePracticeSettings,
+  type SentencePracticeSettings,
+} from '../../infrastructure/persistence/sentencePractice'
+import { useSentencePracticeSettings } from './useSentencePracticeSettings'
+
+export default function SentencePractice({
+  settings,
+  setSettings,
+  onNotice,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  settings: Settings
+  setSettings: Dispatch<SetStateAction<Settings>>
+  onNotice: (message: string) => void
+  isFavorite: (id: string) => boolean
+  onToggleFavorite: (id: string) => void
+}) {
+  const { config, setConfig } = useSentencePracticeSettings(onNotice)
+  const { stats, recordAttempt } = useSentenceStats(onNotice)
+  const passage = practicePassages.find((p) => p.id === config.passageId)!
+  const english = passage.language === 'en'
+  const layout = english && settings.layout === 'kana' ? 'jis' : settings.layout
+  const pool = useMemo(
+    () => sentencePracticePool(config.passageId, layout),
+    [config.passageId, layout],
+  )
+  const recordsRef = useRef<RecordEntry[]>([])
+  const [sidebarHost, setSidebarHost] = useState<HTMLDivElement | null>(null)
+  const [previousSentence, setPreviousSentence] = useState<
+    (typeof pool)[number] | null
+  >(null)
+  const clearTransition = useCallback(() => setPreviousSentence(null), [])
+  const [stage, setStage] = useState(0)
+  const [index, setIndex] = useState(0)
+  const [revision, setRevision] = useState(0)
+  const [autoFocus, setAutoFocus] = useState(false)
+  const [partial, setPartial] = useState<RecordEntry | null>(null)
+  const [records, setRecords] = useState<RecordEntry[]>([])
+  const [status, setStatus] = useState<PracticeStatus>('ready')
+  const current = pool[index % pool.length]
+  const finished = records.length >= config.repetitions || partial !== null
+  const active =
+    status === 'running' || status === 'paused' || status === 'countdown'
+  const summary = useMemo(
+    () =>
+      sentenceChallengeResult(
+        partial ? [...records, partial] : records,
+        `一文練習 · ${passage.title}`,
+      ),
+    [records, partial, passage.title],
+  )
+  const judgement = summary
+    ? judgeSentence(config, records.length, {
+        keys: summary.actualKeys ?? summary.keys,
+        elapsed: summary.elapsed,
+        rawMisses: summary.rawMisses ?? summary.misses,
+      })
+    : null
+  const cleared = judgement?.outcome === 'passed'
+  const allAttempts = partial ? [...records, partial] : records
+  const attempts = allAttempts.slice(-10)
+  const outcomeMessage = !finished
+    ? '判定前の途中経過'
+    : cleared
+      ? '目標達成'
+      : [
+          judgement?.speedPassed === false && '目標KPM未達成',
+          !judgement?.accuracyPassed && '合計ミス上限を超過',
+        ]
+          .filter(Boolean)
+          .join('・')
+
+  const handleStageChange = useCallback((next: number) => {
+    setAutoFocus(next === 2)
+    setStage(next)
+  }, [])
+  const resetProgress = (focus = false) => {
+    recordsRef.current = []
+    setPartial(null)
+    setRecords([])
+    setAutoFocus(focus)
+    setRevision((value) => value + 1)
+  }
+  const updateConfig = (next: SentencePracticeSettings) => {
+    setConfig(next)
+    if (next.passageId !== config.passageId) {
+      setIndex(0)
+      setStage(0)
+    } else if (stage === 3) {
+      setStage(2)
+    }
+    resetProgress()
+  }
+  const changeSentence = (next: number) => {
+    setPreviousSentence(current)
+    setIndex((next + pool.length) % pool.length)
+    resetProgress(true)
+    setStage(2)
+  }
+  const restart = () => {
+    resetProgress(true)
+    setStage(2)
+  }
+  const continueAttempt = () => {
+    if (finished) changeSentence(index + 1)
+    else handleStageChange(2)
+  }
+  const finishChallenge = () => {
+    setStage(3)
+    setAutoFocus(false)
+  }
+  const onAttempt = (record: RecordEntry) => {
+    const next = [...recordsRef.current, record]
+    recordsRef.current = next
+    setRecords(next)
+    recordAttempt(sentenceStatsKey(config.passageId, layout, current), record)
+    if (next.length < config.repetitions) return false
+    finishChallenge()
+    return true
+  }
+  const onMiss = (record: RecordEntry, totalMisses: number) => {
+    if (totalMisses <= config.maxMisses) return false
+    setPartial(record)
+    recordAttempt(
+      sentenceStatsKey(config.passageId, layout, current),
+      record,
+      false,
+    )
+    finishChallenge()
+    return true
+  }
+  const preview = useMemo(
+    () => ({
+      passage: { ...passage, continuous: false, paragraphs: pool },
+      sentences: pool,
+      seed: '',
+      typewell: false,
+      etyping: false,
+      rtc: false,
+      articles: false,
+      limit: 0,
+      previewParagraphs: pool,
+      paragraphSegments: pool.map((s) => s.segments),
+      startPreview: () => handleStageChange(2),
+    }),
+    [passage, pool, handleStageChange],
+  )
+  useGameShortcuts((event) => {
+    const key = event.key.toLowerCase()
+    if (stage === 3 && summary) {
+      if (key === 'r') return restart
+      if (['enter', ' ', 'n'].includes(key)) return continueAttempt
+    }
+    if (
+      (status === 'ready' || status === 'done') &&
+      !document.activeElement?.closest('.typing-area') &&
+      /^[1-4]$/.test(key)
+    ) {
+      const next = Number(key) - 1
+      if (next !== 3 || summary) return () => handleStageChange(next)
+    }
+  })
+  const progress = (
+    <div
+      className="sentence-streak"
+      data-outcome={judgement?.outcome ?? 'pending'}
+      role="status"
+      aria-label="練習回数"
+    >
+      <span>
+        {finished
+          ? cleared
+            ? 'CHALLENGE CLEAR · 達成'
+            : 'CHALLENGE FAILED · 未達成'
+          : `${config.targetKpm} KPM以上 · 合計ミス ${config.maxMisses} 以下`}
+      </span>
+      <strong>
+        {records.length}
+        <small> / {config.repetitions} 回</small>
+      </strong>
+      <progress
+        value={records.length}
+        max={config.repetitions}
+        aria-label="練習回数の進捗"
+      />
+    </div>
+  )
+  return (
+    <div className="practice-grid sentence-practice">
+      <div className="practice-main">
+        <PageHeading eyebrow="SENTENCE PRACTICE" title="一文練習" />
+        <MissionCarousel
+          stage={stage}
+          onStage={handleStageChange}
+          hasResult={!!summary}
+          footer={
+            <SentenceWordTable
+              key={`${config.passageId}/${layout}`}
+              pool={pool}
+              passageId={config.passageId}
+              layout={layout}
+              selected={index % pool.length}
+              stats={stats}
+              onSelect={changeSentence}
+            />
+          }
+        >
+          {[
+            stage === 0 ? (
+              <div key="selection" className="sentence-library">
+                <PassageLibrary
+                  language={english ? 'en' : 'ja'}
+                  onLanguageChange={(language) =>
+                    updateConfig({
+                      ...config,
+                      passageId: (language === 'en'
+                        ? englishPassages
+                        : japanesePracticePassages)[0].id,
+                    })
+                  }
+                  mode="sentence"
+                  passages={
+                    english ? englishPassages : japanesePracticePassages
+                  }
+                  selected={config.passageId}
+                  onSelect={(passageId) =>
+                    updateConfig({ ...config, passageId })
+                  }
+                  isFavorite={isFavorite}
+                  onToggleFavorite={onToggleFavorite}
+                />
+                <PassageSummary passage={passage} subtitle={null} />
+                <div className="mission-select-actions">
+                  <button
+                    className="primary-button"
+                    onClick={() => handleStageChange(1)}
+                  >
+                    全文を読む
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div key="selection" />
+            ),
+            stage === 1 ? (
+              <PracticePreview key="preview" session={preview} />
+            ) : (
+              <div key="preview" />
+            ),
+            <div key="input">
+              {progress}
+              <SentenceAttempt
+                key={`${config.passageId}/${index}/${revision}/${layout}`}
+                sentence={current}
+                previousSentence={previousSentence}
+                onTransitionEnd={clearTransition}
+                sidebarHost={sidebarHost}
+                bestKpm={
+                  stats[sentenceStatsKey(config.passageId, layout, current)]
+                    ?.best ?? 0
+                }
+                passage={passage}
+                settings={{ ...settings, layout }}
+                autoFocus={autoFocus}
+                active={stage === 2}
+                onNotice={onNotice}
+                onStatus={setStatus}
+                onDone={onAttempt}
+                onMiss={onMiss}
+                onRestart={restart}
+                onContinue={continueAttempt}
+              />
+            </div>,
+            stage === 3 && summary ? (
+              <div key="result">
+                {progress}
+                <SessionResult
+                  record={summary}
+                  variant={finished ? (cleared ? 'win' : 'loss') : 'neutral'}
+                  heading={
+                    finished
+                      ? cleared
+                        ? 'CHALLENGE CLEAR'
+                        : 'CHALLENGE FAILED'
+                      : 'INTERIM REPORT'
+                  }
+                  message={`${records.length} / ${config.repetitions}回完了${partial ? ' · 入力途中で終了' : ''} · ${outcomeMessage} · 中断時間を除いて集計`}
+                  actions={
+                    <>
+                      <button className="primary-button" onClick={restart}>
+                        もう一度
+                      </button>
+                      <button onClick={continueAttempt}>
+                        {finished ? '次の文へ' : '練習に戻る'}
+                      </button>
+                      <button onClick={() => handleStageChange(0)}>
+                        文章を選び直す
+                      </button>
+                    </>
+                  }
+                />
+              </div>
+            ) : (
+              <div key="result" />
+            ),
+          ]}
+        </MissionCarousel>
+        {attempts.length > 0 && (
+          <details className="sentence-attempts" aria-label="今回の試行結果">
+            <summary>
+              今回の試行結果 · 直近{attempts.length}回 ·{' '}
+              {attempts.at(-1)!.kpm.toFixed(1)} KPM · ミス{' '}
+              {attempts.at(-1)!.rawMisses ?? attempts.at(-1)!.misses}
+            </summary>
+            <ol>
+              {attempts.map((attempt, offset) => (
+                <li key={attempt.id}>
+                  <strong>
+                    {allAttempts.length - attempts.length + offset + 1}回目
+                    {attempt.id === partial?.id ? '（途中終了）' : ''}
+                  </strong>
+                  <span>{attempt.kpm.toFixed(1)} KPM</span>
+                  <span>ミス {attempt.rawMisses ?? attempt.misses}</span>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
+      </div>
+      <aside className="session-sidebar sentence-options">
+        <div ref={setSidebarHost} className="session-card-slot" />
+        <div
+          className="config-card sentence-challenge"
+          data-game-shortcuts="off"
+        >
+          <span className="tiny-label">YOUR CHALLENGE</span>
+          {(
+            [
+              ['targetKpm', '目標KPM', 10, 3000],
+              ['maxMisses', 'ミス上限', 0, 100],
+              ['repetitions', '連続回数', 1, 50],
+            ] as const
+          ).map(([field, label, min, max]) => (
+            <label key={field}>
+              {label}
+              <input
+                key={config[field]}
+                type="number"
+                aria-label={label}
+                min={min}
+                max={max}
+                step="1"
+                defaultValue={config[field]}
+                disabled={active}
+                onBlur={(event) => {
+                  const goals = normalizeSentenceGoals({
+                    ...config,
+                    [field]:
+                      event.target.value === ''
+                        ? NaN
+                        : Number(event.target.value),
+                  })
+                  event.target.value = String(goals[field])
+                  if (goals[field] !== config[field])
+                    updateConfig({ ...config, ...goals })
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') event.currentTarget.blur()
+                }}
+              />
+            </label>
+          ))}
+          <button
+            className="text-button"
+            disabled={active}
+            onClick={() => updateConfig(defaultSentencePracticeSettings)}
+          >
+            初期設定に戻す
+          </button>
+        </div>
+        <InputStyleCard
+          session={{
+            selected: config.passageId,
+            status,
+            reset: () => resetProgress(),
+          }}
+          settings={{ ...settings, layout }}
+          setSettings={setSettings}
+          label="一文練習の入力方式"
+        />
+      </aside>
+    </div>
+  )
+}

@@ -1,3 +1,8 @@
+import {
+  isTypewellBattle,
+  normalizeCpuWordsPerPrompt,
+  maxCpuWordsPerPrompt,
+} from '../../domain/battle/cpuPromptSettings'
 import { Pause, Play } from 'lucide-react'
 import { PauseOverlay } from '../../shared/typing/PauseOverlay'
 import { PageHeading } from '../../shared/ui/PageHeading'
@@ -22,15 +27,17 @@ import {
 import type { CpuConfig } from '../../domain/battle/cpuMatch'
 import {
   battleSets,
+  battlePromptVersion,
   seededBattlePrompts,
 } from '../../domain/content/battleSets'
+import { isEnglish } from '../../domain/content/english'
 import { freshSeed } from '../../domain/content/typewell'
 import { DuelRomanGuide } from './DuelRomanGuide'
 import { SentenceView } from '../../shared/typing/SentenceView'
 import { KeyboardGuide } from '../../shared/typing/KeyboardGuide'
 import {
   typingTitle,
-  formatMissRate,
+  rawAccuracy,
   scorePoint,
 } from '../../domain/typing/scoring'
 import type { RecordEntry, Settings } from '../../domain/records/types'
@@ -99,7 +106,12 @@ export function CpuBattle({
         saved.seed.length > 0 &&
         saved.seed.length <= 64
       )
-        return saved as { id: string; seed: string; fixed: boolean }
+        return saved as {
+          id: string
+          seed: string
+          fixed: boolean
+          wordsPerPrompt?: number
+        }
     } catch {
       /* Defaults also work without storage. */
     }
@@ -108,6 +120,18 @@ export function CpuBattle({
   const [setId, setSetId] = useState(
     favorite?.passageId ?? replay?.passageId ?? selection.id,
   )
+  const [wordsPerPrompt, setWordsPerPrompt] = useState(() =>
+    favorite && isTypewellBattle(favorite.passageId)
+      ? normalizeCpuWordsPerPrompt(favorite.wordsPerPrompt)
+      : replay && isTypewellBattle(replay.passageId)
+        ? (replay.replayVersion ?? 1) === 1
+          ? 1
+          : normalizeCpuWordsPerPrompt(replay.cpuWordsPerPrompt)
+        : normalizeCpuWordsPerPrompt(selection.wordsPerPrompt),
+  )
+  useEffect(() => {
+    if (isEnglish(setId) && layout === 'kana') setLayout('jis')
+  }, [setId, layout])
   const [seed, setSeed] = useState(() =>
     favorite ? freshSeed() : (replay?.seed ?? selection.seed),
   )
@@ -118,6 +142,7 @@ export function CpuBattle({
   const matchSource = useRef({
     id: setId,
     seed,
+    wordsPerPrompt,
     title: battleSets.find((s) => s.id === setId)?.title ?? 'RTCオリジナル',
   })
   const [result, setResult] = useState<RecordEntry | null>(null)
@@ -152,7 +177,7 @@ export function CpuBattle({
     const record: RecordEntry = {
       id: crypto.randomUUID(),
       passageId: matchSource.current.id,
-      title: `CPU対戦 · ${matchSource.current.title} ${value.roundsPlayer}–${value.roundsCpu} / ${value.config.kpm} KPM`,
+      title: `CPU対戦 · ${matchSource.current.title}${isTypewellBattle(matchSource.current.id) ? ` · ${matchSource.current.wordsPerPrompt}語/問` : ''} ${value.roundsPlayer}–${value.roundsCpu} / ${value.config.kpm} KPM`,
       layout: value.layout,
       date: new Date().toISOString(),
       elapsed: value.totalElapsed,
@@ -160,16 +185,26 @@ export function CpuBattle({
       misses,
       rawMisses: value.totalRaw + value.misses.raw,
       kpm: Math.round((keys * 60000) / Math.max(1, value.totalElapsed)),
-      accuracy: Number((value.totalAccuracy * 100).toFixed(2)),
+      accuracy: Number(
+        rawAccuracy(
+          value.totalKeys + value.keys,
+          value.totalRaw + value.misses.raw,
+        ).toFixed(2),
+      ),
       point,
       rank: typingTitle(point, keys, value.totalRaw + value.misses.raw),
       scoreVersion: 3,
       missPenalty: penalty,
       mode: 'cpu',
       seed: matchSource.current.seed,
-      replayVersion:
-        matchSource.current.id === 'cpu-rtc' ? promptVersion.current : 1,
+      replayVersion: battlePromptVersion(
+        matchSource.current.id,
+        promptVersion.current,
+      ),
       cpuConfig: { ...value.config },
+      ...(isTypewellBattle(matchSource.current.id)
+        ? { cpuWordsPerPrompt: matchSource.current.wordsPerPrompt }
+        : {}),
       trace: value.trace.finish(value.totalElapsed),
     }
     setResult(record)
@@ -208,10 +243,16 @@ export function CpuBattle({
     matchSource.current = {
       id: setId,
       seed: nextSeed,
+      wordsPerPrompt: promptVersion.current === 1 ? 1 : wordsPerPrompt,
       title: battleSets.find((s) => s.id === setId)!.title,
     }
     const value = new RtcMatch(
-      seededBattlePrompts(setId, nextSeed, promptVersion.current),
+      seededBattlePrompts(
+        setId,
+        nextSeed,
+        promptVersion.current,
+        wordsPerPrompt,
+      ),
       layout,
       {
         ...config,
@@ -227,7 +268,7 @@ export function CpuBattle({
       localStorage.setItem('yohaku.cpu.v1', JSON.stringify(config))
       localStorage.setItem(
         'galactype.cpu-prompts.v1',
-        JSON.stringify({ id: setId, seed: nextSeed, fixed }),
+        JSON.stringify({ id: setId, seed: nextSeed, fixed, wordsPerPrompt }),
       )
     } catch {
       /* Play without saved preferences. */
@@ -247,6 +288,15 @@ export function CpuBattle({
     render((v) => v + 1)
     requestAnimationFrame(() => area.current?.focus())
   }
+  const resetMatch = () => {
+    keyFeedback.clearKeyFeedback()
+    model.current = null
+    promptVersion.current = 2
+    setMatch(null)
+    setResult(null)
+    clearTimeout(missTimer.current)
+    setMistake(false)
+  }
   const accept = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault()
@@ -261,7 +311,12 @@ export function CpuBattle({
       return
     const value = model.current
     if (!value) return
-    const key = mapKey(event.nativeEvent, value.layout, value.engine.hint[0])
+    const key = mapKey(
+      event.nativeEvent,
+      value.layout,
+      value.engine.hint[0],
+      value.sentence.language === 'en',
+    )
     if (!key) return
     event.preventDefault()
     const raw = value.misses.raw
@@ -281,6 +336,7 @@ export function CpuBattle({
     passageId: setId,
     layout,
     cpuConfig: config,
+    ...(isTypewellBattle(setId) ? { wordsPerPrompt } : {}),
   }
   const nextRound = () => {
     model.current?.nextRound(synchronize())
@@ -290,6 +346,11 @@ export function CpuBattle({
   useGameShortcuts((event) => {
     const key = event.key.toLowerCase()
     const currentPhase = model.current?.phase
+    if (
+      key === 'c' &&
+      ['paused', 'round-result', 'finished'].includes(currentPhase ?? '')
+    )
+      return resetMatch
     if (
       currentPhase === 'round-result' &&
       ['n', 's', ' ', 'enter'].includes(key)
@@ -435,12 +496,12 @@ export function CpuBattle({
                 <Select
                   label="対戦の入力方式"
                   value={layout}
-                  options={Object.entries(layoutLabels).map(
-                    ([value, label]) => ({
+                  options={Object.entries(layoutLabels)
+                    .filter(([value]) => value !== 'kana' || !isEnglish(setId))
+                    .map(([value, label]) => ({
                       value,
                       label,
-                    }),
-                  )}
+                    }))}
                   onChange={(value) => setLayout(value as Layout)}
                 />
               </label>
@@ -451,38 +512,84 @@ export function CpuBattle({
                   value={setId}
                   options={battleSets.map((s) => ({
                     value: s.id,
-                    label: s.title,
+                    label: `${s.language === 'en' ? 'English · ' : ''}${s.title}`,
                   }))}
-                  onChange={setSetId}
+                  onChange={(id) => {
+                    setSetId(id)
+                    promptVersion.current = 2
+                    if (isEnglish(id) && layout === 'kana') setLayout('jis')
+                  }}
                 />
               </label>
-              <label>
-                対戦シード
+              {isTypewellBattle(setId) && (
+                <label>
+                  1問の単語数
+                  <input
+                    key={wordsPerPrompt}
+                    aria-label="1問の単語数"
+                    type="number"
+                    min={1}
+                    max={maxCpuWordsPerPrompt}
+                    step={1}
+                    defaultValue={wordsPerPrompt}
+                    onBlur={(event) => {
+                      const value = normalizeCpuWordsPerPrompt(
+                        event.target.value === ''
+                          ? NaN
+                          : Number(event.target.value),
+                      )
+                      event.target.value = String(value)
+                      setWordsPerPrompt(value)
+                      try {
+                        localStorage.setItem(
+                          'galactype.cpu-prompts.v1',
+                          JSON.stringify({
+                            id: setId,
+                            seed,
+                            fixed,
+                            wordsPerPrompt: value,
+                          }),
+                        )
+                      } catch {
+                        /* The current match can still use the selected count. */
+                      }
+                      if (value !== wordsPerPrompt) promptVersion.current = 2
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') event.currentTarget.blur()
+                    }}
+                  />
+                </label>
+              )}
+              <div className="battle-seed-controls">
+                <label className="battle-seed-label" htmlFor="cpu-match-seed">
+                  対戦シード
+                </label>
                 <input
+                  id="cpu-match-seed"
                   aria-label="対戦シード"
                   maxLength={64}
                   value={seed}
-                  onChange={(e) => setSeed(e.target.value)}
+                  onChange={(event) => setSeed(event.target.value)}
                 />
-              </label>
-              <label className="battle-fixed">
-                <span>
+                <label className="battle-fixed-toggle">
+                  <span>固定</span>
                   <input
                     type="checkbox"
                     aria-label="対戦シードを固定する"
                     checked={fixed}
-                    onChange={(e) => setFixed(e.target.checked)}
-                  />{' '}
-                  シードを固定する
-                </span>
+                    onChange={(event) => setFixed(event.target.checked)}
+                  />
+                </label>
                 <button
+                  className="battle-seed-refresh"
                   type="button"
                   disabled={fixed}
                   onClick={() => setSeed(freshSeed())}
                 >
-                  シードを更新
+                  更新
                 </button>
-              </label>
+              </div>
             </fieldset>
             <p className="cpu-config-note">
               反応時間は出題から初打鍵までの待ち時間。KPMは加速後の定常速度です。プリセットは人の反応をイメージしたゲーム内設定です。
@@ -554,12 +661,16 @@ export function CpuBattle({
             <p className="battle-seed-info">
               {matchSource.current.title} · シード {matchSource.current.seed} ·
               RTC v
-              {matchSource.current.id === 'cpu-rtc' ? promptVersion.current : 1}
+              {battlePromptVersion(
+                matchSource.current.id,
+                promptVersion.current,
+              )}
             </p>
             <div className="word-score">
               <span>
-                正確率 <b>{(match.accuracy * 100).toFixed(1)}%</b> · ミス{' '}
-                {match.misses.misses}（実打 {match.misses.raw}）
+                正確率{' '}
+                <b>{rawAccuracy(match.keys, match.misses.raw).toFixed(1)}%</b> ·
+                ミス {match.misses.misses}（実打 {match.misses.raw}）
               </span>
             </div>
             {phase === 'round-result' || phase === 'finished' ? (
@@ -569,6 +680,7 @@ export function CpuBattle({
                 result={result}
                 onNext={nextRound}
                 onRematch={start}
+                onConfigure={resetMatch}
               />
             ) : (
               <>
@@ -622,7 +734,12 @@ export function CpuBattle({
                       />
                     </>
                   )}
-                  {phase === 'paused' && <PauseOverlay onResume={resume} />}
+                  {phase === 'paused' && (
+                    <PauseOverlay
+                      onResume={resume}
+                      description="Space / Esc / Enter で再開 · R でやり直す · C で対戦設定"
+                    />
+                  )}
                 </div>
                 <div className="battle-status" role="status">
                   {phase === 'word-result' && (
@@ -639,8 +756,7 @@ export function CpuBattle({
               onMouseDown={(event) => event.preventDefault()}
             >
               <span>
-                {point} pt · {title} · 実ミス率{' '}
-                {formatMissRate(titleKeys, titleMisses)}
+                {point} pt · {title}
               </span>
               <button
                 className="battle-pause-button"
@@ -655,18 +771,7 @@ export function CpuBattle({
                 {phase === 'paused' ? <Play size={14} /> : <Pause size={14} />}
                 {phase === 'paused' ? '再開' : '一時停止'}
               </button>
-              <button
-                onClick={() => {
-                  keyFeedback.clearKeyFeedback()
-                  model.current = null
-                  promptVersion.current = 2
-                  setMatch(null)
-                  clearTimeout(missTimer.current)
-                  setMistake(false)
-                }}
-              >
-                対戦をリセット
-              </button>
+              <button onClick={resetMatch}>対戦をリセット</button>
             </div>
           </>
         )}
@@ -679,7 +784,6 @@ export function CpuBattle({
         misses={titleMisses}
         point={point}
         elapsed={match?.activeElapsed(clock.current.now) ?? 0}
-        accuracy={match?.totalAccuracy ?? 1}
         rounds={`${match?.roundsPlayer ?? 0} : ${match?.roundsCpu ?? 0}`}
         cpu={`${config.kpm} KPM · ${config.reactionMs}ms · ${config.curve === 'constant' ? '一定速度' : 'イーズイン'}`}
       />

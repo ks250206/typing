@@ -476,11 +476,19 @@ export function mapKey(
   },
   layout: Layout,
   expected?: string,
+  preserveCase = false,
 ): string | null {
+  const letter = (key: string) => (preserveCase ? key : key.toLowerCase())
+  const physicalLetter = (key: string) =>
+    preserveCase && event.getModifierState?.('CapsLock') && /^[a-z]$/i.test(key)
+      ? key === key.toUpperCase()
+        ? key.toLowerCase()
+        : key.toUpperCase()
+      : letter(key)
   // Literal positions use JIS alphanumeric keys, including incorrect attempts.
   if (layout === 'kana' && expected && /^[ -~]$/.test(expected)) {
     if (event.key.length === 1 && /^[ -~]$/.test(event.key))
-      return event.key.toLowerCase()
+      return letter(event.key)
     if (/^Key[A-Z]$/.test(event.code)) return event.code.slice(3).toLowerCase()
     if (/^Numpad[0-9]$/.test(event.code)) return event.code.slice(6)
   }
@@ -491,12 +499,11 @@ export function mapKey(
       null
     )
   if (event.code === 'Space') return ' '
-  if (layout === 'nova-f5-pair')
-    return (
-      novaF5Pair[event.code]?.[Number(event.shiftKey)]?.toLowerCase() ?? null
-    )
-  if (layout === 'jis')
-    return event.key.length === 1 ? event.key.toLowerCase() : null
+  if (layout === 'nova-f5-pair') {
+    const mapped = novaF5Pair[event.code]?.[Number(event.shiftKey)]
+    return mapped ? physicalLetter(mapped) : null
+  }
+  if (layout === 'jis') return event.key.length === 1 ? letter(event.key) : null
   if (layout === 'azerty') {
     if (altGraphPressed(event)) return azertyAlt[event.code] ?? null
     if (event.code === 'IntlBackslash') return event.shiftKey ? '>' : '<'
@@ -508,8 +515,10 @@ export function mapKey(
   if (rows)
     return index < 0
       ? null
-      : (rows[Number(event.shiftKey)][index]?.toLowerCase() ?? null)
-  return event.key.length === 1 ? event.key.toLowerCase() : null
+      : rows[Number(event.shiftKey)][index]
+        ? physicalLetter(rows[Number(event.shiftKey)][index])
+        : null
+  return event.key.length === 1 ? letter(event.key) : null
 }
 
 const altGraphPressed = (event: {

@@ -18,7 +18,7 @@ const choose = async (page: import('@playwright/test').Page) => {
   await page.getByRole('button', { name: 'このシードを使う' }).click()
 }
 const enter = async (page: import('@playwright/test').Page) => {
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
 }
 

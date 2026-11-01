@@ -54,6 +54,7 @@ it('reports unavailable storage without crashing', () => {
 })
 
 import { appendHistory, clearHistory, subscribeHistory } from './storage'
+import { readSentenceStats, saveSentenceStats } from './sentenceStats'
 import type { RecordEntry } from '../../domain/records/types'
 const record = (id: string): RecordEntry => ({
   id,
@@ -198,6 +199,38 @@ it('rolls back summary deletion if the best-record store is unavailable', async 
     },
   })
   expect(await clearHistory()).toBe(false)
+  expect(readHistory().map((r) => r.id)).toEqual(['keep'])
+})
+
+it('clears sentence statistics with other records and retains them if deletion fails', async () => {
+  const key = '["en-library","jis","Hi.","Hi."]'
+  const stats = {
+    [key]: { best: 180, kpm: 180, elapsed: 1000, tries: 1, keys: 3, misses: 0 },
+  }
+  saveSentenceStats(stats)
+  expect(await clearHistory()).toBe(true)
+  expect(readSentenceStats()).toEqual({})
+  saveSentenceStats(stats)
+  saveHistory([record('keep')])
+  vi.stubGlobal('localStorage', {
+    getItem: (k: string) => data.get(k) ?? null,
+    setItem: (k: string, v: string) => {
+      if (k === 'galactype.bests.v1') throw Error('blocked')
+      data.set(k, v)
+    },
+  })
+  expect(await clearHistory()).toBe(false)
+  expect(readSentenceStats()).toEqual(stats)
+  expect(readHistory().map((r) => r.id)).toEqual(['keep'])
+  vi.stubGlobal('localStorage', {
+    getItem: (k: string) => data.get(k) ?? null,
+    setItem: (k: string, v: string) => {
+      if (k === 'galactype.sentence-stats.v1') throw Error('blocked')
+      data.set(k, v)
+    },
+  })
+  expect(await clearHistory()).toBe(false)
+  expect(readSentenceStats()).toEqual(stats)
   expect(readHistory().map((r) => r.id)).toEqual(['keep'])
 })
 

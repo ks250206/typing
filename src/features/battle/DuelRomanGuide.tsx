@@ -1,7 +1,10 @@
 import { memo, useMemo, useRef } from 'react'
 import type { Sentence } from '../../domain/content/sentences'
 import { RomanEngine } from '../../domain/typing/engine'
-import { sentenceWordStarts, romanWordStarts } from '../../domain/typing/wordSpacing'
+import {
+  sentenceWordStarts,
+  romanWordStarts,
+} from '../../domain/typing/wordSpacing'
 import { duelProjection } from '../../domain/typing/duelRoman'
 import { useSingleLineFlow } from '../../shared/typing/useSingleLineFlow'
 
@@ -20,25 +23,31 @@ export const DuelRomanGuide = memo(function DuelRomanGuide({
   cpuKeys: number
   kana: boolean
 }) {
+  const english = sentence.language === 'en'
   const host = useRef<HTMLDivElement>(null)
   const text = useMemo(
     () => (kana ? new RomanEngine(sentence.reading).hint : typed + hint),
     [kana, sentence, typed, hint],
   )
   const project = useMemo(
-    () => duelProjection(sentence.reading, text),
-    [sentence, text],
+    () =>
+      english
+        ? (keys: number) => Math.min(text.length, Math.floor(keys))
+        : duelProjection(sentence.reading, text),
+    [english, sentence, text],
   )
   const cpu = project(cpuKeys, kana)
   const player = kana ? project(playerPosition, true) : typed.length
   const boundaries = useMemo(
     () =>
-      romanWordStarts(
-        sentence.reading,
-        text,
-        sentenceWordStarts(sentence).reading,
-      ),
-    [sentence, text],
+      english
+        ? sentenceWordStarts(sentence).reading
+        : romanWordStarts(
+            sentence.reading,
+            text,
+            sentenceWordStarts(sentence).reading,
+          ),
+    [english, sentence, text],
   )
   const lead =
     player === cpu ? '同じ位置' : player > cpu ? 'YOU が先行' : 'CPU が先行'

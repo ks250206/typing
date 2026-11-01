@@ -1,5 +1,8 @@
 import { PageHeading } from '../../shared/ui/PageHeading'
 import type { Dispatch, SetStateAction } from 'react'
+import { useEffect } from 'react'
+import { englishPassages, isEnglish } from '../../domain/content/english'
+import { japanesePracticePassages } from '../../domain/content/practiceDocument'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { SessionResult } from '../results/SessionResult'
 import { MissionCarousel } from './MissionCarousel'
@@ -10,6 +13,7 @@ import { PracticeSidebar } from './PracticeSidebar'
 import type { PracticeSession } from './usePracticeSession'
 import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
 import { FavoriteButton } from '../favorites/FavoriteButton'
+import { PerimeterProgress } from './PerimeterProgress'
 
 export function PracticePage({
   session,
@@ -40,12 +44,23 @@ export function PracticePage({
     resume,
     area,
   } = session
+  useEffect(() => {
+    if (isEnglish(selected) && settings.layout === 'kana')
+      setSettings((value) => ({ ...value, layout: 'jis' }))
+  }, [selected, settings.layout, setSettings])
   const retry = () => {
     reset(selected, settings.layout, 2)
     focus()
   }
   useGameShortcuts((event) => {
     const key = event.key.toLowerCase()
+    if (
+      key === 'c' &&
+      (status === 'paused' ||
+        status === 'done' ||
+        (status === 'ready' && practiceStage === 2))
+    )
+      return () => reset(selected, settings.layout, 0)
     if (practiceStage === 3 && finishedResult && key === 'r') return retry
     if (practiceStage === 2 && status === 'paused') {
       if (key === 'r') return retry
@@ -63,10 +78,14 @@ export function PracticePage({
   return (
     <>
       <div className="practice-grid">
-        <div className="practice-main">
+        <div className="practice-main practice-main-perimeter">
+          <PerimeterProgress
+            progress={practiceStage >= 2 ? session.progress : 0}
+            animate={status === 'running'}
+          />
           <PageHeading
             eyebrow="SOLO PRACTICE"
-            title="タイピング"
+            title="通常練習"
             actions={
               <FavoriteButton
                 active={isFavorite(selected)}
@@ -86,6 +105,20 @@ export function PracticePage({
                 settings={settings}
                 isFavorite={isFavorite}
                 onToggleFavorite={onToggleFavorite}
+                onLanguageChange={(language) => {
+                  const id = (
+                    language === 'en'
+                      ? englishPassages
+                      : japanesePracticePassages
+                  )[0].id
+                  const layout =
+                    language === 'en' && settings.layout === 'kana'
+                      ? 'jis'
+                      : settings.layout
+                  if (layout !== settings.layout)
+                    setSettings((value) => ({ ...value, layout }))
+                  reset(id, layout, 0)
+                }}
               />,
               <PracticePreview key="preview" session={session} />,
               <PracticeInput
@@ -116,7 +149,7 @@ export function PracticePage({
                       <button
                         onClick={() => reset(selected, settings.layout, 0)}
                       >
-                        文章を選び直す
+                        文章を選び直す <kbd>C</kbd>
                       </button>
                     </>
                   }

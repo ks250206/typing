@@ -48,7 +48,7 @@ test('pages share CPU typography and translucent surfaces at desktop and mobile 
     })
     expect(geometry.gap).toBe(24)
     for (const [label, selector] of [
-      ['タイピング', '.practice-main'],
+      ['通常練習', '.practice-main'],
       ['練習の記録', '.history-workspace'],
       ['苦手ワード練習', '.weak-workspace'],
     ] as const) {
@@ -88,7 +88,7 @@ test('pages share CPU typography and translucent surfaces at desktop and mobile 
         }
       })
       expect(appearance).toEqual(reference)
-      if (label === 'タイピング') {
+      if (label === '通常練習') {
         const heading = await root.locator('.page-heading h2').boundingBox()
         const step = await page
           .getByRole('button', { name: '文章選択へ', exact: true })

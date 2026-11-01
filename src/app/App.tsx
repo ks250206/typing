@@ -15,8 +15,12 @@ import './App.css'
 import { favoriteKey, type Favorite } from '../domain/records/favorites'
 import { useFavorites } from '../features/favorites/useFavorites'
 import { FavoritesSidebar } from '../features/favorites/FavoritesSidebar'
+import { isEnglish } from '../domain/content/english'
 
 const WeakPractice = lazy(() => import('../features/practice/WeakPractice'))
+const SentencePractice = lazy(
+  () => import('../features/practice/SentencePractice'),
+)
 const GhostBattle = lazy(() => import('../features/battle/GhostBattle'))
 
 /** Connect feature APIs here; leaving practice cancels its current game. */
@@ -54,7 +58,10 @@ export default function App() {
   const practiceFavorite = (passageId: string): Favorite => ({
     kind: 'practice',
     passageId,
-    layout: settings.layout,
+    layout:
+      isEnglish(passageId) && settings.layout === 'kana'
+        ? 'jis'
+        : settings.layout,
   })
   const navigate = (next: AppTab) => {
     setFavoriteNavigation(null)
@@ -168,6 +175,18 @@ export default function App() {
             setSettings={setSettings}
             onRecord={history.persistResult}
             onNotice={setNotice}
+          />
+        </Suspense>
+      )}
+      {tab === 'sentence' && (
+        <Suspense fallback={<p role="status">一文練習を準備中…</p>}>
+          <SentencePractice
+            key={settings.layout}
+            settings={settings}
+            setSettings={setSettings}
+            onNotice={setNotice}
+            isFavorite={(id) => favorites.has(practiceFavorite(id))}
+            onToggleFavorite={(id) => favorites.toggle(practiceFavorite(id))}
           />
         </Suspense>
       )}

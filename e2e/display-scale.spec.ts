@@ -72,7 +72,7 @@ for (const displayScale of [75, 150]) {
     await page
       .getByRole('button', { name: 'キュリー夫人', exact: true })
       .click()
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await startPractice(page, true)
     await page.keyboard.type(
       new RomanEngine(sentencesByPassage['theme-curie'][0].reading).hint.slice(

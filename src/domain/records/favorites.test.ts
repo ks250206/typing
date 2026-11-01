@@ -31,3 +31,19 @@ it('rejects incomplete, duplicated, stale and unknown drag orders without losing
   }
   expect(reorderFavorites(items, keys)).toBe(items)
 })
+
+it('distinguishes TypeWell word counts, defaults old favorites to five and ignores counts for other sets', () => {
+  const entry: Favorite = {
+    kind: 'cpu',
+    passageId: 'en-typewell-01',
+    layout: 'jis',
+    cpuConfig: { kpm: 385, reactionMs: 205, curve: 'ease-in' },
+  }
+  expect(favoriteKey(entry)).toBe(favoriteKey({ ...entry, wordsPerPrompt: 5 }))
+  expect(favoriteKey(entry)).not.toBe(
+    favoriteKey({ ...entry, wordsPerPrompt: 3 }),
+  )
+  expect(
+    favoriteKey({ ...entry, passageId: 'cpu-rtc', wordsPerPrompt: 3 }),
+  ).toBe(favoriteKey({ ...entry, passageId: 'cpu-rtc', wordsPerPrompt: 5 }))
+})

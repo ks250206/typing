@@ -160,8 +160,8 @@ test('compares selected passage attempts and pace TOP10, pages past challenges b
     fullPage: true,
     animations: 'disabled',
   })
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await startPractice(page, true)
   await page.keyboard.type('h')
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()

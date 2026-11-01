@@ -40,7 +40,7 @@ test.afterEach(async ({ page }) => {
 })
 
 async function enter(page: Page) {
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await arena(page).focus()
 }
 async function start(page: Page) {
@@ -236,7 +236,7 @@ test('result R retries, 4 returns to a completed result, and leaving clears only
   expect(await records(page)).toEqual(saved)
   await page.getByRole('button', { name: '練習の記録', exact: true }).click()
   await page.keyboard.type('1234rns')
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(stage(page)).toHaveAttribute('data-stage', '0')
   await page.keyboard.press('4')
   await expect(stage(page)).toHaveAttribute('data-stage', '0')
@@ -279,7 +279,7 @@ for (const state of [
       await page.getByRole('button', { name: target, exact: true }).click()
       await page.clock.runFor(120000)
       await page
-        .getByRole('button', { name: 'タイピング', exact: true })
+        .getByRole('button', { name: '通常練習', exact: true })
         .click()
       await expect(stage(page)).toHaveAttribute('data-stage', '0')
       await page.keyboard.press('4')

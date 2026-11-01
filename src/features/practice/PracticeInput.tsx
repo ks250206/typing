@@ -13,6 +13,7 @@ export function PracticeInput({
   session: Pick<
     PracticeSession,
     | 'sentences'
+    | 'english'
     | 'seed'
     | 'typewell'
     | 'articles'
@@ -92,7 +93,14 @@ export function PracticeInput({
             }
           </span>
           <span className="small muted">
-            {layoutLabels[settings.layout]} ·{' '}
+            {
+              layoutLabels[
+                session.english && settings.layout === 'kana'
+                  ? 'jis'
+                  : settings.layout
+              ]
+            }{' '}
+            ·{' '}
             {durationMs ? (
               <span aria-label="残り時間">
                 残り {Math.max(0, Math.ceil((durationMs - elapsed) / 1000))} 秒
@@ -124,13 +132,21 @@ export function PracticeInput({
             >
               <kbd>Space</kbd>でスタート
             </button>
-            <p>3秒のカウント後に計測開始 · IME OFF</p>
+            <p>
+              {session.weak
+                ? '3秒のカウント後に計測開始 · IME OFF'
+                : '3秒のカウント後に計測開始 · C で文章選択'}
+            </p>
           </div>
         )}
         {status === 'paused' && (
           <PauseOverlay
             onResume={resume}
-            description={session.weak ? '計測を止めています' : undefined}
+            description={
+              session.weak
+                ? '計測を止めています'
+                : 'Space / Esc / Enter で再開 · R でやり直す · C で文章選択'
+            }
           />
         )}
         {status === 'countdown' && (
@@ -152,7 +168,7 @@ export function PracticeInput({
           showNext={!typewell && !durationMs && !session.weak}
           partialRoman={typewell}
           position={snapshot.position}
-          kana={settings.layout === 'kana'}
+          kana={!session.english && settings.layout === 'kana'}
           done={status === 'done' && !durationMs}
           target={snapshot.target}
           typed={snapshot.typed}
@@ -161,10 +177,14 @@ export function PracticeInput({
           consumeTyped={settings.consumeTyped}
         />
         <KeyboardGuide
-          layout={settings.layout}
+          layout={
+            session.english && settings.layout === 'kana'
+              ? 'jis'
+              : settings.layout
+          }
           missedKey={session.missedKey}
           nextCharacter={
-            settings.layout === 'kana'
+            !session.english && settings.layout === 'kana'
               ? (snapshot.target[snapshot.position] ?? '')
               : (snapshot.hint[0] ?? '')
           }
@@ -188,11 +208,23 @@ export function PracticeInput({
           )}
         </div>
       </div>
-      <div className="practice-footer" onMouseDown={(e) => e.preventDefault()}>
+      <div
+        className="practice-footer practice-input-footer"
+        onMouseDown={(e) => e.preventDefault()}
+      >
         <div>
-          <span className="progress-track">
-            <span style={{ width: `${progress}%` }} />
-          </span>
+          {session.weak && (
+            <span
+              className="progress-track"
+              role="progressbar"
+              aria-label="練習の進捗"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.floor(progress)}
+            >
+              <span style={{ width: `${progress}%` }} />
+            </span>
+          )}
           <span>{Math.floor(progress)}%</span>
         </div>
         <div>

@@ -7,6 +7,7 @@ export interface ReadingSegment {
   reading: string
 }
 export interface Sentence {
+  language?: 'en'
   continuous?: boolean
   label?: string
   note?: string

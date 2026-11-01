@@ -52,7 +52,7 @@ test('all 14 full articles are shuffled as intact blocks, previewed, completed, 
     fullPage: true,
   })
   await page.setViewportSize({ width: 1440, height: 1100 })
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.clock.pauseAt(
     new Date(await page.evaluate(() => Date.now() + 10000)),
   )

@@ -6,7 +6,7 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
-    for (const name of ['文章選択へ', '全文確認へ', '入力へ進む']) {
+    for (const name of ['文章選択へ', '全文確認へ', '練習へ進む']) {
       await page.getByRole('button', { name, exact: true }).click()
       const add = page.getByRole('button', {
         name: 'お気に入りに登録',
@@ -163,7 +163,7 @@ for (const width of [1440, 390]) {
     await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
     if (width === 390) await toggle.click()
     await menu
-      .getByRole('button', { name: /お気に入りを開く：タイピング · 春の言葉/ })
+      .getByRole('button', { name: /お気に入りを開く：通常練習 · 春の言葉/ })
       .click()
     await expect(page.locator('.mission-carousel')).toHaveAttribute(
       'data-stage',
@@ -181,7 +181,7 @@ for (const width of [1440, 390]) {
       '春の言葉',
     )
     await expect(
-      page.getByRole('button', { name: 'タイピング', exact: true }),
+      page.getByRole('button', { name: '通常練習', exact: true }),
     ).not.toHaveClass(/active/)
     if (width === 390) await toggle.click()
     await page.screenshot({
@@ -194,9 +194,9 @@ for (const width of [1440, 390]) {
     await expect(
       page.getByRole('button', { name: '春の言葉', exact: true }),
     ).toHaveAttribute('aria-pressed', 'true')
-    await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+    await page.getByRole('button', { name: '通常練習', exact: true }).click()
     await expect(
-      page.getByRole('button', { name: 'タイピング', exact: true }),
+      page.getByRole('button', { name: '通常練習', exact: true }),
     ).toHaveClass(/active/)
     await expect(page.locator('.favorite-open.active')).toHaveCount(0)
     expect(errors).toEqual([])

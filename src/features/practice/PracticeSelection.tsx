@@ -1,5 +1,7 @@
+import { PassageSummary } from '../library/PassageSummary'
 import { ArrowRight } from 'lucide-react'
-import { practicePassages as passages } from '../../domain/content/practiceDocument'
+import { japanesePracticePassages } from '../../domain/content/practiceDocument'
+import { englishPassages } from '../../domain/content/english'
 import { freshSeed } from '../../domain/content/typewell'
 import type { Settings } from '../../domain/records/types'
 import { PassageLibrary } from '../library/PassageLibrary'
@@ -11,6 +13,7 @@ export function PracticeSelection({
   settings,
   isFavorite,
   onToggleFavorite,
+  onLanguageChange,
 }: {
   session: Pick<
     PracticeSession,
@@ -37,6 +40,7 @@ export function PracticeSelection({
   settings: Settings
   isFavorite: (passageId: string) => boolean
   onToggleFavorite: (passageId: string) => void
+  onLanguageChange: (language: 'ja' | 'en') => void
 }) {
   const {
     selected,
@@ -62,18 +66,24 @@ export function PracticeSelection({
   return (
     <div key="selected">
       <PassageLibrary
-        passages={passages}
+        language={passage.language ?? 'ja'}
+        onLanguageChange={onLanguageChange}
+        passages={
+          passage.language === 'en' ? englishPassages : japanesePracticePassages
+        }
         selected={selected}
         onSelect={(id) => reset(id, settings.layout, 0)}
         isFavorite={isFavorite}
         onToggleFavorite={onToggleFavorite}
       />
-      <div className="passage-header">
-        <div>
-          <span className="tag">{passage.genre}</span>
-          <span className="muted small">
+      <PassageSummary
+        passage={passage}
+        meta={
+          <>
             {typewell
-              ? 'R 400打 / K 280打 · '
+              ? passage.language === 'en'
+                ? '400打 · '
+                : 'R 400打 / K 280打 · '
               : etyping
                 ? 'WORD SET · '
                 : passage.source
@@ -85,24 +95,9 @@ export function PracticeSelection({
               ? 'ランダム出題'
               : passage.paragraphs.reduce((n, p) => n + p.text.length, 0)}{' '}
             {!typewell && '文字'}
-          </span>
-          <h2>{passage.title}</h2>
-          <p>{passage.subtitle}</p>
-          {passage.source?.url ? (
-            <a
-              className="text-button"
-              href={passage.source.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              出典：{passage.source.label}
-            </a>
-          ) : passage.source ? (
-            <p className="small muted">出典：{passage.source.label}</p>
-          ) : null}
-        </div>
-        <span className="passage-symbol">{passage.accent}</span>
-      </div>
+          </>
+        }
+      />
       {seeded && (
         <div className="seed-settings">
           <label>

@@ -62,11 +62,13 @@ export function keyOutput(
   layout: Layout,
   expected?: string,
   altGraph = false,
+  preserveCase = false,
 ) {
   if (code.startsWith('Shift')) return null
   const jis = usesJisGeometry(layout)
   let key = ''
-  if (code.startsWith('Key')) key = code.slice(3).toLowerCase()
+  if (code.startsWith('Key'))
+    key = shift ? code.slice(3) : code.slice(3).toLowerCase()
   else if (code.startsWith('Digit')) {
     const digit = Number(code.slice(5))
     key = shift ? (jis ? ')!"#$%&\'()' : ')!@#$%^&*(')[digit] : String(digit)
@@ -81,6 +83,7 @@ export function keyOutput(
     },
     layout,
     expected,
+    preserveCase,
   )
 }
 export function physicalKey(character: string, layout: Layout) {
@@ -90,7 +93,16 @@ export function physicalKey(character: string, layout: Layout) {
     ...(layout === 'azerty' ? [[false, true]] : []),
   ]) {
     for (const code of keyboardCodes(layout).flat()) {
-      if (keyOutput(code, shift, layout, character, altGraph) === character)
+      if (
+        keyOutput(
+          code,
+          shift,
+          layout,
+          character,
+          altGraph,
+          /^[A-Z]$/.test(character),
+        ) === character
+      )
         return { code, shift, ...(altGraph ? { altGraph: true } : {}) }
     }
   }

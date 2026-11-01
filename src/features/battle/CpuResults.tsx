@@ -1,6 +1,6 @@
 import type { RecordEntry } from '../../domain/records/types'
 import type { RtcMatch } from '../../domain/battle/cpuMatch'
-import { scorePoint } from '../../domain/typing/scoring'
+import { scorePoint, rawAccuracy } from '../../domain/typing/scoring'
 import { SessionResult } from '../results/SessionResult'
 export function CpuResults({
   match,
@@ -8,12 +8,14 @@ export function CpuResults({
   result,
   onNext,
   onRematch,
+  onConfigure,
 }: {
   match: RtcMatch
   history: RecordEntry[]
   result: RecordEntry | null
   onNext: () => void
   onRematch: () => void
+  onConfigure: () => void
 }) {
   const complete = match.phase === 'finished'
   const round = match.roundResults.at(-1)!
@@ -31,7 +33,7 @@ export function CpuResults({
     missPenalty: round.penalty,
     elapsed: round.elapsed,
     kpm: Math.round((round.keys * 60000) / Math.max(1, round.elapsed)),
-    accuracy: round.accuracy * 100,
+    accuracy: rawAccuracy(round.keys, round.raw),
     trace: round.trace,
   }
   const win = complete ? match.roundsPlayer >= 4 : round.winner === 'player'
@@ -58,23 +60,28 @@ export function CpuResults({
             : `${round.player} : ${round.cpu} / 10点先取${round.reversal ? ' · 正確率95%ルールによる逆転' : ''}`
         }
         actions={
-          complete ? (
-            <button
-              className="primary-button"
-              aria-keyshortcuts="r"
-              onClick={onRematch}
-            >
-              再戦する
+          <>
+            {complete ? (
+              <button
+                className="primary-button"
+                aria-keyshortcuts="r"
+                onClick={onRematch}
+              >
+                再戦する
+              </button>
+            ) : (
+              <button
+                className="primary-button"
+                aria-keyshortcuts="n s Space Enter"
+                onClick={onNext}
+              >
+                次のラウンド
+              </button>
+            )}
+            <button onClick={onConfigure} aria-keyshortcuts="c">
+              対戦設定に戻る <kbd>C</kbd>
             </button>
-          ) : (
-            <button
-              className="primary-button"
-              aria-keyshortcuts="n s Space Enter"
-              onClick={onNext}
-            >
-              次のラウンド
-            </button>
-          )
+          </>
         }
       />
       <div className="round-reports" aria-label="ラウンド別の結果">
@@ -88,7 +95,7 @@ export function CpuResults({
             </summary>
             <p>
               {scorePoint(r.keys, r.penalty, r.elapsed)} pt ·{' '}
-              {(r.accuracy * 100).toFixed(2)}% · 実ミス {r.raw} ·{' '}
+              {rawAccuracy(r.keys, r.raw).toFixed(2)}% · 実ミス {r.raw} ·{' '}
               {(r.elapsed / 1000).toFixed(2)}秒
             </p>
           </details>

@@ -209,7 +209,7 @@ test('all practice strokes survive reload; pauses are excluded; analysis, pagina
   await page
     .getByRole('button', { name: 'このシードを使う', exact: true })
     .click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   // Freeze the clock after the carousel transition; CI keyboard dispatch is slower.
   await page.clock.pauseAt(
@@ -355,7 +355,7 @@ test('unavailable detail storage warns and keeps every stroke exportable in memo
       exact: true,
     })
     .click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByRole('region', { name: /タイピング入力/ }).focus()
   await startPractice(page, true)

@@ -74,6 +74,7 @@ export function consumedOffsets(
   boundaries: Set<number>,
   done: boolean,
   partialRoman = false,
+  literal = false,
 ) {
   const composed = target.normalize('NFC')
   const decomposed = target !== composed
@@ -90,6 +91,7 @@ export function consumedOffsets(
   const input = composed
     .slice(0, reading)
     .normalize(decomposed ? 'NFD' : 'NFC').length
+  if (literal) return { reading, input, roman: input }
   const romanStarts = [
     ...romanWordStarts(composed, typed + hint, boundaries, partialRoman),
   ]

@@ -18,9 +18,11 @@ import { isRtc } from '../../domain/content/rtcWords'
 import { isRtcOriginal } from '../../domain/content/rtcOriginal'
 import { isTrainer } from '../../domain/content/sakusaku'
 import { isTypewell } from '../../domain/content/typewell'
+import { isSeededEnglish } from '../../domain/content/english'
 import {
   recordMissLabel,
   recordPoint,
+  recordAccuracy,
   recordTitle,
 } from '../../domain/records/recordStats'
 import type { RecordEntry } from '../../domain/records/types'
@@ -271,6 +273,7 @@ export function HistoryPage({
                                   r.mode !== 'cpu' &&
                                   r.mode !== 'ghost' &&
                                   (isTypewell(r.passageId) ||
+                                    isSeededEnglish(r.passageId) ||
                                     isEtyping(r.passageId) ||
                                     isTrainer(r.passageId) ||
                                     isConstitutionArticles(r.passageId) ||
@@ -299,7 +302,7 @@ export function HistoryPage({
                               </small>
                             </td>
                             <td className="record-kpm">{r.kpm}</td>
-                            <td>{r.accuracy}%</td>
+                            <td>{recordAccuracy(r)}%</td>
                             <td>{time(r.elapsed)}</td>
                           </tr>
                         ))}

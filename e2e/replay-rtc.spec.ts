@@ -213,7 +213,7 @@ for (const setId of ['rtc-2025-all', 'rtc-2019-all', 'rtc-2023-all'])
       fullPage: true,
       animations: 'disabled',
     })
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
     await page.getByRole('region', { name: /タイピング入力/ }).focus()
     await startPractice(page)

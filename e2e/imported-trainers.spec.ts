@@ -57,7 +57,7 @@ for (const set of data) {
         ),
       ).toBe(row[0])
     }
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await page.clock.pauseAt(
       new Date(await page.evaluate(() => Date.now() + 10000)),
     )
@@ -104,7 +104,7 @@ for (const set of data) {
     await page
       .getByRole('button', { name: 'シード html-source を再現', exact: true })
       .click()
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(page.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
       first[0] as string,

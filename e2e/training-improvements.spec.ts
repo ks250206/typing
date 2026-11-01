@@ -70,7 +70,7 @@ test('five-row keyboards flash the real mistaken key, re-pulse the expected key,
   page,
 }) => {
   await setup(page)
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   const area = page.getByRole('region', { name: /タイピング入力領域/ })
   await area.focus()
   await startPractice(page, true)
@@ -281,7 +281,7 @@ test('AZERTY accepts numeric Shift and Ctrl+Alt as AltGr with physical error fee
 }) => {
   await setup(page)
   await choose(page.getByLabel('入力方式', { exact: true }), 'azerty')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await startPractice(page, true)
   await page.keyboard.press('Control+Alt+Digit0')
@@ -307,8 +307,8 @@ test('changing layout in weak practice also resets the suspended normal engine',
     .click()
   await page.getByRole('button', { name: /語で反復練習/, exact: true }).click()
   await choose(page.getByLabel('入力方式', { exact: true }), 'kana')
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.getByRole('region', { name: /タイピング入力領域/ }).focus()
   await startPractice(page, true)
   await page.keyboard.press('Equal') // へ
@@ -391,7 +391,7 @@ test('settings delete uses a separate confirmation, cancels safely, removes stor
   await expect(
     page.getByText('最初の一篇から、はじめよう。', { exact: true }),
   ).toBeVisible()
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(
     page.getByRole('button', { name: '夜更けの図書室', exact: true }),
   ).toBeVisible()

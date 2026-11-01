@@ -30,7 +30,7 @@ for (const width of [1440, 390]) {
       'data-value',
       'nova-f5-pair',
     )
-    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(page.locator('.physical-keyboard')).toHaveClass(/is-jis/)
     await expect(page.locator('[data-code="Backquote"] > span')).toHaveText(
       '半角',

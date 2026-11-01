@@ -4,6 +4,7 @@ import type { RecordEntry } from '../../domain/records/types'
 import {
   recordGroup,
   recordPoint,
+  recordAccuracy,
   recordTitle,
   recordMissLabel,
   chronological,
@@ -94,7 +95,7 @@ export function SessionResult({
         </div>
         <div>
           <span>正確率</span>
-          <strong>{Number(record.accuracy.toFixed(2))}%</strong>
+          <strong>{recordAccuracy(record)}%</strong>
         </div>
         <div>
           <span>正打鍵 / 実ミス</span>

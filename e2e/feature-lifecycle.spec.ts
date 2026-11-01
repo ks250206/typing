@@ -16,7 +16,7 @@ test('dialogs preserve practice progress and focus; leaving the page cancels the
   await page.clock.pauseAt(
     new Date(await page.evaluate(() => Date.now() + 10000)),
   )
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   const input = page.getByRole('region', { name: /タイピング入力領域/ })
   await input.focus()
   await page.keyboard.press('Space')
@@ -77,12 +77,12 @@ test('dialogs preserve practice progress and focus; leaving the page cancels the
   await page.keyboard.press('Escape')
   await expect(confirm).toHaveCount(0)
   await expect(clear).toBeFocused()
-  await page.getByRole('button', { name: 'タイピング', exact: true }).click()
+  await page.getByRole('button', { name: '通常練習', exact: true }).click()
   await expect(page.locator('.mission-carousel')).toHaveAttribute(
     'data-stage',
     '0',
   )
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await page.clock.runFor(120000)
   await expect(
     page.locator('.practice-overlay[data-phase=ready]'),

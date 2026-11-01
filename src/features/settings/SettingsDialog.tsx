@@ -105,7 +105,7 @@ export function SettingsDialog({
         <section className="settings-records" aria-label="記録の管理">
           <h3>記録の管理</h3>
           <p>
-            保存済みの履歴・TOP記録・打鍵ログをすべて削除します。設定と文章セットは残ります。
+            保存済みの履歴・TOP記録・打鍵ログ・一文練習の文別統計を削除します。設定と文章セットは残ります。
           </p>
           <button
             ref={clearButton}

@@ -84,7 +84,7 @@ test('finger keyboard follows next key, word, layout, pause, mistakes, sentence 
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   const key = (code: string) =>
@@ -163,7 +163,7 @@ test('keyboard stays within desktop and mobile viewport and respects reduced mot
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
   for (const width of [1440, 390]) {
@@ -205,7 +205,7 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   page.on('pageerror', (e) => errors.push(e.message))
   await page.goto('/')
   await page.getByLabel('3D 背景', { exact: true }).uncheck()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   const area = page.getByRole('region')
   const main = page.locator('.current-paragraph')
@@ -281,7 +281,7 @@ test('ruby and optional word colors/consuming flow stay aligned and persist', as
   await expect(
     page.getByLabel('入力済み単語を消す', { exact: true }),
   ).toBeChecked()
-  await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+  await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
   await expect(page.locator('[data-face="2"]')).toHaveCSS('transform', 'none')
   await pick(page.getByLabel('入力方式', { exact: true }), 'kana')
   await area.focus()

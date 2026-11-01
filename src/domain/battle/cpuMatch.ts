@@ -1,7 +1,8 @@
 import type { SessionTrace } from '../records/telemetry'
 import { roundTrace } from '../records/results'
 import { TypingTrace } from '../records/telemetry'
-import { KanaEngine, RomanEngine } from '../typing/engine'
+import type { KanaEngine, RomanEngine } from '../typing/engine'
+import { sentenceEngine } from '../typing/sentenceEngine'
 import type { Layout } from '../typing/engine'
 import type { Sentence } from '../content/sentences'
 import { MissEpisodes, animalRanks } from '../typing/scoring'
@@ -141,7 +142,8 @@ export class RtcMatch {
   config: CpuConfig
   constructor(prompts: Sentence[], layout: Layout, config: CpuConfig) {
     this.prompts = prompts
-    this.layout = layout
+    this.layout =
+      layout === 'kana' && prompts[0]?.language === 'en' ? 'jis' : layout
     this.config = config
     if (
       !prompts.length ||
@@ -178,24 +180,21 @@ export class RtcMatch {
     return this.prompts[this.wordIndex % this.prompts.length]
   }
   private makeEngine() {
-    return this.layout === 'kana'
-      ? new KanaEngine(this.sentence.reading)
-      : new RomanEngine(this.sentence.reading)
+    return sentenceEngine(this.sentence, this.layout)
   }
   get cpuLength() {
-    return this.layout === 'kana'
-      ? new KanaEngine(this.sentence.reading).target.length
-      : new RomanEngine(this.sentence.reading).hint.length
+    const engine = this.makeEngine()
+    return this.layout === 'kana' ? engine.target.length : engine.hint.length
   }
   get accuracy() {
     return this.keys
-      ? this.keys / (this.keys + this.misses.misses)
-      : this.misses.misses
+      ? this.keys / (this.keys + this.misses.raw)
+      : this.misses.raw
         ? 0
         : 1
   }
   get totalAccuracy() {
-    const misses = this.totalMisses + this.misses.misses
+    const misses = this.totalRaw + this.misses.raw
     const keys = this.totalKeys + this.keys
     return keys ? keys / (keys + misses) : misses ? 0 : 1
   }

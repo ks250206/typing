@@ -1,9 +1,15 @@
+import { normalizeCpuWordsPerPrompt } from '../../domain/battle/cpuPromptSettings'
 import { validDisplayScale } from '../../domain/records/displayScale'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { archiveBests } from '../../domain/records/recordStats'
 import { writeTraces } from './traceStore'
 import { layoutLabels } from '../../domain/typing/engine'
 import { summarizePace, validPace } from '../../domain/records/pace'
+import {
+  readSentenceStats,
+  SENTENCE_STATS,
+  SENTENCE_STATS_CLEARED,
+} from './sentenceStats'
 export const defaultSettings: Settings = {
   displayScale: 100,
   layout: 'jis',
@@ -70,6 +76,12 @@ function readRecords(key: string, limit: number): RecordEntry[] {
               record.cpuConfig.reactionMs <= 1500 &&
               ['constant', 'ease-in'].includes(record.cpuConfig.curve)
                 ? record.cpuConfig
+                : undefined,
+            cpuWordsPerPrompt:
+              typeof record.cpuWordsPerPrompt === 'number' &&
+              normalizeCpuWordsPerPrompt(record.cpuWordsPerPrompt) ===
+                record.cpuWordsPerPrompt
+                ? record.cpuWordsPerPrompt
                 : undefined,
             replayVersion:
               record.replayVersion === 2
@@ -184,14 +196,22 @@ export function appendHistory(entry: RecordEntry, unsaved: RecordEntry[] = []) {
 export function clearHistory() {
   return withHistoryLock(async () => {
     const previous = readHistory(),
-      bests = readBestHistory()
+      bests = readBestHistory(),
+      sentenceStats = readSentenceStats()
     const historySaved = saveHistory([]),
-      bestsSaved = save(BESTS, [])
+      bestsSaved = save(BESTS, []),
+      sentenceStatsSaved = save(SENTENCE_STATS, {})
     const tracesSaved =
-      historySaved && bestsSaved && (await writeTraces([], []))
+      historySaved &&
+      bestsSaved &&
+      sentenceStatsSaved &&
+      (await writeTraces([], []))
     if (!tracesSaved) {
       if (historySaved) saveHistory(previous)
       if (bestsSaved) save(BESTS, summaries(bests))
+      if (sentenceStatsSaved) save(SENTENCE_STATS, sentenceStats)
+    } else if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event(SENTENCE_STATS_CLEARED))
     }
     return tracesSaved
   })

@@ -2,7 +2,7 @@ import type { Settings } from '../../domain/records/types'
 import type { Dispatch, SetStateAction } from 'react'
 import { layoutLabels } from '../../domain/typing/engine'
 import type { Layout } from '../../domain/typing/engine'
-import { typingTitle, formatMissRate } from '../../domain/typing/scoring'
+import { typingTitle, rawAccuracy } from '../../domain/typing/scoring'
 import { time } from '../../shared/formatTime'
 
 export function BattleSidebar({
@@ -13,7 +13,6 @@ export function BattleSidebar({
   misses,
   point,
   elapsed,
-  accuracy,
   rounds,
   cpu,
 }: {
@@ -24,7 +23,6 @@ export function BattleSidebar({
   misses: number
   point: number
   elapsed: number
-  accuracy: number
   rounds: string
   cpu: string
 }) {
@@ -41,7 +39,6 @@ export function BattleSidebar({
             <small> pt</small>
           </strong>
           <span>{typingTitle(point, keys, misses)}</span>
-          <small>実ミス率 {formatMissRate(keys, misses)}</small>
         </div>
         <div className="primary-stat">
           <span>{elapsed ? Math.round((keys * 60000) / elapsed) : 0}</span>
@@ -52,7 +49,7 @@ export function BattleSidebar({
         <div className="stat-grid">
           <div>
             <span>正確率</span>
-            <strong>{(accuracy * 100).toFixed(1)}%</strong>
+            <strong>{rawAccuracy(keys, misses).toFixed(1)}%</strong>
           </div>
           <div>
             <span>経過時間</span>
