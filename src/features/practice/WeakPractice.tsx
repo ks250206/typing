@@ -1,3 +1,4 @@
+import { NumberInput } from '../../shared/ui/NumberInput'
 import { PageHeading } from '../../shared/ui/PageHeading'
 import { useEffect, useMemo, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -101,20 +102,12 @@ export default function WeakPractice(props: Props) {
           <div className="weak-controls">
             <label>
               繰り返し回数
-              <input
+              <NumberInput
                 aria-label="繰り返し回数"
-                type="number"
                 min={1}
                 max={20}
                 value={repetitions}
-                onChange={(e) =>
-                  setRepetitions(
-                    Math.max(
-                      1,
-                      Math.min(20, Math.trunc(Number(e.target.value)) || 1),
-                    ),
-                  )
-                }
+                onChange={setRepetitions}
               />
             </label>
             <button
