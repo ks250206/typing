@@ -134,6 +134,7 @@ export function AppShell({
             </span>
             <a
               className="topbar-github"
+              data-game-shortcuts="off"
               href="https://github.com/ks250206/typing"
               target="_blank"
               rel="noopener noreferrer"
