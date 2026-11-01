@@ -4585,6 +4585,10 @@ rt {
   display: block;
   margin-block: 16px;
 }
+.sentence-options .config-card > .toggle-row {
+  display: flex;
+  align-items: center;
+}
 .sentence-options .config-card > button {
   display: block;
   margin-top: 18px;

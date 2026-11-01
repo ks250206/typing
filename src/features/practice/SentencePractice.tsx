@@ -300,6 +300,38 @@ export default function SentencePractice({
               }}
             />
           </label>
+          <label
+            className="toggle-row"
+            onMouseDown={(event) => event.preventDefault()}
+          >
+            <span>単語の色分け</span>
+            <input
+              type="checkbox"
+              checked={settings.wordColors}
+              onChange={(event) =>
+                setSettings((value) => ({
+                  ...value,
+                  wordColors: event.target.checked,
+                }))
+              }
+            />
+          </label>
+          <label
+            className="toggle-row"
+            onMouseDown={(event) => event.preventDefault()}
+          >
+            <span>入力済み単語を消す</span>
+            <input
+              type="checkbox"
+              checked={settings.consumeTyped}
+              onChange={(event) =>
+                setSettings((value) => ({
+                  ...value,
+                  consumeTyped: event.target.checked,
+                }))
+              }
+            />
+          </label>
           <button className="text-button" onClick={() => resetProgress(true)}>
             最初からやり直す
           </button>

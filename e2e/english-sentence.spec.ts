@@ -9,14 +9,15 @@ import { choose } from './select'
 async function setup(page: Page, sentence = false) {
   await page.clock.install()
   await page.addInitScript((sentenceMode) => {
-    localStorage.setItem(
-      'yohaku.settings.v1',
-      JSON.stringify({
-        background: false,
-        navigationMotion: 'off',
-        layout: 'jis',
-      }),
-    )
+    if (!localStorage.getItem('yohaku.settings.v1'))
+      localStorage.setItem(
+        'yohaku.settings.v1',
+        JSON.stringify({
+          background: false,
+          navigationMotion: 'off',
+          layout: 'jis',
+        }),
+      )
     if (sentenceMode && !localStorage.getItem('galactype.sentence-practice.v1'))
       localStorage.setItem(
         'galactype.sentence-practice.v1',
@@ -31,6 +32,88 @@ async function setup(page: Page, sentence = false) {
 }
 
 for (const width of [1440, 390]) {
+  test(`English word colors and consumed words toggle independently, preserve progress and persist across modes at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 1000 })
+    await setup(page, true)
+    await page
+      .getByRole('group', { name: '文章の言語' })
+      .getByRole('button', { name: 'English', exact: true })
+      .click()
+    await page.getByRole('button', { name: '入力へ進む', exact: true }).click()
+    const wordColors = page.getByRole('checkbox', {
+      name: '単語の色分け',
+      exact: true,
+    })
+    const colors = () =>
+      page
+        .locator('.typing-area .current-paragraph .pending-token .token-text')
+        .evaluateAll((elements) => [
+          ...new Set(
+            elements
+              .filter((el) => el.textContent?.trim())
+              .map((el) => getComputedStyle(el).color),
+          ),
+        ])
+    const text = sentencePracticePool('en-library', 'jis')[0].text
+    await expect(wordColors).toBeChecked()
+    expect((await colors()).length).toBeGreaterThan(1)
+    await wordColors.uncheck()
+    expect(await colors()).toHaveLength(1)
+    await expect(
+      page.locator('.typing-area .current-paragraph'),
+    ).toHaveAttribute('data-text', text)
+    expect(await page.locator('.typing-area .roman-line').innerText()).toBe(
+      text,
+    )
+    const consume = page.getByRole('checkbox', {
+      name: '入力済み単語を消す',
+      exact: true,
+    })
+    await consume.check()
+    await startPractice(page, true)
+    await page.keyboard.type('A ')
+    const typed = page.locator('.typing-area .typed-roman')
+    await expect(typed.locator('[data-consumed=true]')).toHaveText('A ')
+    await expect(typed.locator('[data-consumed=true]')).toHaveCSS(
+      'visibility',
+      'hidden',
+    )
+    await consume.uncheck()
+    await expect(typed.locator('[data-consumed=true]')).toHaveCount(0)
+    await expect(typed).toHaveText('A ')
+    await consume.check()
+    await page.getByRole('button', { name: '一文練習', exact: true }).click()
+    await expect(consume).toBeChecked()
+    await expect(wordColors).not.toBeChecked()
+    expect(await colors()).toHaveLength(1)
+    await wordColors.check()
+    expect((await colors()).length).toBeGreaterThan(1)
+    const area = page.getByRole('region', {
+      name: '一文練習の入力領域',
+      exact: true,
+    })
+    await area.focus()
+    await page.keyboard.type('A ')
+    await expect(typed.locator('[data-consumed=true]')).toHaveText('A ')
+    await wordColors.uncheck()
+    await expect(area.getByText('IN THE FLOW', { exact: true })).toBeVisible()
+    await expect(area.locator('.typed-roman')).toHaveText('A ')
+    await consume.uncheck()
+    await expect(typed.locator('[data-consumed=true]')).toHaveCount(0)
+    await expect(typed).toHaveText('A ')
+    await expect(wordColors).not.toBeChecked()
+    await consume.check()
+    await page.reload()
+    await page.getByRole('button', { name: '一文練習', exact: true }).click()
+    await expect(wordColors).not.toBeChecked()
+    await expect(consume).toBeChecked()
+    expect(await colors()).toHaveLength(1)
+    await wordColors.check()
+    expect((await colors()).length).toBeGreaterThan(1)
+  })
+
   test(`English library, literal input, blank kana spacing, pause, favorites and saved replay at ${width}px`, async ({
     page,
   }) => {
@@ -322,13 +405,28 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
     exact: true,
   })
   const sentence = sentencePracticePool('night-library', 'jis')[0]
+  const consume = page.getByRole('checkbox', {
+    name: '入力済み単語を消す',
+    exact: true,
+  })
+  await consume.check()
   await area.focus()
   await page.keyboard.type(new RomanEngine(sentence.reading).hint.slice(0, 1))
   await page.clock.runFor(500)
-  await page.keyboard.type(new RomanEngine(sentence.reading).hint.slice(1))
+  await page.keyboard.type(new RomanEngine(sentence.reading).hint.slice(1, 20))
+  expect(
+    await area.locator('.current-paragraph [data-consumed=true]').count(),
+  ).toBeGreaterThan(0)
+  await page.keyboard.type(new RomanEngine(sentence.reading).hint.slice(20))
   await expect(page.getByRole('status', { name: '連続達成数' })).toContainText(
     'CHALLENGE CLEAR',
   )
+  await consume.uncheck()
+  await expect(page.getByRole('status', { name: '連続達成数' })).toContainText(
+    '1 / 1 回',
+  )
+  await expect(area.locator('[data-consumed=true]')).toHaveCount(0)
+  await consume.check()
   await page
     .getByRole('button', { name: '文章セットを選ぶ', exact: true })
     .click()
