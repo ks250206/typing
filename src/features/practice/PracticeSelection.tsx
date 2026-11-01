@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { japanesePracticePassages } from '../../domain/content/practiceDocument'
 import { englishPassages } from '../../domain/content/english'
-import { LanguageSwitch } from '../library/LanguageSwitch'
 import { freshSeed } from '../../domain/content/typewell'
 import type { Settings } from '../../domain/records/types'
 import { PassageLibrary } from '../library/PassageLibrary'
@@ -65,12 +64,9 @@ export function PracticeSelection({
   } = session
   return (
     <div key="selected">
-      <LanguageSwitch
-        value={passage.language ?? 'ja'}
-        onChange={onLanguageChange}
-      />
       <PassageLibrary
-        key={passage.language ?? 'ja'}
+        language={passage.language ?? 'ja'}
+        onLanguageChange={onLanguageChange}
         passages={
           passage.language === 'en' ? englishPassages : japanesePracticePassages
         }

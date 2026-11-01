@@ -1,6 +1,6 @@
 import { libraryCategory } from './libraryCategories'
 import { useMemo, useState } from 'react'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Search } from 'lucide-react'
 import type { Passage } from '../../domain/content/passages'
 import { isTypewell } from '../../domain/content/typewell'
 import { isRtc } from '../../domain/content/rtcWords'
@@ -12,6 +12,7 @@ import {
   isEnglishTypewell,
   isSeededEnglish,
 } from '../../domain/content/english'
+import { LanguageSwitch } from './LanguageSwitch'
 import { FavoriteButton } from '../favorites/FavoriteButton'
 
 export function PassageLibrary({
@@ -21,6 +22,8 @@ export function PassageLibrary({
   isFavorite,
   onToggleFavorite,
   mode = 'document',
+  language,
+  onLanguageChange,
 }: {
   passages: Passage[]
   selected: string
@@ -28,6 +31,8 @@ export function PassageLibrary({
   isFavorite: (id: string) => boolean
   onToggleFavorite: (id: string) => void
   mode?: 'document' | 'sentence'
+  language: 'ja' | 'en'
+  onLanguageChange: (language: 'ja' | 'en') => void
 }) {
   const categories = useMemo(() => {
     const priority = (category: string) =>
@@ -36,8 +41,14 @@ export function PassageLibrary({
       (a, b) => priority(a) - priority(b),
     )
   }, [passages])
-  const [genre, setGenre] = useState('すべて')
-  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState({
+    language,
+    genre: 'すべて',
+    search: '',
+  })
+  if (filter.language !== language)
+    setFilter({ language, genre: 'すべて', search: '' })
+  const { genre, search } = filter
   const filtered = useMemo(
     () =>
       passages.filter(
@@ -51,31 +62,44 @@ export function PassageLibrary({
   )
   return (
     <section className="selection-library" aria-label="文章ライブラリ">
-      <div className="selection-library-heading">
-        <h3>文章ライブラリ</h3>
-        <span>
-          {filtered.length} / {passages.length} セット
-        </span>
-      </div>
+      <header className="library-header">
+        <div className="selection-library-heading">
+          <div className="library-title">
+            <span className="library-mark" aria-hidden="true">
+              <BookOpen size={24} />
+            </span>
+            <h3>文章ライブラリ</h3>
+          </div>
+          <span className="library-count">
+            {filtered.length} / {passages.length} セット
+          </span>
+        </div>
+        <div className="library-toolbar">
+          <LanguageSwitch value={language} onChange={onLanguageChange} />
+          <label className="library-search">
+            <span className="library-search-label">文章を検索</span>
+            <Search size={16} aria-hidden="true" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) =>
+                setFilter({ language, genre, search: e.target.value })
+              }
+              placeholder="タイトル・ジャンルで検索"
+            />
+          </label>
+        </div>
+      </header>
       <p className="library-favorite-hint">
         各文書の☆からお気に入りに登録できます。
       </p>
-      <label className="library-search">
-        文章を検索
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="タイトル・ジャンルで検索"
-        />
-      </label>
       <div className="filters" aria-label="文章のジャンル">
         {['すべて', ...categories].map((g) => (
           <button
             key={g}
             className={genre === g ? 'selected' : ''}
             aria-pressed={genre === g}
-            onClick={() => setGenre(g)}
+            onClick={() => setFilter({ language, genre: g, search })}
           >
             {g}
           </button>

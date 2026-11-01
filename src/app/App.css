@@ -4477,9 +4477,6 @@ rt {
 .prose[data-language='en'] .word-start {
   margin-inline-start: 0;
 }
-.language-switch {
-  padding: 16px 28px 0;
-}
 .sentence-practice .practice-main {
   min-width: 0;
 }
@@ -4706,9 +4703,6 @@ rt {
   }
 }
 @media (max-width: 800px) {
-  .language-switch {
-    padding: 12px 16px 0;
-  }
   .sentence-streak,
   .sentence-attempts {
     padding: 16px;
@@ -4952,4 +4946,131 @@ rt {
   font-size: 10px;
   margin: 18px 0 9px;
   color: #68cee4;
+}
+
+/* Language and search belong to the library, directly below its title. */
+.library-header {
+  padding: 18px;
+  border: 1px solid #8bd8eb2b;
+  border-radius: 12px;
+  background: linear-gradient(115deg, #41d9ff0c, #a579ff0d);
+}
+.library-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.library-title .library-mark {
+  display: flex;
+  padding: 10px;
+  border-radius: 10px;
+  color: #92e6f5;
+  background: linear-gradient(140deg, #59dbff20, #a082ff20);
+  flex-shrink: 0;
+}
+.library-title h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #d6f4ff;
+}
+.selection-library-heading .library-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 10px;
+}
+.library-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+.selection-library .library-toolbar .language-switch {
+  margin: 0;
+  padding: 4px;
+  flex-wrap: nowrap;
+  gap: 4px;
+  border: 1px solid #8bd8eb24;
+  border-radius: 10px;
+  background: #080f2080;
+}
+.library-toolbar .language-switch button {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 7px;
+}
+.library-toolbar .library-search {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  justify-self: end;
+  width: 100%;
+  max-width: 320px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #6d9ac04d;
+  background: #0c1529;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.library-toolbar .library-search svg {
+  flex-shrink: 0;
+  color: #7eb7cc;
+}
+.library-toolbar .library-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 12px;
+}
+.library-search:focus-within {
+  outline: 2px solid #83e5ff;
+  outline-offset: 2px;
+}
+.library-search-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .library-header {
+    padding: 12px;
+  }
+  .library-title {
+    gap: 8px;
+  }
+  .library-title .library-mark {
+    padding: 7px;
+  }
+  .library-title h3 {
+    font-size: 20px;
+  }
+  .selection-library-heading {
+    gap: 8px;
+  }
+  .selection-library-heading .library-count {
+    font-size: 9px;
+  }
+  .library-toolbar {
+    gap: 10px;
+  }
+  .library-toolbar .language-switch button {
+    padding-inline: 9px;
+  }
+  .library-toolbar .library-search {
+    padding-inline: 8px;
+  }
 }

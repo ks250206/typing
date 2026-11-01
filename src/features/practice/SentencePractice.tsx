@@ -24,7 +24,6 @@ import type { RecordEntry, Settings } from '../../domain/records/types'
 import { PageHeading } from '../../shared/ui/PageHeading'
 import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
 import { PassageLibrary } from '../library/PassageLibrary'
-import { LanguageSwitch } from '../library/LanguageSwitch'
 import { SessionResult } from '../results/SessionResult'
 import { InputStyleCard } from './PracticeSidebar'
 import { SentenceAttempt } from './SentenceAttempt'
@@ -207,9 +206,9 @@ export default function SentencePractice({
           {[
             stage === 0 ? (
               <div key="selection" className="sentence-library">
-                <LanguageSwitch
-                  value={english ? 'en' : 'ja'}
-                  onChange={(language) =>
+                <PassageLibrary
+                  language={english ? 'en' : 'ja'}
+                  onLanguageChange={(language) =>
                     updateConfig({
                       ...config,
                       passageId: (language === 'en'
@@ -217,10 +216,7 @@ export default function SentencePractice({
                         : japanesePracticePassages)[0].id,
                     })
                   }
-                />
-                <PassageLibrary
                   mode="sentence"
-                  key={english ? 'en' : 'ja'}
                   passages={
                     english ? englishPassages : japanesePracticePassages
                   }

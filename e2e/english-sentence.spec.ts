@@ -134,7 +134,9 @@ for (const width of [1440, 390]) {
       .click()
     const library = page.getByRole('region', { name: '文章ライブラリ' })
     await expect(library.locator('.story-card')).toHaveCount(29)
-    await expect(library.locator('.filters button')).toHaveText([
+    await expect(
+      library.locator('[aria-label="文章のジャンル"] button'),
+    ).toHaveText([
       'すべて',
       'オリジナル',
       'オリジナル長文',
