@@ -16,8 +16,8 @@ async function setup(page: Page, id = 'en-library', motion = 'off') {
           JSON.stringify({
             passageId,
             targetKpm: 10,
-            maxMisses: 0,
-            repetitions: 2,
+            maxMisses: 10,
+            repetitions: 4,
           }),
         )
     },
@@ -60,6 +60,19 @@ for (const width of [1440, 390]) {
       name: '一文練習の入力領域',
       exact: true,
     })
+    const inputStyle = page.getByRole('combobox', {
+      name: '一文練習の入力方式',
+      exact: true,
+    })
+    await expect(inputStyle).toHaveCSS('display', 'flex')
+    const nameBox = await inputStyle.locator('span').boundingBox()
+    const arrowBox = await inputStyle.locator('svg').boundingBox()
+    expect(
+      Math.abs(
+        nameBox!.y + nameBox!.height / 2 - arrowBox!.y - arrowBox!.height / 2,
+      ),
+    ).toBeLessThan(1)
+    expect(arrowBox!.x).toBeGreaterThan(nameBox!.x + nameBox!.width)
     const text = sentencePracticePool('en-library', 'jis')[0].text
     const table = page.getByRole('region', {
       name: '文章別の練習統計',
@@ -94,13 +107,13 @@ for (const width of [1440, 390]) {
     await page.getByRole('button', { name: '結果へ', exact: true }).click()
     await expect(
       page.getByRole('region', { name: 'セッションの結果' }),
-    ).toContainText('ATTEMPT REPORT')
+    ).toContainText('INTERIM REPORT')
     await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await page.keyboard.press('Enter')
     await trial(2000, true)
-    await expect(
-      page.getByRole('status', { name: '連続達成数' }),
-    ).toContainText('0 / 2 回')
+    await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
+      '2 / 4 回',
+    )
     await expect(row.locator('td').nth(4)).toHaveText('2')
     await expect(row.locator('td').nth(1)).toHaveText(
       (text.length * 60).toFixed(1),
@@ -157,7 +170,7 @@ for (const width of [1440, 390]) {
       .getByRole('button', { name: '設定を閉じる', exact: true })
       .click()
     await expect(row.locator('td').nth(4)).toHaveText('0')
-    await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('2')
+    await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('4')
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -240,10 +253,13 @@ test('sentence practice shares session controls, miss feedback, continuous repet
           color: style.color,
           margin: style.margin,
           height: input.getBoundingClientRect().height,
+          labelHeight: label.getBoundingClientRect().height,
         }
       }),
     )
   expect(styles).toHaveLength(3)
+  expect(styles[0].labelHeight).toBe(styles[0].height)
+  expect(styles[0].height).toBe(34)
   expect(styles[1]).toEqual(styles[0])
   expect(styles[2]).toEqual(styles[0])
   expect(
@@ -290,7 +306,7 @@ test('sentence practice shares session controls, miss feedback, continuous repet
   await page.keyboard.type(text)
   await expect(area).toHaveAttribute('data-status', 'running')
   await expect(area).toBeFocused()
-  await page.keyboard.type(text.repeat(2))
+  await page.keyboard.type(text.repeat(3))
   await expect(
     page.getByRole('region', { name: 'セッションの結果' }),
   ).toContainText('CHALLENGE CLEAR')

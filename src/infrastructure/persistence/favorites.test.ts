@@ -81,3 +81,19 @@ it('preserves a user-defined mixed favorite order across saving and reading', ()
   expect(saveFavorites(order)).toBe(true)
   expect(readFavorites()).toEqual(order)
 })
+
+it('restores TypeWell counts and normalizes missing or invalid values to five', () => {
+  vi.stubGlobal('localStorage', {
+    getItem: () =>
+      JSON.stringify([
+        { ...cpu, passageId: 'en-typewell-01', wordsPerPrompt: 3 },
+        { ...cpu, passageId: 'typewell-basic' },
+        { ...cpu, passageId: 'typewell-space', wordsPerPrompt: -1 },
+      ]),
+  })
+  expect(
+    readFavorites().map(
+      (entry) => entry.kind === 'cpu' && entry.wordsPerPrompt,
+    ),
+  ).toEqual([3, 5, 5])
+})

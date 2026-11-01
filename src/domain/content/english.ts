@@ -46,6 +46,20 @@ export function englishSentence(text: string, continuous = false): Sentence {
   }
 }
 
+/** Full source sentences for one-sentence practice and CPU matches. */
+export function englishPromptPool(id: string, splitLong = true): Sentence[] {
+  const passage = englishPassages.find((p) => p.id === id)
+  if (!passage) throw new Error(`Unknown English set: ${id}`)
+  const segmenter = new Intl.Segmenter('en', { granularity: 'sentence' })
+  return passage.paragraphs.flatMap((p) =>
+    passage.continuous && splitLong
+      ? [...segmenter.segment(p.text)].map((part) =>
+          englishSentence(part.segment.trim()),
+        )
+      : [englishSentence(p.text, !!passage.continuous && !splitLong)],
+  )
+}
+
 export function englishDocument(id: string, seed: string) {
   const source = englishPassages.find((p) => p.id === id)
   if (!source) throw new Error(`Unknown English set: ${id}`)

@@ -1,3 +1,7 @@
+import {
+  isTypewellBattle,
+  normalizeCpuWordsPerPrompt,
+} from '../battle/cpuPromptSettings'
 import type { RecordEntry } from './types'
 import { scorePoint, typingTitle, formatMissRate } from '../typing/scoring'
 export type RecordMetric = 'point' | 'kpm'
@@ -11,6 +15,12 @@ export const recordMissLabel = (r: RecordEntry) =>
 export const recordValue = (r: RecordEntry, metric: RecordMetric = 'point') =>
   metric === 'point' ? recordPoint(r) : r.kpm
 export const modeOf = (r: RecordEntry) => r.mode ?? 'practice'
+export const recordCpuWords = (record: RecordEntry) =>
+  record.mode === 'cpu' && isTypewellBattle(record.passageId)
+    ? (record.replayVersion ?? 1) === 1
+      ? 1
+      : normalizeCpuWordsPerPrompt(record.cpuWordsPerPrompt)
+    : undefined
 export const recordGroup = (r: RecordEntry) =>
   [
     r.passageId,
@@ -24,6 +34,7 @@ export const recordGroup = (r: RecordEntry) =>
           r.cpuConfig?.kpm ?? '',
           r.cpuConfig?.reactionMs ?? '',
           r.cpuConfig?.curve ?? '',
+          ...(recordCpuWords(r) === undefined ? [] : [recordCpuWords(r)]),
         ]
       : []),
   ].join('/')

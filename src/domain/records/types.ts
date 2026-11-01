@@ -8,6 +8,7 @@ export interface RecordEntry {
   trace?: SessionTrace
   hasTrace?: boolean
   cpuConfig?: CpuConfig
+  cpuWordsPerPrompt?: number
   id: string
   passageId: string
   title: string

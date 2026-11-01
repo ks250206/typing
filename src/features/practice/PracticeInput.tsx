@@ -200,9 +200,19 @@ export function PracticeInput({
           )}
         </div>
       </div>
-      <div className="practice-footer" onMouseDown={(e) => e.preventDefault()}>
+      <div
+        className="practice-footer practice-input-footer"
+        onMouseDown={(e) => e.preventDefault()}
+      >
         <div>
-          <span className="progress-track">
+          <span
+            className="progress-track"
+            role="progressbar"
+            aria-label="練習の進捗"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.floor(progress)}
+          >
             <span style={{ width: `${progress}%` }} />
           </span>
           <span>{Math.floor(progress)}%</span>

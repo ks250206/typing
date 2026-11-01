@@ -39,23 +39,35 @@ export function normalizeSentenceGoals(
     ),
   }
 }
-/** Judge exact speed before rounding; every wrong physical keystroke counts. */
+/** Judge the complete repetition set by total active time and total raw mistakes. */
 export function judgeSentence(
   goals: SentenceGoals,
-  streak: number,
+  completed: number,
   result: { keys: number; elapsed: number; rawMisses: number },
 ) {
   const kpm = (result.keys * 60000) / Math.max(1, result.elapsed)
-  const speedPassed = kpm >= goals.targetKpm
+  const complete = completed >= goals.repetitions
+  const speedPassed = complete ? kpm >= goals.targetKpm : null
   const accuracyPassed = result.rawMisses <= goals.maxMisses
-  const passed = speedPassed && accuracyPassed
-  const nextStreak = passed ? Math.min(goals.repetitions, streak + 1) : 0
+  if (!accuracyPassed)
+    return {
+      outcome: 'failed' as const,
+      kpm,
+      speedPassed,
+      accuracyPassed: false,
+    }
+  if (!complete)
+    return {
+      outcome: 'pending' as const,
+      kpm,
+      speedPassed: null,
+      accuracyPassed: null,
+    }
   return {
+    outcome:
+      speedPassed && accuracyPassed ? ('passed' as const) : ('failed' as const),
     kpm,
     speedPassed,
     accuracyPassed,
-    passed,
-    streak: nextStreak,
-    cleared: nextStreak === goals.repetitions,
   }
 }

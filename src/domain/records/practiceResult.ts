@@ -22,6 +22,7 @@ export function practiceResult({
   missEpisodes,
   trace,
   date,
+  countEveryMiss = false,
 }: {
   id: string
   passage: Passage
@@ -40,6 +41,7 @@ export function practiceResult({
   missEpisodes: MissEpisodes
   trace: SessionTrace
   date: string
+  countEveryMiss?: boolean
 }): RecordEntry {
   const scoredKeys = typewell ? limit : nextKeys
   return {
@@ -51,7 +53,8 @@ export function practiceResult({
     elapsed: duration,
     keys: scoredKeys,
     actualKeys: nextKeys,
-    misses: durationMs ? missEpisodes.raw : missEpisodes.misses,
+    misses:
+      durationMs || countEveryMiss ? missEpisodes.raw : missEpisodes.misses,
     rawMisses: missEpisodes.raw,
     point: scorePoint(scoredKeys, missEpisodes.penalty, duration),
     rank: typingTitle(
@@ -74,7 +77,10 @@ export function practiceResult({
     accuracy: Number(
       (
         (nextKeys /
-          (nextKeys + (durationMs ? missEpisodes.raw : missEpisodes.misses))) *
+          (nextKeys +
+            (durationMs || countEveryMiss
+              ? missEpisodes.raw
+              : missEpisodes.misses))) *
         100
       ).toFixed(2),
     ),

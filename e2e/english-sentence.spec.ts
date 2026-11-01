@@ -248,7 +248,7 @@ for (const width of [1440, 390]) {
     expect(errors).toEqual([])
   })
 
-  test(`one sentence requires five consecutive passes, resets failures and excludes paused time at ${width}px`, async ({
+  test(`one sentence judges the full five repetitions, reports success/failure and excludes paused time at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 })
@@ -256,6 +256,7 @@ for (const width of [1440, 390]) {
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
     await page.getByRole('button', { name: '練習へ進む', exact: true }).click()
     await expect(page.getByLabel('連続回数', { exact: true })).toHaveValue('5')
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000))
     const area = page.getByRole('region', {
       name: '一文練習の入力領域',
       exact: true,
@@ -275,53 +276,67 @@ for (const width of [1440, 390]) {
         await page.keyboard.press('Enter')
       }
       await page.keyboard.type(text.slice(5))
-      await expect(
-        page.locator('.sentence-attempts li').last(),
-      ).toHaveAttribute('data-passed', String(!wrong))
     }
+    const toast = page.getByRole('status', {
+      name: '一文練習の判定',
+      exact: true,
+    })
     for (let i = 1; i <= 2; i++) {
       await attempt(false, i === 1)
       await expect(
-        page.getByRole('status', { name: '連続達成数' }),
+        page.getByRole('status', { name: '練習回数' }),
       ).toContainText(`${i} / 5 回`)
       await expect(area).toHaveAttribute('data-status', 'running')
       await expect(area).toBeFocused()
+      await expect(toast).toHaveCount(0)
     }
-    await attempt(true)
-    await expect(page.locator('.sentence-attempts li').last()).toContainText(
-      'ミス 3',
-    )
+    await page.keyboard.type('z')
     await expect(
-      page.getByRole('status', { name: '連続達成数' }),
-    ).toContainText('0 / 5 回')
-    await expect(area).toHaveAttribute('data-status', 'running')
+      page.getByRole('region', { name: 'セッションの結果' }),
+    ).toContainText('CHALLENGE FAILED')
+    await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
+      '2 / 5 回',
+    )
+    await expect(toast).toHaveCount(0)
+    await expect(
+      page
+        .getByRole('region', { name: 'セッションの結果' })
+        .locator('.result-metrics'),
+    ).toContainText('1.00秒')
+    await expect(
+      page.getByRole('region', { name: 'セッションの結果' }),
+    ).toContainText('合計ミス上限を超過')
+    await page.getByRole('button', { name: 'もう一度', exact: true }).click()
+    await expect(toast).toHaveCount(0)
     for (let i = 1; i <= 5; i++) {
       await attempt()
       await expect(
-        page.getByRole('status', { name: '連続達成数' }),
+        page.getByRole('status', { name: '練習回数' }),
       ).toContainText(`${i} / 5 回`)
-      if (i === 1)
-        await page.screenshot({
-          path: `artifacts/sentence-practice-${width}.png`,
-          fullPage: true,
-        })
       if (i < 5) await expect(area).toHaveAttribute('data-status', 'running')
     }
+    await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
+      'CHALLENGE CLEAR',
+    )
+    await expect(toast).toHaveCount(0)
     await expect(
-      page.getByRole('status', { name: '連続達成数' }),
-    ).toContainText('CHALLENGE CLEAR')
+      page
+        .getByRole('region', { name: 'セッションの結果' })
+        .locator('.result-metrics'),
+    ).toContainText('2.50秒')
     await page.screenshot({
       path: `artifacts/sentence-result-${width}.png`,
       fullPage: true,
     })
+    await page.clock.resume()
     await page.keyboard.press('Enter')
     await expect(area.locator('.current-paragraph')).toHaveAttribute(
       'data-text',
       sentencePracticePool('en-library', 'jis')[1].text,
     )
-    await expect(
-      page.getByRole('status', { name: '連続達成数' }),
-    ).toContainText('0 / 5 回')
+    await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
+      '0 / 5 回',
+    )
     await page.keyboard.type('I')
     await page.getByRole('button', { name: 'CPU対戦', exact: true }).click()
     await page.getByRole('button', { name: '一文練習', exact: true }).click()
@@ -441,11 +456,11 @@ test('Japanese one-sentence input, source selection, persisted goals, reset and 
     await area.locator('.current-paragraph [data-consumed=true]').count(),
   ).toBeGreaterThan(0)
   await page.keyboard.type(new RomanEngine(sentence.reading).hint.slice(20))
-  await expect(page.getByRole('status', { name: '連続達成数' })).toContainText(
+  await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
     'CHALLENGE CLEAR',
   )
   await consume.uncheck()
-  await expect(page.getByRole('status', { name: '連続達成数' })).toContainText(
+  await expect(page.getByRole('status', { name: '練習回数' })).toContainText(
     '1 / 1 回',
   )
   await expect(

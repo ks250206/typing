@@ -76,3 +76,20 @@ it('retains the best speed while counting every completed trial and separates la
     sentenceStatsKey('en-library', 'jis', englishSentence('hi.')),
   )
 })
+
+it('counts an interrupted trial without promoting its incomplete speed to a personal best', () => {
+  const previous = updateSentenceStats(undefined, attempt('complete', 1000))
+  const partial = updateSentenceStats(previous, attempt('partial', 100), false)
+  expect(partial.tries).toBe(2)
+  expect(partial.kpm).toBe(1800)
+  expect(partial.best).toBe(previous.best)
+  const allMisses = {
+    ...attempt('all-misses', 1000),
+    keys: 0,
+    actualKeys: 0,
+    misses: 1,
+    rawMisses: 3,
+  }
+  expect(sentenceChallengeResult([allMisses], 'early stop')!.accuracy).toBe(0)
+  expect(sentenceChallengeResult([allMisses], 'early stop')!.misses).toBe(3)
+})

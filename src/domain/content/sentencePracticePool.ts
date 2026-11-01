@@ -1,4 +1,4 @@
-import { englishPassages, englishSentence, isEnglish } from './english'
+import { englishPromptPool, isEnglish } from './english'
 import { practiceDocument } from './practiceDocument'
 import type { Sentence } from './sentences'
 import { isTypewell, typewellPromptPool } from './typewell'
@@ -6,17 +6,7 @@ import type { Layout } from '../typing/engine'
 
 /** Full dictionaries for word sets; authored long text is split at sentence boundaries. */
 export function sentencePracticePool(id: string, layout: Layout): Sentence[] {
-  if (isEnglish(id)) {
-    const passage = englishPassages.find((p) => p.id === id)!
-    const segmenter = new Intl.Segmenter('en', { granularity: 'sentence' })
-    return passage.paragraphs.flatMap((p) =>
-      passage.continuous
-        ? [...segmenter.segment(p.text)].map((part) =>
-            englishSentence(part.segment.trim()),
-          )
-        : [englishSentence(p.text)],
-    )
-  }
+  if (isEnglish(id)) return englishPromptPool(id)
   if (isTypewell(id)) return typewellPromptPool(id)
   const document = practiceDocument(id, 'sentence-practice-v1', layout, 2)
   const sentences: Sentence[] = document.sentences

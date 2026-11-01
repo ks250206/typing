@@ -22,10 +22,10 @@ export function useSentenceStats(onNotice: (message: string) => void) {
   }, [stats, onNotice])
   return {
     stats,
-    recordAttempt: (key: string, record: RecordEntry) =>
+    recordAttempt: (key: string, record: RecordEntry, completed = true) =>
       setStats((rows) => ({
         ...rows,
-        [key]: updateSentenceStats(rows[key], record),
+        [key]: updateSentenceStats(rows[key], record, completed),
       })),
   }
 }

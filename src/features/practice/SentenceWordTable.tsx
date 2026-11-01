@@ -69,7 +69,7 @@ export function SentenceWordTable({
                 <tr key={index} data-selected={selected === index || undefined}>
                   <td data-label="#">{index + 1}</td>
                   <td data-label="Best KPM">
-                    {row ? row.best.toFixed(1) : '—'}
+                    {row && row.best > 0 ? row.best.toFixed(1) : '—'}
                   </td>
                   <td data-label="KPM">{row ? row.kpm.toFixed(1) : '—'}</td>
                   <td data-label="秒">

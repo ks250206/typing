@@ -150,3 +150,23 @@ it('keeps ghost races separate from ordinary practice and groups only the same s
     recordGroup({ ...ghost, ghostSourceId: 'other' }),
   )
 })
+
+it('separates CPU TypeWell counts while grouping missing v2 counts with five and legacy v1 with one', () => {
+  const entry: RecordEntry = {
+    ...row(1),
+    mode: 'cpu',
+    cpuConfig: { kpm: 385, reactionMs: 205, curve: 'ease-in' },
+  }
+  expect(recordGroup(entry)).toBe(
+    recordGroup({ ...entry, cpuWordsPerPrompt: 5 }),
+  )
+  expect(recordGroup(entry)).not.toBe(
+    recordGroup({ ...entry, cpuWordsPerPrompt: 3 }),
+  )
+  expect(recordGroup({ ...entry, replayVersion: 1 })).toBe(
+    recordGroup({ ...entry, replayVersion: 1, cpuWordsPerPrompt: 1 }),
+  )
+  expect(
+    recordGroup({ ...entry, passageId: 'cpu-rtc', cpuWordsPerPrompt: 3 }),
+  ).toBe(recordGroup({ ...entry, passageId: 'cpu-rtc', cpuWordsPerPrompt: 5 }))
+})

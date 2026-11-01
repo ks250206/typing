@@ -26,9 +26,9 @@ export function SentenceAttempt({
   onNotice,
   onStatus,
   onDone,
+  onMiss,
   onRestart,
   onContinue,
-  cleared,
   active,
 }: {
   sentence: Sentence
@@ -42,9 +42,9 @@ export function SentenceAttempt({
   onNotice: (message: string) => void
   onStatus: (status: PracticeStatus) => void
   onDone: (record: RecordEntry) => boolean
+  onMiss: (record: RecordEntry, totalMisses: number) => boolean
   onRestart: () => void
   onContinue: () => void
-  cleared: boolean
   active: boolean
 }) {
   const document = useMemo(
@@ -65,7 +65,12 @@ export function SentenceAttempt({
     discardRecord,
     onNotice,
     document,
-    { startOnFirstKey: true, onTrialComplete: onDone },
+    {
+      startOnFirstKey: true,
+      onTrialComplete: onDone,
+      onMiss,
+      countEveryMiss: true,
+    },
   )
   const { area, pause, focus } = session
   useEffect(() => {
@@ -208,7 +213,7 @@ export function SentenceAttempt({
         </button>
         {session.status === 'done' && (
           <button className="primary-button" onClick={onContinue}>
-            {cleared ? '次の文へ' : '同じ文を続ける'} <kbd>Enter</kbd>
+            次の文へ <kbd>Enter</kbd>
           </button>
         )}
       </div>

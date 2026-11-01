@@ -1,3 +1,5 @@
+import { seededBattlePrompts } from '../content/battleSets'
+import { englishSentence } from '../content/english'
 import { expect, it } from 'vitest'
 import {
   migrateCpuPreset,
@@ -185,3 +187,47 @@ it('migrates exact legacy presets, preserves custom values and leaves new profil
   expect(migrateCpuPreset(custom)).toBe(custom)
   for (const p of cpuPresets) expect(migrateCpuPreset(p)).toEqual(p)
 })
+
+it('runs literal English with case, punctuation and spaces and falls back from kana', () => {
+  const sentence = englishSentence('A small light waits by the window.')
+  const match = new RtcMatch([sentence], 'kana', {
+    kpm: 35,
+    reactionMs: 1500,
+    curve: 'constant',
+  })
+  expect(match.layout).toBe('jis')
+  expect(match.cpuLength).toBe(sentence.text.length)
+  match.advance(3000)
+  expect(match.feed('a', 3001)).toBe(false)
+  expect(match.misses.raw).toBe(1)
+  for (const [index, key] of [...sentence.text].entries())
+    expect(match.feed(key, 3010 + index)).toBe(true)
+  expect(match.roundPlayer).toBe(1)
+  expect(match.typed).toBe(sentence.text)
+  expect(match.keys).toBe(sentence.text.length)
+  expect(match.trace.finish(match.totalElapsed).prompts[0].language).toBe('en')
+})
+
+it.each(['jis', 'kana'] as const)(
+  'types every separator in a five-entry TypeWell CPU prompt with %s',
+  (layout) => {
+    const sentence = seededBattlePrompts(
+      'typewell-basic',
+      'five-typewell',
+      2,
+    )[0]
+    const match = new RtcMatch([sentence], layout, {
+      kpm: 35,
+      reactionMs: 1500,
+      curve: 'constant',
+    })
+    match.advance(3000)
+    const plan = layout === 'kana' ? match.engine.target : match.engine.hint
+    expect(plan.split(' ')).toHaveLength(5)
+    expect(match.cpuLength).toBe(plan.length)
+    for (const [index, key] of [...plan].entries())
+      expect(match.feed(key, 3001 + index)).toBe(true)
+    expect(match.roundPlayer).toBe(1)
+    expect(match.keys).toBe(plan.length)
+  },
+)

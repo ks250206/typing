@@ -1,3 +1,7 @@
+import {
+  isTypewellBattle,
+  normalizeCpuWordsPerPrompt,
+} from '../../domain/battle/cpuPromptSettings'
 import { useEffect, useState } from 'react'
 import { GripVertical, Keyboard, Star, Target, X } from 'lucide-react'
 import { practicePassages } from '../../domain/content/practiceDocument'
@@ -83,7 +87,7 @@ export function FavoritesSidebar({
               const description = `${favorite.kind === 'cpu' ? 'CPU対戦' : '通常練習'} · ${title} · ${layoutLabels[favorite.layout]}`
               const detail =
                 favorite.kind === 'cpu'
-                  ? `${favorite.cpuConfig.kpm} KPM · ${favorite.cpuConfig.reactionMs} ms · ${favorite.cpuConfig.curve === 'constant' ? '一定速度' : 'イーズイン'}`
+                  ? `${favorite.cpuConfig.kpm} KPM · ${favorite.cpuConfig.reactionMs} ms · ${favorite.cpuConfig.curve === 'constant' ? '一定速度' : 'イーズイン'}${isTypewellBattle(favorite.passageId) ? ` · ${normalizeCpuWordsPerPrompt(favorite.wordsPerPrompt)}語/問` : ''}`
                   : ''
               const label = `${description}${detail ? ` · ${detail}` : ''}`
               return (

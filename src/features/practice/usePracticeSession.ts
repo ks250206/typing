@@ -48,6 +48,8 @@ export function usePracticeSession(
   options?: {
     startOnFirstKey: boolean
     onTrialComplete?: (record: RecordEntry) => boolean
+    onMiss?: (record: RecordEntry, totalMisses: number) => boolean
+    countEveryMiss?: boolean
   },
 ) {
   const trial = useRef({
@@ -180,6 +182,12 @@ export function usePracticeSession(
     setSentenceIndex(initialIndex)
     liveKeys.current = 0
     trace.current = new TypingTrace()
+    trial.current = {
+      trace: new TypingTrace(),
+      misses: new MissEpisodes(),
+      keys: 0,
+      started: 0,
+    }
     recorded.current = false
     setStatus('ready')
     setFinishedResult(null)
@@ -266,6 +274,7 @@ export function usePracticeSession(
       replayVersion,
       missEpisodes: missEpisodes.current,
       trace: trace.current.finish(duration),
+      countEveryMiss: options?.countEveryMiss,
       // oxlint-disable-next-line react/purity
       date: new Date().toISOString(),
     })
@@ -278,6 +287,31 @@ export function usePracticeSession(
     finishTimer.current = (duration) =>
       finishSession(liveKeys.current, duration)
   })
+  const trialResult = (keyTime: number) => {
+    const duration = keyTime - trial.current.started
+    const result = practiceResult({
+      id: crypto.randomUUID(),
+      passage,
+      layout: settings.layout,
+      duration,
+      durationMs: 0,
+      nextKeys: trial.current.keys,
+      typewell: false,
+      trainer: false,
+      etyping: false,
+      rtc: false,
+      articles: false,
+      limit,
+      seed,
+      replayVersion,
+      missEpisodes: trial.current.misses,
+      trace: trial.current.trace.finish(duration),
+      countEveryMiss: options?.countEveryMiss,
+      date: new Date().toISOString(),
+    })
+    result.mode = 'weak'
+    return result
+  }
   const accept = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return
     if (e.key === 'Escape') {
@@ -338,7 +372,7 @@ export function usePracticeSession(
         : engine.current.hint[0]) ?? ''
     const accepted = engine.current.feed(key)
     trace.current.add(key, expected, position, accepted, keyTime)
-    if (options?.onTrialComplete) {
+    if (options?.onTrialComplete || options?.onMiss) {
       trial.current.trace.add(
         key,
         expected,
@@ -359,6 +393,8 @@ export function usePracticeSession(
       setMistake(true)
       clearTimeout(missTimer.current)
       missTimer.current = setTimeout(() => setMistake(false), 520)
+      if (options?.onMiss?.(trialResult(keyTime), missEpisodes.current.raw))
+        finishSession(liveKeys.current, keyTime)
       return
     }
     missEpisodes.current.accept()
@@ -377,27 +413,7 @@ export function usePracticeSession(
     })
     if (engine.current.done) {
       if (options?.onTrialComplete) {
-        const duration = keyTime - trial.current.started
-        const result = practiceResult({
-          id: crypto.randomUUID(),
-          passage,
-          layout: settings.layout,
-          duration,
-          durationMs: 0,
-          nextKeys: trial.current.keys,
-          typewell: false,
-          trainer: false,
-          etyping: false,
-          rtc: false,
-          articles: false,
-          limit,
-          seed,
-          replayVersion,
-          missEpisodes: trial.current.misses,
-          trace: trial.current.trace.finish(duration),
-          date: new Date().toISOString(),
-        })
-        result.mode = 'weak'
+        const result = trialResult(keyTime)
         if (options.onTrialComplete(result)) finishSession(nextKeys, keyTime)
         else {
           engine.current = sentenceEngine(
@@ -480,8 +496,11 @@ export function usePracticeSession(
           )
         : 0,
     accuracy =
-      keys + (durationMs ? rawMisses : misses)
-        ? (keys / (keys + (durationMs ? rawMisses : misses))) * 100
+      keys + (durationMs || options?.countEveryMiss ? rawMisses : misses)
+        ? (keys /
+            (keys +
+              (durationMs || options?.countEveryMiss ? rawMisses : misses))) *
+          100
         : 100
   return {
     weak: !!customDocument,
@@ -509,7 +528,7 @@ export function usePracticeSession(
     sentenceIndex,
     elapsed,
     keys,
-    misses,
+    misses: options?.countEveryMiss ? rawMisses : misses,
     rawMisses,
     snapshot,
     mistake,

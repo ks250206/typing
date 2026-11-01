@@ -38,7 +38,6 @@ import {
 } from '../../infrastructure/persistence/sentencePractice'
 import { useSentencePracticeSettings } from './useSentencePracticeSettings'
 
-type Attempt = ReturnType<typeof judgeSentence> & { id: string; misses: number }
 export default function SentencePractice({
   settings,
   setSettings,
@@ -61,7 +60,7 @@ export default function SentencePractice({
     () => sentencePracticePool(config.passageId, layout),
     [config.passageId, layout],
   )
-  const streakRef = useRef(0)
+  const recordsRef = useRef<RecordEntry[]>([])
   const [sidebarHost, setSidebarHost] = useState<HTMLDivElement | null>(null)
   const [previousSentence, setPreviousSentence] = useState<
     (typeof pool)[number] | null
@@ -71,26 +70,49 @@ export default function SentencePractice({
   const [index, setIndex] = useState(0)
   const [revision, setRevision] = useState(0)
   const [autoFocus, setAutoFocus] = useState(false)
-  const [streak, setStreak] = useState(0)
-  const [attempts, setAttempts] = useState<Attempt[]>([])
+  const [partial, setPartial] = useState<RecordEntry | null>(null)
   const [records, setRecords] = useState<RecordEntry[]>([])
   const [status, setStatus] = useState<PracticeStatus>('ready')
   const current = pool[index % pool.length]
-  const cleared = streak >= config.repetitions
+  const finished = records.length >= config.repetitions || partial !== null
   const active =
     status === 'running' || status === 'paused' || status === 'countdown'
   const summary = useMemo(
-    () => sentenceChallengeResult(records, `一文練習 · ${passage.title}`),
-    [records, passage.title],
+    () =>
+      sentenceChallengeResult(
+        partial ? [...records, partial] : records,
+        `一文練習 · ${passage.title}`,
+      ),
+    [records, partial, passage.title],
   )
+  const judgement = summary
+    ? judgeSentence(config, records.length, {
+        keys: summary.actualKeys ?? summary.keys,
+        elapsed: summary.elapsed,
+        rawMisses: summary.rawMisses ?? summary.misses,
+      })
+    : null
+  const cleared = judgement?.outcome === 'passed'
+  const allAttempts = partial ? [...records, partial] : records
+  const attempts = allAttempts.slice(-10)
+  const outcomeMessage = !finished
+    ? '判定前の途中経過'
+    : cleared
+      ? '目標達成'
+      : [
+          judgement?.speedPassed === false && '目標KPM未達成',
+          !judgement?.accuracyPassed && '合計ミス上限を超過',
+        ]
+          .filter(Boolean)
+          .join('・')
+
   const handleStageChange = useCallback((next: number) => {
     setAutoFocus(next === 2)
     setStage(next)
   }, [])
   const resetProgress = (focus = false) => {
-    streakRef.current = 0
-    setStreak(0)
-    setAttempts([])
+    recordsRef.current = []
+    setPartial(null)
     setRecords([])
     setAutoFocus(focus)
     setRevision((value) => value + 1)
@@ -116,34 +138,32 @@ export default function SentencePractice({
     setStage(2)
   }
   const continueAttempt = () => {
-    if (cleared) changeSentence(index + 1)
-    else {
-      setAutoFocus(true)
-      setRevision((value) => value + 1)
-      setStage(2)
-    }
+    if (finished) changeSentence(index + 1)
+    else handleStageChange(2)
+  }
+  const finishChallenge = () => {
+    setStage(3)
+    setAutoFocus(false)
   }
   const onAttempt = (record: RecordEntry) => {
-    const result = judgeSentence(config, streakRef.current, {
-      keys: record.actualKeys ?? record.keys,
-      elapsed: record.elapsed,
-      rawMisses: record.rawMisses ?? record.misses,
-    })
-    streakRef.current = result.streak
-    setStreak(result.streak)
-    setAttempts((rows) =>
-      [
-        ...rows,
-        { ...result, id: record.id, misses: record.rawMisses ?? record.misses },
-      ].slice(-10),
-    )
-    setRecords((rows) => [...rows, record])
+    const next = [...recordsRef.current, record]
+    recordsRef.current = next
+    setRecords(next)
     recordAttempt(sentenceStatsKey(config.passageId, layout, current), record)
-    if (result.cleared) {
-      setStage(3)
-      setAutoFocus(false)
-    }
-    return result.cleared
+    if (next.length < config.repetitions) return false
+    finishChallenge()
+    return true
+  }
+  const onMiss = (record: RecordEntry, totalMisses: number) => {
+    if (totalMisses <= config.maxMisses) return false
+    setPartial(record)
+    recordAttempt(
+      sentenceStatsKey(config.passageId, layout, current),
+      record,
+      false,
+    )
+    finishChallenge()
+    return true
   }
   const preview = useMemo(
     () => ({
@@ -177,20 +197,27 @@ export default function SentencePractice({
     }
   })
   const progress = (
-    <div className="sentence-streak" role="status" aria-label="連続達成数">
+    <div
+      className="sentence-streak"
+      data-outcome={judgement?.outcome ?? 'pending'}
+      role="status"
+      aria-label="練習回数"
+    >
       <span>
-        {cleared
-          ? 'CHALLENGE CLEAR'
-          : `${config.targetKpm} KPM以上 · ミス ${config.maxMisses} 以下`}
+        {finished
+          ? cleared
+            ? 'CHALLENGE CLEAR · 達成'
+            : 'CHALLENGE FAILED · 未達成'
+          : `${config.targetKpm} KPM以上 · 合計ミス ${config.maxMisses} 以下`}
       </span>
       <strong>
-        {streak}
+        {records.length}
         <small> / {config.repetitions} 回</small>
       </strong>
       <progress
-        value={streak}
+        value={records.length}
         max={config.repetitions}
-        aria-label="連続達成の進捗"
+        aria-label="練習回数の進捗"
       />
     </div>
   )
@@ -274,9 +301,9 @@ export default function SentencePractice({
                 onNotice={onNotice}
                 onStatus={setStatus}
                 onDone={onAttempt}
+                onMiss={onMiss}
                 onRestart={restart}
                 onContinue={continueAttempt}
-                cleared={cleared}
               />
             </div>,
             stage === 3 && summary ? (
@@ -284,15 +311,22 @@ export default function SentencePractice({
                 {progress}
                 <SessionResult
                   record={summary}
-                  heading={cleared ? 'CHALLENGE CLEAR' : 'ATTEMPT REPORT'}
-                  message={`${records.length}試行 · ${streak} / ${config.repetitions}回連続達成 · 待機・中断時間を除いて集計`}
+                  variant={finished ? (cleared ? 'win' : 'loss') : 'neutral'}
+                  heading={
+                    finished
+                      ? cleared
+                        ? 'CHALLENGE CLEAR'
+                        : 'CHALLENGE FAILED'
+                      : 'INTERIM REPORT'
+                  }
+                  message={`${records.length} / ${config.repetitions}回完了${partial ? ' · 入力途中で終了' : ''} · ${outcomeMessage} · 中断時間を除いて集計`}
                   actions={
                     <>
                       <button className="primary-button" onClick={restart}>
                         もう一度
                       </button>
                       <button onClick={continueAttempt}>
-                        {cleared ? '次の文へ' : '同じ文を続ける'}
+                        {finished ? '次の文へ' : '練習に戻る'}
                       </button>
                       <button onClick={() => handleStageChange(0)}>
                         文章を選び直す
@@ -320,23 +354,18 @@ export default function SentencePractice({
           <details className="sentence-attempts" aria-label="今回の試行結果">
             <summary>
               今回の試行結果 · 直近{attempts.length}回 ·{' '}
-              {attempts.at(-1)!.passed ? '達成' : 'もう一度'} ·{' '}
               {attempts.at(-1)!.kpm.toFixed(1)} KPM · ミス{' '}
-              {attempts.at(-1)!.misses}
+              {attempts.at(-1)!.rawMisses ?? attempts.at(-1)!.misses}
             </summary>
             <ol>
-              {attempts.map((attempt) => (
-                <li key={attempt.id} data-passed={attempt.passed}>
-                  <strong>{attempt.passed ? '達成' : 'もう一度'}</strong>
+              {attempts.map((attempt, offset) => (
+                <li key={attempt.id}>
+                  <strong>
+                    {allAttempts.length - attempts.length + offset + 1}回目
+                    {attempt.id === partial?.id ? '（途中終了）' : ''}
+                  </strong>
                   <span>{attempt.kpm.toFixed(1)} KPM</span>
-                  <span>ミス {attempt.misses}</span>
-                  <span>
-                    {attempt.passed
-                      ? `${attempt.streak}回連続`
-                      : !attempt.speedPassed
-                        ? '目標KPMを未達成'
-                        : 'ミス上限を超過'}
-                  </span>
+                  <span>ミス {attempt.rawMisses ?? attempt.misses}</span>
                 </li>
               ))}
             </ol>

@@ -1,9 +1,19 @@
+import {
+  isTypewellBattle,
+  normalizeCpuWordsPerPrompt,
+} from '../battle/cpuPromptSettings'
 import type { CpuConfig } from '../battle/cpuMatch'
 import type { Layout } from '../typing/engine'
 
 export type Favorite =
   | { kind: 'practice'; passageId: string; layout: Layout }
-  | { kind: 'cpu'; passageId: string; layout: Layout; cpuConfig: CpuConfig }
+  | {
+      kind: 'cpu'
+      passageId: string
+      layout: Layout
+      cpuConfig: CpuConfig
+      wordsPerPrompt?: number
+    }
 
 /** Seeds deliberately do not participate: favorites always draw a fresh game. */
 export const favoriteKey = (favorite: Favorite) =>
@@ -16,6 +26,9 @@ export const favoriteKey = (favorite: Favorite) =>
           favorite.cpuConfig.kpm,
           favorite.cpuConfig.reactionMs,
           favorite.cpuConfig.curve,
+          ...(isTypewellBattle(favorite.passageId)
+            ? [normalizeCpuWordsPerPrompt(favorite.wordsPerPrompt)]
+            : []),
         ]
       : []),
   ])

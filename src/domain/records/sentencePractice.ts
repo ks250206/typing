@@ -22,11 +22,12 @@ export const sentenceStatsKey = (
 export function updateSentenceStats(
   previous: SentenceWordStats | undefined,
   record: RecordEntry,
+  completed = true,
 ): SentenceWordStats {
   const keys = record.actualKeys ?? record.keys
   const kpm = (keys * 60000) / Math.max(1, record.elapsed)
   return {
-    best: Math.max(previous?.best ?? 0, kpm),
+    best: Math.max(previous?.best ?? 0, completed ? kpm : 0),
     kpm,
     elapsed: record.elapsed,
     tries: (previous?.tries ?? 0) + 1,
@@ -44,7 +45,6 @@ export function sentenceChallengeResult(
   const last = records.at(-1)!
   let elapsed = 0,
     keys = 0,
-    misses = 0,
     rawMisses = 0,
     penalty = 0
   const trace: SessionTrace = {
@@ -73,7 +73,6 @@ export function sentenceChallengeResult(
     }
     elapsed += record.elapsed
     keys += record.actualKeys ?? record.keys
-    misses += record.misses
     rawMisses += record.rawMisses ?? record.misses
     penalty += record.missPenalty ?? record.misses
   }
@@ -88,11 +87,11 @@ export function sentenceChallengeResult(
     elapsed,
     keys,
     actualKeys: keys,
-    misses,
+    misses: rawMisses,
     rawMisses,
     missPenalty: penalty,
     kpm: Math.round((keys * 60000) / Math.max(1, elapsed)),
-    accuracy: keys ? (keys * 100) / (keys + rawMisses) : 100,
+    accuracy: keys + rawMisses ? (keys * 100) / (keys + rawMisses) : 100,
     point,
     rank: typingTitle(point, keys, rawMisses),
     scoreVersion: 3,

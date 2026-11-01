@@ -1,3 +1,4 @@
+import { normalizeCpuWordsPerPrompt } from '../../domain/battle/cpuPromptSettings'
 import { validDisplayScale } from '../../domain/records/displayScale'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import { archiveBests } from '../../domain/records/recordStats'
@@ -75,6 +76,12 @@ function readRecords(key: string, limit: number): RecordEntry[] {
               record.cpuConfig.reactionMs <= 1500 &&
               ['constant', 'ease-in'].includes(record.cpuConfig.curve)
                 ? record.cpuConfig
+                : undefined,
+            cpuWordsPerPrompt:
+              typeof record.cpuWordsPerPrompt === 'number' &&
+              normalizeCpuWordsPerPrompt(record.cpuWordsPerPrompt) ===
+                record.cpuWordsPerPrompt
+                ? record.cpuWordsPerPrompt
                 : undefined,
             replayVersion:
               record.replayVersion === 2
