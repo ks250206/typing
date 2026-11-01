@@ -17,4 +17,4 @@
 
 再生成: `python3 scripts/rebuild-data.py`。変更せずに照合: `python3 scripts/rebuild-data.py --check`。どちらもPython 3標準ライブラリだけで動き、ネット接続は不要です。RTCの全ZIPがそろっていない場合は登録済みの `rtc.json` を維持し、原本照合をスキップした旨を表示します。RTCも必ず原本から生成・照合するには `--require-rtc-sources` を追加してください。
 
-詳細な出典・オンラインでの再取得手順・出題バージョンの扱いはルートのREADMEを参照してください。
+文章セットごとの出典は [docs/CONTENT.md](../../docs/CONTENT.md)、再生成の手順と出題バージョンの扱いは [docs/DEVELOPMENT.md](../../docs/DEVELOPMENT.md#問題データ) を参照してください。

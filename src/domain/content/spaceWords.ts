@@ -1,6 +1,6 @@
 import catalogue from '../../data/generated/spaceCatalogue.json' with { type: 'json' }
 
-/** Independent GALACTYPE corpus. Names checked against the references in README. */
+/** Independent GALACTYPE corpus. Names checked against the references in docs/CONTENT.md. */
 const originalGroups = {
   恒星: [
     ['アークトゥルス', 'あーくとぅるす'],
