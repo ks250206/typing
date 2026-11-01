@@ -160,10 +160,12 @@ test('a legacy log yields reusable words; repetition shows statistics and toolti
   await expect(page.getByLabel('のを練習', { exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: '選択を解除', exact: true }).click()
   await page.getByLabel('銀河を練習', { exact: true }).check()
-  await page.getByLabel('繰り返し回数', { exact: true }).fill('3.5')
-  await expect(page.getByLabel('繰り返し回数', { exact: true })).toHaveValue(
-    '3',
-  )
+  const repetitions = page.getByLabel('繰り返し回数', { exact: true })
+  await repetitions.fill('3.5')
+  // The draft stays editable while focused and is truncated when editing ends.
+  await expect(repetitions).toHaveValue('3.5')
+  await repetitions.blur()
+  await expect(repetitions).toHaveValue('3')
   await page.getByRole('button', { name: '1語で反復練習', exact: true }).click()
   const area = page.getByRole('region', { name: /タイピング入力領域/ })
   await expect(area).toBeFocused()

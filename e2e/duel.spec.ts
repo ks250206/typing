@@ -337,3 +337,28 @@ test('duel roman rows use the same glyph columns, word gaps and shared scrolling
   await aligned()
   await expect(page.getByLabel('入力の先行状況')).toHaveText('同じ位置')
 })
+
+test('CPU number fields accept values typed one digit at a time and clamp only when editing ends', async ({
+  page,
+}) => {
+  await enter(page)
+  const kpm = page.getByLabel('CPU速度 (KPM)', { exact: true })
+  const reaction = page.getByLabel('CPU反応時間 (ms)', { exact: true })
+  await kpm.selectText()
+  await kpm.press('Backspace')
+  await expect(kpm).toHaveValue('')
+  await kpm.pressSequentially('400')
+  await expect(kpm).toHaveValue('400')
+  await reaction.selectText()
+  await reaction.pressSequentially('5')
+  await expect(reaction).toHaveValue('5')
+  await reaction.press('Tab')
+  await expect(reaction).toHaveValue('100')
+  await kpm.selectText()
+  await kpm.press('Backspace')
+  await kpm.blur()
+  await expect(kpm).toHaveValue('400')
+  await expect(
+    page.getByText('400 KPM · 100ms', { exact: false }),
+  ).toBeVisible()
+})

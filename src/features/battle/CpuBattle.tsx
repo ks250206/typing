@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { BattleSidebar } from './BattleSidebar'
 import { CpuResults } from './CpuResults'
+import { NumberInput } from '../../shared/ui/NumberInput'
 import { Select } from '../../shared/ui/Select'
 import {
   mapKey,
@@ -452,40 +453,24 @@ export function CpuBattle({
               </label>
               <label>
                 CPU速度 (KPM)
-                <input
+                <NumberInput
                   aria-label="CPU速度 (KPM)"
-                  type="number"
                   min={35}
                   max={1800}
                   value={config.kpm}
-                  onChange={(e) =>
-                    setConfig((c) => ({
-                      ...c,
-                      kpm: Math.min(
-                        1800,
-                        Math.max(35, Number(e.target.value) || 35),
-                      ),
-                    }))
-                  }
+                  onChange={(kpm) => setConfig((c) => ({ ...c, kpm }))}
                 />
               </label>
               <label>
                 反応時間 (ms)
-                <input
+                <NumberInput
                   aria-label="CPU反応時間 (ms)"
-                  type="number"
                   min={100}
                   max={1500}
                   step={1}
                   value={config.reactionMs}
-                  onChange={(e) =>
-                    setConfig((c) => ({
-                      ...c,
-                      reactionMs: Math.min(
-                        1500,
-                        Math.max(100, Number(e.target.value) || 100),
-                      ),
-                    }))
+                  onChange={(reactionMs) =>
+                    setConfig((c) => ({ ...c, reactionMs }))
                   }
                 />
               </label>
