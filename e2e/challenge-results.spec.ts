@@ -5,7 +5,7 @@ import { RomanEngine } from '../src/domain/typing/engine'
 import { startPractice } from './startPractice'
 
 for (const width of [1440, 390]) {
-  test(`normal progress is prominent and extends towards restart at ${width}px`, async ({
+  test(`normal perimeter progress follows the main frame at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 })
@@ -31,13 +31,11 @@ for (const width of [1440, 390]) {
       ).hint.slice(0, 16),
     )
     const box = await bar.boundingBox()
-    const restart = await page
-      .getByRole('button', { name: 'やり直す', exact: true })
-      .boundingBox()
-    expect(box!.height).toBeGreaterThanOrEqual(7)
-    expect(box!.width).toBeGreaterThan(width > 800 ? 400 : 70)
-    expect(restart!.x - (box!.x + box!.width)).toBeGreaterThan(0)
-    expect(restart!.x - (box!.x + box!.width)).toBeLessThan(80)
+    const main = await page.locator('.practice-main-perimeter').boundingBox()
+    expect(Math.abs(box!.width - main!.width)).toBeLessThan(3)
+    expect(Math.abs(box!.height - main!.height)).toBeLessThan(3)
+    await expect(bar.locator('.perimeter-progress-line')).toHaveCount(4)
+    await expect(page.locator('.progress-track')).toHaveCount(0)
     expect(Number(await bar.getAttribute('aria-valuenow'))).toBeGreaterThan(0)
     await page.screenshot({
       path: `artifacts/normal-progress-${width}.png`,

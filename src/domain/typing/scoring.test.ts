@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { animalRank, MissEpisodes, scorePoint } from './scoring'
+import { animalRank, MissEpisodes, scorePoint, rawAccuracy } from './scoring'
 it('uses unrounded speed and accuracy, with no point ceiling', () => {
   expect(scorePoint(300, 0, 60000)).toBe(300)
   expect(scorePoint(300, 100, 60000)).toBe(168)
@@ -77,4 +77,16 @@ it('uses all nine miss prefixes at inclusive boundaries, with unrounded zero sep
   expect(typingTitle(0, 0, 0)).toBe('カメ')
   expect(typingTitle(0, 0, 1)).toBe('混沌のカメ')
   expect(typingTitle(1000, 9999999, 1)).toBe('至高のチーター')
+})
+
+it('counts every raw miss in public accuracy while retaining weighted point penalties', () => {
+  const misses = new MissEpisodes()
+  for (let i = 0; i < 3; i++) misses.miss()
+  expect(misses.misses).toBe(1)
+  expect(misses.raw).toBe(3)
+  expect(misses.penalty).toBe(2.25)
+  expect(rawAccuracy(5, misses.raw)).toBe(62.5)
+  expect(scorePoint(5, misses.penalty, 1000)).toBe(142)
+  expect(rawAccuracy(0, 0)).toBe(100)
+  expect(rawAccuracy(0, 3)).toBe(0)
 })

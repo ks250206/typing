@@ -22,6 +22,7 @@ import { isSeededEnglish } from '../../domain/content/english'
 import {
   recordMissLabel,
   recordPoint,
+  recordAccuracy,
   recordTitle,
 } from '../../domain/records/recordStats'
 import type { RecordEntry } from '../../domain/records/types'
@@ -301,7 +302,7 @@ export function HistoryPage({
                               </small>
                             </td>
                             <td className="record-kpm">{r.kpm}</td>
-                            <td>{r.accuracy}%</td>
+                            <td>{recordAccuracy(r)}%</td>
                             <td>{time(r.elapsed)}</td>
                           </tr>
                         ))}

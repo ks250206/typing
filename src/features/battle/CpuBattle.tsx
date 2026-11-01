@@ -36,7 +36,7 @@ import { SentenceView } from '../../shared/typing/SentenceView'
 import { KeyboardGuide } from '../../shared/typing/KeyboardGuide'
 import {
   typingTitle,
-  formatMissRate,
+  rawAccuracy,
   scorePoint,
 } from '../../domain/typing/scoring'
 import type { RecordEntry, Settings } from '../../domain/records/types'
@@ -184,7 +184,12 @@ export function CpuBattle({
       misses,
       rawMisses: value.totalRaw + value.misses.raw,
       kpm: Math.round((keys * 60000) / Math.max(1, value.totalElapsed)),
-      accuracy: Number((value.totalAccuracy * 100).toFixed(2)),
+      accuracy: Number(
+        rawAccuracy(
+          value.totalKeys + value.keys,
+          value.totalRaw + value.misses.raw,
+        ).toFixed(2),
+      ),
       point,
       rank: typingTitle(point, keys, value.totalRaw + value.misses.raw),
       scoreVersion: 3,
@@ -678,8 +683,9 @@ export function CpuBattle({
             </p>
             <div className="word-score">
               <span>
-                正確率 <b>{(match.accuracy * 100).toFixed(1)}%</b> · ミス{' '}
-                {match.misses.misses}（実打 {match.misses.raw}）
+                正確率{' '}
+                <b>{rawAccuracy(match.keys, match.misses.raw).toFixed(1)}%</b> ·
+                ミス {match.misses.misses}（実打 {match.misses.raw}）
               </span>
             </div>
             {phase === 'round-result' || phase === 'finished' ? (
@@ -765,8 +771,7 @@ export function CpuBattle({
               onMouseDown={(event) => event.preventDefault()}
             >
               <span>
-                {point} pt · {title} · 実ミス率{' '}
-                {formatMissRate(titleKeys, titleMisses)}
+                {point} pt · {title}
               </span>
               <button
                 className="battle-pause-button"
@@ -794,7 +799,6 @@ export function CpuBattle({
         misses={titleMisses}
         point={point}
         elapsed={match?.activeElapsed(clock.current.now) ?? 0}
-        accuracy={match?.totalAccuracy ?? 1}
         rounds={`${match?.roundsPlayer ?? 0} : ${match?.roundsCpu ?? 0}`}
         cpu={`${config.kpm} KPM · ${config.reactionMs}ms · ${config.curve === 'constant' ? '一定速度' : 'イーズイン'}`}
       />

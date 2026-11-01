@@ -213,16 +213,18 @@ export function PracticeInput({
         onMouseDown={(e) => e.preventDefault()}
       >
         <div>
-          <span
-            className="progress-track"
-            role="progressbar"
-            aria-label="練習の進捗"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.floor(progress)}
-          >
-            <span style={{ width: `${progress}%` }} />
-          </span>
+          {session.weak && (
+            <span
+              className="progress-track"
+              role="progressbar"
+              aria-label="練習の進捗"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.floor(progress)}
+            >
+              <span style={{ width: `${progress}%` }} />
+            </span>
+          )}
           <span>{Math.floor(progress)}%</span>
         </div>
         <div>

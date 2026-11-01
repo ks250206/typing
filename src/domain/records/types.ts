@@ -18,6 +18,7 @@ export interface RecordEntry {
   keys: number
   misses: number
   kpm: number
+  /** Public percentage: actual correct strokes / (actual correct strokes + raw misses). */
   accuracy: number
   point?: number
   rank?: string

@@ -156,7 +156,8 @@ test('live adjective uses raw misses and matches the saved record, detail and JS
   const next = (await page.locator('.roman-current').textContent())!
   await page.keyboard.type(next === 'z' ? 'qqq' : 'zzz')
   await expect(page.locator('.point-panel > span')).toContainText('混沌の')
-  await expect(page.locator('.point-panel')).toContainText('実ミス率 75%')
+  await expect(page.locator('.point-panel')).not.toContainText('実ミス率')
+  await expect(page.locator('.stat-grid')).toContainText('25.0%')
   await page.setViewportSize({ width: 390, height: 1000 })
   expect(
     await page.evaluate(

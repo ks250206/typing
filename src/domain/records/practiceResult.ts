@@ -1,6 +1,11 @@
 import type { Passage } from '../content/passages'
 import type { Layout } from '../typing/engine'
-import { MissEpisodes, scorePoint, typingTitle } from '../typing/scoring'
+import {
+  MissEpisodes,
+  scorePoint,
+  typingTitle,
+  rawAccuracy,
+} from '../typing/scoring'
 import type { SessionTrace } from './telemetry'
 import type { RecordEntry } from './types'
 
@@ -74,15 +79,6 @@ export function practiceResult({
     mode: durationMs ? 'trainer' : 'practice',
     trace,
     kpm: Math.round(scoredKeys / (Math.max(duration, 1) / 60000)),
-    accuracy: Number(
-      (
-        (nextKeys /
-          (nextKeys +
-            (durationMs || countEveryMiss
-              ? missEpisodes.raw
-              : missEpisodes.misses))) *
-        100
-      ).toFixed(2),
-    ),
+    accuracy: Number(rawAccuracy(nextKeys, missEpisodes.raw).toFixed(2)),
   }
 }

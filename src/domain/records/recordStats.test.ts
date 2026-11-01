@@ -2,6 +2,7 @@ import { expect, it } from 'vitest'
 import {
   archiveBests,
   recordGroup,
+  recordAccuracy,
   recordTrend,
   topRecords,
 } from './recordStats'
@@ -169,4 +170,22 @@ it('separates CPU TypeWell counts while grouping missing v2 counts with five and
   expect(
     recordGroup({ ...entry, passageId: 'cpu-rtc', cpuWordsPerPrompt: 3 }),
   ).toBe(recordGroup({ ...entry, passageId: 'cpu-rtc', cpuWordsPerPrompt: 5 }))
+})
+
+it('shows raw accuracy from actual strokes for new and old records without using score corrections', () => {
+  const current = {
+    ...row(1),
+    keys: 400,
+    actualKeys: 8,
+    rawMisses: 3,
+    misses: 1,
+    missPenalty: 2.25,
+    accuracy: 99.99,
+  }
+  expect(recordAccuracy(current)).toBe(72.73)
+  expect(recordAccuracy({ ...current, actualKeys: 0 })).toBe(0)
+  expect(
+    recordAccuracy({ ...row(1), keys: 5, misses: 2, accuracy: 99.99 }),
+  ).toBe(71.43)
+  expect(recordAccuracy({ ...row(1), keys: 0, misses: 0 })).toBe(100)
 })

@@ -13,6 +13,7 @@ import { PracticeSidebar } from './PracticeSidebar'
 import type { PracticeSession } from './usePracticeSession'
 import { useGameShortcuts } from '../../shared/typing/useGameShortcuts'
 import { FavoriteButton } from '../favorites/FavoriteButton'
+import { PerimeterProgress } from './PerimeterProgress'
 
 export function PracticePage({
   session,
@@ -77,7 +78,11 @@ export function PracticePage({
   return (
     <>
       <div className="practice-grid">
-        <div className="practice-main">
+        <div className="practice-main practice-main-perimeter">
+          <PerimeterProgress
+            progress={practiceStage >= 2 ? session.progress : 0}
+            animate={status === 'running'}
+          />
           <PageHeading
             eyebrow="SOLO PRACTICE"
             title="通常練習"

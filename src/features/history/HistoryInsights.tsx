@@ -6,6 +6,7 @@ import {
   recordTrend,
   modeOf,
   recordPoint,
+  recordAccuracy,
   recordTitle,
   recordMissLabel,
 } from '../../domain/records/recordStats'
@@ -263,7 +264,7 @@ export function HistoryInsights({
                 </span>
                 <span>{new Date(r.date).toLocaleString('ja-JP')}</span>
                 <small>
-                  {r.accuracy}% · {ms(r.elapsed)} · {recordMissLabel(r)}
+                  {recordAccuracy(r)}% · {ms(r.elapsed)} · {recordMissLabel(r)}
                   {r.seed ? ` · ${r.seed}` : ''}
                 </small>
                 <small>

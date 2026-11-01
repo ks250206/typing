@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import type { RecordEntry } from '../../domain/records/types'
-import { recordPoint } from '../../domain/records/recordStats'
+import { recordPoint, recordAccuracy } from '../../domain/records/recordStats'
 import { insightPace } from '../../domain/records/insightMetrics'
 import { Pagination } from '../../shared/ui/Pagination'
 import { usePagination } from '../../shared/ui/usePagination'
@@ -79,7 +79,7 @@ export function PassageRecords({
                   <td>{r.kpm}</td>
                   <td>{speed(moving?.max)}</td>
                   <td>{speed(moving?.min)}</td>
-                  <td>{r.accuracy}%</td>
+                  <td>{recordAccuracy(r)}%</td>
                 </tr>
               )
             })}

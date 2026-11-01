@@ -33,7 +33,7 @@ export function animalRank(point: number) {
     animalRanks.findLast(([threshold]) => point >= threshold)?.[1] ?? 'カメ'
   )
 }
-/** Keep episode/raw counts for accuracy; pt uses a diminishing, nonzero streak penalty. */
+/** Keep episode/raw counters separately; pt uses a diminishing, nonzero streak penalty. */
 export class MissEpisodes {
   misses = 0
   raw = 0
@@ -71,6 +71,10 @@ export const missPrefixes = [
 ] as const
 export function rawMissRate(keys: number, misses: number) {
   return keys + misses > 0 ? (misses / (keys + misses)) * 100 : 0
+}
+/** Public accuracy counts every physical miss; streak weighting belongs to pt only. */
+export function rawAccuracy(keys: number, misses: number) {
+  return keys + misses > 0 ? (keys / (keys + misses)) * 100 : 100
 }
 export function typingTitle(point: number, keys: number, misses: number) {
   const total = keys + misses

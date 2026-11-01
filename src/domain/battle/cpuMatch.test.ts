@@ -231,3 +231,31 @@ it.each(['jis', 'kana'] as const)(
     expect(match.keys).toBe(plan.length)
   },
 )
+
+it('uses every raw miss for the 95% reversal and cumulative accuracy, retaining weighted pt penalties', () => {
+  const match = new RtcMatch([englishSentence('a'.repeat(30))], 'jis', config)
+  let now = match.deadline
+  match.advance(now)
+  for (let word = 0; word < 10; word++) {
+    if (word > 0) {
+      now = match.deadline
+      match.advance(now)
+    }
+    for (let miss = 0; miss < 3; miss++) match.feed('z', ++now)
+    for (let key = 0; key < 30; key++) match.feed('a', ++now)
+  }
+  expect(match.keys).toBe(300)
+  expect(match.misses.misses).toBe(10)
+  expect(match.misses.raw).toBe(30)
+  expect(match.misses.penalty).toBe(22.5)
+  expect(match.accuracy).toBeCloseTo(300 / 330)
+  expect(match.lastRound).toBe('cpu')
+  expect(match.accuracyReversal).toBe(true)
+  expect(match.roundResults[0].accuracy).toBeCloseTo(300 / 330)
+  match.nextRound(now)
+  expect(match.totalAccuracy).toBeCloseTo(300 / 330)
+  now = match.deadline
+  match.advance(now)
+  match.feed('a', ++now)
+  expect(match.totalAccuracy).toBeCloseTo(301 / 331)
+})

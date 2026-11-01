@@ -2,7 +2,12 @@ import type { RecordEntry } from '../records/types'
 import type { SessionTrace } from '../records/telemetry'
 import { TypingTrace } from '../records/telemetry'
 import { ReplayTimeline, remaining, replayEngine } from '../records/replay'
-import { MissEpisodes, scorePoint, typingTitle } from '../typing/scoring'
+import {
+  MissEpisodes,
+  scorePoint,
+  typingTitle,
+  rawAccuracy,
+} from '../typing/scoring'
 
 /** Race to the actual recorded endpoints, including unfinished CPU/trainer prompts.
  * Natural distance ignores redundant roman variants; only playback uses recorded keys.
@@ -185,8 +190,7 @@ export class GhostRace {
       point,
       rank: this.rank,
       kpm: Math.round((keys * 60000) / Math.max(1, this.elapsed)),
-      accuracy:
-        (this.correct / Math.max(1, this.correct + this.misses.raw)) * 100,
+      accuracy: rawAccuracy(this.correct, this.misses.raw),
       scoreVersion: 3,
       mode: 'ghost',
       ghostSourceId: this.source.ghostSourceId ?? this.source.id,

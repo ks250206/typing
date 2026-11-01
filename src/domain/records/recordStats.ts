@@ -3,11 +3,21 @@ import {
   normalizeCpuWordsPerPrompt,
 } from '../battle/cpuPromptSettings'
 import type { RecordEntry } from './types'
-import { scorePoint, typingTitle, formatMissRate } from '../typing/scoring'
+import {
+  scorePoint,
+  typingTitle,
+  formatMissRate,
+  rawAccuracy,
+} from '../typing/scoring'
 export type RecordMetric = 'point' | 'kpm'
 /** Same calculation as the existing history table, including legacy miss-count fallback. */
 export const recordPoint = (r: RecordEntry) =>
   scorePoint(r.keys, r.missPenalty ?? r.misses, r.elapsed)
+/** Prefer actual strokes, and retain the documented episode fallback for old records. */
+export const recordAccuracy = (r: RecordEntry) =>
+  Number(
+    rawAccuracy(r.actualKeys ?? r.keys, r.rawMisses ?? r.misses).toFixed(2),
+  )
 export const recordTitle = (r: RecordEntry) =>
   typingTitle(recordPoint(r), r.actualKeys ?? r.keys, r.rawMisses ?? r.misses)
 export const recordMissLabel = (r: RecordEntry) =>

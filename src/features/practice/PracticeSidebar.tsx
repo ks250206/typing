@@ -4,7 +4,7 @@ import { recordPoint } from '../../domain/records/recordStats'
 import type { RecordEntry, Settings } from '../../domain/records/types'
 import type { Layout } from '../../domain/typing/engine'
 import { layoutLabels } from '../../domain/typing/engine'
-import { formatMissRate, typingTitle } from '../../domain/typing/scoring'
+import { typingTitle } from '../../domain/typing/scoring'
 import { time } from '../../shared/formatTime'
 import { Select } from '../../shared/ui/Select'
 import { ScoringHelp } from '../../shared/typing/ScoringHelp'
@@ -111,9 +111,6 @@ export function PracticeSessionCard({
           <small> pt</small>
         </strong>
         <span>{typingTitle(point, keys, rawMisses)}</span>
-        {keys + rawMisses > 0 && (
-          <small>実ミス率 {formatMissRate(keys, rawMisses)}</small>
-        )}
       </div>
       <div className="primary-stat">
         <span>{kpm}</span>

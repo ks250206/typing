@@ -33,7 +33,11 @@ import {
   RomanEngine,
   isTypingShortcut,
 } from '../../domain/typing/engine'
-import { MissEpisodes, scorePoint } from '../../domain/typing/scoring'
+import {
+  MissEpisodes,
+  scorePoint,
+  rawAccuracy,
+} from '../../domain/typing/scoring'
 import { useKeyFeedback } from '../../shared/typing/useKeyFeedback'
 import type { PracticeStatus } from './usePracticeClock'
 import { usePracticeClock } from './usePracticeClock'
@@ -495,13 +499,7 @@ export function usePracticeSession(
             (typewell ? Math.max(0, normalizedKeys) : keys) / (elapsed / 60000),
           )
         : 0,
-    accuracy =
-      keys + (durationMs || options?.countEveryMiss ? rawMisses : misses)
-        ? (keys /
-            (keys +
-              (durationMs || options?.countEveryMiss ? rawMisses : misses))) *
-          100
-        : 100
+    accuracy = rawAccuracy(keys, rawMisses)
   return {
     weak: !!customDocument,
     english,

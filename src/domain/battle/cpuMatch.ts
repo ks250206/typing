@@ -188,13 +188,13 @@ export class RtcMatch {
   }
   get accuracy() {
     return this.keys
-      ? this.keys / (this.keys + this.misses.misses)
-      : this.misses.misses
+      ? this.keys / (this.keys + this.misses.raw)
+      : this.misses.raw
         ? 0
         : 1
   }
   get totalAccuracy() {
-    const misses = this.totalMisses + this.misses.misses
+    const misses = this.totalRaw + this.misses.raw
     const keys = this.totalKeys + this.keys
     return keys ? keys / (keys + misses) : misses ? 0 : 1
   }

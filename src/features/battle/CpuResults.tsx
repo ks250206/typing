@@ -1,6 +1,6 @@
 import type { RecordEntry } from '../../domain/records/types'
 import type { RtcMatch } from '../../domain/battle/cpuMatch'
-import { scorePoint } from '../../domain/typing/scoring'
+import { scorePoint, rawAccuracy } from '../../domain/typing/scoring'
 import { SessionResult } from '../results/SessionResult'
 export function CpuResults({
   match,
@@ -33,7 +33,7 @@ export function CpuResults({
     missPenalty: round.penalty,
     elapsed: round.elapsed,
     kpm: Math.round((round.keys * 60000) / Math.max(1, round.elapsed)),
-    accuracy: round.accuracy * 100,
+    accuracy: rawAccuracy(round.keys, round.raw),
     trace: round.trace,
   }
   const win = complete ? match.roundsPlayer >= 4 : round.winner === 'player'
@@ -95,7 +95,7 @@ export function CpuResults({
             </summary>
             <p>
               {scorePoint(r.keys, r.penalty, r.elapsed)} pt ·{' '}
-              {(r.accuracy * 100).toFixed(2)}% · 実ミス {r.raw} ·{' '}
+              {rawAccuracy(r.keys, r.raw).toFixed(2)}% · 実ミス {r.raw} ·{' '}
               {(r.elapsed / 1000).toFixed(2)}秒
             </p>
           </details>
