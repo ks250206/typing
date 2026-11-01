@@ -1,0 +1,299 @@
+/* Practice and battle workspace: the main panel, session sidebar cards and stats. */
+.tiny-label {
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: #67a6b4;
+}
+.practice-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 235px;
+  gap: 21px;
+  align-items: start;
+}
+.practice-main {
+  border: 1px solid #ffffff12;
+  border-radius: 10px;
+  background: #0d1127;
+  overflow: hidden;
+  box-shadow: 0 20px 55px #00000010;
+}
+.session-card,
+.config-card {
+  border: 1px solid #ffffff10;
+  background: #0d1127;
+  border-radius: 9px;
+  padding: 19px;
+}
+.primary-stat {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+}
+.primary-stat > span:first-child {
+  font-size: 49px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  color: #b2e6f1;
+  font-variant-numeric: tabular-nums;
+}
+.primary-stat > span:last-child {
+  font-size: 10px;
+  color: #79b1bd;
+  letter-spacing: 1px;
+}
+.primary-stat small {
+  display: block;
+  font-size: 7px;
+  color: #4d8e9c;
+  letter-spacing: 0;
+  margin-top: 7px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #ffffff0a;
+  border-bottom: 1px solid #ffffff0a;
+  padding: 16px 0;
+}
+.stat-grid > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: #5ea1b0;
+  font-size: 9px;
+}
+.stat-grid > div + div {
+  border-left: 1px solid #ffffff0a;
+  padding-left: 13px;
+}
+.stat-grid strong {
+  font-size: 21px;
+  color: #a7e2ef;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.stat-grid small {
+  font-size: 10px;
+  margin-left: 3px;
+}
+.miss-stat {
+  display: flex;
+  font-size: 9px;
+  color: #539aaa;
+  gap: 10px;
+  margin-top: 14px;
+}
+.miss-stat strong {
+  font-weight: 400;
+  color: #9bdeed;
+  margin-right: 12px;
+}
+.config-card {
+  margin-top: 17px;
+  padding-bottom: 13px;
+}
+.config-card > label:first-of-type:not(.toggle-row) {
+  display: block;
+  font-size: 10px;
+  margin: 18px 0 9px;
+  color: #68cee4;
+}
+.config-card select {
+  width: 100%;
+  border: 1px solid #ffffff17;
+  border-radius: 5px;
+  background: #0a0d1e;
+  padding: 10px;
+  font-size: 10px;
+}
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #7db3bf;
+  padding-top: 16px;
+}
+@media (min-width: 1500px) {
+  .practice-grid {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+}
+@media (max-width: 1100px) {
+  .practice-grid {
+    grid-template-columns: minmax(0, 1fr) 204px;
+    gap: 15px;
+  }
+}
+@media (max-width: 1100px) {
+  .session-card,
+  .config-card {
+    padding: 15px;
+  }
+}
+@media (max-width: 800px) {
+  .practice-grid {
+    grid-template-columns: 1fr;
+  }
+  .session-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  .config-card {
+    margin: 0;
+  }
+}
+@media (max-width: 800px) {
+  .primary-stat {
+    margin: 12px 0;
+  }
+}
+@media (max-width: 480px) {
+  .session-sidebar {
+    gap: 10px;
+  }
+  .session-card,
+  .config-card {
+    padding: 13px;
+  }
+  .stat-grid strong {
+    font-size: 18px;
+  }
+  .stat-grid > div {
+    font-size: 8px;
+  }
+  .stat-grid svg {
+    width: 12px;
+  }
+  .primary-stat > span:first-child {
+    font-size: 43px;
+  }
+  .primary-stat {
+    gap: 8px;
+  }
+  .primary-stat small {
+    font-size: 6px;
+  }
+}
+@media (max-width: 480px) {
+  .miss-stat {
+    gap: 6px;
+  }
+  .miss-stat strong {
+    margin-right: 5px;
+  }
+}
+.practice-main,
+.session-card,
+.config-card {
+  background: linear-gradient(145deg, #141b36f5, #0d1228fa);
+  border-color: #7fb5ff26;
+  box-shadow:
+    0 12px 50px #0003,
+    inset 0 1px #b6d6ff0a;
+}
+.primary-stat > span:first-child {
+  color: #7ceaff;
+  text-shadow: 0 0 28px #2cdfff30;
+}
+.point-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 7px;
+  padding: 16px 0 0;
+  color: #d3f6f9;
+}
+.point-panel strong {
+  font-size: 38px;
+  font-weight: 400;
+}
+.point-panel strong small {
+  font-size: 14px;
+}
+.point-panel > span {
+  border: 1px solid #a7ddbb50;
+  border-radius: 20px;
+  padding: 6px 10px;
+  color: #b3ead5;
+  font-size: 12px;
+}
+.point-panel > small {
+  grid-column: 1/-1;
+  color: #7b9eb9;
+  font-size: 9px;
+}
+.point-panel + .primary-stat {
+  margin-top: 14px;
+}
+.point-panel + .primary-stat > span:first-child {
+  font-size: 30px;
+}
+@media (max-width: 480px) {
+  .point-panel {
+    grid-template-columns: 1fr;
+  }
+  .point-panel > span {
+    justify-self: start;
+  }
+}
+.point-panel {
+  grid-template-columns: minmax(0, 1fr);
+  height: 140px;
+  align-content: start;
+}
+.point-panel strong {
+  font-size: 32px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.point-panel > span {
+  justify-self: start;
+}
+.primary-stat {
+  min-height: 75px;
+}
+.point-panel {
+  height: auto;
+  min-height: 160px;
+}
+.point-panel > span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  html[data-display-enlarged] .session-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  html[data-display-enlarged] .practice-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Session controls arrive with a small motion alongside the practice area. */
+@media (min-width: 801px) {
+  .session-sidebar {
+    align-self: start;
+    animation: session-sidebar-enter 200ms ease-out;
+  }
+}
+@keyframes session-sidebar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.practice-main .typing-area:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

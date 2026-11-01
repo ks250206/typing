@@ -1,0 +1,645 @@
+/* Typing display shared by practice, battles and replays: text, readings, guides and keyboard. */
+.prose {
+  padding: 18px 27px 20px;
+  max-height: 378px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1d2758 transparent;
+}
+.prose p {
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 2.3;
+  letter-spacing: 1.1px;
+  margin-bottom: 20px;
+  transition: color 0.3s;
+  padding-left: 24px;
+  position: relative;
+}
+.prose p:last-child {
+  margin-bottom: 0;
+}
+.current-paragraph {
+  color: #afe5f1;
+}
+.upcoming {
+  color: #76afbc;
+}
+.icon-button {
+  display: flex;
+  padding: 6px;
+}
+@media (min-width: 1500px) {
+  .prose {
+    max-height: 435px;
+  }
+  .prose p {
+    font-size: 17px;
+  }
+}
+@media (max-width: 1100px) {
+  .prose {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+@media (max-width: 800px) {
+  .prose {
+    max-height: 385px;
+  }
+}
+@media (max-width: 480px) {
+  .prose p {
+    font-size: 14px;
+    line-height: 2.25;
+    letter-spacing: 0.5px;
+  }
+  .prose {
+    padding: 18px 16px;
+  }
+}
+.typed-kana {
+  color: #396974;
+}
+.remaining-kana {
+  color: #7fd6e8;
+}
+.prose {
+  max-height: none;
+  scrollbar-color: #465a89 transparent;
+  padding: 24px 27px;
+}
+.prose .current-paragraph {
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 2.15;
+  letter-spacing: 0.06em;
+  padding: 0;
+  margin: 12px 0 24px;
+  overflow-wrap: anywhere;
+}
+.sentence-label {
+  color: #77b5d3;
+  font: 9px/1.5 monospace;
+  letter-spacing: 0.16em;
+}
+.current-token {
+  color: #efffff;
+  background: #12658180;
+  border-radius: 5px;
+  text-shadow:
+    0 2px 0 #083340,
+    0 0 7px #36e4ff,
+    0 0 18px #40dfffaa;
+  box-shadow:
+    0 3px 0 #ad87ff,
+    0 5px 12px #020616aa,
+    0 0 16px #5ce4ff40;
+  padding-block: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.typed-token {
+  color: #7e96b8;
+}
+.pending-token {
+  color: #e5edff;
+}
+.next-sentence {
+  border-top: 1px solid #8cabff18;
+  padding-top: 16px;
+}
+.next-sentence .sentence-label {
+  color: #8793b3;
+  font-size: 8px;
+}
+.prose .upcoming {
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  color: #94a0bd;
+  padding: 0;
+  margin: 9px 0 0;
+}
+@media (max-width: 480px) {
+  .prose {
+    padding: 20px 16px;
+  }
+  .prose .current-paragraph {
+    font-size: 20px;
+    line-height: 2;
+  }
+  .prose .upcoming {
+    font-size: 12px;
+  }
+}
+.prose {
+  overflow: visible;
+  max-height: none;
+  padding-bottom: 12px;
+}
+.prose .current-paragraph {
+  font-weight: 600;
+  height: 3.9em;
+  box-sizing: content-box;
+  line-height: 1.9;
+  margin: 6px -8px 2px;
+  padding: 4px 8px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.pending-token {
+  text-shadow: 0 2px 3px #02030be6;
+}
+.sentence-guides {
+  margin: 0 0 18px;
+}
+.guide-row {
+  min-width: 0;
+}
+.guide-row + .guide-row {
+  margin-top: 4px;
+}
+.word-start {
+  margin-inline-start: 0.32em;
+}
+.guide-line {
+  height: 3em;
+  line-height: 1.5;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+  padding: 0;
+}
+.kana-line {
+  font-size: 20px;
+  color: #b5cbe4;
+  letter-spacing: 0.04em;
+}
+.roman-line {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  color: #a9accf;
+}
+.typed-kana,
+.typed-roman {
+  color: #6f829e;
+}
+.remaining-kana {
+  color: #b5cbe4;
+}
+.guide-current {
+  color: #c4fcff;
+  border-bottom: 2px solid #64eaff;
+  background: #3ec8ff18;
+  text-shadow: 0 0 8px #5be8ff70;
+}
+.roman-current {
+  color: #e5d4ff;
+  border-color: #c09aff;
+  background: #b48aff22;
+}
+@media (max-width: 480px) {
+  .prose .current-paragraph {
+    font-size: 22px;
+    height: 5.8em;
+    line-height: 1.9;
+  }
+  .kana-line,
+  .roman-line {
+    font-size: 18px;
+  }
+}
+/* Finger zones retain their color; the current word and key add separate glow levels. */
+.keyboard-guide {
+  margin: 8px 27px 20px;
+  padding: 15px 16px 12px;
+  border: 1px solid #6c94ce30;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #111c32c9, #111024d9);
+}
+.keyboard-key {
+  --finger: #6390ff;
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 43px;
+  border: 1px solid color-mix(in srgb, var(--finger) 65%, #1a2340);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  color: color-mix(in srgb, var(--finger) 80%, white);
+  background: color-mix(in srgb, var(--finger) 25%, #11192c);
+  font:
+    13px/1.1 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+.keyboard-key[data-finger$='ring'] {
+  --finger: #ed8ccf;
+}
+.keyboard-key[data-finger$='middle'] {
+  --finger: #4fe2ef;
+}
+.keyboard-key[data-finger$='index'] {
+  --finger: #edbb61;
+}
+.keyboard-key[data-finger='thumb'] {
+  --finger: #afc6dc;
+  flex: 0 1 45%;
+  height: 30px;
+}
+.keyboard-key small {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 8px;
+  opacity: 0.65;
+}
+.keyboard-key.home-key {
+  border-bottom-color: var(--finger);
+}
+.home-ridge {
+  position: absolute;
+  bottom: 4px;
+  width: 10px;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.8;
+}
+.keyboard-key[data-state='next'] {
+  color: #edfeff;
+  background: #21677d;
+  border-color: #a1f7ff;
+  box-shadow:
+    0 0 15px #50dfff70,
+    inset 0 0 12px #8ff8ff40;
+  text-shadow: 0 0 7px #c4fcff;
+}
+.keyboard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 9px;
+  color: #afc6dc;
+}
+.keyboard-legend > span::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6390ff;
+  margin-right: 4px;
+}
+.keyboard-legend [data-tone='1']::before {
+  background: #ed8ccf;
+}
+.keyboard-legend [data-tone='2']::before {
+  background: #4fe2ef;
+}
+.keyboard-legend [data-tone='3']::before {
+  background: #edbb61;
+}
+.keyboard-legend [data-tone='4']::before {
+  background: #afc6dc;
+}
+@media (max-width: 480px) {
+  .keyboard-guide {
+    margin: 8px 12px 18px;
+    padding: 12px 7px;
+  }
+  .keyboard-key {
+    height: 33px;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .keyboard-key small {
+    font-size: 6px;
+    top: 2px;
+    right: 2px;
+  }
+  .keyboard-key.wide-key {
+    font-size: 7px;
+  }
+  .keyboard-legend {
+    gap: 6px;
+  }
+}
+.prose .current-paragraph {
+  line-height: 2.35;
+  height: 4.8em;
+  padding-top: 12px;
+}
+.prose .upcoming {
+  line-height: 2.4;
+}
+/* Every row shares the same pitch; dimensions are quarter-key units. */
+.physical-keyboard {
+  display: grid;
+  grid-template-columns: repeat(60, minmax(0, 1fr));
+  grid-template-rows: repeat(5, 43px);
+  row-gap: 4px;
+}
+.physical-keyboard .keyboard-key {
+  margin: 0 2px;
+  height: auto;
+  flex: none;
+  border-radius: 5px;
+}
+.physical-keyboard .special-key {
+  font-size: 9px;
+}
+.physical-keyboard .keyboard-key[data-finger='thumb'] {
+  height: auto;
+}
+.physical-keyboard .enter-tall {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 16.667% 100%, 16.667% 51%, 0 51%);
+  justify-content: flex-start;
+  padding-top: 15px;
+}
+.keyboard-key[data-state='idle'] {
+  box-shadow: none;
+}
+/* One color per word across main text and both reading lines. */
+.word-colors [data-tone='0'] {
+  --word-ink: #99e4ec;
+}
+.word-colors [data-tone='1'] {
+  --word-ink: #c6b4fa;
+}
+.word-colors [data-tone='2'] {
+  --word-ink: #a6dec1;
+}
+.word-colors [data-tone='3'] {
+  --word-ink: #e5cf9e;
+}
+.word-colors [data-tone='4'] {
+  --word-ink: #a9c6ff;
+}
+.word-colors [data-tone='5'] {
+  --word-ink: #eab4ce;
+}
+.word-colors .pending-token,
+.word-colors .remaining-kana > [data-tone],
+.word-colors .remaining-roman > [data-tone] {
+  color: var(--word-ink);
+}
+[data-flow='consume'] .current-paragraph {
+  white-space: nowrap;
+  height: 2.7em;
+  overflow: hidden;
+}
+[data-flow='consume'] .sentence-stream {
+  display: inline-block;
+  animation: word-flow 0.18s ease-out;
+}
+[data-flow='consume'] .sentence-stream > span:first-child {
+  margin-inline-start: 0;
+}
+[data-flow='consume'] .guide-line {
+  white-space: nowrap;
+  height: 1.6em;
+  overflow: hidden;
+}
+[data-flow='consume'] .typed-kana > span:first-child,
+[data-flow='consume'] .typed-roman > span:first-child,
+[data-flow='consume'] [data-guide-cursor] .word-start {
+  margin-inline-start: 0;
+}
+@keyframes word-flow {
+  from {
+    transform: translateX(14px);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 480px) {
+  .prose .current-paragraph {
+    height: 7.1em;
+  }
+  [data-flow='consume'] .current-paragraph {
+    height: 2.7em;
+  }
+  .physical-keyboard {
+    grid-template-rows: repeat(5, 30px);
+    row-gap: 3px;
+  }
+  .physical-keyboard .keyboard-key {
+    margin: 0 1px;
+    border-radius: 3px;
+  }
+  .physical-keyboard .special-key {
+    font-size: 6px;
+  }
+  .physical-keyboard .enter-tall {
+    padding-top: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-flow='consume'] .sentence-stream {
+    animation: none;
+  }
+}
+/* No text wrapping: move the intact line in its own clipping window. */
+.prose .current-paragraph,
+[data-flow='consume'] .current-paragraph {
+  white-space: nowrap;
+  height: 2.8em;
+  overflow: hidden;
+  overflow-wrap: normal;
+}
+.prose .guide-line,
+[data-flow='consume'] .guide-line {
+  white-space: nowrap;
+  height: 1.45em;
+  line-height: 1.4;
+  overflow: hidden;
+  overflow-wrap: normal;
+}
+.guide-row + .guide-row {
+  margin-top: 1px;
+}
+.flow-track,
+[data-flow='consume'] .sentence-stream {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform 0.18s cubic-bezier(0.18, 0.7, 0.3, 1);
+  animation: none;
+}
+.prose .upcoming {
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+@media (max-width: 480px) {
+  .prose .current-paragraph,
+  [data-flow='consume'] .current-paragraph {
+    height: 2.8em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-track,
+  [data-flow='consume'] .sentence-stream {
+    transition: none !important;
+  }
+}
+.prose .duel-viewport.guide-line {
+  height: auto;
+  line-height: 1.5;
+}
+.practice-overlay {
+  position: absolute;
+  inset: 45px 0 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #b5f7ff;
+  background: #091020e8;
+  text-align: center;
+  padding: 24px;
+}
+.practice-start-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 22px 32px;
+  border: 1px solid #7ae6fba0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #173c51, #292447);
+  box-shadow:
+    0 0 36px #65dfff22,
+    inset 0 0 22px #73eaff12;
+  color: #d5faff;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+}
+.practice-start-button kbd {
+  font:
+    600 0.8em 'SFMono-Regular',
+    Consolas,
+    monospace;
+  padding: 6px 16px;
+  border: 1px solid #83dcef90;
+  border-bottom-width: 3px;
+  border-radius: 7px;
+  background: #0b1928;
+}
+.practice-overlay > p,
+.practice-pause-label {
+  color: #a0b8d2;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.practice-pause-label {
+  letter-spacing: 0.2em;
+}
+/* Error color stays visible while the expected key gets an independent pulse. */
+.keyboard-key {
+  transition:
+    background-color 180ms,
+    border-color 180ms,
+    box-shadow 180ms,
+    color 180ms;
+}
+.keyboard-key[data-error='true'] {
+  color: #fff0f5;
+  background: #a62852;
+  border-color: #ff9db9;
+  box-shadow: 0 0 18px #ff487b80;
+}
+.next-key-pulse {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid #b6fbff;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: expected-key-pulse 600ms ease-out;
+}
+@keyframes expected-key-pulse {
+  from {
+    opacity: 1;
+    transform: scale(0.9);
+    box-shadow: 0 0 22px #80f6ff;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+    box-shadow: 0 0 0 transparent;
+  }
+}
+.altgr-symbol {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 8px;
+  color: #b5f6df;
+}
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-key {
+    transition: none;
+  }
+  .next-key-pulse {
+    animation: none;
+    transform: none;
+  }
+}
+/* English already includes real word spaces. Keep the empty kana row's height. */
+.prose[data-language='en'] .word-start {
+  margin-inline-start: 0;
+}
+.scoring-help {
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  padding: 3px;
+  color: inherit;
+}
+.scoring-help:hover,
+.scoring-help:focus-visible {
+  color: #b9f6ff;
+  background: #8ed8ea16;
+}
+.scoring-popup {
+  position: fixed;
+  visibility: hidden;
+  box-sizing: border-box;
+  z-index: 60;
+  max-height: calc(100dvh / var(--display-zoom, 1) - 16px);
+  overflow-y: auto;
+  padding: 20px;
+  color: #a7d6e4;
+  background: #10182c;
+  border: 1px solid #8edaeb35;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px #0005;
+}
+.scoring-popup h3 {
+  margin: 0 28px 12px 0;
+  font-size: 14px;
+}
+.scoring-popup p {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.scoring-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 0;
+  background: transparent;
+}

@@ -1,0 +1,227 @@
+/* Favorites sidebar, toggles and the overflow marquee. */
+.sidebar-favorites {
+  min-height: 0;
+  overflow-y: auto;
+  margin: 24px 0 16px;
+}
+.sidebar-favorites:focus {
+  outline: 0;
+}
+.favorites-mobile-toggle {
+  display: none;
+}
+.favorites-panel .nav-label {
+  display: block;
+  margin: 0 12px 17px;
+}
+.favorites-panel > p {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #7299ad;
+  padding: 0 10px;
+}
+.favorites-panel ul {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.favorites-panel li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #8bcbe315;
+  border-radius: 6px;
+  transition:
+    box-shadow 180ms,
+    translate 180ms;
+}
+.favorites-panel li[data-dragging='true'] {
+  z-index: 2;
+  translate: 0 -2px;
+  background: linear-gradient(120deg, #143346f5, #20213df7);
+  box-shadow:
+    0 10px 22px #0009,
+    0 0 14px #65dfff20,
+    inset 0 1px #b6eaff15;
+}
+.favorites-panel li[data-active='true'] .favorite-open,
+.favorites-panel li:hover .favorite-open {
+  color: #8cefff;
+}
+.favorites-panel li[data-active='true'] .favorite-drag-handle,
+.favorites-panel li[data-active='true'] .favorite-remove {
+  color: #8cefff;
+}
+.favorite-drag-handle {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 8px 3px;
+  color: #7299ad;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.favorite-drag-handle:active {
+  cursor: grabbing;
+}
+.favorite-open {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  padding: 10px 6px;
+  text-align: left;
+  color: #b5d7e9;
+  border-radius: 6px;
+}
+.favorite-open > svg {
+  flex-shrink: 0;
+}
+.favorite-open span {
+  min-width: 0;
+}
+.favorite-open .favorite-copy {
+  flex: 1;
+}
+.favorite-open strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.favorite-open small {
+  display: block;
+  font-size: 9px;
+  color: #799fb6;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.favorite-marquee,
+.overflow-marquee {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.favorite-marquee-track,
+.overflow-marquee-track {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: translateX(0);
+}
+.favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true'] {
+  text-overflow: clip;
+}
+.favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true']
+  > .favorite-marquee-track {
+  max-width: none;
+  animation: favorite-overflow-marquee var(--marquee-duration) linear infinite;
+}
+@keyframes favorite-overflow-marquee {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  80%,
+  90% {
+    transform: translateX(calc(-1 * var(--marquee-distance)));
+  }
+  90.01%,
+  100% {
+    transform: translateX(0);
+  }
+}
+.sidebar-favorites:has([data-dragging='true'])
+  .favorites-panel
+  li:is(:hover, :has(:focus-visible))
+  .favorite-marquee[data-overflow='true'] {
+  text-overflow: ellipsis;
+}
+.sidebar-favorites:has([data-dragging='true'])
+  .favorites-panel
+  li
+  .favorite-marquee[data-overflow='true']
+  > .favorite-marquee-track {
+  max-width: 100%;
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .favorites-panel
+    li:is(:hover, :has(:focus-visible))
+    .favorite-marquee[data-overflow='true'] {
+    text-overflow: ellipsis;
+  }
+  .favorites-panel
+    li:is(:hover, :has(:focus-visible))
+    .favorite-marquee[data-overflow='true']
+    > .favorite-marquee-track {
+    max-width: 100%;
+  }
+}
+.favorite-remove {
+  padding: 9px 5px;
+  color: #829db4;
+}
+.favorite-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.favorite-toggle[aria-pressed='true'] {
+  color: #f1d88e;
+}
+@media (max-width: 800px) {
+  .sidebar-favorites {
+    margin: 0;
+    overflow: visible;
+  }
+}
+@media (max-width: 800px) {
+  .favorites-mobile-toggle {
+    display: grid;
+    place-items: center;
+    padding: 8px;
+    color: #90cfdf;
+  }
+  .favorites-panel {
+    display: none;
+  }
+  .sidebar-favorites.is-open .favorites-panel {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 12px;
+    right: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 16px 10px;
+    background: #0d172bf7;
+    border: 1px solid #669ac270;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px #0009;
+    z-index: 10;
+  }
+  .favorite-open {
+    padding: 12px 8px;
+  }
+  .favorite-remove {
+    padding: 14px;
+  }
+  .favorite-open strong {
+    font-size: 13px;
+  }
+  .favorite-open small {
+    font-size: 11px;
+  }
+}
