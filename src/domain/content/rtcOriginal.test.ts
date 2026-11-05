@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { rtcOriginalDocument, rtcOriginalPrompts } from './rtcOriginal'
 import { practiceDocument, practicePassages } from './practiceDocument'
 import { seededBattlePrompts } from './battleSets'

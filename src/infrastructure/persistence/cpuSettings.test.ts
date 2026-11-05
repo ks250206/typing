@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vite-plus/test'
 import { cpuPresets } from '../../domain/battle/cpuMatch'
 import {
   CPU_CONFIG_STORAGE_KEY,

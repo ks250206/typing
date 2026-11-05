@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { KanaEngine, RomanEngine, mapKey } from './engine'
 import { passages } from '../content/passages'
 function accepts(reading: string, keys: string) {

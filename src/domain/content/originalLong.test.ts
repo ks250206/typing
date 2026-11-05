@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import source from '../../../data/sources/original-long/typing_long_passages_21.json' with { type: 'json' }
 import { originalLongEntries, originalLongPassages } from './originalLong'
 import { sentencesByPassage } from './sentences'

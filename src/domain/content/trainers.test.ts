@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import highSpeed from '../../../data/sources/trainers/trainer-high-speed.json'
 import longform from '../../../data/sources/trainers/trainer-longform.json'
 import { trainerPassages, isTrainer, createTrainerOrder } from './sakusaku'

@@ -1,6 +1,6 @@
 import { seededBattlePrompts } from '../content/battleSets'
 import { englishSentence } from '../content/english'
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import {
   migrateCpuPreset,
   cpuPresets,

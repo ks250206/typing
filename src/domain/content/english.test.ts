@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import data from '../../data/generated/english.json' with { type: 'json' }
 import {
   englishDocument,

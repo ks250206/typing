@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { passages } from './passages'
 import { locateSegments, sentencesByPassage } from './sentences'
 import { KanaEngine, RomanEngine } from '../typing/engine'

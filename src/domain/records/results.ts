@@ -9,14 +9,12 @@ export function roundTrace(
   return {
     version: 1,
     elapsed: trace.elapsed - start,
-    prompts: trace.prompts
-      .slice(firstPrompt)
-      .map((p) => ({
-        ...p,
-        start: p.start - start,
-        end: p.end - start,
-        segments: p.segments?.map((s) => ({ ...s })),
-      })),
+    prompts: trace.prompts.slice(firstPrompt).map((p) => ({
+      ...p,
+      start: p.start - start,
+      end: p.end - start,
+      segments: p.segments?.map((s) => ({ ...s })),
+    })),
     strokes: trace.strokes
       .filter((s) => s.prompt >= firstPrompt)
       .map((s) => ({ ...s, t: s.t - start, prompt: s.prompt - firstPrompt })),

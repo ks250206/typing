@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { passages } from '../../domain/content/passages'
 import { typewellPassages } from '../../domain/content/typewell'
 import { libraryCategory } from './libraryCategories'

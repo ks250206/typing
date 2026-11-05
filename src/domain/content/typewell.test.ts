@@ -1,5 +1,5 @@
 import themes from '../../data/generated/themes.json' with { type: 'json' }
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import classicData from '../../data/generated/typewell.json' with { type: 'json' }
 import { KanaEngine, RomanEngine } from '../typing/engine'
 import {

@@ -1,4 +1,4 @@
-import { beforeEach, expect, it, vi } from 'vitest'
+import { beforeEach, expect, it, vi } from 'vite-plus/test'
 import { dismissWeakWords, readWeakDismissals } from './weakWordStore'
 import type { WeakWord } from '../../domain/records/weakWords'
 let data: Map<string, string>

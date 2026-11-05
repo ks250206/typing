@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { insightTop, insightTrend } from './insightMetrics'
 import type { RecordEntry } from './types'
 const rows: RecordEntry[] = [

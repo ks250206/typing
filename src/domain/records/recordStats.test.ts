@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import {
   archiveBests,
   recordGroup,
@@ -11,7 +11,7 @@ import {
   readBestHistory,
   readHistory,
 } from '../../infrastructure/persistence/storage'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import type { RecordEntry } from './types'
 const row = (i: number, kpm = i): RecordEntry => ({
   id: String(i),

@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'

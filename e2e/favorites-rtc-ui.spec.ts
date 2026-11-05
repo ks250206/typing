@@ -259,9 +259,7 @@ test('favorites keyboard activation takes priority over paused game shortcuts; s
   await page.keyboard.press('Space')
   await page.clock.runFor(3000)
   await page.keyboard.press('Escape')
-  await page
-    .getByRole('button', { name: /お気に入りを開く：通常練習/ })
-    .focus()
+  await page.getByRole('button', { name: /お気に入りを開く：通常練習/ }).focus()
   await page.keyboard.press('Enter')
   await expect(page.locator('.mission-carousel')).toHaveAttribute(
     'data-stage',

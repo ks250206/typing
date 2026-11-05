@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { KanaEngine, RomanEngine } from './engine'
 import type { Layout } from './engine'
 import { sentencesByPassage } from '../content/sentences'

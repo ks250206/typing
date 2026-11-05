@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { paceContexts } from './paceContext'
 import { TypingTrace } from './telemetry'
 it('shows typed words, transitions and actual mistakes in their second, keeps idle context and excludes the final fraction', () => {

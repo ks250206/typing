@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { isTypingShortcut, mapKey } from './engine'
 import { physicalKey, keyOutput } from './physicalKeyboard'
 
