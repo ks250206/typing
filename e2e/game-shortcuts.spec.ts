@@ -278,9 +278,7 @@ for (const state of [
     for (const target of ['CPU対戦', '練習の記録', '苦手ワード練習']) {
       await page.getByRole('button', { name: target, exact: true }).click()
       await page.clock.runFor(120000)
-      await page
-        .getByRole('button', { name: '通常練習', exact: true })
-        .click()
+      await page.getByRole('button', { name: '通常練習', exact: true }).click()
       await expect(stage(page)).toHaveAttribute('data-stage', '0')
       await page.keyboard.press('4')
       await expect(stage(page)).toHaveAttribute('data-stage', '0')

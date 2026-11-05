@@ -18,10 +18,10 @@ GALACTYPE の開発者向けドキュメントです。遊び方は [README](../
 
 ## セットアップ
 
-Node.js 24、pnpm 11.25.0、Python 3（データ再生成とそのテストのみ）を使います。
+Node.js 26（推奨バージョンは `.node-version`）、pnpm 12.16.1、Python 3（データ再生成とそのテストのみ）を使います。Node.js を用意してから次のコマンドを実行します。
 
 ```sh
-corepack enable
+npm install --global pnpm@12.16.1
 pnpm install --frozen-lockfile
 pnpm dev
 ```
@@ -35,6 +35,7 @@ http://localhost:5173 を開きます。`pnpm build` の出力 `dist/` を静的
 | `pnpm dev`                                               | 開発サーバー                                     |
 | `pnpm build` / `pnpm preview`                            | 型チェック付きビルド / ビルド結果の確認          |
 | `pnpm lint`                                              | oxlint                                           |
+| `pnpm fmt` / `pnpm fmt --check`                          | Oxfmt で整形 / 整形の確認                        |
 | `pnpm typecheck`                                         | `tsc -b`                                         |
 | `pnpm test`                                              | Vitest（`src/` のユニットテスト）                |
 | `pnpm test:e2e`                                          | Playwright（ビルドしてポート4173で起動して検証） |
@@ -45,7 +46,7 @@ http://localhost:5173 を開きます。`pnpm build` の出力 `dist/` を静的
 
 ## 技術スタック
 
-React / TypeScript / Vite / Tailwind CSS v4 / Three.js / Lucide。テストは Vitest と Playwright、lint は oxlint、整形は Prettier です。
+React / TypeScript / Vite+ / Tailwind CSS v4 / Three.js / Lucide。Vite+ に含まれる Vite、Vitest、Oxlint、Oxfmt で開発・ビルド・単体テスト・lint・整形を行い、E2E は Playwright で検証します。
 
 ## ソースコードの構成
 

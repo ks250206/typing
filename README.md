@@ -188,8 +188,10 @@
 
 セットアップ、ソースコードの構成、問題データの再生成、テストとCI、開発フローは [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) を参照してください。
 
+Node.js 26 を用意してから実行します。
+
 ```sh
-corepack enable
+npm install --global pnpm@12.16.1
 pnpm install --frozen-lockfile
 pnpm dev
 ```

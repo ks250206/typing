@@ -13,7 +13,12 @@ import type { Settings } from '../domain/records/types'
 import { GithubMark } from '../shared/ui/GithubMark'
 
 export type AppTab =
-  'practice' | 'battle' | 'history' | 'ghost' | 'weak' | 'sentence'
+  | 'practice'
+  | 'battle'
+  | 'history'
+  | 'ghost'
+  | 'weak'
+  | 'sentence'
 const SpaceScene = lazy(() =>
   import('./SpaceScene').then((m) => ({ default: m.SpaceScene })),
 )

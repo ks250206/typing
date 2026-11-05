@@ -1,4 +1,4 @@
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, expect, it, vi } from 'vite-plus/test'
 import { readSentenceStats, saveSentenceStats } from './sentenceStats'
 afterEach(() => vi.unstubAllGlobals())
 it('round-trips word statistics and filters malformed saved rows', () => {

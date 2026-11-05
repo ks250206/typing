@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { RtcMatch } from '../battle/cpuMatch'
 import { resultAnalysis } from './results'
 import { validTrace } from './telemetry'

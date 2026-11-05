@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { RomanEngine } from './engine'
 import { battlePrompts } from '../content/battlePrompts'
 import { duelProjection } from './duelRoman'

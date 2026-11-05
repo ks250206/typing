@@ -1,7 +1,11 @@
 import type { RefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 export type PracticeStatus =
-  'ready' | 'countdown' | 'running' | 'paused' | 'done'
+  | 'ready'
+  | 'countdown'
+  | 'running'
+  | 'paused'
+  | 'done'
 
 /** Owns clock resources; the session decides what a deadline or a start means. */
 export function usePracticeClock({

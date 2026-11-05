@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { GhostRace } from './ghost'
 import { TypingTrace } from '../records/telemetry'
 import type { SessionTrace } from '../records/telemetry'

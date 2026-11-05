@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { constitution } from './constitution'
 import official from '../../../data/sources/constitution/preamble.json' with { type: 'json' }
 import { sentencesByPassage } from './sentences'

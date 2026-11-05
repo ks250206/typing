@@ -1,4 +1,4 @@
-import { beforeEach, expect, it, vi } from 'vitest'
+import { beforeEach, expect, it, vi } from 'vite-plus/test'
 import { readHistory, readSettings, saveHistory, saveSettings } from './storage'
 let data: Map<string, string>
 beforeEach(() => {

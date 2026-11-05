@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import data from '../../data/generated/etyping.json' with { type: 'json' }

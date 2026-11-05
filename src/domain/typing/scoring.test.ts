@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { animalRank, MissEpisodes, scorePoint, rawAccuracy } from './scoring'
 it('uses unrounded speed and accuracy, with no point ceiling', () => {
   expect(scorePoint(300, 0, 60000)).toBe(300)

@@ -26,6 +26,7 @@ dist-ssr
 artifacts/
 test-results/
 playwright-report/
+.vitest/
 
 # Python data importers
 __pycache__/

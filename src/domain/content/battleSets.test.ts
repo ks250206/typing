@@ -1,6 +1,6 @@
 import { normalizeCpuWordsPerPrompt } from '../battle/cpuPromptSettings'
 import { rtcPassages } from './rtcWords'
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import { battleSets, seededBattlePrompts } from './battleSets'
 import { etypingPassages } from './etyping'
 import { passages } from './passages'

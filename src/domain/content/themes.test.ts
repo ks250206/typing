@@ -1,7 +1,7 @@
 import { sentenceWordStarts, romanWordStarts } from '../typing/wordSpacing'
 import sportsSources from '../../../data/sources/themes/sports-provenance.json' with { type: 'json' }
 import scientistSources from '../../../data/sources/themes/scientists-provenance.json' with { type: 'json' }
-import { expect, it } from 'vitest'
+import { expect, it } from 'vite-plus/test'
 import data from '../../data/generated/themes.json' with { type: 'json' }
 import { themePassages, themeTrainers } from './themes'
 import { practiceDocument } from './practiceDocument'
