@@ -2,6 +2,8 @@
 
 指先から、宇宙へ。長文・単語・CPU対戦を楽しむ、宇宙テーマのタイピングゲームです。ブラウザだけで動き、記録は端末内に保存します。
 
+[GALACTYPE で遊ぶ](https://ks250206.github.io/typing/)
+
 ![GALACTYPE・入力中の画面](docs/galactype-active-desktop.png)
 
 ## 目次
