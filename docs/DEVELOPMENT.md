@@ -182,3 +182,7 @@ python3 scripts/rebuild-data.py --check --require-rtc-sources
 ## 開発フロー
 
 Issue → feature ブランチ → PR → CI → レビュー → `main` の順に進めます。初期の設計は [Issues #1〜#6](https://github.com/ks250206/typing/issues?q=is%3Aissue+is%3Aclosed) を参照してください。
+
+## GitHub Pages への公開
+
+リポジトリの Settings → Pages → Build and deployment で Source に **GitHub Actions** を選択します。`main` への push または Actions 画面での手動実行により、`/typing/` をベースパスとしてビルドし、GitHub Pages にデプロイします。公開先は https://ks250206.github.io/typing/ です。
